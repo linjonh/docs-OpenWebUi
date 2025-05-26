@@ -9,7 +9,7 @@ const config: Config = {
 	favicon: "images/favicon.png",
 
 	// Set the production url of your site here
-	url: "https://openwebui.com",
+	url: "https://openwebui.codelin.vip",
 	// Set the /<baseUrl>/ pathname under which your site is served
 	// For GitHub pages deployment, it is often '/<projectName>/'
 	baseUrl: "/",
@@ -17,7 +17,7 @@ const config: Config = {
 	// GitHub pages deployment config.
 	// If you aren't using GitHub pages, you don't need these.
 	organizationName: "open-webui", // Usually your GitHub org/user name.
-	projectName: "docs", // Usually your repo name.
+	projectName: "docs-OpenWebUi", // Usually your repo name.
 
 	onBrokenLinks: "warn",
 	onBrokenMarkdownLinks: "warn",
@@ -49,7 +49,7 @@ const config: Config = {
 			"classic",
 			{
 				gtag: {
-					trackingID: "G-522JSJVWTB",
+					trackingID: "G-ZQJ9LZDR1Y",
 					anonymizeIP: false,
 				},
 				docs: {
@@ -57,7 +57,7 @@ const config: Config = {
 					routeBasePath: "/",
 					// Please change this to your repo.
 					// Remove this to remove the "edit this page" links.
-					editUrl: "https://github.com/open-webui/docs/blob/main",
+					// editUrl: "https://github.com/open-webui/docs/blob/main",
 					exclude: ["**/tab-**/**"],
 				},
 				// blog: false,
@@ -79,7 +79,7 @@ const config: Config = {
 		// Replace with your project's social card
 		// image: "images/docusaurus-social-card.jpg",
 		navbar: {
-			title: "Open WebUI",
+			title: "Open WebUI (Translated by 林建有)",
 			logo: {
 				src: "images/logo.png",
 				srcDark: "images/logo-dark.png",
@@ -173,7 +173,7 @@ const config: Config = {
 					],
 				},
 			],
-			// copyright: `Copyright © ${new Date().getFullYear()} OpenWebUI`,
+			copyright: `Copyright © ${new Date().getFullYear()} Translated by 林建有`,
 		},
 		prism: {
 			theme: prismThemes.github,
@@ -181,6 +181,20 @@ const config: Config = {
 		},
 	} satisfies Preset.ThemeConfig,
 	plugins: [require.resolve("docusaurus-lunr-search")],
+	headTags: [
+		// add google adsense
+		// <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5363852791482518"
+		//  crossorigin="anonymous"></script>
+		{
+			tagName: "script",
+			attributes: {
+				async: "true",
+				crossorigin: "anonymous",
+				src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5363852791482518",
+				// "data-ad-client": "ca-pub-5363852791482518",
+			},
+		},
+	],
 };
 
 export default config;
