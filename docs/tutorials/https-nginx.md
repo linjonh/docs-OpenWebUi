@@ -14,25 +14,25 @@ title: "🔒 使用 Nginx 配置 HTTPS"
 本指南提供了三种设置 HTTPS 的方法：
 
 - **自签名证书**：适用于开发和内部使用，使用 Docker。
-- **Let&apos;s Encrypt**：适用于需要受信任 SSL 证书的生产环境，使用 Docker。
+- **Let's Encrypt**：适用于需要受信任 SSL 证书的生产环境，使用 Docker。
 - **Windows + 自签名**：简化用于 Windows 上的开发和内部使用，无需 Docker。
 
 选择最适合您部署需求的方法。
 
 
-import Tabs from &apos;@theme/Tabs&apos;;
-import TabItem from &apos;@theme/TabItem&apos;;
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-import NginxProxyManager from &apos;./tab-nginx/NginxProxyManager.md&apos;;
-import SelfSigned from &apos;./tab-nginx/SelfSigned.md&apos;;
-import LetsEncrypt from &apos;./tab-nginx/LetsEncrypt.md&apos;;
-import Windows from &apos;./tab-nginx/Windows.md&apos;;
+import NginxProxyManager from './tab-nginx/NginxProxyManager.md';
+import SelfSigned from './tab-nginx/SelfSigned.md';
+import LetsEncrypt from './tab-nginx/LetsEncrypt.md';
+import Windows from './tab-nginx/Windows.md';
 
 <Tabs>
   <TabItem value="NginxProxyManager" label="Nginx 代理管理器">
     <NginxProxyManager />
   </TabItem>
-  <TabItem value="letsencrypt" label="Let&apos;s Encrypt">
+  <TabItem value="letsencrypt" label="Let's Encrypt">
     <LetsEncrypt />
   </TabItem>
   <TabItem value="selfsigned" label="自签名">
@@ -50,6 +50,6 @@ import Windows from &apos;./tab-nginx/Windows.md&apos;;
 
 - [https://localhost](https://localhost)
 
-如果使用域名，请确保您的 DNS 记录已正确配置。对于生产环境，建议使用 Let&apos;s Encrypt 以获取受信任的 SSL 证书。
+如果使用域名，请确保您的 DNS 记录已正确配置。对于生产环境，建议使用 Let's Encrypt 以获取受信任的 SSL 证书。
 
 ---

@@ -130,9 +130,9 @@ title: "📊 监控您的开放 WebUI"
 
 你可以使用更具体的 JSONata 查询来检查特定模型或提供者。以下是一些示例：
 
-* **检查是否至少有一个 Ollama 模型：** `$count(data[owned_by=&apos;ollama&apos;])>0`
-* **检查是否存在特定模型（例如，&apos;gpt-4o&apos;）：** `$exists(data[id=&apos;gpt-4o&apos;])`
-* **检查是否存在多个特定模型（例如，&apos;gpt-4o&apos; 和 &apos;gpt-4o-mini&apos;）：** `$count(data[id in [&apos;gpt-4o&apos;, &apos;gpt-4o-mini&apos;]]) = 2`
+* **检查是否至少有一个 Ollama 模型：** `$count(data[owned_by='ollama'])>0`
+* **检查是否存在特定模型（例如，'gpt-4o'）：** `$exists(data[id='gpt-4o'])`
+* **检查是否存在多个特定模型（例如，'gpt-4o' 和 'gpt-4o-mini'）：** `$count(data[id in ['gpt-4o', 'gpt-4o-mini']]) = 2`
 
 你可以使用 [jsonata.org](https://try.jsonata.org/) 测试和优化你的 JSONata 查询，以确保其按预期工作。
 
@@ -155,11 +155,11 @@ title: "📊 监控您的开放 WebUI"
 curl -X POST https://your-open-webui-instance/api/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d &apos;{
+  -d '{
     "messages": [{"role": "user", "content": "Respond with the word HEALTHY"}],
     "model": "llama3.1",  # 替换为你期望可用的模型
     "temperature": 0      # 设置温度为 0 以确保响应一致
-  }&apos;
+  }'
 ```
 
 *(将 `YOUR_API_KEY`、`your-open-webui-instance` 和 `llama3.1` 替换为你的实际值。)*

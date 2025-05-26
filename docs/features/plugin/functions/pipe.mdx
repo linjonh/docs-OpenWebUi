@@ -164,7 +164,7 @@ class Pipe:
                 return [
                     {
                         "id": model["id"],
-                        "name": f&apos;{self.valves.NAME_PREFIX}{model.get("name", model["id"])}&apos;,
+                        "name": f'{self.valves.NAME_PREFIX}{model.get("name", model["id"])}',
                     }
                     for model in models["data"]
                     if "gpt" in model["id"]

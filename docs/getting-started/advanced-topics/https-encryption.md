@@ -29,9 +29,9 @@ HTTPS（超文本传输安全协议）加密了您的浏览器与 Open WebUI 服
 * **云提供商（例如 AWS、Google Cloud、Azure）：**
   * **负载均衡器：** 云提供商通常提供托管的负载均衡器（例如 AWS 弹性负载均衡器），可以为您处理 HTTPS 终止（加密/解密）。这是云环境中最简单且可扩展的方法。
 * **Docker 容器环境：**
-  * **反向代理（Nginx、Traefik、Caddy）：** Nginx、Traefik 和 Caddy 等流行的反向代理是管理 Docker 化部署中 HTTPS 的绝佳选择。它们可以自动获取并续订 SSL/TLS 证书（例如使用 Let&apos;s Encrypt），处理 HTTPS 终止。
+  * **反向代理（Nginx、Traefik、Caddy）：** Nginx、Traefik 和 Caddy 等流行的反向代理是管理 Docker 化部署中 HTTPS 的绝佳选择。它们可以自动获取并续订 SSL/TLS 证书（例如使用 Let's Encrypt），处理 HTTPS 终止。
     * **Nginx：** 高度可配置且广泛使用。
-    * **Traefik：** 专为现代微服务和容器环境设计，具有自动配置和 Let&apos;s Encrypt 集成。
+    * **Traefik：** 专为现代微服务和容器环境设计，具有自动配置和 Let's Encrypt 集成。
     * **Caddy：** 专注于易用性和自动 HTTPS 配置。
 * **Cloudflare：**
   * **简化 HTTPS：** Cloudflare 提供 CDN（内容分发网络）和安全服务，包括非常容易设置的 HTTPS。通常需要最少的服务器端配置变更，适合各种类型的部署。
@@ -43,7 +43,7 @@ HTTPS（超文本传输安全协议）加密了您的浏览器与 Open WebUI 服
 * **复杂性：** 一些解决方案（如 Cloudflare 或 Caddy）比其他解决方案（如手动配置 Nginx）更简单。
 * **自动化：** 像 Traefik 和 Caddy 这样的解决方案提供自动证书管理，从而简化持续维护。
 * **可扩展性与性能：** 在选择解决方案时，请考虑您的 Open WebUI 实例的性能和可扩展性需求，尤其是在高流量情况下。
-* **成本：** 一些解决方案（如云负载均衡器或 Cloudflare 的付费计划）可能涉及相关费用。Let&apos;s Encrypt 和许多反向代理是免费且开源的。
+* **成本：** 一些解决方案（如云负载均衡器或 Cloudflare 的付费计划）可能涉及相关费用。Let's Encrypt 和许多反向代理是免费且开源的。
 
 ## 📚 探索部署教程以获取分步指南
 

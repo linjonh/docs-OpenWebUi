@@ -159,12 +159,12 @@ python app/server.py
 curl -X POST http://localhost:5050/v1/audio/speech \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer your_api_key_here" \
-  -d &apos;{
+  -d '{
     "input": "你好，我是你的AI助手！告诉我，我可以如何帮助实现你的想法。",
     "voice": "echo",
     "response_format": "mp3",
     "speed": 1.0
-  }&apos; \
+  }' \
   --output speech.mp3
 ```
 
@@ -174,11 +174,11 @@ curl -X POST http://localhost:5050/v1/audio/speech \
 curl -X POST http://localhost:5050/v1/audio/speech \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer your_api_key_here" \
-  -d &apos;{
+  -d '{
     "model": "tts-1",
     "input": "你好，我是你的AI助手！告诉我，我可以如何帮助实现你的想法。",
     "voice": "alloy"
-  }&apos; \
+  }' \
   --output speech.mp3
 ```
 
@@ -188,11 +188,11 @@ curl -X POST http://localhost:5050/v1/audio/speech \
 curl -X POST http://localhost:5050/v1/audio/speech \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer your_api_key_here" \
-  -d &apos;{
+  -d '{
     "model": "tts-1",
     "input": "じゃあ、行く。電車の時間、調べておくよ。",
     "voice": "ja-JP-KeitaNeural"
-  }&apos; \
+  }' \
   --output speech.mp3
 ```
 

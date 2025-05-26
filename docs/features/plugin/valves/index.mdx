@@ -24,7 +24,7 @@ class Filter:
    # 注意当前的缩进：阀门和用户阀门必须声明为
    # Tools、Filter 或 Pipe 类的属性。这里以 Filter 为示例。
    class Valves(BaseModel):
-       # Valves 和 UserValves 继承自 pydantic&apos;s BaseModel。
+       # Valves 和 UserValves 继承自 pydantic's BaseModel。
        # 这允许复杂的用例，如模型验证等。
        test_valve: int = Field(  # 注意类型提示：它用于
            # 选择要向用户显示的 UI 元素类型（按钮、文本等）。
@@ -43,7 +43,7 @@ class Filter:
        )
        # priority 字段是可选的，但如果存在，将用于排序过滤器。
        pass
-       # 注意这个 &apos;pass&apos; 有助于解析，推荐使用。
+       # 注意这个 'pass' 有助于解析，推荐使用。
 
    # 用户阀门的定义方式是相同的。
    class UserValves(BaseModel):

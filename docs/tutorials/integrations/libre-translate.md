@@ -37,7 +37,7 @@ services:
     tty: true
     stdin_open: true
     healthcheck:
-      test: [&apos;CMD-SHELL&apos;, &apos;./venv/bin/python scripts/healthcheck.py&apos;]
+      test: ['CMD-SHELL', './venv/bin/python scripts/healthcheck.py']
       
 volumes:
   libretranslate_models:

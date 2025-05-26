@@ -52,8 +52,8 @@ Pyodide代码执行被配置为仅加载在scripts/prepare-pyodide.js中配置�
 import pandas as pd
 
 # 创建一个示例DataFrame
-data = {&apos;Name&apos;: [&apos;John&apos;, &apos;Anna&apos;, &apos;Peter&apos;], 
-        &apos;Age&apos;: [28, 24, 35]}
+data = {'Name': ['John', 'Anna', 'Peter'], 
+        'Age': [28, 24, 35]}
 df = pd.DataFrame(data)
 
 # 打印DataFrame

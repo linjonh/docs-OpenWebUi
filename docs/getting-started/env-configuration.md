@@ -138,7 +138,7 @@ Open WebUI 提供了大量环境变量，允许您自定义和配置应用程序
 #### `RESPONSE_WATERMARK`
 
 - 类型: `str`
-- 默认值: 空字符串 (&apos; &apos;)
+- 默认值: 空字符串 (' ')
 - 描述: 设置自定义文本，当从聊天中复制消息时会包含该文本。例如 `"This text is AI generated"` -> 这将在每条消息被复制时添加 "This text is AI generated"。
 - 持久性：此环境变量是一个 `PersistentConfig` 变量。
 
@@ -240,7 +240,7 @@ open-webui serve --port 9999
 在 `.env` 文件中设置此环境变量时，请确保通过用双引号括起整个值并对内部引号使用转义引号 (`\"`) 来进行转义。例如：
 
 ```
-WEBUI_BANNERS="[{\"id\": \"1\", \"type\": \"warning\", \"title\": \"您的消息将被存储。\", \"content\": \"您的消息将被存储并可能由人工审查。LLM&apos;s 容易出现幻觉，请核对来源。\", \"dismissible\": true, \"timestamp\": 1000}]"
+WEBUI_BANNERS="[{\"id\": \"1\", \"type\": \"warning\", \"title\": \"您的消息将被存储。\", \"content\": \"您的消息将被存储并可能由人工审查。LLM's 容易出现幻觉，请核对来源。\", \"dismissible\": true, \"timestamp\": 1000}]"
 ```
 
 :::
@@ -254,7 +254,7 @@ WEBUI_BANNERS="[{\"id\": \"1\", \"type\": \"warning\", \"title\": \"您的消息
 #### `EXTERNAL_PWA_MANIFEST_URL`
 
 - 类型: `str`
-- 默认值: 空字符串 (&apos; &apos;)，因为默认设置为 `None`。
+- 默认值: 空字符串 (' ')，因为默认设置为 `None`。
 - 描述: 当定义为完全合格的 URL（例如 https://path/to/manifest.webmanifest）时，发送到 /manifest.json 的请求将使用外部清单文件。如果未定义，将使用默认的 manifest.json 文件。
 
 #### `ENABLE_TITLE_GENERATION`
@@ -274,7 +274,7 @@ WEBUI_BANNERS="[{\"id\": \"1\", \"type\": \"warning\", \"title\": \"您的消息
 #### `SSL_ASSERT_FINGERPRINT`
 
 - 类型: `str`
-- 默认值: 空字符串（&apos; &apos;），因为默认设置为 `None`。
+- 默认值: 空字符串（' '），因为默认设置为 `None`。
 - 描述: 指定要使用的 SSL 指纹。
 - 持久性: 此环境变量是一个 `PersistentConfig` 变量。
 
@@ -299,7 +299,7 @@ WEBUI_BANNERS="[{\"id\": \"1\", \"type\": \"warning\", \"title\": \"您的消息
 :::info
 
 这是客户端等待响应的最大时间，超时将报错。
-如果设置为空字符串（&apos; &apos;），则超时时间将设置为 `None`，有效地禁用超时，
+如果设置为空字符串（' '），则超时时间将设置为 `None`，有效地禁用超时，
 允许客户端无限期等待。
 
 :::
@@ -549,7 +549,7 @@ JSON 响应的格式严格为:
 #### `CODE_EXECUTION_JUPYTER_TIMEOUT`
 
 - 类型：`str`
-- 默认值：空字符串（&apos; &apos;），因为默认值设置为 `None`。
+- 默认值：空字符串（' '），因为默认值设置为 `None`。
 - 描述：指定 Jupyter 代码执行的超时时间。
 - 持久性：此环境变量为 `PersistentConfig` 变量。
 
@@ -579,35 +579,35 @@ JSON 响应的格式严格为:
 #### `CODE_INTERPRETER_JUPYTER_URL`
 
 - 类型: `str`
-- 默认值: 空字符串 (&apos; &apos;)，因为默认值为 `None`。
+- 默认值: 空字符串 (' ')，因为默认值为 `None`。
 - 描述: 指定代码解释器使用的 Jupyter URL。
 - 持久性: 此环境变量是一个 `PersistentConfig` 变量。
 
 #### `CODE_INTERPRETER_JUPYTER_AUTH`
 
 - 类型: `str`
-- 默认值: 空字符串 (&apos; &apos;)，因为默认值为 `None`。
+- 默认值: 空字符串 (' ')，因为默认值为 `None`。
 - 描述: 指定代码解释器使用的 Jupyter 身份验证方法。
 - 持久性: 此环境变量是一个 `PersistentConfig` 变量。
 
 #### `CODE_INTERPRETER_JUPYTER_AUTH_TOKEN`
 
 - 类型: `str`
-- 默认值: 空字符串 (&apos; &apos;)，因为默认值为 `None`。
+- 默认值: 空字符串 (' ')，因为默认值为 `None`。
 - 描述: 指定代码解释器使用的 Jupyter 身份验证令牌。
 - 持久性: 此环境变量是一个 `PersistentConfig` 变量。
 
 #### `CODE_INTERPRETER_JUPYTER_AUTH_PASSWORD`
 
 - 类型: `str`
-- 默认值: 空字符串 (&apos; &apos;)，因为默认值为 `None`。
+- 默认值: 空字符串 (' ')，因为默认值为 `None`。
 - 描述: 指定代码解释器使用的 Jupyter 身份验证密码。
 - 持久性: 此环境变量是一个 `PersistentConfig` 变量。
 
 #### `CODE_INTERPRETER_JUPYTER_TIMEOUT`
 
 - 类型: `str`
-- 默认值: 空字符串 (&apos; &apos;)，因为默认值为 `None`。
+- 默认值: 空字符串 (' ')，因为默认值为 `None`。
 - 描述: 指定代码解释器的 Jupyter 超时时间。
 - 持久性: 此环境变量是一个 `PersistentConfig` 变量。
 
@@ -1029,7 +1029,7 @@ JSON 格式: { "tags": ["tag1", "tag2", "tag3"] }
 #### `ELASTICSEARCH_PASSWORD`
 
 - 类型：`str`
-- 默认值：空字符串（&apos; &apos;），因为默认设置为 `None`。
+- 默认值：空字符串（' '），因为默认设置为 `None`。
 - 描述：指定 Elasticsearch 的密码。
 - 持久性：此环境变量是一个 `PersistentConfig` 变量。
 
@@ -1043,7 +1043,7 @@ JSON 格式: { "tags": ["tag1", "tag2", "tag3"] }
 #### `ELASTICSEARCH_USERNAME`
 
 - 类型：`str`
-- 默认值：空字符串（&apos; &apos;），因为默认设置为 `None`。
+- 默认值：空字符串（' '），因为默认设置为 `None`。
 - 描述：指定 Elasticsearch 的用户名。
 - 持久性：此环境变量是一个 `PersistentConfig` 变量。
 
@@ -2600,7 +2600,7 @@ JSON 格式: { "tags": ["tag1", "tag2", "tag3"] }
 #### `OAUTH_CODE_CHALLENGE_METHOD`
 
 - 类型：`str`
-- 默认值：空字符串（&apos; &apos;），因为默认设置为`None`。
+- 默认值：空字符串（' '），因为默认设置为`None`。
 - 描述：指定OAuth身份验证的代码挑战方法。
 - 持久性：此环境变量是一个`PersistentConfig`变量。
 
@@ -2955,7 +2955,7 @@ JSON 格式: { "tags": ["tag1", "tag2", "tag3"] }
   - `s3` - 使用 S3 客户端库及相关环境变量，详见 [Amazon S3 存储](#amazon-s3-storage)
   - `gcs` - 使用 GCS 客户端库及相关环境变量，详见 [Google Cloud 存储](#google-cloud-storage)
   - `azure` - 使用 Azure 客户端库及相关环境变量，详见 [Microsoft Azure 存储](#microsoft-azure-storage)
-- 默认值: 空字符串 (&apos; &apos;)，默认为 `local`
+- 默认值: 空字符串 (' ')，默认为 `local`
 - 描述: 设置存储服务提供商。
 
 #### Amazon S3 存储
@@ -2969,7 +2969,7 @@ JSON 格式: { "tags": ["tag1", "tag2", "tag3"] }
 
 - 类型: `str`
 - 默认值: `None`
-- 描述: 指定 S3 存储的寻址方式（例如 &apos;path&apos; 或 &apos;virtual&apos;）。
+- 描述: 指定 S3 存储的寻址方式（例如 'path' 或 'virtual'）。
 
 #### `S3_BUCKET_NAME`
 
@@ -3210,7 +3210,7 @@ Open WebUI 使用以下环境变量：
 
 - 类型：`str`
 - 描述：列出不使用代理的域扩展（或 IP 地址），
-用逗号分隔。例如，将 no_proxy 设置为 &apos;.mit.edu&apos; 可确保在访问 MIT 的文档时绕过代理。
+用逗号分隔。例如，将 no_proxy 设置为 '.mit.edu' 可确保在访问 MIT 的文档时绕过代理。
 
 ### 安装所需的 Python 包
 

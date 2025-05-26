@@ -68,9 +68,9 @@ http {
     include       mime.types;
     default_type  application/octet-stream;
 
-    #log_format  main  &apos;$remote_addr - $remote_user [$time_local] "$request" &apos;
-    #                  &apos;$status $body_bytes_sent "$http_referer" &apos;
-    #                  &apos;"$http_user_agent" "$http_x_forwarded_for"&apos;;
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
 
     #access_log  logs/access.log  main;
 
@@ -85,7 +85,7 @@ http {
     # 处理WebSocket（流式）所需的设置
     map $http_upgrade $connection_upgrade {
         default upgrade;
-        &apos;&apos;      close;
+        ''      close;
     }
 
     # 将所有HTTP流量重定向到HTTPS

@@ -1,6 +1,6 @@
 ### Nginx代理管理器
 
-Nginx代理管理器（NPM）允许您轻松管理反向代理，并通过Let&apos;s Encrypt提供的有效SSL证书保护您的本地应用程序，例如Open WebUI。
+Nginx代理管理器（NPM）允许您轻松管理反向代理，并通过Let's Encrypt提供的有效SSL证书保护您的本地应用程序，例如Open WebUI。
 此设置启用了HTTPS访问，这对于许多移动浏览器因其安全性要求而使用语音输入功能是必要的，同时不直接将应用程序的特定端口暴露到互联网上。
 
 #### 前置条件
@@ -27,12 +27,12 @@ Nginx代理管理器（NPM）允许您轻松管理反向代理，并通过Let&ap
 ```yaml
 services:
   app:
-    image: &apos;jc21/nginx-proxy-manager:latest&apos;
+    image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped
     ports:
-      - &apos;80:80&apos;
-      - &apos;81:81&apos;
-      - &apos;443:443&apos;
+      - '80:80'
+      - '81:81'
+      - '443:443'
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
@@ -53,11 +53,11 @@ docker-compose up -d
 4. **设置SSL证书：**
 * 通过http://server_ip:81访问Nginx代理管理器。例如：``192.168.0.6:81``
 * 使用默认的凭据登录（admin@example.com / changeme）。按照提示更改它们。
-* 转到SSL证书 → 添加SSL证书 → Let&apos;s Encrypt。
+* 转到SSL证书 → 添加SSL证书 → Let's Encrypt。
 * 输入您的电子邮件和从DuckDNS获得的域名。一个域名包含星号，另一个不包含。例如：``*.hello.duckdns.org``和``hello.duckdns.org``。
 * 选择使用DNS挑战，选择DuckDNS，并粘贴您的API令牌。例如：
 ```dns_duckdns_token=f4e2a1b9-c78d-e593-b0d7-67f2e1c9a5b8```
-* 同意Let&apos;s Encrypt条款并保存。如果需要，请调整传播时间**（120秒）**。
+* 同意Let's Encrypt条款并保存。如果需要，请调整传播时间**（120秒）**。
 
 5. **创建代理主机：**
 * 对于每个服务（例如openwebui、nextcloud），转到主机 → 代理主机 → 添加代理主机。

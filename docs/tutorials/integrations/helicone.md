@@ -42,7 +42,7 @@ Helicone 是一个开源的 LLM 可观察性平台，帮助开发者监控、调
 
 ### 步骤 2：创建 OpenAI 帐户并生成 API 密钥
 
- 创建 OpenAI 帐户并登录 [OpenAI&apos;s Developer Portal](https://platform.openai.com/account/api-keys) 来生成 API 密钥。
+ 创建 OpenAI 帐户并登录 [OpenAI's Developer Portal](https://platform.openai.com/account/api-keys) 来生成 API 密钥。
 
 ### 步骤 3：使用 Helicone 的基础 URL 运行 Open WebUI 应用程序
 
@@ -78,4 +78,4 @@ Helicone 是一个开源的 LLM 可观察性平台，帮助开发者监控、调
 
 ## 了解更多
 
-要获取关于 Helicone 的全面指南，你可以访问 [Helicone&apos;s 的文档](https://docs.helicone.ai/getting-started/quick-start)。
+要获取关于 Helicone 的全面指南，你可以访问 [Helicone's 的文档](https://docs.helicone.ai/getting-started/quick-start)。

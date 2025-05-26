@@ -128,17 +128,17 @@ EXCLUDE_LIST=(
 # 构造 rclone 的排除参数
 EXCLUDE_ARGS=""
 for EXCLUDE in "${EXCLUDE_LIST[@]}"; do
-    EXCLUDE_ARGS="$EXCLUDE_ARGS --exclude &apos;$EXCLUDE&apos;"
+    EXCLUDE_ARGS="$EXCLUDE_ARGS --exclude '$EXCLUDE'"
 done
 
 # 定义带错误检查的 rclone 同步函数
 rclone_sync() {
     SOURCE="$1"
     DEST="$2"
-    echo "正在同步 &apos;$SOURCE&apos; 到 &apos;$DEST&apos;..."
+    echo "正在同步 '$SOURCE' 到 '$DEST'..."
     rclone sync "$SOURCE" "$DEST" $EXCLUDE_ARGS --progress --transfers=32 --checkers=16 --profile "$B2_PROFILE"
     if [ $? -ne 0 ]; then
-        echo "错误：rclone 同步失败，源 &apos;$SOURCE&apos; 到目标 &apos;$DEST&apos;"
+        echo "错误：rclone 同步失败，源 '$SOURCE' 到目标 '$DEST'"
         exit 1
     fi
 }

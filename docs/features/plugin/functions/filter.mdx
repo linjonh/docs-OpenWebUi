@@ -284,7 +284,7 @@ class Filter:
     def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
         context_message = {
             "role": "system", 
-            "content": "You&apos;re a software troubleshooting assistant."
+            "content": "You're a software troubleshooting assistant."
         }
         body.setdefault("messages", []).insert(0, context_message)
         return body
@@ -302,7 +302,7 @@ class Filter:
         # 为每个响应添加“高亮” markdown
         for message in body["messages"]:
             if message["role"] == "assistant":  # 目标为模型响应
-                message["content"] = f"**{message[&apos;content&apos;]}**"  # 使用 Markdown 高亮
+                message["content"] = f"**{message['content']}**"  # 使用 Markdown 高亮
         return body
 ```
 

@@ -11,9 +11,9 @@ title: "🔒 使用 HAProxy 实现 HTTPS"
 
 HAProxy（高可用代理）是一种专门的负载均衡和反向代理解决方案，具有高度可配置性，并设计用于以相对较低的资源开销处理大量连接。更多信息请访问：https://www.haproxy.org/
 
-## 安装 HAProxy 和 Let&apos;s Encrypt
+## 安装 HAProxy 和 Let's Encrypt
 
-首先，安装 HAProxy 和 Let&apos;s Encrypt 的 certbot：
+首先，安装 HAProxy 和 Let's Encrypt 的 certbot：
 ### Redhat 衍生系统
 ```sudo dnf install haproxy certbot openssl -y```
 ### Debian 衍生系统
@@ -33,7 +33,7 @@ global
     # 如果想将这些消息记录到 /var/log/haproxy.log，您需要：
     #
     # 1) 配置 syslog 以接受网络日志事件。通过向 /etc/sysconfig/syslog 中的
-    #    SYSLOGD_OPTIONS 添加 &apos;-r&apos; 选项实现
+    #    SYSLOGD_OPTIONS 添加 '-r' 选项实现
     #
     # 2) 配置 local2 事件将其写入 /var/log/haproxy.log 文件。
     #   可以在 /etc/sysconfig/syslog 中添加如下行：
@@ -52,7 +52,7 @@ global
 	#调整 dh-param 值，如果过低
     tune.ssl.default-dh-param 2048
 #---------------------------------------------------------------------
-# 所有 &apos;listen&apos; 和 &apos;backend&apos; 部分的通用默认值
+# 所有 'listen' 和 'backend' 部分的通用默认值
 #---------------------------------------------------------------------
 defaults
     mode                    http
@@ -79,7 +79,7 @@ frontend web
 	#SSL/TLS
 	bind 0.0.0.0:443 ssl crt /path/to/ssl/folder/
 
-    #Let&apos;s Encrypt SSL
+    #Let's Encrypt SSL
     acl letsencrypt-acl path_beg /.well-known/acme-challenge/
     use_backend letsencrypt-backend if letsencrypt-acl
 
@@ -89,7 +89,7 @@ frontend web
     acl chat-acl path_beg /owui/
     use_backend owui_chat if chat-acl
 
-#将 SSL 请求传递给 Let&apos;s Encrypt
+#将 SSL 请求传递给 Let's Encrypt
 backend letsencrypt-backend
     server letsencrypt 127.0.0.1:8688
     
@@ -103,17 +103,17 @@ backend owui_chat
     server chat <ip>:3000
 ```
 
-可以看到，我们为 Open WebUI 和 Let&apos;s Encrypt 配置了 ACL 记录（路由器）。要在 Open WebUI 中使用 WebSocket，您需要配置 SSL，最简单的方法是使用 Let&apos;s Encrypt。
+可以看到，我们为 Open WebUI 和 Let's Encrypt 配置了 ACL 记录（路由器）。要在 Open WebUI 中使用 WebSocket，您需要配置 SSL，最简单的方法是使用 Let's Encrypt。
 
 您可以选择使用子域名方法或者路径方法来将流量路由到 Open WebUI。子域名方法需要一个专用子域名（例如，chat.yourdomain.com），而路径方法允许您通过域名的特定路径访问 Open WebUI（例如，yourdomain.com/owui/）。请选择最适合您需求的方法并相应更新配置。
 
 :::info
-您需要将 80 和 443 端口暴露给您的 HAProxy 服务器。这些端口对于 Let&apos;s Encrypt 验证您的域名以及处理 HTTPS 流量是必需的。此外，您需要确保您的 DNS 记录已正确配置且指向您的 HAProxy 服务器。如果您在家中运行 HAProxy，则需要在路由器中使用端口转发，将 80 和 443 端口转发到您的 HAProxy 服务器。
+您需要将 80 和 443 端口暴露给您的 HAProxy 服务器。这些端口对于 Let's Encrypt 验证您的域名以及处理 HTTPS 流量是必需的。此外，您需要确保您的 DNS 记录已正确配置且指向您的 HAProxy 服务器。如果您在家中运行 HAProxy，则需要在路由器中使用端口转发，将 80 和 443 端口转发到您的 HAProxy 服务器。
 :::
 
-## 使用 Let&apos;s Encrypt 签发 SSL 证书
+## 使用 Let's Encrypt 签发 SSL 证书
 
-在启动 HAProxy 之前，您需要生成一个自签名证书，以便在 Let&apos;s Encrypt 签发正式证书之前使用。以下是如何生成自签名证书：
+在启动 HAProxy 之前，您需要生成一个自签名证书，以便在 Let's Encrypt 签发正式证书之前使用。以下是如何生成自签名证书：
 
 ```
 openssl req -x509 -newkey rsa:2048 -keyout /tmp/haproxy.key -out /tmp/haproxy.crt -days 3650 -nodes -subj "/CN=localhost"

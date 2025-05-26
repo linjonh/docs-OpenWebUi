@@ -121,7 +121,7 @@ import requests
 def verify_tika(file_path, tika_url):
     try:
         # 将文件发送到 Apache Tika 并验证输出
-        response = requests.put(tika_url, files={&apos;file&apos;: open(file_path, &apos;rb&apos;)})
+        response = requests.put(tika_url, files={'file': open(file_path, 'rb')})
 
         if response.status_code == 200:
             print("Apache Tika 成功分析了文件。")

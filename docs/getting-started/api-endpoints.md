@@ -32,7 +32,7 @@ title: "🔗 API 端点"
   curl -X POST http://localhost:3000/api/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d &apos;{
+  -d '{
         "model": "llama3.1",
         "messages": [
           {
@@ -40,7 +40,7 @@ title: "🔗 API 端点"
             "content": "为什么天空是蓝色的？"
           }
         ]
-      }&apos;
+      }'
   ```
   
 - **Python 示例**:
@@ -48,10 +48,10 @@ title: "🔗 API 端点"
   import requests
   
   def chat_with_model(token):
-      url = &apos;http://localhost:3000/api/chat/completions&apos;
+      url = 'http://localhost:3000/api/chat/completions'
       headers = {
-          &apos;Authorization&apos;: f&apos;Bearer {token}&apos;,
-          &apos;Content-Type&apos;: &apos;application/json&apos;
+          'Authorization': f'Bearer {token}',
+          'Content-Type': 'application/json'
       }
       data = {
         "model": "granite3.1-dense:8b",
@@ -76,10 +76,10 @@ title: "🔗 API 端点"
 #### 🔁 生成完成（流式）
 
 ```bash
-curl http://localhost:3000/ollama/api/generate -d &apos;{
+curl http://localhost:3000/ollama/api/generate -d '{
   "model": "llama3.2",
   "prompt": "为什么天空是蓝色的？"
-}&apos;
+}'
 ```
 
 #### 📦 列出可用模型
@@ -91,10 +91,10 @@ curl http://localhost:3000/ollama/api/tags
 #### 🧠 生成嵌入
 
 ```bash
-curl -X POST http://localhost:3000/ollama/api/embed -d &apos;{
+curl -X POST http://localhost:3000/ollama/api/embed -d '{
   "model": "llama3.2",
   "input": ["Open WebUI 很棒！", "让我们生成嵌入。"]
-}&apos;
+}'
 ```
 
 这非常适合使用 Ollama 模型在 Open WebUI 背后构建搜索索引、检索系统或自定义管道。
@@ -121,12 +121,12 @@ curl -X POST http://localhost:3000/ollama/api/embed -d &apos;{
   import requests
   
   def upload_file(token, file_path):
-      url = &apos;http://localhost:3000/api/v1/files/&apos;
+      url = 'http://localhost:3000/api/v1/files/'
       headers = {
-          &apos;Authorization&apos;: f&apos;Bearer {token}&apos;,
-          &apos;Accept&apos;: &apos;application/json&apos;
+          'Authorization': f'Bearer {token}',
+          'Accept': 'application/json'
       }
-      files = {&apos;file&apos;: open(file_path, &apos;rb&apos;)}
+      files = {'file': open(file_path, 'rb')}
       response = requests.post(url, headers=headers, files=files)
       return response.json()
   ```
@@ -142,7 +142,7 @@ curl -X POST http://localhost:3000/ollama/api/embed -d &apos;{
   curl -X POST http://localhost:3000/api/v1/knowledge/{knowledge_id}/file/add \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d &apos;{"file_id": "your-file-id-here"}&apos;
+  -d '{"file_id": "your-file-id-here"}'
   ```
 
 - **Python 示例**:
@@ -151,12 +151,12 @@ curl -X POST http://localhost:3000/ollama/api/embed -d &apos;{
   import requests
 
   def add_file_to_knowledge(token, knowledge_id, file_id):
-      url = f&apos;http://localhost:3000/api/v1/knowledge/{knowledge_id}/file/add&apos;
+      url = f'http://localhost:3000/api/v1/knowledge/{knowledge_id}/file/add'
       headers = {
-          &apos;Authorization&apos;: f&apos;Bearer {token}&apos;,
-          &apos;Content-Type&apos;: &apos;application/json&apos;
+          'Authorization': f'Bearer {token}',
+          'Content-Type': 'application/json'
       }
-      data = {&apos;file_id&apos;: file_id}
+      data = {'file_id': file_id}
       response = requests.post(url, headers=headers, json=data)
       return response.json()
   ```
@@ -176,7 +176,7 @@ curl -X POST http://localhost:3000/ollama/api/embed -d &apos;{
   curl -X POST http://localhost:3000/api/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d &apos;{
+  -d '{
         "model": "gpt-4-turbo",
         "messages": [
           {"role": "user", "content": "解释此文档中的概念。"}
@@ -184,7 +184,7 @@ curl -X POST http://localhost:3000/ollama/api/embed -d &apos;{
         "files": [
           {"type": "file", "id": "your-file-id-here"}
         ]
-      }&apos;
+      }'
   ```
 
 - **Python 示例**:
@@ -193,15 +193,15 @@ curl -X POST http://localhost:3000/ollama/api/embed -d &apos;{
   import requests
 
   def chat_with_file(token, model, query, file_id):
-      url = &apos;http://localhost:3000/api/chat/completions&apos;
+      url = 'http://localhost:3000/api/chat/completions'
       headers = {
-          &apos;Authorization&apos;: f&apos;Bearer {token}&apos;,
-          &apos;Content-Type&apos;: &apos;application/json&apos;
+          'Authorization': f'Bearer {token}',
+          'Content-Type': 'application/json'
       }
       payload = {
-          &apos;model&apos;: model,
-          &apos;messages&apos;: [{&apos;role&apos;: &apos;user&apos;, &apos;content&apos;: query}],
-          &apos;files&apos;: [{&apos;type&apos;: &apos;file&apos;, &apos;id&apos;: file_id}]
+          'model': model,
+          'messages': [{'role': 'user', 'content': query}],
+          'files': [{'type': 'file', 'id': file_id}]
       }
       response = requests.post(url, headers=headers, json=payload)
       return response.json()
@@ -218,7 +218,7 @@ curl -X POST http://localhost:3000/ollama/api/embed -d &apos;{
   curl -X POST http://localhost:3000/api/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d &apos;{
+  -d '{
         "model": "gpt-4-turbo",
         "messages": [
           {"role": "user", "content": "提供关于集合中涵盖的历史观点的见解。"}
@@ -226,7 +226,7 @@ curl -X POST http://localhost:3000/ollama/api/embed -d &apos;{
         "files": [
           {"type": "collection", "id": "your-collection-id-here"}
         ]
-      }&apos;
+      }'
   ```
 
 - **Python 示例**:
@@ -235,15 +235,15 @@ curl -X POST http://localhost:3000/ollama/api/embed -d &apos;{
   import requests
   
   def chat_with_collection(token, model, query, collection_id):
-      url = &apos;http://localhost:3000/api/chat/completions&apos;
+      url = 'http://localhost:3000/api/chat/completions'
       headers = {
-          &apos;Authorization&apos;: f&apos;Bearer {token}&apos;,
-          &apos;Content-Type&apos;: &apos;application/json&apos;
+          'Authorization': f'Bearer {token}',
+          'Content-Type': 'application/json'
       }
       payload = {
-          &apos;model&apos;: model,
-          &apos;messages&apos;: [{&apos;role&apos;: &apos;user&apos;, &apos;content&apos;: query}],
-          &apos;files&apos;: [{&apos;type&apos;: &apos;collection&apos;, &apos;id&apos;: collection_id}]
+          'model': model,
+          'messages': [{'role': 'user', 'content': query}],
+          'files': [{'type': 'collection', 'id': collection_id}]
       }
       response = requests.post(url, headers=headers, json=payload)
       return response.json()

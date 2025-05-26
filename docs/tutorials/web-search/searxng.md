@@ -41,7 +41,7 @@ cd searxng-docker
 # 默认监听 https://localhost
 # 如需更改：
 # * 取消注释 SEARXNG_HOSTNAME，并将 <host> 替换为 SearXNG 主机名
-# * 取消注释 LETSENCRYPT_EMAIL，并将 <email> 替换为您的电子邮件（需要创建 Let&apos;s Encrypt 证书）
+# * 取消注释 LETSENCRYPT_EMAIL，并将 <email> 替换为您的电子邮件（需要创建 Let's Encrypt 证书）
 
 SEARXNG_HOSTNAME=localhost:8080/
 # LETSENCRYPT_EMAIL=<email>
@@ -117,7 +117,7 @@ docker compose up -d ; sleep 10 ; docker compose down
 8. 在 `searxng-docker/searxng/settings.yml` 文件中添加 HTML 和 JSON 格式：
 
 ```bash
-sed -i &apos;s/formats: \[\"html\"\/]/formats: [\"html\", \"json\"]/&apos; searxng-docker/searxng/settings.yml
+sed -i 's/formats: \[\"html\"\/]/formats: [\"html\", \"json\"]/' searxng-docker/searxng/settings.yml
 ```
 
 为您的 SearXNG 实例生成一个秘密密钥：
@@ -132,19 +132,19 @@ Windows 用户可以使用以下 PowerShell 脚本生成秘密密钥：
 $randomBytes = New-Object byte[] 32
 (New-Object Security.Cryptography.RNGCryptoServiceProvider).GetBytes($randomBytes)
 $secretKey = -join ($randomBytes | ForEach-Object { "{0:x2}" -f $_ })
-(Get-Content searxng-docker/searxng/settings.yml) -replace &apos;ultrasecretkey&apos;, $secretKey | Set-Content searxng-docker/searxng/settings.yml
+(Get-Content searxng-docker/searxng/settings.yml) -replace 'ultrasecretkey', $secretKey | Set-Content searxng-docker/searxng/settings.yml
 ```
 
 在 `server` 部分更新端口号以匹配您之前设置的端口号（此例为 `8080`）：
 
 ```bash
-sed -i &apos;s/port: 8080/port: 8080/&apos; searxng-docker/searxng/settings.yml
+sed -i 's/port: 8080/port: 8080/' searxng-docker/searxng/settings.yml
 ```
 
 根据需要更改 `bind_address`：
 
 ```bash
-sed -i &apos;s/bind_address: "0.0.0.0"/bind_address: "127.0.0.1"/&apos; searxng-docker/searxng/settings.yml
+sed -i 's/bind_address: "0.0.0.0"/bind_address: "127.0.0.1"/' searxng-docker/searxng/settings.yml
 ```
 
 #### 配置文件

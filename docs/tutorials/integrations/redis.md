@@ -26,7 +26,7 @@ title: "🔗 Redis Websocket 支持"
 要设置支持 websocket 的 Redis，您需要创建一个 `docker-compose.yml` 文件，内容如下：
 
 ```yml
-version: &apos;3.9&apos;
+version: '3.9'
 services:
   redis:
     image: docker.io/valkey/valkey:8.0.1-alpine
@@ -35,7 +35,7 @@ services:
       - redis-data:/data
     command: "valkey-server --save 30 1"
     healthcheck:
-      test: "[ $$(valkey-cli ping) = &apos;PONG&apos; ]"
+      test: "[ $$(valkey-cli ping) = 'PONG' ]"
       start_period: 5s
       interval: 1s
       timeout: 3s
