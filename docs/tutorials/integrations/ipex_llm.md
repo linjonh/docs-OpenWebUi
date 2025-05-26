@@ -29,7 +29,7 @@ title: "🖥️ 使用 Intel GPU 和 IPEX-LLM 设置本地 LLM"
 
 ## 配置 Open WebUI
 
-通过菜单中的**设置 -> 连接**访问 Ollama 设置。默认情况下，**Ollama 基础 URL**预设为 https://localhost:11434，如下面的截图所示。要验证 Ollama 服务连接状态，请单击文本框旁的**刷新按钮**。如果 WebUI 无法与 Ollama 服务器建立连接，您将看到一条错误消息，提示`WebUI 无法连接到 Ollama`。
+通过菜单中的**设置 -> 连接**访问 Ollama 设置。默认情况下，**Ollama 基础 URL**预设为 `https://localhost:11434`，如下面的截图所示。要验证 Ollama 服务连接状态，请单击文本框旁的**刷新按钮**。如果 WebUI 无法与 Ollama 服务器建立连接，您将看到一条错误消息，提示`WebUI 无法连接到 Ollama`。
 
 ![Open WebUI Ollama 设置失败](https://llm-assets.readthedocs.io/en/latest/_images/open_webui_settings_0.png)
 

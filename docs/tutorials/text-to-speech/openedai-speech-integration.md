@@ -111,7 +111,7 @@ docker compose -f docker-compose.rocm.yml up -d
 docker compose -f docker-compose.min.yml up -d
 ```
 
-* **仅使用 CPU，无 GPU（仅支持 Piper）**: 使用一个包含仅 Piper 支持的最小化镜像（<1GB 而非 8GB）：
+* **仅使用 CPU，无 GPU（仅支持 Piper）**: 使用一个包含仅 Piper 支持的最小化镜像（`<1GB` 而非 `8GB`）：
 
 ```bash
 docker compose -f docker-compose.min.yml up -d
