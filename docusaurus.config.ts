@@ -19,15 +19,23 @@ const config: Config = {
 	organizationName: "open-webui", // Usually your GitHub org/user name.
 	projectName: "docs", // Usually your repo name.
 
-	onBrokenLinks: "throw",
+	onBrokenLinks: "warn",
 	onBrokenMarkdownLinks: "warn",
 
 	// Even if you don't use internationalization, you can use this field to set
 	// useful metadata like html lang. For example, if your site is Chinese, you
 	// may want to replace "en" with "zh-Hans".
 	i18n: {
-		defaultLocale: "en",
-		locales: ["en"],
+		defaultLocale: "zh-Hans",
+		locales: ["en", "zh-Hans"],
+		localeConfigs: {
+			en: {
+				label: 'English',
+			},
+			zh: {
+				label: '简体中文',
+			},
+		},
 	},
 
 	// Enable Mermaid for diagrams
@@ -96,6 +104,10 @@ const config: Config = {
 				//   label: "Blog",
 				//   position: "left",
 				// },
+				{//多语言选择项
+					type: 'localeDropdown',
+					position: 'right',
+				},
 				{
 					href: "https://github.com/open-webui/open-webui",
 					position: "right",
