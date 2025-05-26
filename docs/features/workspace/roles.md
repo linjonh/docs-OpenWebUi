@@ -1,64 +1,59 @@
 ---
 sidebar_position: 3
-title: "🔑 Roles"
+title: "🔑 角色"
 ---
 
-Open WebUI implements a structured role-based access control system with three primary user roles:
+Open WebUI 实现了一个结构化的基于角色的访问控制系统，具有三个主要用户角色：
 
-| **Role**      | **Description**                                   | **Default Creation**             |
+| **角色**       | **描述**                                          | **默认创建**                     |
 |---------------|---------------------------------------------------|----------------------------------|
-| Administrator | System administrator with full control            | First user account               |
-| Regular User  | Standard user with limited permissions            | Subsequent approved users        | 
-| Pending       | Unapproved user awaiting administrator activation | New registrations (configurable) |
+| 管理员        | 拥有完全控制权限的系统管理员                      | 第一个用户账户                  |
+| 普通用户      | 拥有有限权限的标准用户                            | 后续批准的用户                  |
+| 待审核        | 未批准的用户，等待管理员激活                      | 新注册（可配置）                |
 
-### Role Assignment
+### 角色分配
 
-* **First User:** The first account created on a new Open WebUI instance automatically receives Administrator
-  privileges.
-* **Subsequent Users:** New user registrations are assigned a default role based on the `DEFAULT_USER_ROLE`
-  configuration.
+* **首个用户：** 在新的 Open WebUI 实例中创建的第一个账户会自动获得管理员权限。
+* **后续用户：** 新用户注册会根据 `DEFAULT_USER_ROLE` 配置自动分配默认角色。
 
-The default role for new registrations can be configured using the `DEFAULT_USER_ROLE` environment variable:
+可以通过 `DEFAULT_USER_ROLE` 环境变量配置新注册用户的默认角色：
 
 ```.dotenv
-DEFAULT_USER_ROLE=pending  # Options: pending, user, admin
+DEFAULT_USER_ROLE=pending  # 可选值: pending, user, admin
 ```
 
-When set to "pending", new users must be manually approved by an administrator before gaining access to the system.
+当设置为 "pending" 时，新用户必须由管理员手动批准后才能访问系统。
 
-## User Groups
+## 用户组
 
-Groups allow administrators to
-* assign permissions to multiple users at once, simplifying access management
-* limit access to specific resources (Models, Tools, etc) by setting their access to "private" then opening access to 
-specific groups
-* Group access to a resource can be set as "read" or "write"
+用户组允许管理员：
+* 一次性为多个用户分配权限，简化权限管理
+* 通过将资源（模型、工具等）的访问权限设置为"私有"，然后向特定组开放访问权限，限制对特定资源的访问
+* 资源的组访问权限可设置为"只读"或"可写"
 
-### Group Structure
+### 组结构
 
-Each group in Open WebUI contains:
+Open WebUI 中的每个组包含：
 
-* A unique identifier
-* Name and description
-* Owner/creator reference
-* List of member user IDs
-* Permission configuration
-* Additional metadata
+* 唯一标识符
+* 名称和描述
+* 所有者/创作者引用
+* 成员用户 ID 列表
+* 权限配置
+* 其他元数据
 
-### Group Management
+### 组管理
 
-Groups can be:
+组可以：
 
-* **Created manually** by administrators through the user interface
-* **Synced automatically** from OAuth providers when `ENABLE_OAUTH_GROUP_MANAGEMENT` is enabled
-* **Created automatically** from OAuth claims when both `ENABLE_OAUTH_GROUP_MANAGEMENT` and`ENABLE_OAUTH_GROUP_CREATION`
-  are enabled
+* **由管理员通过用户界面手动创建**
+* **在启用 `ENABLE_OAUTH_GROUP_MANAGEMENT` 时自动从 OAuth 提供方同步**
+* **在同时启用 `ENABLE_OAUTH_GROUP_MANAGEMENT` 和 `ENABLE_OAUTH_GROUP_CREATION` 时根据 OAuth 声明自动创建**
 
-### OAuth Group Integration
+### OAuth 组集成
 
-When OAuth group management is enabled, user group memberships are synchronized with groups received in OAuth claims:
+启用 OAuth 组管理时，用户组成员资格会与 OAuth 声明中的组同步：
 
-* Users are added to Open WebUI groups that match their OAuth claims
-* Users are removed from groups not present in their OAuth claims
-* With `ENABLE_OAUTH_GROUP_CREATION` enabled, groups from OAuth claims that don't exist in Open WebUI are automatically
-  created
+* 用户会被添加到与其 OAuth 声明匹配的 Open WebUI 组中
+* 用户会从其 OAuth 声明中未包含的组中移除
+* 在启用 `ENABLE_OAUTH_GROUP_CREATION` 时，OAuth 声明中存在但 Open WebUI 中不存在的组会被自动创建

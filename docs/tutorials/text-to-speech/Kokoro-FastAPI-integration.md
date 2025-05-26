@@ -1,26 +1,26 @@
 ---
 sidebar_position: 2
-title: "🗨️ Kokoro-FastAPI Using Docker"
+title: "🗨️ 使用 Docker 的 Kokoro-FastAPI"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程是社区贡献内容，并未得到 Open WebUI 团队的支持。它仅作为如何根据你的具体用例自定义 Open WebUI 的演示。如果想贡献，请查看贡献教程。
 :::
 
-## What is `Kokoro-FastAPI`?
+## 什么是 `Kokoro-FastAPI`?
 
-[Kokoro-FastAPI](https://github.com/remsky/Kokoro-FastAPI) is a dockerized FastAPI wrapper for the [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) text-to-speech model that implements the OpenAI API endpoint specification. It offers high-performance text-to-speech with impressive generation speeds.
+[Kokoro-FastAPI](https://github.com/remsky/Kokoro-FastAPI) 是一个 Docker 化的 FastAPI 封装，它实现了 OpenAI API 端点规范，用于 [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) 文本到语音模型。它提供高性能的文本到语音转换，具有令人印象深刻的生成速度。
 
-## Key Features
+## 主要特点
 
-- OpenAI-compatible Speech endpoint with inline voice combination
-- NVIDIA GPU accelerated or CPU Onnx inference
-- Streaming support with variable chunking
-- Multiple audio format support (`.mp3`, `.wav`, `.opus`, `.flac`, `.aac`, `.pcm`)
-- Integrated web interface on localhost:8880/web (or additional container in repo for gradio)
-- Phoneme endpoints for conversion and generation
+- 兼容 OpenAI 的语音端点，支持内联语音组合
+- NVIDIA GPU 加速或基于 CPU 的 Onnx 推理
+- 支持流媒体，具有可变分块功能
+- 支持多种音频格式（`.mp3`, `.wav`, `.opus`, `.flac`, `.aac`, `.pcm`）
+- 集成的 Web 界面，可在 localhost:8880/web 访问（或通过仓库中额外的容器访问 gradio）
+- 支持转换和生成的音素端点
 
-## Voices
+## 语音
 
 - af
 - af_bella
@@ -36,31 +36,31 @@ This tutorial is a community contribution and is not supported by the Open WebUI
 - bm_george
 - bm_lewis
 
-## Languages
+## 语言
 
 - en_us
 - en_uk
 
-## Requirements
+## 系统需求
 
-- Docker installed on your system
-- Open WebUI running
-- For GPU support: NVIDIA GPU with CUDA 12.3
-- For CPU-only: No special requirements
+- 在系统上安装 Docker
+- 运行 Open WebUI
+- GPU 支持：具有 CUDA 12.3 的 NVIDIA GPU
+- 仅使用 CPU：无特殊要求
 
-## ⚡️ Quick start
+## ⚡️ 快速开始
 
-### You can choose between GPU or CPU versions
+### 你可以选择 GPU 或 CPU 版本
 
-### GPU Version (Requires NVIDIA GPU with CUDA 12.8)
+### GPU 版本（需要具有 CUDA 12.8 的 NVIDIA GPU）
 
-Using docker run:
+使用 docker run:
 
 ```bash
 docker run --gpus all -p 8880:8880 ghcr.io/remsky/kokoro-fastapi-gpu
 ```
 
-Or docker compose, by creating a `docker-compose.yml` file and running `docker compose up`. For example:
+或者使用 docker compose，通过创建一个 `docker-compose.yml` 文件并运行 `docker compose up`。例如：
 
 ```yaml
 name: kokoro
@@ -81,18 +81,18 @@ services:
 ```
 
 :::info
-You may need to install and configure [the NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+你可能需要安装和配置 [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 :::
 
-### CPU Version (ONNX optimized inference)
+### CPU 版本（ONNX 优化推理）
 
-With docker run:
+使用 docker run:
 
 ```bash
 docker run -p 8880:8880 ghcr.io/remsky/kokoro-fastapi-cpu
 ```
 
-With docker compose:
+使用 docker compose:
 
 ```yaml
 name: kokoro
@@ -104,31 +104,31 @@ services:
         restart: always
 ```
 
-## Setting up Open WebUI to use `Kokoro-FastAPI`
+## 设置 Open WebUI 使用 `Kokoro-FastAPI`
 
-To use Kokoro-FastAPI with Open WebUI, follow these steps:
+要让 Open WebUI 使用 Kokoro-FastAPI，请按照以下步骤操作：
 
-- Open the Admin Panel and go to `Settings` -> `Audio`
-- Set your TTS Settings to match the following:
-- - Text-to-Speech Engine: OpenAI
-  - API Base URL: `http://localhost:8880/v1` # you may need to use `host.docker.internal` instead of `localhost`
-  - API Key: `not-needed`
-  - TTS Model: `kokoro`
-  - TTS Voice: `af_bella` # also accepts mapping of existing OAI voices for compatibility
+- 打开管理面板，进入 `Settings` -> `Audio`
+- 将文字到语音设置配置为如下内容：
+- - 文本到语音引擎：OpenAI
+  - API 基础 URL：`http://localhost:8880/v1` # 你可能需要使用 `host.docker.internal` 替代 `localhost`
+  - API 密钥：`not-needed`
+  - 文本到语音模型：`kokoro`
+  - 文本到语音语音：`af_bella` # 也接受现有 OAI 语音的映射以实现兼容性
 
 :::info
-The default API key is the string `not-needed`. You do not have to change that value if you do not need the added security.
+默认的 API 密钥是字符串 `not-needed`。如果不需要额外的安全性，你不必更改该值。
 :::
 
-## Building the Docker Container
+## 构建 Docker 容器
 
 ```bash
 git clone https://github.com/remsky/Kokoro-FastAPI.git
 cd Kokoro-FastAPI
-cd docker/cpu # or docker/gpu
+cd docker/cpu # 或 docker/gpu
 docker compose up --build
 ```
 
-**That's it!**
+**就是这样！**
 
-For more information on building the Docker container, including changing ports, please refer to the [Kokoro-FastAPI](https://github.com/remsky/Kokoro-FastAPI) repository
+有关构建 Docker 容器的更多信息，包括更改端口，请参阅 [Kokoro-FastAPI](https://github.com/remsky/Kokoro-FastAPI) 仓库

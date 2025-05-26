@@ -1,24 +1,24 @@
-### Nginx Proxy Manager
+### Nginx代理管理器
 
-Nginx Proxy Manager (NPM) allows you to easily manage reverse proxies and secure your local applications, like Open WebUI, with valid SSL certificates from Let's Encrypt. 
-This setup enables HTTPS access, which is necessary for using voice input features on many mobile browsers due to their security requirements, without exposing the application's specific port directly to the internet.
+Nginx代理管理器（NPM）允许您轻松管理反向代理，并通过Let&apos;s Encrypt提供的有效SSL证书保护您的本地应用程序，例如Open WebUI。
+此设置启用了HTTPS访问，这对于许多移动浏览器因其安全性要求而使用语音输入功能是必要的，同时不直接将应用程序的特定端口暴露到互联网上。
 
-#### Prerequisites
+#### 前置条件
 
-- A home server running Docker and open-webui container running.
-- A domain name (free options like DuckDNS or paid ones like Namecheap/GoDaddy).
-- Basic knowledge of Docker and DNS configuration.
+- 一台运行Docker的家庭服务器和运行中的open-webui容器。
+- 一个域名（例如免费的DuckDNS或付费的Namecheap/GoDaddy）。
+- 基本的Docker和DNS配置知识。
 
-#### Steps
+#### 步骤
 
-1. **Create Directories for Nginx Files:**
+1. **为Nginx文件创建目录：**
 
     ```bash
     mkdir ~/nginx_config
     cd ~/nginx_config
     ```
 
-2. **Set Up Nginx Proxy Manager with Docker:**
+2. **使用Docker设置Nginx代理管理器：**
 
     ```bash
     nano docker-compose.yml
@@ -27,50 +27,50 @@ This setup enables HTTPS access, which is necessary for using voice input featur
 ```yaml
 services:
   app:
-    image: 'jc21/nginx-proxy-manager:latest'
+    image: &apos;jc21/nginx-proxy-manager:latest&apos;
     restart: unless-stopped
     ports:
-      - '80:80'
-      - '81:81'
-      - '443:443'
+      - &apos;80:80&apos;
+      - &apos;81:81&apos;
+      - &apos;443:443&apos;
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
 ```
 
-Run the container:
+运行容器：
 ```bash
 docker-compose up -d
 ```
-3. **Configure DNS and Domain:**
+3. **配置DNS和域名：**
 
-    * Log in to your domain provider (e.g., DuckDNS) and create a domain. 
-    * Point the domain to your proxy’s local IP (e.g., 192.168.0.6).
-    * If using DuckDNS, get an API token from their dashboard.
+    * 登录到您的域名提供商（例如DuckDNS）并创建一个域名。
+    * 将域名指向您的代理的本地IP（例如：192.168.0.6）。
+    * 如果使用DuckDNS，从他们的仪表盘获取一个API令牌。
 
-###### Here is a simple example how it's done in https://www.duckdns.org/domains :
+###### 以下是一个简单的示例，展示了在https://www.duckdns.org/domains上的操作：
     
-4. **Set Up SSL Certificates:**
-* Access Nginx Proxy Manager at http://server_ip:81. For example: ``192.168.0.6:81``
-* Log in with the default credentials (admin@example.com / changeme). Change them as asked.
-* Go to SSL Certificates → Add SSL Certificate → Let's Encrypt.
-* Write your email and domain name you got from DuckDNS. One domain name contains an asterisk and another does not. Example: ``*.hello.duckdns.org`` and ``hello.duckdns.org``.
-* Select Use a DNS challenge, choose DuckDNS, and paste your API token. example: 
+4. **设置SSL证书：**
+* 通过http://server_ip:81访问Nginx代理管理器。例如：``192.168.0.6:81``
+* 使用默认的凭据登录（admin@example.com / changeme）。按照提示更改它们。
+* 转到SSL证书 → 添加SSL证书 → Let&apos;s Encrypt。
+* 输入您的电子邮件和从DuckDNS获得的域名。一个域名包含星号，另一个不包含。例如：``*.hello.duckdns.org``和``hello.duckdns.org``。
+* 选择使用DNS挑战，选择DuckDNS，并粘贴您的API令牌。例如：
 ```dns_duckdns_token=f4e2a1b9-c78d-e593-b0d7-67f2e1c9a5b8```
-* Agree to Let’s Encrypt terms and save. Change propagation time **if needed** (120 seconds).
+* 同意Let&apos;s Encrypt条款并保存。如果需要，请调整传播时间**（120秒）**。
 
-5. **Create Proxy Hosts:**
-* For each service (e.g., openwebui, nextcloud), go to Hosts → Proxy Hosts → Add Proxy Host.
-* Fill in the domain name (e.g., openwebui.hello.duckdns.org).
-* Set the scheme to HTTP (default), enable ``Websockets support`` and point to your Docker IP (if docker with open-webui is running on the same computer as NGINX manager, this will be the same IP as earlier (example: ``192.168.0.6``) 
-* Select the SSL certificate generated earlier, force SSL, and enable HTTP/2.
-6. **Add your url to open-webui (otherwise getting HTTPS error):**
+5. **创建代理主机：**
+* 对于每个服务（例如openwebui、nextcloud），转到主机 → 代理主机 → 添加代理主机。
+* 填写域名（例如：openwebui.hello.duckdns.org）。
+* 将方案设置为HTTP（默认），启用``Websockets支持``并指向您的Docker IP（如果open-webui的Docker运行在与NGINX管理器相同的计算机上，这将是之前的相同IP，例如：``192.168.0.6``）。
+* 选择之前生成的SSL证书，强制SSL，并启用HTTP/2。
+6. **添加您的URL到open-webui（否则会遇到HTTPS错误）：**
 
-* Go to your open-webui → Admin Panel → Settings → General
-* In the **Webhook URL** text field, enter your URL through which you will connect to your open-webui via Nginx reverse proxy. Example: ``hello.duckdns.org`` (not essential with this one) or ``openwebui.hello.duckdns.org`` (essential with this one).
+* 转到您的open-webui → 管理面板 → 设置 → 通用
+* 在**Webhook URL**文本字段中，输入您通过Nginx反向代理连接到open-webui的URL。例如：``hello.duckdns.org``（对于此例非必需）或``openwebui.hello.duckdns.org``（对于此例必需）。
 
-#### Access the WebUI:
+#### 访问WebUI：
 
-Access Open WebUI via HTTPS at either ``hello.duckdns.org`` or ``openwebui.hello.duckdns.org`` (in whatever way you set it up).
+通过HTTPS访问Open WebUI：``hello.duckdns.org``或``openwebui.hello.duckdns.org``（根据您的设置方式）。
 
-###### Firewall Note: Be aware that local firewall software (like Portmaster) might block internal Docker network traffic or required ports. If you experience issues, check your firewall rules to ensure necessary communication for this setup is allowed.
+###### 防火墙注意事项：注意，本地防火墙软件（例如Portmaster）可能会阻止内部Docker网络流量或所需端口。如果发生问题，请检查防火墙规则以确保允许此设置所需的通信。

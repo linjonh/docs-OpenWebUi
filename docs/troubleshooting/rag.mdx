@@ -1,121 +1,121 @@
 ---
 sidebar_position: 3
-title: "🧠 Troubleshooting RAG (Retrieval-Augmented Generation)"
+title: "🧠 疑难排解 RAG（检索增强生成）"
 ---
 
-Retrieval-Augmented Generation (RAG) enables language models to reason over external content—documents, knowledge bases, and more—by retrieving relevant info and feeding it into the model. But when things don’t work as expected (e.g., the model "hallucinates" or misses relevant info), it's often not the model's fault—it's a context issue.
+检索增强生成（RAG）通过检索相关信息并将其输入到模型中，使语言模型能够基于外部内容（例如文档、知识库等）进行推理。但当事情不如预期（例如模型“幻觉”或遗漏相关信息）时，往往不是模型的问题，而是上下文的问题。
 
-Let’s break down the common causes and solutions so you can supercharge your RAG accuracy! 🚀
+让我们详细探讨常见原因和解决方案，以提高您的 RAG 准确度！🚀
 
-## Common RAG Issues and How to Fix Them 🛠️
+## 常见的 RAG 问题及解决方法 🛠️
 
-### 1. The Model "Can’t See" Your Content 👁️❌
+### 1. 模型“看不到”您的内容 👁️❌
 
-This is the most common problem—and it's typically caused by issues during your content ingestion process. The model doesn’t hallucinate because it’s wrong, it hallucinates because it was never given the right content in the first place.
+这是最常见的问题，并且通常由内容摄取过程中出现的问题引起。模型并不是因为错误而“幻觉”，而是因为它根本没有被传递正确的内容。
 
-✅ Solution: Check your content extraction settings
+✅ 解决方案：检查您的内容提取设置
 
-- Navigate to: **Admin Settings > Documents**.
-- Make sure you're using a robust content extraction engine such as:
+- 路径： **管理员设置 > 文档**。
+- 确保您使用了强大的内容提取引擎，例如：
   - Apache Tika
   - Docling
-  - Custom extractors (depending on your document types)
+  - 根据文档类型使用自定义提取器
 
-📌 Tip: Try uploading a document and preview the extracted content. If it’s blank or missing key sections, you need to adjust your extractor settings or use a different engine.
-
----
-
-### 2. Only a Small Part of the Document is Being Used 📄➡️✂️
-
-Open WebUI is designed to work with models that have limited context windows by default. For instance, many local models (e.g. Ollama's default models) are limited to 2048 tokens. Because of this, Open WebUI aggressively trims down the retrieved content to fit within the assumed available space.
-
-✅ Solutions:
-
-- Go to **Admin Settings > Documents**
-- Either:
-  - 💡 Enable “Bypass Embedding and Retrieval” — This sends full content directly without applying strict retrieval filters.
-  - 🔍 Toggle on “Full Context Mode” — This injects more comprehensive content into the model prompt.
-
-📌 Warning: Be mindful of context limits—if your model can’t handle more tokens, it will still get cut off.
+📌 提示：尝试上传一个文档并预览提取的内容。如果内容为空或缺少关键部分，您需要调整提取器设置或使用不同的引擎。
 
 ---
 
-### 3. Token Limit is Too Short ⏳
+### 2. 只有文档的一小部分被使用 📄➡️✂️
 
-Even if retrieval works, your model might still not process all the content it receives—because it simply can’t.
+Open WebUI 设计为默认与具有有限上下文窗口的模型配合使用。例如，许多本地模型（如 Ollama 的默认模型）仅限于 2048 个标记。因此，Open WebUI 会积极地压缩检索到的内容以适应假定的可用空间。
 
-By default, many models (especially Ollama-hosted LLMs) are limited to a 2048-token context window. That means only a fraction of your retrieved data will actually be used.
+✅ 解决方案：
 
-✅ Solutions:
+- 进入 **管理员设置 > 文档**
+- 以下两种选择：
+  - 💡 启用“跳过嵌入和检索”——这会直接发送完整内容，而不进行严格的检索过滤。
+  - 🔍 开启“完整上下文模式”——这会将更全面的内容注入到模型提示中。
 
-- 🛠️ Extend the model’s context length:
-  - Navigate to the **Model Editor or Chat Controls**
-  - Modify the context length (e.g., increase to 8192+ tokens if supported)
-
-ℹ️ Note: The 2048-token default is a big limiter. For better RAG results, we recommend using models that support longer contexts.
-
-✅ Alternative: Use an external LLM with larger context capacity
-
-- Try GPT-4, GPT-4o, Claude 3, Gemini 1.5, or Mixtral with 8k+ context
-- Compare performance to Ollama—notice the accuracy difference when more content can be injected!
-
-📌 Tip: Stick with external models for better RAG performance in production use cases.
+📌 警告：注意上下文限制——如果您的模型无法处理更多标记，它仍然会被截断。
 
 ---
 
-### 4. Embedding Model is Low-Quality or Mismatched 📉🧠
+### 3. 标记限制过短 ⏳
 
-Bad embeddings = bad retrieval. If the vector representation of your content is poor, the retriever won't pull the right content—no matter how powerful your LLM is.
+即使检索有效，您的模型可能仍无法处理接收到的所有内容——因为它能力有限。
 
-✅ Solution:
+默认情况下，许多模型（尤其是 Ollama 托管的 LLMs）被限制为 2048 标记的上下文窗口。这意味着检索的数据只有一小部分会被实际使用。
 
-- Change to a high-quality embedding model (e.g., all-MiniLM-L6-v2, Instructor X, or OpenAI embeddings)
-- Go to: **Admin Settings > Documents**
-- After changing the model, be sure to:
-  - ⏳ Reindex all existing documents so the new embeddings take effect.
+✅ 解决方案：
 
-📌 Remember: Embedding quality directly affects what content is retrieved.
+- 🛠️ 扩展模型的上下文长度：
+  - 进入 **模型编辑器或聊天控制**
+  - 修改上下文长度（例如，如果支持，可以增加到 8192+ 标记）
 
----
+ℹ️ 注意：默认的 2048 标记是很大的限制。为了更好的 RAG 结果，我们建议使用支持更长上下文的模型。
 
-### 5. ❌ 400: 'NoneType' object has no attribute 'encode'
+✅ 替代方案：使用具有更大上下文容量的外部 LLM
 
-This error indicates a misconfigured or missing embedding model. When Open WebUI tries to create embeddings but doesn’t have a valid model loaded, it can’t process the text—and the result is this cryptic error.
+- 尝试 GPT-4、GPT-4o、Claude 3、Gemini 1.5 或 Mixtral，支持 8k+ 上下文
+- 将性能与 Ollama 对比——注意可注入更多内容后的准确性差异！
 
-💥 Cause:
-- Your embedding model isn’t set up properly.
-- It might not have downloaded completely.
-- Or if you're using an external embedding model, it may not be accessible.
-
-✅ Solution:
-
-- Go to: **Admin Settings > Documents > Embedding Model**
-- Save the embedding model again—even if it's already selected. This forces a recheck/download.
-- If you're using a remote/external embedding tool, make sure it's running and accessible to Open WebUI.
-
-📌 Tip: After fixing the configuration, try re-embedding a document and verify no error is shown in the logs.
+📌 提示：在生产场景中，与外部模型保持一致以获得更好的 RAG 性能。
 
 ---
 
-## 🧪 Pro Tip: Test with GPT-4o or GPT-4
+### 4. 嵌入模型质量低或不匹配 📉🧠
 
-If you’re not sure whether the issue is with retrieval, token limits, or embedding—try using GPT-4o temporarily (e.g., via OpenAI API). If the results suddenly become more accurate, it's a strong signal that your local model’s context limit (2048 by default in Ollama) is the bottleneck.
+糟糕的嵌入 = 糟糕的检索。如果您的内容的向量表示质量较差，检索器无论多么强大都无法提取正确的内容。
 
-- GPT-4o handles larger inputs (128k tokens!)
-- Provides a great benchmark to evaluate your system's RAG reliability
+✅ 解决方案：
+
+- 更换为高质量嵌入模型（例如 all-MiniLM-L6-v2、Instructor X 或 OpenAI 嵌入）
+- 路径： **管理员设置 > 文档**
+- 更换模型后，请务必：
+  - ⏳ 重新索引所有现有文档，使新的嵌入生效。
+
+📌 记住：嵌入质量直接影响检索的内容。
 
 ---
 
-## Summary Checklist ✅
+### 5. ❌ 400：&apos;NoneType&apos;对象没有&apos;encode&apos;属性
 
-| Problem | Fix |
+此错误表示嵌入模型配置错误或缺失。当 Open WebUI 尝试创建嵌入但没有加载有效的模型时，它无法处理文本，会产生这个难以理解的错误。
+
+💥 原因：
+- 您的嵌入模型未正确设置。
+- 可能没有完全下载完成。
+- 如果您使用的是外部嵌入模型，它可能不可访问。
+
+✅ 解决方案：
+
+- 路径： **管理员设置 > 文档 > 嵌入模型**
+- 再次保存嵌入模型——即使它已经被选中。这会强制重新检查/下载。
+- 如果您使用的是远程/外部嵌入工具，请确保它正在运行并且可被 Open WebUI 访问。
+
+📌 提示：修复配置后，尝试重新嵌入一个文档并确认日志中没有错误显示。
+
+---
+
+## 🧪 专业提示：使用 GPT-4o 或 GPT-4 进行测试
+
+如果您不确定问题是否出在检索、标记限制或嵌入——可以临时使用 GPT-4o（例如，通过 OpenAI API）。如果结果突然变得更准确，这意味着本地模型上下文限制（默认在 Ollama 中是 2048）是瓶颈。
+
+- GPT-4o 处理更大的输入（128k 标记！）
+- 提供评估系统 RAG 可靠性的良好基准
+
+---
+
+## 总结清单 ✅
+
+| 问题 | 修复 |
 |--------|------|
-| 🤔 Model can’t “see” content | Check document extractor settings |
-| 🧹 Only part of content used | Enable Full Context Mode or Bypass Embedding |
-| ⏱ Limited by 2048 token cap | Increase model context length or use large-context LLM |
-| 📉 Inaccurate retrieval | Switch to a better embedding model, then reindex |
-| Still confused? | Test with GPT-4o and compare outputs |
+| 🤔 模型无法“看到”内容 | 检查文档提取器设置 |
+| 🧹 仅使用了部分内容 | 启用全上下文模式或绕过嵌入 |
+| ⏱ 被2048令牌限制 | 增加模型上下文长度或使用大上下文LLM |
+| 📉 检索不准确 | 切换到更好的嵌入模型，然后重新索引 |
+| 仍然感到困惑？ | 用GPT-4o进行测试并比较输出 |
 
 ---
 
-By optimizing these areas—extraction, embedding, retrieval, and model context—you can dramatically improve how accurately your LLM works with your documents. Don’t let a 2048-token window or weak retrieval pipeline hold back your AI’s power 🎯.
+通过优化这些领域——提取、嵌入、检索和模型上下文——您可以显著提升LLM处理文档的准确性。不要让2048令牌的窗口限制或弱检索管道阻碍您的AI能力 🎯。

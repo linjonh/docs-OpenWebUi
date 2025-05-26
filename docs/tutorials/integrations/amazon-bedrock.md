@@ -1,70 +1,70 @@
 ---
 sidebar_position: 31
-title: "🛌 Integrate with Amazon Bedrock"
+title: "🛌 与 Amazon Bedrock 集成"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程是社区贡献的内容，不受 Open WebUI 团队支持。它仅作为如何为您的特定用例自定义 Open WebUI 的示例。想要贡献？请查看贡献教程。
 :::
 
 ---
 
-# Integrating Open-WebUI with Amazon Bedrock
+# 将 Open-WebUI 与 Amazon Bedrock 集成
 
-In this tutorial, we'll explore one of the most common and popular approaches to integrate Open-WebUI with Amazon Bedrock.
+在本教程中，我们将探索将 Open-WebUI 与 Amazon Bedrock 集成的最常见和最流行的方法之一。
 
-## Prerequisites
-
-
-In order to follow this tutorial, you must have the following:
-
-- An active AWS account
-- An active AWS Access Key and Secret Key
-- IAM permissions in AWS to enable Bedrock models or already enabled models
-- Docker installed on your system
+## 前置条件
 
 
-## What is Amazon Bedrock
+为了跟随本教程，您需要以下条件：
 
-Direct from AWS' website:
-
-"Amazon Bedrock is a fully managed service that offers a choice of high-performing foundation models (FMs) from leading AI companies like AI21 Labs, Anthropic, Cohere, Luma, Meta, Mistral AI, poolside (coming soon), Stability AI, and Amazon through a single API, along with a broad set of capabilities you need to build generative AI applications with security, privacy, and responsible AI. Using Amazon Bedrock, you can easily experiment with and evaluate top FMs for your use case, privately customize them with your data using techniques such as fine-tuning and Retrieval Augmented Generation (RAG), and build agents that execute tasks using your enterprise systems and data sources. Since Amazon Bedrock is serverless, you don't have to manage any infrastructure, and you can securely integrate and deploy generative AI capabilities into your applications using the AWS services you are already familiar with."
-
-To learn more about Bedrock, visit: [Amazon Bedrock's Official Page](https://aws.amazon.com/bedrock/)
-
-# Integration Steps
-
-## Step 1: Verify access to Amazon Bedrock Base Models
-
-Before we can integrate with Bedrock, you first have to verify that you have access to at least one, but preferably many, of the available Base Models. At the time of this writing (Feb 2025), there were 47 base models available. You can see in the screenshot below that I have access to multiple models. You'll know if you have access to a model if it says "✅ Access Granted" next to the model. If you don't have access to any models, you will get an error on the next step.
-
-AWS provides good documentation for request accessing / enabling these models here: [Amazon Bedrock's Model Access Docs](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access-modify.html)
-
-![Amazon Bedrock Base Models](/images/tutorials/amazon-bedrock/amazon-bedrock-base-models.png)
+- 一个有效的 AWS 账户
+- 一个有效的 AWS 访问密钥和秘密密钥
+- 在 AWS 中启用 Bedrock 模型的 IAM 权限或已启用的模型
+- 在您的系统上安装了 Docker
 
 
-## Step 2: Configure the Bedrock Access Gateway
+## 什么是 Amazon Bedrock
 
-Now that we have access to at least one Bedrock base model, we need to configure the Bedrock Access Gateway, or BAG. You can think of the BAG as kind of proxy or middleware developed by AWS that wraps around AWS native endpoints/SDK for Bedrock and, in turn, exposes endpoints that are compatible with OpenAI's schema, which is what Open-WebUI requires.
+直接引自 AWS 官网：
 
-For reference, here is a simple mapping between the endpoints:
+“Amazon Bedrock 是一项完全托管的服务，通过单一 API 提供来自领先 AI 公司（例如 AI21 Labs、Anthropic、Cohere、Luma、Meta、Mistral AI、poolside（即将推出）、Stability AI 和 Amazon）的高性能基础模型（FMs）的选择，以及构建具有安全、隐私和负责任 AI 的生成式 AI 应用程序所需的广泛功能。通过使用 Amazon Bedrock，您可以轻松地根据您的使用场景试验和评估顶级 FMs，使用微调和检索增强生成（RAG）等技术使用您的数据进行私有化定制，并构建使用企业系统和数据源执行任务的代理。由于 Amazon Bedrock 是无服务器的，您不需要管理任何基础设施，可以安全地将生成式 AI 功能集成和部署到您已经熟悉的 AWS 服务中。”
+
+了解更多有关 Bedrock 的信息，请访问：[Amazon Bedrock 官方页面](https://aws.amazon.com/bedrock/)
+
+# 集成步骤
+
+## 第一步：验证对 Amazon Bedrock 基础模型的访问
+
+在我们可以与 Bedrock 集成之前，您首先需要验证是否至少有一个（最好多个）可用的基础模型的访问权限。截至编写本文（2025 年 2 月）时，有 47 个基础模型可供选择。您可以在下面的屏幕截图中看到，我可以访问多个模型。如果模型旁边显示“✅ 访问权限已授予”，那么您就知道可以访问该模型。如果您无法访问任何模型，在下一步中将会遇到错误。
+
+AWS 提供了良好的文档来请求访问/启用这些模型：[Amazon Bedrock 模型访问文档](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access-modify.html)
+
+![Amazon Bedrock 基础模型](/images/tutorials/amazon-bedrock/amazon-bedrock-base-models.png)
 
 
-| OpenAI Endpoint       | Bedrock Method         |
+## 第二步：配置 Bedrock 访问网关
+
+现在我们已经至少有一个 Bedrock 基础模型的访问权限，我们需要配置 Bedrock 访问网关（简称 BAG）。您可以将 BAG 想象为一种由 AWS 开发的代理或中间件，它围绕 AWS 原生端点/SDK 为 Bedrock 提供包装，并反过来暴露与 OpenAI 的架构兼容的端点，而这正是 Open-WebUI 所需的。
+
+作为参考，这里是端点之间的简单映射：
+
+
+| OpenAI 端点            | Bedrock 方法            |
 |-----------------------|------------------------|
 | `/models`               | list_inference_profiles    |
 | `/models/{model_id}`    | list_inference_profiles    |
-| `/chat/completions`     | converse or converse_stream    |
+| `/chat/completions`     | converse 或 converse_stream    |
 | `/embeddings`           | invoke_model           |
 
-The BAG repo can be found here: [Bedrock Access Gateway Repo](https://github.com/aws-samples/bedrock-access-gateway)
+BAG 仓库可以在这里找到：[Bedrock Access Gateway 仓库](https://github.com/aws-samples/bedrock-access-gateway)
 
-To set-up the BAG, follow the below steps:
-- Clone the BAG repo
-- Remove the default `dockerfile`
-- Change the name of the `Dockerfile_ecs` to `Dockerfile`
+要设置 BAG，请按照以下步骤进行：
+- 克隆 BAG 仓库
+- 删除默认的 `dockerfile`
+- 将 `Dockerfile_ecs` 的名称更改为 `Dockerfile`
 
-We're now ready to build and launch the docker container using:
+现在我们可以使用以下命令来构建和启动 Docker 容器：
 
 ```bash
 docker build . -f Dockerfile -t bedrock-gateway
@@ -72,31 +72,31 @@ docker build . -f Dockerfile -t bedrock-gateway
 docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN -e AWS_REGION=us-east-1 -d -p 8000:80 bedrock-gateway
 ```
 
-You should now be able to access the BAG's swagger page at: http://localhost:8000/docs
+您现在应该能够访问 BAG 的 Swagger 页面：http://localhost:8000/docs
 
 ![Bedrock Access Gateway Swagger](/images/tutorials/amazon-bedrock/amazon-bedrock-proxy-api.png)
 
-## Step 3: Add Connection in Open-WebUI
+## 第三步：在 Open-WebUI 中添加连接
 
-Now that you the BAG up-and-running, it's time to add it as a new connection in Open-WebUI.
+现在您已经成功启动了 BAG，该将其作为新的连接添加到 Open-WebUI 中了。
 
-- Under the Admin Panel, go to Settings -> Connections.
-- Use the "+" (plus) button to add a new connection under the OpenAI
-- For the URL, use "http://host.docker.internal:8000/api/v1"
-- For the password, the default password defined in BAG is "bedrock". You can always change this password in the BAG settings (see DEFAULT_API_KEYS)
-- Click the "Verify Connection" button and you should see "Server connection verified" alert in the top-right
+- 在管理面板中，进入 Settings -> Connections。
+- 使用“+”（加号）按钮在 OpenAI 下添加一个新连接。
+- 对于 URL，请使用 "http://host.docker.internal:8000/api/v1"。
+- 对于密码，BAG 中定义的默认密码为 "bedrock"。您可以在 BAG 设置中更改此密码（参见 DEFAULT_API_KEYS）。
+- 点击“验证连接”按钮，您应该会在右上角看到“服务器连接已验证”的提示。
 
-![Add New Connection](/images/tutorials/amazon-bedrock/amazon-bedrock-proxy-connection.png)
+![新增连接](/images/tutorials/amazon-bedrock/amazon-bedrock-proxy-connection.png)
 
-## Step 4: Start using Bedrock Base Models
+## 步骤 4: 开始使用 Bedrock 基础模型
 
-You should now see all your Bedrock models available!
+现在你应该可以看到所有 Bedrock 模型可用了！
 
-![Use Bedrock Models](/images/tutorials/amazon-bedrock/amazon-bedrock-models-in-oui.png)
+![使用 Bedrock 模型](/images/tutorials/amazon-bedrock/amazon-bedrock-models-in-oui.png)
 
-## Other Helpful Tutorials
+## 其他有用的教程
 
-These are a few other very helpful tutorials when working to integrate Open-WebUI with Amazon Bedrock.
+在将 Open-WebUI 集成到 Amazon Bedrock 时，下列教程非常有帮助。
 
 - https://gauravve.medium.com/connecting-open-webui-to-aws-bedrock-a1f0082c8cb2
 - https://jrpospos.blog/posts/2024/08/using-amazon-bedrock-with-openwebui-when-working-with-sensitive-data/

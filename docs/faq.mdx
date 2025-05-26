@@ -1,118 +1,118 @@
 ---
 sidebar_position: 1200
-title: "📋 FAQ"
+title: "📋 常见问题"
 ---
 
 import { TopBanners } from "@site/src/components/TopBanners";
 
 <TopBanners />
 
-### 💡 Why Docker?
-We understand Docker might not be everyone's preference; however, this approach is central to our project's design and operational efficiency. We view the project's commitment to Docker as a fundamental aspect and encourage those looking for different deployment methods to explore community-driven alternatives.
+### 💡 为什么选择 Docker?
+我们理解并非所有人都偏好使用 Docker；然而，这种方式对于我们项目的设计和运营效率至关重要。我们认为项目对 Docker 的承诺是其核心方面，并鼓励那些寻找不同部署方式的人探索由社区驱动的替代方案。
 
 
-#### **Q: How do I customize the logo and branding?**  
+#### **问: 如何定制 logo 和品牌标识？**
 
-**A:** You can customize the theme, logo, and branding with our **[Enterprise License](https://docs.openwebui.com/enterprise)**, which unlocks exclusive enterprise features.  
+**答:** 您可以通过我们的 **[企业版授权](https://docs.openwebui.com/enterprise)** 定制主题、logo 和品牌标识，从而解锁独特的企业功能。
 
-For more details on enterprise solutions and branding customizations, please contact our sales team at: 📧 **sales@openwebui.com**  
+有关企业解决方案和品牌定制的更多详情，请联系我们的销售团队：📧 **sales@openwebui.com**
 
-#### **Q: Why am I asked to sign up? Where are my data being sent to?**
+#### **问: 为什么需要注册？我的数据会被传送到哪里？**
 
-**A:** We require you to sign up to become the admin user for enhanced security. This ensures that if the Open WebUI is ever exposed to external access, your data remains secure. It's important to note that everything is kept local. We do not collect your data. When you sign up, all information stays within your server and never leaves your device. Your privacy and security are our top priorities, ensuring that your data remains under your control at all times.
+**答:** 我们要求您注册为管理员用户以增强安全性。这确保了如果 Open WebUI 暴露给外部访问，您的数据仍然安全。需要注意的是，所有数据都保持在本地。我们不会收集您的数据。当您注册时，所有信息都保存在您的服务器中，绝不会离开您的设备。您的隐私和安全是我们最优先考虑的事项，确保您的数据始终处于您的控制之下。
 
-#### **Q: Why can't my Docker container connect to services on the host using `localhost`?**
+#### **问: 为什么我的 Docker 容器无法通过 `localhost` 连接到主机上的服务？**
 
-**A:** Inside a Docker container, `localhost` refers to the container itself, not the host machine. This distinction is crucial for networking. To establish a connection from your container to services running on the host, you should use the DNS name `host.docker.internal` instead of `localhost`. This DNS name is specially recognized by Docker to facilitate such connections, effectively treating the host as a reachable entity from within the container, thus bypassing the usual `localhost` scope limitation.
+**答:** 在 Docker 容器内，`localhost` 是指容器本身，而不是主机。这种区别对于网络连接来说至关重要。要从容器连接到主机上的服务，您应该使用 DNS 名称 `host.docker.internal` 而不是 `localhost`。此 DNS 名称是 Docker 特别识别的，用于促进这种连接，从而有效地将主机视为容器内可访问的实体，绕过通常的 `localhost` 作用范围限制。
 
-#### **Q: How do I make my host's services accessible to Docker containers?**
+#### **问: 如何让主机上的服务对 Docker 容器可访问？**
 
-**A:** To make services running on the host accessible to Docker containers, configure these services to listen on all network interfaces, using the IP address `0.0.0.0`, instead of `127.0.0.1` which is limited to `localhost` only. This configuration allows the services to accept connections from any IP address, including Docker containers. It's important to be aware of the security implications of this setup, especially when operating in environments with potential external access. Implementing appropriate security measures, such as firewalls and authentication, can help mitigate risks.
+**答:** 如果希望主机上的服务对 Docker 容器可访问，请配置这些服务监听所有网络接口，使用 IP 地址 `0.0.0.0` 而不是仅限于 `127.0.0.1` 的 `localhost`。此配置允许服务接受来自任何 IP 地址的连接，包括 Docker 容器。尤其是在存在潜在外部访问的环境中，需注意这种设置的安全影响。实施适当的安全措施，例如防火墙和身份验证，可以帮助降低风险。
 
-#### **Q: Why isn't my Open WebUI updating? I've re-pulled/restarted the container, and nothing changed.**
+#### **问: 为什么我的 Open WebUI 没有更新？我已经重新拉取/重启容器，但没有变化。**
 
-**A:** Updating Open WebUI requires more than just pulling the new Docker image. Here’s why your updates might not be showing and how to ensure they do:
+**答:** 更新 Open WebUI 不仅仅是拉取新的 Docker 镜像。以下是可能导致您的更新未显示的原因以及确保更新有效的方法：
 
-1. **Updating the Docker Image**: The command `docker pull ghcr.io/open-webui/open-webui:main` updates the Docker image but not the running container or its data.
-2. **Persistent Data in Docker Volumes**: Docker volumes store data independently of container lifecycles, preserving your data (like chat histories) through updates.
-3. **Applying the Update**: Ensure your update takes effect by removing the existing container (which doesn't delete the volume) and creating a new one with the updated image and existing volume attached.
+1. **更新 Docker 镜像**: 使用命令 `docker pull ghcr.io/open-webui/open-webui:main` 更新 Docker 镜像，但这并不会更新正在运行的容器或其数据。
+2. **Docker 卷中的持久数据**: Docker 卷独立于容器生命周期存储数据，通过更新保留您的数据（例如聊天记录）。
+3. **应用更新**: 确保更新生效的方法是删除现有容器（这不会删除数据卷），并使用更新的镜像和现有卷创建新容器。
 
-This process updates the app while keeping your data safe.
+这一过程可以更新应用程序，同时保持您的数据安全。
 
-#### **Q: Wait, why would I delete my container? Won't I lose my data?**
+#### **问: 等等，我为什么要删除我的容器？删除后我的数据会丢失吗？**
 
-**A:** It's a common concern, but deleting a container doesn't mean you'll lose your data, provided you're using Docker volumes correctly. Here’s why:
+**答:** 这是一个常见的顾虑，但只要您正确使用 Docker 卷，删除容器并不会导致数据丢失。原因如下：
 
-- **Volumes Preserve Data**: Docker volumes are designed to persist data outside of container lifecycles. As long as your data is stored in a volume, it remains intact, regardless of what happens to the container.
-- **Safe Update Process**: When updating Open WebUI, removing the old container and creating a new one with the updated image does not affect the data stored in volumes. The key is not to explicitly delete the volume with commands like `docker volume rm`.
+- **卷保留数据**: Docker 卷旨在将数据持久化于容器生命周期之外。只要您的数据存储在卷中，它将保持完整，不受容器操作的影响。
+- **安全更新过程**: 在更新 Open WebUI 时，删除旧容器并使用更新的镜像创建新容器不会影响存储在卷中的数据。关键是不要通过类似 `docker volume rm` 的命令明确删除卷。
 
-By following the correct update steps—pulling the new image, removing the old container without deleting the volume, and creating a new container with the updated image and the existing volume—your application code is updated while your data remains unchanged and safe.
+通过正确的更新步骤——拉取新镜像、删除旧容器但不删除卷，以及使用更新的镜像和现有卷创建新容器——您的应用程序代码会得到更新，同时您的数据保持不变和安全。
 
-#### **Q: Should I use the distro-packaged Docker or the official Docker package?**
+#### **问: 我应该使用发行版内置的 Docker 还是官方 Docker 包？**
 
-**A:** We recommend using the official Docker package over distro-packaged versions for running Open WebUI. The official Docker package is frequently updated with the latest features, bug fixes, and security patches, ensuring optimal performance and security. Additionally, it supports important functionalities like `host.docker.internal`, which may not be available in distro-packaged versions. This feature is essential for proper network configurations and connectivity within Docker containers.
+**A:** 我们推荐使用官方 Docker 包，而不是分发版的 Docker 包来运行 Open WebUI。官方 Docker 包会频繁更新，提供最新的功能、错误修复和安全补丁，以确保最佳性能和安全性。此外，它支持像 `host.docker.internal` 这样的重要功能，而这些功能可能在分发版中不可用。此功能对于 Docker 容器内的网络配置和连接至关重要。
 
-By choosing the official Docker package, you benefit from consistent behavior across different environments, more reliable troubleshooting support, and access to the latest Docker advancements. The broader Docker community and resources are also more aligned with the official package, providing you with a wealth of information and support for any issues you might encounter.
+选择官方 Docker 包，您可以在不同环境中获得一致的行为、更可靠的故障排除支持，以及获取 Docker 最新技术的机会。更广泛的 Docker 社区和资源也更贴合官方包，为您提供丰富的信息和支持，以解决遇到的问题。
 
-Everything you need to run Open WebUI, including your data, remains within your control and your server environment, emphasizing our commitment to your privacy and security. For instructions on installing the official Docker package, please refer to the [Install Docker Engine](https://docs.docker.com/engine/install/) guide on Docker's official documentation site.
+运行 Open WebUI 所需的一切，包括数据，都在您的控制和服务器环境内，强调了我们对隐私和安全的承诺。有关安装官方 Docker 包的说明，请参考 Docker 官方文档站点上的 [安装 Docker 引擎](https://docs.docker.com/engine/install/) 指南。
 
-#### **Q: Is GPU support available in Docker?**
+#### **Q: Docker 是否支持 GPU？**
 
-**A:** GPU support in Docker is available but varies depending on the platform. Officially, GPU support is provided in Docker for Windows and Docker Engine on Linux. Other platforms, such as Docker Desktop for Linux and MacOS, do not currently offer GPU support. This limitation is important to consider for applications requiring GPU acceleration. For the best experience and to utilize GPU capabilities, we recommend using Docker on platforms that officially support GPU integration.
+**A:** Docker 中提供了 GPU 支持，但支持情况因平台而异。官方支持的 GPU 功能在 Windows 平台的 Docker 和 Linux 平台的 Docker Engine 中可用。其他平台，例如 Linux 和 MacOS 上的 Docker Desktop，目前尚不支持 GPU。这一限制对于需要 GPU 加速的应用程序来说至关重要。为获得最佳体验并使用 GPU 功能，我们建议在官方支持 GPU 集成的平台上使用 Docker。
 
-#### **Q: Why does Open WebUI emphasize the use of Docker?**
+#### **Q: 为什么 Open WebUI 强调使用 Docker？**
 
-**A:** The decision to use Docker stems from its ability to ensure consistency, isolate dependencies, and simplify deployment across different environments. Docker minimizes compatibility issues and streamlines the process of getting the WebUI up and running, regardless of the underlying system. It's a strategic choice by the project maintainers to harness these benefits, acknowledging that while Docker has a learning curve, the advantages for deployment and maintenance are significant. We understand Docker might not be everyone's preference; however, this approach is central to our project's design and operational efficiency. We view the project's commitment to Docker as a fundamental aspect and encourage those looking for different deployment methods to explore community-driven alternatives.
+**A:** 使用 Docker 的决定源于其能够确保一致性、隔离依赖关系，并简化不同环境下的部署。Docker 最大程度地减少了兼容性问题，并简化了启动 WebUI 的流程，无论底层系统如何。这是项目维护者的战略选择，利用这些优势，同时承认 Docker 具有一定的学习曲线，但在部署和维护方面的优势显著。我们理解并非所有人都偏好 Docker；然而，这种方法是我们项目设计和运行效率的核心。我们将项目对 Docker 的承诺视为一个基本方面，并鼓励那些寻找不同部署方法的人探索社区驱动的替代方案。
 
-#### **Q: Why doesn't Speech-to-Text (STT) and Text-to-Speech (TTS) work in my deployment?**
+#### **Q: 为什么在我的部署中语音转文本 (STT) 和文本转语音 (TTS) 功能不起作用？**
 
-**A:** The functionality of Speech-to-Text (STT) and Text-to-Speech (TTS) services in your deployment may require HTTPS to operate correctly. Modern browsers enforce security measures that restrict certain features, including STT and TTS, to only work under secure HTTPS connections. If your deployment is not configured to use HTTPS, these services might not function as expected. Ensuring your deployment is accessible over HTTPS can resolve these issues, enabling full functionality of STT/TTS features.
+**A:** 在您的部署中，语音转文本 (STT) 和文本转语音 (TTS) 服务的功能可能需要 HTTPS 才能正常运行。现代浏览器会执行安全措施，限制某些功能（包括 STT 和 TTS）仅在安全的 HTTPS 连接下工作。如果您的部署未配置为使用 HTTPS，这些服务可能无法按预期运行。确保您的部署能够通过 HTTPS 访问可以解决这些问题，启用 STT/TTS 功能。
 
-#### **Q: Why doesn't Open WebUI include built-in HTTPS support?**
+#### **Q: 为什么 Open WebUI 不包含内置的 HTTPS 支持？**
 
-**A:** While we understand the desire for an all-in-one solution that includes HTTPS support, we believe such an approach wouldn't adequately serve the diverse needs of our user base. Implementing HTTPS directly within the project could limit flexibility and may not align with the specific requirements or preferences of all users. To ensure that everyone can tailor their setup to their unique environment, we leave the implementation of HTTPS termination to the users for their production deployments. This decision allows for greater adaptability and customization. Though we don't offer official documentation on setting up HTTPS, community members may provide guidance upon request, sharing insights and suggestions based on their experiences.
+**A:** 尽管我们理解集成 HTTPS 支持的全能解决方案的需求，但我们认为这种方法无法充分满足我们用户群的多样化需求。在项目中实现 HTTPS 功能可能会限制其灵活性，并可能不符合所有用户的特定需求或偏好。为了确保每个人都能根据他们的独特环境定制设置，我们将 HTTPS 终端的实现交由用户负责其生产部署。这一决定允许更大的适应性和定制性。虽然我们不提供设置 HTTPS 的官方文档，但社区成员可能会在请求时提供指导，分享基于他们经验的见解和建议。
 
-#### **Q: I updated/restarted/installed some new software and now Open WebUI isn't working anymore!**
+#### **Q: 我更新/重启/安装了一些新软件，现在 Open WebUI 无法正常工作了！**
 
-**A:** If your Open WebUI isn't launching post-update or installation of new software, it's likely related to a direct installation approach, especially if you didn't use a virtual environment for your backend dependencies. Direct installations can be sensitive to changes in the system's environment, such as updates or new installations that alter existing dependencies. To avoid conflicts and ensure stability, we recommend using a virtual environment for managing the `requirements.txt` dependencies of your backend. This isolates your Open WebUI dependencies from other system packages, minimizing the risk of such issues.
+**A:** 如果您的 Open WebUI 在更新或安装新软件后无法启动，很可能是由于直接安装方法引起的，特别是如果您未为后端依赖项使用虚拟环境。直接安装可能对系统环境的变化（例如更新或新安装）比较敏感，这可能改变现有依赖项。为了避免冲突并确保稳定性，我们建议使用虚拟环境来管理后端的 `requirements.txt` 依赖项。这将您的 Open WebUI 依赖项与其他系统包隔离，最大程度地减少此类问题。
 
-#### **Q: I updated/restarted and now my login isn't working anymore, I had to create a new account and all my chats are gone.**
+#### **Q: 我更新/重启后，现在登录不起作用了，我不得不创建一个新账户，而且所有聊天记录都消失了。**
 
-**A:** This issue typically arises when a Docker container is created without mounting a volume for `/app/backend/data` or if the designated Open WebUI volume (usually named `open-webui` in our examples) was unintentionally deleted. Docker volumes are crucial for persisting your data across container lifecycles. If you find yourself needing to create a new account after a restart, it's likely you've initiated a new container without attaching the existing volume where your data resides. Ensure that your Docker run command includes a volume mount pointing to the correct data location to prevent data loss.
+**A:** 此问题通常出现在创建 Docker 容器时没有为 `/app/backend/data` 挂载一个卷，或者指定的 Open WebUI 卷（通常在我们示例中命名为 `open-webui`）被意外删除。Docker 卷对于在容器生命周期中保存数据至关重要。如果您发现需要在重启后创建一个新帐户，那么很可能是启动了一个新的容器，但没有附加保存数据的现有卷。请确保您的 Docker 运行命令包含指向正确数据位置的卷挂载参数，以防数据丢失。
 
-#### **Q: I tried to login and couldn't, made a new account and now I'm being told my account needs to be activated by an admin.**
+#### **Q: 我尝试登录却失败了，创建了一个新账户，现在系统提示我的账户需要管理员激活。**
 
-**A:** This situation occurs when you forget the password for the initial admin account created during the first setup. The first account is automatically designated as the admin account. Creating a new account without access to the admin account will result in the need for admin activation. Avoiding the loss of the initial admin account credentials is crucial for seamless access and management of Open WebUI. See the [Resetting the Admin Password](troubleshooting/password-reset) guide for instructions on recovering the admin account.
+**A:** 这种情况发生在您忘记了首次设置时创建的初始管理员账户的密码。第一个账户会自动被设置为管理员账户。没有访问管理员账户就创建新账户，将导致需要管理员激活。避免丢失初始管理员账户的凭证对于无缝访问和管理 Open WebUI 至关重要。请参阅 [重置管理员密码](troubleshooting/password-reset) 指南以了解恢复管理员账户的操作说明。
 
-#### **Q: Why can't Open WebUI start with an SSL error?**
+#### **Q: 为什么 Open WebUI 无法启动并出现 SSL 错误？**
 
-**A:** The SSL error you're encountering when starting Open WebUI is likely due to the absence of SSL certificates or incorrect configuration of [huggingface.co](https://huggingface.co/). To resolve this issue, you could set up a mirror for HuggingFace, such as [hf-mirror.com](https://hf-mirror.com/), and specify it as the endpoint when starting the Docker container. Use the `-e HF_ENDPOINT=https://hf-mirror.com/` parameter to define the HuggingFace mirror address in the Docker run command. For example, you can modify the Docker run command as follows:
+**A:** 您在启动 Open WebUI 时遇到的 SSL 错误可能是由于 SSL 证书缺失或 [huggingface.co](https://huggingface.co/) 配置错误造成的。为解决此问题，您可以设置一个 HuggingFace 的镜像，例如 [hf-mirror.com](https://hf-mirror.com/)，并在启动 Docker 容器时将其指定为终端节点。使用 `-e HF_ENDPOINT=https://hf-mirror.com/` 参数在 Docker 运行命令中定义 HuggingFace 镜像地址。例如，您可以按照以下方式修改 Docker 运行命令：
 
 ```bash
 docker run -d -p 3000:8080 -e HF_ENDPOINT=https://hf-mirror.com/ --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
 ```
-#### **Q: RAG with Open WebUI is very bad or not working at all. Why?**
+#### **Q: 为什么 RAG（检索增强生成）在 Open WebUI 中效果不好或完全无法工作？**
 
-**A:** If you're using **Ollama**, be aware that Ollama sets the context length to **2048 tokens by default**. This means that none of the retrieved data might be used because it doesn't fit within the available context window.  
+**A:** 如果使用 **Ollama**，请注意 Ollama 默认将上下文长度设置为 **2048 个标记**。这意味着检索到的数据可能完全无法使用，因为它无法适配可用的上下文窗口。
 
-To improve the performance of Retrieval-Augmented Generation (**RAG**) with Open WebUI, you should **increase the context length** to a much larger value (**8192+ tokens**) to ensure that retrieved documents can effectively contribute to the model’s responses.  
+为了提升检索增强生成（**RAG**）性能，应将上下文长度增加到更大的值（**8192+ 个标记**），以确保检索的文档能够有效地为模型的响应提供支持。
 
-To do this, configure your **Ollama model params** to allow a larger context window. You can check and modify this setting in your chat directly or from model editor page to enhance the RAG experience significantly.
+为此，请配置您的 **Ollama 模型参数**，以允许更大的上下文窗口。您可以直接在聊天中或通过模型编辑页面检查并修改此设置，以显著提升 RAG 体验。
 
-#### **Q: Is MCP (Model Context Protocol) supported in Open WebUI?**
-**A:** [Yes, Open WebUI officially supports MCP Tool Servers—but exclusively through an **OpenAPI-compliant proxy**](/openapi-servers/mcp) ([openapi-servers](https://github.com/open-webui/openapi-servers)) for optimal compatibility, security, and maintainability.
+#### **Q: 在 Open WebUI 中是否支持 MCP（模型上下文协议）？**
+**A:** [是的，Open WebUI 官方支持 MCP 工具服务器——但只能通过**与 OpenAPI 兼容的代理**](/openapi-servers/mcp) （[openapi-servers](https://github.com/open-webui/openapi-servers)）进行，以确保最佳的兼容性、安全性和可维护性。
 
-To bridge MCP (and other backend protocols), we provide a purpose-built proxy implementation available at: 👉 [https://github.com/open-webui/mcpo](https://github.com/open-webui/mcpo)
+要连接 MCP（以及其他后端协议），我们提供了专门构建的代理实现，地址为：👉 [https://github.com/open-webui/mcpo](https://github.com/open-webui/mcpo)
 
-This design choice is motivated by several core principles:
+此设计选择基于几个核心原则：
 
-- 📘 Standards-First: OpenAPI is the de facto standard for RESTful service definitions and contract-driven service interoperability. By aligning integrations through OpenAPI, we enable reproducible, schema-driven behavior across upgrades and deployments.
-- 🔒 Security Model Isolation: Integrating MCP through a proxy allows us to sandbox and isolate backend protocol behavior, reducing attack surface and enabling boundary-level auditing, authentication, and observability.
-- ⚙️ Protocol Abstraction: Supporting heterogeneous backends (e.g., MCP) through a unified OpenAPI schema enables Open WebUI to remain backend-agnostic while maintaining predictable runtime behavior.
-- ⛓️ Decoupled Deployment Topology: The proxy-based architecture allows tool servers (like MCP) to evolve independently from frontend presentation, facilitating highly modular production environments or distributed workloads.
+- 📘 标准优先：OpenAPI 是 RESTful 服务定义和契约驱动服务互操作性的事实标准。通过通过 OpenAPI 对齐集成，我们实现了可重现的、基于架构的行为，并可跨升级和部署稳定运行。
+- 🔒 安全模型隔离：通过代理集成 MCP 可允许我们将后端协议行为沙盒化并隔离，减少攻击面，并启用边界级别的审计、身份验证和可观察性。
+- ⚙️ 协议抽象：通过统一的 OpenAPI 架构支持异构后端（例如 MCP），使 Open WebUI 在执行时能够保持对后端无关，同时维持可预测的运行时行为。
+- ⛓️ 解耦的部署拓扑：基于代理的架构允许工具服务器（如 MCP）独立于前端演示进行演化，促进高度模块化的生产环境或分布式工作负载。
 
-In summary: MCP is supported — as long as the MCP Tool Server is fronted by an OpenAPI-compatible proxy. This architectural decision is deliberate and ensures that Open WebUI remains scalable, secure, and maintainable.
+总结：MCP 是支持的——只要 MCP 工具服务器由与 OpenAPI 兼容的代理作为前端提供支持。此架构选择是经过深思熟虑的，旨在确保 Open WebUI 的可扩展性、安全性和可维护性。
 
-#### **Need Further Assistance?**
+#### **需要更多帮助？**
 
-If you have any further questions or concerns, please reach out to our [GitHub Issues page](https://github.com/open-webui/open-webui/issues) or our [Discord channel](https://discord.gg/5rJgQTnV4s) for more help and information.
+如果您有其他问题或顾虑，请前往我们的 [GitHub 问题页面](https://github.com/open-webui/open-webui/issues) 或加入我们的 [Discord 频道](https://discord.gg/5rJgQTnV4s) 寻求更多帮助和信息。

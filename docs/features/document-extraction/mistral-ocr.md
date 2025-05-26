@@ -4,49 +4,49 @@ title: "👁️ Mistral OCR"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程是社区贡献，不受 Open WebUI 团队支持。它仅作为如何根据您的具体用例自定义 Open WebUI 的示例。如果想要贡献内容，请查看贡献教程。
 :::
 
 ## 👁️ Mistral OCR
 
-This documentation provides a step-by-step guide to integrating Mistral OCR with Open WebUI. Mistral OCR is an optical character recognition library designed to extract text from a variety of image-based file formats—including scanned PDFs, images, and handwritten documents—into structured data such as JSON or plain text. With advanced support for multilingual text recognition, layout analysis, and handwriting interpretation, Mistral OCR simplifies the process of digitizing and processing documents for AI applications like search, summarization, and data extraction, all through a robust and customizable interface.
+本文档提供了将 Mistral OCR 与 Open WebUI 集成的分步指南。Mistral OCR 是一个光学字符识别库，旨在从包括扫描的 PDFs、图像和手写文档在内的各种基于图像的文件格式中提取文本，并将其转换为结构化数据（例如 JSON 或纯文本）。借助对多语言文本识别、布局分析和手写解释的高级支持，Mistral OCR 简化了文档数字化和处理的过程，适用于搜索、摘要和数据提取等 AI 应用，并通过强大且可定制的界面实现。
 
-Prerequisites
+前提条件
 ------------
 
-* Open WebUI instance
-* Mistral AI account
+* Open WebUI 实例
+* Mistral AI 账号
 
-Integration Steps
+集成步骤
 ----------------
 
-### Step 1: Sign Up or Login to Mistral AI console
+### 第一步：注册或登录 Mistral AI 控制台
 
-* Go to `https://console.mistral.ai`
-* Follow the instructions as instructed on the process
-* After successful authorization, you should be welcomed to the Console Home
+* 访问 `https://console.mistral.ai`
+* 按照流程中的说明操作
+* 成功授权后，您将进入控制台主页
 
-### Step 2: Generate an API key
+### 第二步：生成 API 密钥
 
-* Go to `API Keys` or `https://console.mistral.ai/api-keys`
-* Create a new key and make sure to copy it
+* 访问 `API Keys` 或 `https://console.mistral.ai/api-keys`
+* 创建一个新密钥并确保将其复制
 
-### Step 3: Configure Open WebUI to use Mistral OCR
+### 第三步：配置 Open WebUI 使用 Mistral OCR
 
-* Log in to your Open WebUI instance.
-* Navigate to the `Admin Panel` settings menu.
-* Click on `Settings`.
-* Click on the `Documents` tab.
-* Change the `Default` content extraction engine dropdown to `Mistral OCR`.
-* Paste the API Key on the field
-* Save the Admin Panel.
+* 登录到您的 Open WebUI 实例。
+* 导航到 `管理面板` 设置菜单。
+* 点击 `设置`。
+* 点击 `文档` 标签。
+* 将 `默认` 内容提取引擎下拉菜单更改为 `Mistral OCR`。
+* 在字段中粘贴 API 密钥
+* 保存管理面板。
 
-Verifying Mistral OCR
+验证 Mistral OCR
 =====================================
 
-To verify that Mistral OCR is working correctly in script, please refer to `https://docs.mistral.ai/capabilities/document/`
+要验证 Mistral OCR 是否在脚本中正常工作，请参阅 `https://docs.mistral.ai/capabilities/document/`
 
 
-### Conclusion
+### 结论
 
-Integrating Mistral OCR with Open WebUI is a simple and effective way to enhance document processing and content extraction capabilities. By following the steps in this guide, you can set up Mistral OCR as the default extraction engine and leverage its advanced text recognition features. Once configured, Mistral OCR enables powerful, multilingual document parsing with support for various formats, enhancing AI-driven document analysis capabilities in Open WebUI.
+将 Mistral OCR 与 Open WebUI 集成是一种简单且高效的方法，可以增强文档处理和内容提取能力。按照本指南中的步骤，您可以将 Mistral OCR 设置为默认提取引擎，利用其先进的文本识别功能。一旦配置完成，Mistral OCR 可以支持多种格式的强大多语言文档解析，提升 Open WebUI 中基于 AI 的文档分析能力。

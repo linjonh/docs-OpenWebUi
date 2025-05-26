@@ -1,62 +1,58 @@
 ---
 sidebar_position: 3
-title: "🔐 Groups"
+title: "🔐 组"
 ---
 
-Groups allow administrators to
-* assign permissions to multiple users at once, simplifying access management
-* limit access to specific resources (Models, Tools, etc) by setting their access to "private" then opening access to specific groups
-* Specify access to a resource for a group to either "read" or "write" (write access implies read)
+组允许管理员
+* 一次为多个用户分配权限，简化访问管理
+* 通过将资源（模型、工具等）的访问权限设置为“私有”，然后为特定组打开访问权限，限制对特定资源的访问
+* 为组指定资源的访问权限为“读取”或“写入”（写入权限意味着读取权限）
 
 :::info
-Note that the permissions model is permissive. If a user is a member of two groups that define different permissions for a resource, the most permissive permission is applied.
+请注意，权限模型是宽松的。如果一个用户属于两个为资源定义了不同权限的组，则应用最宽松的权限。
 :::
 
-### Group Structure
+### 组结构
 
-Each group in Open WebUI contains:
+Open WebUI 中的每个组包含：
 
-* A unique identifier
-* Name and description
-* Owner/creator reference
-* List of member user IDs
-* Permission configuration
-* Additional metadata
+* 唯一标识符
+* 名称和描述
+* 所有者/创建者引用
+* 成员用户 ID 列表
+* 权限配置
+* 附加元数据
 
-### Group Management
+### 组管理
 
-Groups can be:
+组可以被：
 
-* **Created manually** by administrators through the user interface
-* **Synced automatically** from OAuth providers when `ENABLE_OAUTH_GROUP_MANAGEMENT` is enabled
-* **Created automatically** from OAuth claims when both `ENABLE_OAUTH_GROUP_MANAGEMENT` and`ENABLE_OAUTH_GROUP_CREATION`
-  are enabled
+* **管理员通过用户界面手动创建**
+* 当启用 `ENABLE_OAUTH_GROUP_MANAGEMENT` 时，**从 OAuth 提供商自动同步**
+* 当同时启用 `ENABLE_OAUTH_GROUP_MANAGEMENT` 和 `ENABLE_OAUTH_GROUP_CREATION` 时，**从 OAuth 声明中自动创建**
+  
 
-### OAuth Group Integration
+### OAuth 组集成
 
-When OAuth group management is enabled, user group memberships are synchronized with groups received in OAuth claims:
+当启用 OAuth 组管理时，用户组成员身份会与 OAuth 声明中接收到的组同步：
 
-* Users are added to Open WebUI groups that match their OAuth claims
-* Users are removed from groups not present in their OAuth claims
-* With `ENABLE_OAUTH_GROUP_CREATION` enabled, groups from OAuth claims that don't exist in Open WebUI are automatically
-  created
+* 用户会被添加到与其 OAuth 声明匹配的 Open WebUI 组
+* 用户会被移出 OAuth 声明中不存在的组
+* 在启用 `ENABLE_OAUTH_GROUP_CREATION` 时，OAuth 声明中在 Open WebUI 不存在的组会被自动创建
 
-## Group Permissions
+## 组权限
 
-Groups can be used to make sets of permissions available to users. For example, a group could be created for "Data
-Scientists" that has read and write access to all models, knowledge bases, and tools.
+组可以用来为用户提供一组权限。例如，可以为“数据科学家”创建一个组，该组对所有的模型、知识库和工具具有读取和写入权限。
 
-## Resource Access Control for Groups
+## 组的资源访问控制
 
-Open WebUI implements granular access control for resources like models, knowledge bases, prompts, and tools. Access can
-be controlled at both the user and group level.
+Open WebUI 对模型、知识库、提示和工具等资源实施细粒度的访问控制。访问权限可以在用户和组级别进行控制。
 
-To enable access control for a resource, set its access to "private" and then open access to specific groups.
+要对资源启用访问控制，请将其访问权限设置为“私有”，然后为特定组开放访问权限。
 
-### Access Control Structure
+### 访问控制结构
 
-Resources like knowledge bases use an access control structure that specifies read and write permissions for both users
-and groups:
+像知识库这样的资源使用一种访问控制结构，指定用户和组的读取和写入权限：
 
 ```json
 {
@@ -71,4 +67,4 @@ and groups:
 }
 ```
 
-This structure allows for precise control over who can view and modify specific resources.
+这种结构允许对谁可以查看和修改特定资源进行精确的控制。

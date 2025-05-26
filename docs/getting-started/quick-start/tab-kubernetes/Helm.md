@@ -1,29 +1,29 @@
 
-# Helm Setup for Kubernetes
+# Helm 设置用于 Kubernetes
 
-Helm helps you manage Kubernetes applications.
+Helm 帮助您管理 Kubernetes 应用程序。
 
-## Prerequisites
+## 前提条件
 
-- Kubernetes cluster is set up.
-- Helm is installed.
+- Kubernetes 集群已设置。
+- 已安装 Helm。
 
-## Steps
+## 步骤
 
-1. **Add Open WebUI Helm Repository:**
+1. **添加 Open WebUI Helm 仓库：**
 
    ```bash
    helm repo add open-webui https://open-webui.github.io/helm-charts
    helm repo update
    ```
 
-2. **Install Open WebUI Chart:**
+2. **安装 Open WebUI Chart：**
 
    ```bash
    helm install openwebui open-webui/open-webui
    ```
 
-3. **Verify Installation:**
+3. **验证安装：**
 
    ```bash
    kubectl get pods
@@ -31,11 +31,11 @@ Helm helps you manage Kubernetes applications.
 
 :::warning
 
-If you intend to scale Open WebUI using multiple nodes/pods/workers in a clustered environment, you need to setup a NoSQL key-value database.
-There are some [environment variables](https://docs.openwebui.com/getting-started/env-configuration/) that need to be set to the same value for all service-instances, otherwise consistency problems, faulty sessions and other issues will occur!
+如果您打算在集群环境中使用多个节点/Pods/工作进程来扩展 Open WebUI，则需要设置一个 NoSQL 键值数据库。
+必须为所有服务实例设置相同的 [环境变量](https://docs.openwebui.com/getting-started/env-configuration/)，否则将会出现一致性问题、会话故障以及其他问题！
 
 :::
 
-## Access the WebUI
+## 访问 WebUI
 
-Set up port forwarding or load balancing to access Open WebUI from outside the cluster.
+设置端口转发或负载均衡以从集群外部访问 Open WebUI。

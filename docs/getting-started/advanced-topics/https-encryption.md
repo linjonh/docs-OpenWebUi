@@ -1,54 +1,54 @@
 ---
 sidebar_position: 6
-title: "🔒 Enabling HTTPS Encryption"
+title: "🔒 启用 HTTPS 加密"
 ---
 
-# Secure Your Open WebUI with HTTPS 🔒
+# 用 HTTPS 🔒 保护您的 Open WebUI
 
-This guide explains how to enable HTTPS encryption for your Open WebUI instance. While **HTTPS is not strictly required** for basic operation, it's highly recommended for security and is **necessary for certain features like Voice Calls** to function in modern web browsers.
+本指南解释如何为您的 Open WebUI 实例启用 HTTPS 加密。虽然 **HTTPS 并非基本操作的强制要求**，但强烈推荐以增强安全性，并且在现代浏览器中某些功能（如语音通话）需要 HTTPS 才能正常运行。
 
-## Why HTTPS Matters 🛡️
+## HTTPS 的重要性 🛡️
 
-HTTPS (Hypertext Transfer Protocol Secure) encrypts communication between your web browser and the Open WebUI server. This encryption provides several key benefits:
+HTTPS（超文本传输安全协议）加密了您的浏览器与 Open WebUI 服务器之间的通信。这种加密提供了以下关键优势：
 
-* **Privacy and Security:** Protects sensitive data like usernames, passwords, and chat content from eavesdropping and interception, especially on public networks.
-* **Integrity:** Ensures that data transmitted between the browser and server is not tampered with during transit.
-* **Feature Compatibility:** **Crucially, modern browsers block access to certain "secure context" features, such as microphone access for Voice Calls, unless the website is served over HTTPS.**
-* **Trust and User Confidence:**  HTTPS is indicated by a padlock icon in the browser address bar, building user trust and confidence in your Open WebUI deployment.
+* **隐私与安全：** 保护用户名、密码和聊天内容等敏感数据免受窃听和拦截，尤其是在公共网络中。
+* **数据完整性：** 确保在浏览器和服务器之间传输的数据不会在传输过程中被篡改。
+* **功能兼容性：** **现代浏览器会阻止访问某些“安全上下文”功能，例如语音通话的麦克风访问，除非该网站通过 HTTPS 服务。**
+* **信任与用户信心：** HTTPS 通过浏览器地址栏的小锁图标显示，增强用户对您 Open WebUI 部署的信任与信心。
 
-**When is HTTPS Especially Important?**
+**哪些场景特别需要 HTTPS？**
 
-* **Internet-Facing Deployments:** If your Open WebUI instance is accessible from the public internet, HTTPS is strongly recommended to protect against security risks.
-* **Voice Call Feature:** If you plan to use the Voice Call feature in Open WebUI, HTTPS is **mandatory**.
-* **Sensitive Data Handling:** If you are concerned about the privacy of user data, enabling HTTPS is a crucial security measure.
+* **面向互联网的部署：** 如果您的 Open WebUI 实例可以被公共网络访问，强烈推荐使用 HTTPS 来防范安全风险。
+* **语音通话功能：** 如果您计划在 Open WebUI 中使用语音通话功能，启用 HTTPS 是 **强制** 的。
+* **敏感数据处理：** 如果您关心用户数据隐私问题，启用 HTTPS 是关键的安全措施。
 
-## Choosing the Right HTTPS Solution for You 🛠️
+## 为您选择合适的 HTTPS 解决方案 🛠️
 
-The best HTTPS solution depends on your existing infrastructure and technical expertise. Here are some common and effective options:
+最佳 HTTPS 解决方案取决于您的现有基础设施和技术经验。以下是几种常见且有效的选项：
 
-* **Cloud Providers (e.g., AWS, Google Cloud, Azure):**
-  * **Load Balancers:**  Cloud providers typically offer managed load balancers (like AWS Elastic Load Balancer) that can handle HTTPS termination (encryption/decryption) for you. This is often the most straightforward and scalable approach in cloud environments.
-* **Docker Container Environments:**
-  * **Reverse Proxies (Nginx, Traefik, Caddy):**  Popular reverse proxies like Nginx, Traefik, and Caddy are excellent choices for managing HTTPS in Dockerized deployments. They can automatically obtain and renew SSL/TLS certificates (e.g., using Let's Encrypt) and handle HTTPS termination.
-    * **Nginx:** Highly configurable and widely used.
-    * **Traefik:**  Designed for modern microservices and container environments, with automatic configuration and Let's Encrypt integration.
-    * **Caddy:**  Focuses on ease of use and automatic HTTPS configuration.
-* **Cloudflare:**
-  * **Simplified HTTPS:** Cloudflare provides a CDN (Content Delivery Network) and security services, including very easy HTTPS setup. It often requires minimal server-side configuration changes and is suitable for a wide range of deployments.
-* **Ngrok:**
-  * **Local Development HTTPS:** Ngrok is a convenient tool for quickly exposing your local development server over HTTPS. It's particularly useful for testing features that require HTTPS (like Voice Calls) during development and for demos. **Not recommended for production deployments.**
+* **云提供商（例如 AWS、Google Cloud、Azure）：**
+  * **负载均衡器：** 云提供商通常提供托管的负载均衡器（例如 AWS 弹性负载均衡器），可以为您处理 HTTPS 终止（加密/解密）。这是云环境中最简单且可扩展的方法。
+* **Docker 容器环境：**
+  * **反向代理（Nginx、Traefik、Caddy）：** Nginx、Traefik 和 Caddy 等流行的反向代理是管理 Docker 化部署中 HTTPS 的绝佳选择。它们可以自动获取并续订 SSL/TLS 证书（例如使用 Let&apos;s Encrypt），处理 HTTPS 终止。
+    * **Nginx：** 高度可配置且广泛使用。
+    * **Traefik：** 专为现代微服务和容器环境设计，具有自动配置和 Let&apos;s Encrypt 集成。
+    * **Caddy：** 专注于易用性和自动 HTTPS 配置。
+* **Cloudflare：**
+  * **简化 HTTPS：** Cloudflare 提供 CDN（内容分发网络）和安全服务，包括非常容易设置的 HTTPS。通常需要最少的服务器端配置变更，适合各种类型的部署。
+* **Ngrok：**
+  * **本地开发 HTTPS：** Ngrok 是快速通过 HTTPS 暴露本地开发服务器的便捷工具。它在开发和演示期间测试需要 HTTPS 的功能（例如语音通话）时尤其有用。**不推荐用于生产部署。**
 
-**Key Considerations When Choosing:**
+**选择时的关键考虑因素：**
 
-* **Complexity:** Some solutions (like Cloudflare or Caddy) are simpler to set up than others (like manually configuring Nginx).
-* **Automation:** Solutions like Traefik and Caddy offer automatic certificate management, which simplifies ongoing maintenance.
-* **Scalability and Performance:**  Consider the performance and scalability needs of your Open WebUI instance when choosing a solution, especially for high-traffic deployments.
-* **Cost:** Some solutions (like cloud load balancers or Cloudflare's paid plans) may have associated costs. Let's Encrypt and many reverse proxies are free and open-source.
+* **复杂性：** 一些解决方案（如 Cloudflare 或 Caddy）比其他解决方案（如手动配置 Nginx）更简单。
+* **自动化：** 像 Traefik 和 Caddy 这样的解决方案提供自动证书管理，从而简化持续维护。
+* **可扩展性与性能：** 在选择解决方案时，请考虑您的 Open WebUI 实例的性能和可扩展性需求，尤其是在高流量情况下。
+* **成本：** 一些解决方案（如云负载均衡器或 Cloudflare 的付费计划）可能涉及相关费用。Let&apos;s Encrypt 和许多反向代理是免费且开源的。
 
-## 📚 Explore Deployment Tutorials for Step-by-Step Guides
+## 📚 探索部署教程以获取分步指南
 
-For detailed, practical instructions and community-contributed tutorials on setting up HTTPS encryption with various solutions, please visit the **[Deployment Tutorials](../../tutorials/deployment/)** section.
+有关使用各种解决方案设置 HTTPS 加密的详细实践说明和社区贡献的教程，请访问 **[部署教程](../../tutorials/deployment/)** 部分。
 
-These tutorials often provide specific, step-by-step guides for different environments and HTTPS solutions, making the process easier to follow.
+这些教程通常为不同环境和 HTTPS 解决方案提供具体的分步指南，使过程更易于遵循。
 
-By implementing HTTPS, you significantly enhance the security and functionality of your Open WebUI instance, ensuring a safer and more feature-rich experience for yourself and your users.
+通过实施 HTTPS，您显著增强了 Open WebUI 实例的安全性和功能，为自己和用户提供更加安全且功能丰富的体验。

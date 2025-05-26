@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1400
-title: "🛣️ Roadmap"
+title: "🛣️ 路线图"
 ---
 
 import { TopBanners } from "@site/src/components/TopBanners";
@@ -8,68 +8,68 @@ import { TopBanners } from "@site/src/components/TopBanners";
 <TopBanners />
 
 
-At Open WebUI, we're committed to continually enhancing our platform to provide the best experience for our users. Below, you'll find the structured roadmap for our ongoing and future developments, categorized into Interface, Information Retrieval, and Community.
+在 Open WebUI，我们致力于不断增强我们的平台，为用户提供最佳体验。以下是我们正在进行和未来开发的结构化路线图，分为界面、信息检索和社区三大类别。
 
-## Interface 🖥️
+## 界面 🖥️
 
-Our roadmap for interface innovations aims to create a highly intuitive and accessible platform. These will not only improves user satisfaction but also enhance productivity by reducing the cognitive load on users.
+我们的界面创新路线图旨在打造一个高度直观且易于使用的平台。这不仅提升用户满意度，还通过减少用户认知负担提高生产力。
 
-- 📦 **Packaged Single Binary Executable**: Simplifying deployment and ensuring compatibility across different platforms, we aim to offer our interface as a single binary executable. This approach will facilitate effortless installation and updates, significantly enhancing usability for all users, especially those with limited technical expertise.
+- 📦 **单一二进制可执行文件**：简化部署并确保在不同平台上的兼容性，我们计划将界面提供为单一二进制可执行文件。这种方式将使安装和更新变得轻松，对特别是技术知识有限的用户显著改善可用性。
 
-- 👤 **User Page**: A personal User Page feature where users can create posts. The functionality will also include features like followers, likes, and comments. This allows users to effectively share their model configurations, prompts, and files with a broader community, creating a richer, more connected ecosystem around the platform.
+- 👤 **用户页面**：一个个人用户页面功能，允许用户创建帖子，并包含关注者、点赞与评论功能。这让用户能够有效地与更广泛的社区分享自己的模型配置、提示和文件，从而在平台周围形成一个更丰富、更有连接性的生态系统。
 
-- 📝 **AI Powered Notes**: Inspired by tools like Notion and Obsidian, we plan to introduce a robust note-taking feature that includes AI integration. From simple note-taking to full-fledged document creation, this tool will offer a seamless experience, all locally integrated within the platform.
+- 📝 **AI驱动的笔记**：受工具如 Notion 和 Obsidian 的启发，我们计划推出一个强大的笔记功能，包括AI集成。从简单的笔记到正式的文档创作，这个工具将在平台内本地实现无缝体验。
 
-- 📈 **Advanced User Tracking and Cost Management Tools**: Users will gain access to comprehensive tools designed for tracking application performance and user activities, as well as managing costs effectively. These tools will empower users with the data they need to make informed decisions, improve user experiences, and maintain budget control, optimizing the use of resources across their AI applications.
+- 📈 **高级用户追踪和成本管理工具**：用户可获得为应用性能和用户活动追踪设计的综合工具，以及有效管理成本的工具。这些工具将为用户提供所需的数据来做出明智的决策，改善用户体验，并保持预算控制，从而优化其AI应用资源的使用效果。
 
-- 🧠 **AI Workflow Tool**: A node-based tool to orchestrate and compose multiple aspects of AI systems. This tool will allow users to visually connect different AI modules and services, creating complex workflows with ease. It's designed to empower users to harness the full potential of AI without needing deep technical knowledge in AI programming.
+- 🧠 **AI工作流工具**：一个基于节点的工具，用于编排并组合AI系统的多个方面。该工具允许用户直观地连接不同的AI模块和服务，轻松创建复杂的工作流。它旨在使用户能够充分利用AI的潜力，而不需要掌握深奥的AI编程技术。
 
-- 🔊 **Local Text-to-Speech Integration**: This feature will allow natural language processing to convert text into lifelike spoken audio, thus making the platform more accessible, especially for visually impaired users. This integration helps in consuming information without screen interaction, facilitating multitasking and improving user engagement.
+- 🔊 **本地文本转语音集成**：此功能将允许自然语言处理将文本转换为逼真的语音音频，从而使平台更具可访问性，特别是对视觉障碍用户。此集成有助于无需屏幕交互消费信息，促进多任务处理并提高用户参与度。
 
-- 📣 **Wakeword Detection**: Incorporating hands-free operation through voice commands will not only enhance accessibility but also align with emerging trends in IoT and smart environments, making our platform future-ready.
+- 📣 **唤醒词检测**：通过语音命令实现免操作模式，不仅增强了可访问性，还符合物联网和智能环境的最新趋势，使我们的平台为未来做好准备。
 
-- 💻 **Better Code Execution**: Enhancing coding functionalities within the platform supports a broad range of development activities, making it a one-stop solution for developers, thereby attracting a wider tech audience and fostering a robust developer community.
+- 💻 **更佳的代码执行**：增强平台内的编码功能，可支持多种开发活动，使其成为开发人员的一站式解决方案，吸引更广泛的技术受众并促进强大的开发者社区。
 
-- 🤖 **Code Interpreter Function**: A flexible code interpreter embedded into the platform can support multiple programming languages, which reduces the dependency on external tools and streamlines the development process, increasing efficiency.
+- 🤖 **代码解释器功能**：嵌入到平台内部的灵活代码解释器可支持多种编程语言，从而减少对外部工具的依赖并简化开发流程，提高效率。
 
-- 🔧 **Streamlined Fine-tune Support**: Open WebUI will offer a seamless fine-tuning process by allowing users to automatically build a fine-tune dataset simply by using the interface and rating the responses. We will provide Python notebooks to help preprocess your dataset, making it ready for fine-tuning directly from the notebook. This approach will be super simple and elegantly integrates fine-tuning into user workflows.
-
-
-## Information Retrieval (RAG) 📚
-
-Open WebUI currently provides an interface that enables the use of existing information retrieval (IR) models efficiency. However, we believe there is vast potential for improvement. We fully recognize the limitations of our current RAG (Retrieval-Augmented Generation) implementation in our WebUI, understanding that a one-size-fits-all approach does not effectively meet all users' needs. 
-
-To address this, we are committed to transforming our framework to be highly modular and extensively configurable. This new direction will enable users to tailor the information retrieval process to their specific requirements with ease, using a straightforward, interactive interface that allows for simple drag-and-drop customization. This refinement aims to significantly enhance user experience by providing a more adaptable and personalized IR setup.
-
-Here's our focused plan for advancing our information retrieval capabilities:
-
-- 🌐 **Customizable RAG Framework**: Envision a future where you can effortlessly tailor your IR setup via a user-friendly interface. This will include modular components that users can drag, drop, and configure without needing deep technical knowledge.
-
-- 🔄 **Advanced Integration with SoTA Methods**: We aim to incorporate the latest developments in retrieval methods, enhancing accuracy and efficiency with advanced techniques and architectures.
-
-- 🔍 **Dedicated R&D**: We’re scaling up our research and development to discover and integrate novel retrieval methods that push the boundaries of current methods, in collaboration with leading research entities.
-
-## Community 🤝
-
-We aim to create a vibrant community where everyone can contribute to and benefit from shared knowledge and developments:
-
-- 🏆 **LLM Leaderboard**: A community-driven approach to evaluate and rank models ensures transparency and continuous improvement, leveraging real-world applications to benchmark performance instead of relying on standard datasets that might not reflect practical utility.
-
-- 👥 **Sub-Communities**: Encouraging niche communities to curate datasets and optimize prompts can lead to better-tuned models, as these communities have specific insights and detailed feedback that typically go unnoticed in broader datasets.
-
-🔗 **Community Whitepaper**: Explore our detailed strategy and join us in shaping the future of AI-driven platforms in our [whitepaper](https://openwebui.com/assets/files/whitepaper.pdf).
+- 🔧 **精简微调支持**：Open WebUI 将通过界面对评价响应自动生成微调数据集，为用户提供一个简化的微调流程。我们将提供 Python 笔记本来帮助预处理您的数据，使其通过笔记本直接完成微调。这种方式将非常简单，并优雅地将微调整合到用户的工作流中。
 
 
-# Vision for the Future 🔭
+## 信息检索 (RAG) 📚
 
-Our relentless effort stems from a clear vision we hold dearly: enhancing your daily life, saving time and allowing for more focus on what truly matters. 
+Open WebUI 当前提供了一个界面，此界面能够高效使用现有的信息检索(IR)模型。然而，我们认为仍然有巨大的改进空间。我们完全认识到当前WebUI中RAG（基于检索增强生成）的实现的局限性，理解到一刀切的方法无法有效满足所有用户的需求。
 
-Imagine a world where you think, and it happens. You desire a cup of coffee made exactly the way you love, and it's brewed for you. A world where you, simply think of a comprehensive data analysis report in a particular format, and it's done at the speed of your thought. The core idea is to turn the time-consuming, routine tasks over to our AI interface, freeing up your time and attention.
+为了改善这一点，我们承诺将框架转变为高度模块化并且广泛可配置。这一新的方向将使用户能够通过简单直观的界面轻松地定制信息检索过程，借助拖放即可完成设置。这一优化旨在显著改善用户体验，通过提供更加灵活且个性化的信息检索设置。
 
-This isn’t a sci-fi future; together, we are working towards it right now. As our AI models gradually become more capable and intuitively understand your specific needs, your most mundane responsibilities become automated. Through this profound shift, our collective time allowance can be redistributed towards grand endeavours. Think space exploration, longevity research or simply extra moments with loved ones. 
+以下是我们专注于推进信息检索能力的计划：
 
-Creating this imagined future won't be a walk in the park, but with your help, we believe it's within our reach. Open WebUI is more than just tech - it's there to enhance your day, giving you more space for what's really important. Together, we're working on a brighter tomorrow. Thanks for joining us in this extraordinary journey.
+- 🌐 **可定制的RAG框架**：展望未来，您将能够通过一个用户友好的界面轻松定制您的信息检索设置。这将包括模块化组件，用户无需深厚的技术知识即可拖放并配置。
+
+- 🔄 **与最先进方法的高级集成**：我们的目标是整合最新的信息检索方法，通过先进技术和架构提升准确度和效率。
+
+- 🔍 **专注的研发**：我们正在加大研发力度，以发现并整合能够突破现有方法界限的新型检索方法，与领先的研究机构合作。
+
+## 社区 🤝
+
+我们旨在创建一个充满活力的社区，每个人都可以贡献并从共享知识和开发中受益：
+
+- 🏆 **LLM排行榜**：一种社区驱动的评估和排名模型的方法，通过实际应用来对性能进行基准测试，而不是依赖于可能不反映实际效用的标准数据集，以确保透明度和持续改进。
+
+- 👥 **子社区**：鼓励细分社区策划数据集和优化提示，这样可以获得更好调优的模型，因为这些社区拥有独特的见解和详细的反馈，这通常在广泛的数据集中被忽略。
+
+🔗 **社区白皮书**：探索我们的详细策略，并在我们的 [白皮书](https://openwebui.com/assets/files/whitepaper.pdf) 中与我们一起规划AI驱动平台的未来。
+
+
+# 对未来的愿景 🔭
+
+我们的不懈努力源于我们心中珍视的一个清晰愿景：改善您的日常生活，节省时间，让您能更专注于真正重要的事情。
+
+试想一个世界，您想到什么便能发生。您想要一杯按照自己的喜好制作的咖啡，它就如愿为您泡好。又或者，您希望高速生成一份特定格式的数据分析报告，它能以您思维的速度完成。核心理念是将那些耗时的例行任务交给我们的AI界面，从而释放您的时间和精力。
+
+这不是一个科幻的未来；我们现在就正在为此努力。随着我们的AI模型逐步变得更强大，并直观地理解您的具体需求，您最平凡的责任将被自动化。通过这一重大转变，我们的集体时间可以重新分配，用于更宏大的事业。比如太空探索、寿命延长研究，或者只是与亲人多一点宝贵的时光。
+
+创造这一梦想的未来并非易事，但有了您的帮助，我们相信这在触手可及。Open WebUI不仅仅是技术，它旨在改善您的生活，给您更多的空间来关注真正重要的事。让我们一起努力，为明天的光明未来而奋斗。感谢您加入我们这一非凡旅程。
 
 ---
 
-Join us as we push the boundaries of technology with these ambitious and transformative features in our roadmap! 💡🚀 Your participation and feedback are crucial as we strive to make Open WebUI a pioneering tool in technology advancement.
+加入我们，随着我们通过这些雄心勃勃且具有变革性的功能在路线图上推动技术的界限！💡🚀 您的参与和反馈对我们至关重要，因为我们努力使Open WebUI成为技术进步的领先工具。

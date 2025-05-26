@@ -1,10 +1,10 @@
-### Installation with `uv` 
+### 使用 `uv` 安装
 
-The `uv` runtime manager ensures seamless Python environment management for applications like Open WebUI. Follow these steps to get started:
+`uv` 运行时管理器可确保像 Open WebUI 这样的应用程序的 Python 环境管理无缝运行。按照以下步骤开始操作：
 
-#### 1. Install `uv`
+#### 1. 安装 `uv`
 
-Pick the appropriate installation command for your operating system:
+根据你的操作系统选择适当的安装命令：
 
 - **macOS/Linux**:  
   ```bash
@@ -16,9 +16,9 @@ Pick the appropriate installation command for your operating system:
   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
 
-#### 2. Run Open WebUI
+#### 2. 运行 Open WebUI
 
-Once `uv` is installed, running Open WebUI is a breeze. Use the command below, ensuring to set the `DATA_DIR` environment variable to avoid data loss. Example paths are provided for each platform:
+安装 `uv` 后，运行 Open WebUI 将非常简单。使用以下命令，同时确保设置 `DATA_DIR` 环境变量以避免数据丢失。以下为各平台的示例路径：
 
 - **macOS/Linux**:  
   ```bash

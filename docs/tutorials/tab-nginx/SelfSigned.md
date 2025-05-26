@@ -1,17 +1,17 @@
-### Self-Signed Certificate
+### 自签名证书
 
 
-Using self-signed certificates is suitable for development or internal use where trust is not a critical concern.
+使用自签名证书适用于开发或内部使用，在这种情况下，信任不是一个关键问题。
 
-#### Steps
+#### 步骤
 
-1. **Create Directories for Nginx Files:**
+1. **创建用于存放 Nginx 文件的目录：**
 
     ```bash
     mkdir -p conf.d ssl
     ```
 
-2. **Create Nginx Configuration File:**
+2. **创建 Nginx 配置文件：**
 
     **`conf.d/open-webui.conf`:**
 
@@ -31,17 +31,17 @@ Using self-signed certificates is suitable for development or internal use where
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
 
-            # (Optional) Disable proxy buffering for better streaming response from models
+            # （可选）禁用代理缓冲区，改善模型流回应效果
             proxy_buffering off;
 
-            # (Optional) Increase max request size for large attachments and long audio messages
+            # （可选）增加最大请求大小以支持较大的附件和较长的音频消息
             client_max_body_size 20M;
             proxy_read_timeout 10m;
         }
     }
     ```
 
-3. **Generate Self-Signed SSL Certificates:**
+3. **生成自签名 SSL 证书：**
 
     ```bash
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
@@ -50,9 +50,9 @@ Using self-signed certificates is suitable for development or internal use where
     -subj "/CN=your_domain_or_IP"
     ```
 
-4. **Update Docker Compose Configuration:**
+4. **更新 Docker Compose 配置：**
 
-    Add the Nginx service to your `docker-compose.yml`:
+    将 Nginx 服务添加到您的 `docker-compose.yml` 文件中：
 
     ```yaml
     services:
@@ -67,15 +67,15 @@ Using self-signed certificates is suitable for development or internal use where
           - open-webui
     ```
 
-5. **Start Nginx Service:**
+5. **启动 Nginx 服务：**
 
     ```bash
     docker compose up -d nginx
     ```
 
-#### Access the WebUI
+#### 访问 WebUI
 
-Access Open WebUI via HTTPS at:
+通过 HTTPS 访问 Open WebUI，地址为：
 
 [https://your_domain_or_IP](https://your_domain_or_IP)
 

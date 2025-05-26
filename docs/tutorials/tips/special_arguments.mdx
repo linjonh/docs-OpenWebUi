@@ -1,51 +1,51 @@
 ---
 sidebar_position: 20
-title: "💡 Special Arguments"
+title: "💡 特殊参数"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程由社区贡献，不由 Open WebUI 团队支持。它仅作为自定义 Open WebUI 以满足您的特定用例的示例。想要贡献？查看贡献教程。
 :::
 
-# 💡 Special Arguments
+# 💡 特殊参数
 
-When developping your own `Tools`, `Functions` (`Filters`, `Pipes` or `Actions`), `Pipelines` etc, you can use special arguments explore the full spectrum of what Open-WebUI has to offer.
+在开发您自己的 `工具`、`函数`（如`过滤器`、`管道`或`操作`）、`管道`等时，可以使用特殊参数来探索 Open-WebUI 的全部功能。
 
-This page aims to detail the type and structure of each special argument as well as provide an example.
+本页面旨在详细说明每种特殊参数的类型和结构，并提供示例。
 
 ### `body`
 
-A `dict` usually destined to go almost directly to the model. Although it is not strictly a special argument, it is included here for easier reference and because it contains itself some special arguments.
+`dict` 通常直接传递给模型。虽然它并不严格是一个特殊参数，但为了便于参考并因为它自身包含一些特殊参数，因此在这里包括它。
 
 <details>
-<summary>Example</summary>
+<summary>示例</summary>
 
 ```json
 
 {
   "stream": true,
   "model": "my-cool-model",
-  # lowercase string with - separated words: this is the ID of the model
+  # 小写字符串，单词之间以 - 分隔：这是模型的 ID
   "messages": [
     {
       "role": "user",
       "content": [
         {
           "type": "text",
-          "text": "What is in this picture?"
+          "text": "这张图片中有什么？"
         },
         {
           "type": "image_url",
           "image_url": {
             "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdYAAAGcCAYAAABk2YF[REDACTED]"
-            # Images are passed as base64 encoded data
+            # 图像以 base64 编码数据形式传递
           }
         }
       ]
     },
     {
       "role": "assistant",
-      "content": "The image appears to be [REDACTED]"
+      "content": "这张图片看起来是 [REDACTED]"
     },
   ],
   "features": {
@@ -56,8 +56,8 @@ A `dict` usually destined to go almost directly to the model. Although it is not
   "stream_options": {
     "include_usage": true
   },
-  "metadata": "[The exact same dict as __metadata__]",
-  "files": "[The exact same list as __files__]"
+  "metadata": "[与 __metadata__ 完全相同的字典]",
+  "files": "[与 __files__ 完全相同的列表]"
 }
 
 
@@ -67,12 +67,12 @@ A `dict` usually destined to go almost directly to the model. Although it is not
 
 ### `__user__`
 
-A `dict` with user information.
+包含用户信息的 `dict`。
 
-Note that if the `UserValves` class is defined, its instance has to be accessed via `__user__["valves"]`. Otherwise, the `valves` keyvalue is missing entirely from `__user__`.
+请注意，如果定义了 `UserValves` 类，其实例需要通过 `__user__["valves"]` 访问。否则，`valves` 键值在 `__user__` 中完全缺失。
 
 <details>
-<summary>Example</summary>
+<summary>示例</summary>
 
 ```json
 {
@@ -80,8 +80,8 @@ Note that if the `UserValves` class is defined, its instance has to be accessed 
   "email": "cheesy_dude@openwebui.com",
   "name": "Patrick",
   "role": "user",
-  # role can be either `user` or `admin`
-  "valves": "[the UserValve instance]"
+  # 角色可以是 `user` 或 `admin`
+  "valves": "[UserValve 实例]"
 }
 ```
 
@@ -89,10 +89,10 @@ Note that if the `UserValves` class is defined, its instance has to be accessed 
 
 ### `__metadata__`
 
-A `dict` with wide ranging information about the chat, model, files, etc.
+包含关于聊天、模型、文件等广泛信息的 `dict`。
 
 <details>
-<summary>Example</summary>
+<summary>示例</summary>
 
 ```json
 {
@@ -101,10 +101,10 @@ A `dict` with wide ranging information about the chat, model, files, etc.
   "message_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
   "session_id": "xxxxxxxxxxxxxxxxxxxx",
   "tool_ids": null,
-  # tool_ids is a list of str.
+  # tool_ids 是字符串列表。
   "tool_servers": [],
-  "files": "[Same as in body['files']]",
-  # If no files are given, the files key exists in __metadata__ and its value is []
+  "files": "[与 body['files'] 相同]",
+  # 如果未提供文件，files 键将存在于 __metadata__ 中，其值为空 []
   "features": {
     "image_generation": false,
     "code_interpreter": false,
@@ -116,11 +116,11 @@ A `dict` with wide ranging information about the chat, model, files, etc.
     "{{CURRENT_DATETIME}}": "2025-02-02 XX:XX:XX",
     "{{CURRENT_DATE}}": "2025-02-02",
     "{{CURRENT_TIME}}": "XX:XX:XX",
-    "{{CURRENT_WEEKDAY}}": "Monday",
-    "{{CURRENT_TIMEZONE}}": "Europe/Berlin",
+    "{{CURRENT_WEEKDAY}}": "星期一",
+    "{{CURRENT_TIMEZONE}}": "欧洲/柏林",
     "{{USER_LANGUAGE}}": "en-US"
   },
-  "model": "[The exact same dict as __model__]",
+  "model": "[与 __model__ 完全相同的字典]",
   "direct": false,
   "function_calling": "native",
   "type": "user_response",
@@ -133,33 +133,33 @@ A `dict` with wide ranging information about the chat, model, files, etc.
 
 ### `__model__`
 
-A `dict` with information about the model.
+包含关于模型信息的 `dict`。
 
 <details>
-<summary>Example</summary>
+<summary>示例</summary>
 
 ```json
 {
   "id": "my-cool-model",
-  "name": "My Cool Model",
-  "object": "model",
+  "name": "我的酷模型",
+  "object": "模型",
   "created": 1746000000,
   "owned_by": "openai",
-  # either openai or ollama
+  # 可以是 openai 或 ollama
   "info": {
       "id": "my-cool-model",
       "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
       "base_model_id": "gpt-4o",
-      # this is the name of model that the model endpoint serves
-      "name": "My Cool Model",
+      # 这是模型端点提供的模型名称
+      "name": "我的酷模型",
       "params": {
-      "system": "You are my best assistant. You answer [REDACTED]",
+      "system": "你是我最好的助手。你回答 [REDACTED]",
       "function_calling": "native"
-      # custom options appear here, for example "Top K"
+      # 自定义选项出现在这里，例如 "Top K"
       },
       "meta": {
       "profile_image_url": "/static/favicon.png",
-      "description": "Description of my-cool-model",
+      "description": "my-cool-model 的描述",
       "capabilities": {
           "vision": true,
           "usage": true,
@@ -196,8 +196,8 @@ A `dict` with information about the model.
       {
           "name": "for_friends"
       },
-      {
-          "name": "vision_enabled"
+{
+          "name": "启用视觉（vision_enabled）"
       }
   ]
 }
@@ -206,44 +206,44 @@ A `dict` with information about the model.
 
 </details>
 
-### `__messages__`
+### `__消息__`
 
-A `list` of the previous messages.
+一个包含先前消息的 `列表`。
 
-See the `body["messages"]` value above.
+请参阅上述 `body["messages"]` 的值。
 
 
-### `__chat_id__`
+### `__聊天ID__`
 
-The `str` of the `chat_id`.
+`chat_id` 的 `字符串`。
 
-See the `__metadata__["chat_id"]` value above.
+请参阅上述 `__metadata__["chat_id"]` 的值。
 
-### `__session_id__`
+### `__会话ID__`
 
-The `str` of the `session_id`.
+`session_id` 的 `字符串`。
 
-See the `__metadata__["session_id"]` value above.
+请参阅上述 `__metadata__["session_id"]` 的值。
 
-### `__message_id__`
+### `__消息ID__`
 
-The `str` of the `message_id`.
+`message_id` 的 `字符串`。
 
-See the `__metadata__["message_id"]` value above.
+请参阅上述 `__metadata__["message_id"]` 的值。
 
-### `__event_emitter__`
+### `__事件发射器__`
 
-A `Callable` used to display event information to the user.
+用于向用户展示事件信息的 `可调用对象`。
 
-### `__event_call__`
+### `__事件调用__`
 
-A `Callable` used for `Actions`.
+用于 `动作` 的 `可调用对象`。
 
-### `__files__`
+### `__文件__`
 
-A `list` of files sent via the chat. Note that images are not considered files and are sent directly to the model as part of the `body["messages"]` list.
+一个通过聊天发送的文件 `列表`。请注意，图片不被视为文件，并会直接作为 `body["messages"]` 列表的一部分发送至模型。
 
-The actual binary of the file is not part of the arguments for performance reason, but the file remain nonetheless accessible by its path if needed. For example using `docker` the python syntax for the path could be:
+文件的实际二进制数据不会作为参数的一部分出于性能考虑，但如果需要仍然可以通过其路径访问。例如，使用 `docker` 时，获取路径的 Python 代码示例如下：
 
 ```python
 from pathlib import Path
@@ -252,16 +252,16 @@ the_file = Path(f"/app/backend/data/uploads/{__files__[0]["files"]["id"]}_{__fil
 assert the_file.exists()
 ```
 
-Note that the same files dict can also be accessed via `__metadata__["files"]` (and its value is `[]` if no files are sent) or via `body["files"]` (but the `files` key is missing entirely from `body` if no files are sent).
+请注意，同样的文件字典也可以通过 `__metadata__["files"]` 访问（其值为 `[]` 如果没有文件被发送），或者通过 `body["files"]` 访问（但如果没有文件被发送，则 `body` 中会完全缺少 `files` 键）。
 
 <details>
-<summary>Example</summary>
+<summary>示例</summary>
 
 ```json
 
 [
   {
-    "type": "file",
+    "type": "文件",
     "file": {
       "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
       "filename": "Napoleon - Wikipedia.pdf",
@@ -269,16 +269,16 @@ Note that the same files dict can also be accessed via `__metadata__["files"]` (
       "hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
       "data": {
         "content": "Napoleon - Wikipedia\n\n\nNapoleon I\n\nThe Emperor Napoleon in His Study at the\nTuileries, 1812\n\nEmperor of the French\n\n1st reign 18 May 1804 – 6 April 1814\n\nSuccessor Louis XVIII[a]\n\n2nd reign 20 March 1815 – 22 June 1815\n\nSuccessor Louis XVIII[a]\n\nFirst Consul of the French Republic\n\nIn office\n13 December 1799 – 18 May 1804\n\nBorn Napoleone Buonaparte\n15 August 1769\nAjaccio, Corsica, Kingdom of\nFrance\n\nDied 5 May 1821 (aged 51)\nLongwood, Saint Helena\n\nBurial 15 December 1840\nLes Invalides, Paris\n\nNapoleon\nNapoleon Bonaparte[b] (born Napoleone\nBuonaparte;[1][c] 15 August 1769 – 5 May 1821), later\nknown [REDACTED]",
-        # The content value is the output of the document parser, the above example is with Tika as a document parser
+        # 内容值来源于文档解析器，以上示例为使用 Tika 作为文档解析器
       },
       "meta": {
         "name": "Napoleon - Wikipedia.pdf",
-        "content_type": "application/pdf",
+        "content_type": "应用程序/pdf",
         "size": 10486578,
-        # in bytes, here about 10Mb
+        # 单位为字节，这里约为 10MB
         "data": {},
         "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-        # always begins by 'file'
+        # 总以&apos;file&apos;开头
       },
       "created_at": 1740000000,
       "updated_at": 1740000000
@@ -287,11 +287,11 @@ Note that the same files dict can also be accessed via `__metadata__["files"]` (
     "url": "/api/v1/files/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
     "name": "Napoleon - Wikipedia.pdf",
     "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-    "status": "uploaded",
+    "status": "已上传（uploaded）",
     "size": 10486578,
     "error": "",
     "itemId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-    # itemId is not the same as file["id"]
+    # itemId 与 file["id"] 不同
   }
 ]
 
@@ -300,43 +300,43 @@ Note that the same files dict can also be accessed via `__metadata__["files"]` (
 
 </details>
 
-### `__request__`
+### `__请求__`
 
-An instance of `fastapi.Request`. You can read more at the [migration page](../../features/plugin/migration/index.mdx) or at [fastapi's documentation](https://fastapi.tiangolo.com/reference/request/).
+`fastapi.Request` 的实例。你可以在 [迁移页面](../../features/plugin/migration/index.mdx) 或 [fastapi&apos;的文档](https://fastapi.tiangolo.com/reference/request/) 中阅读更多相关内容。
 
-### `__task__`
+### `__任务__`
 
-A `str` for the type of task. Its value is just a shorthand for `__metadata__["task"]` if present, otherwise `None`.
+`任务类型` 的 `字符串`。其值是 `__metadata__["task"]` 的简写（如果存在），否则为 `None`。
 
 <details>
-<summary>Possible values</summary>
+<summary>可能的值</summary>
 
 ```json
 
 [
-    "title_generation",
-    "tags_generation",
-    "emoji_generation",
-    "query_generation",
-    "image_prompt_generation",
-    "autocomplete_generation",
-    "function_calling",
-    "moa_response_generation"
+    "标题生成（title_generation）",
+    "标签生成（tags_generation）",
+    "表情生成（emoji_generation）",
+    "查询生成（query_generation）",
+    "图像提示生成（image_prompt_generation）",
+    "自动完成生成（autocomplete_generation）",
+    "函数调用（function_calling）",
+    "MOA响应生成（moa_response_generation）"
 ]
 ```
 
 </details>
 
-### `__task_body__`
+### `__任务体__`
 
-A `dict` containing the `body` needed to accomplish a given `__task__`. Its value is just a shorthand for `__metadata__["task_body"]` if present, otherwise `None`.
+一个包含实现指定任务所需 `body` 的 `字典`。其值是 `__metadata__["task_body"]` 的简写（如果存在），否则为 `None`。
 
-Its structure is the same as `body` above, with modifications like using the appropriate model and system message etc.
+其结构与上述的 `body` 相同，带有修改以使用适当的模型和系统消息等。
 
 
-### `__tools__`
+### `__工具__`
 
-A `list` of `ToolUserModel` instances.
+`ToolUserModel` 实例组成的 `列表`。
 
-For details the attributes of `ToolUserModel` instances, the code can be found in [tools.py](https://github.com/open-webui/open-webui/blob/main/backend/open_webui/models/tools.py).
+有关 `ToolUserModel` 实例属性的详细信息，请参考 [tools.py](https://github.com/open-webui/open-webui/blob/main/backend/open_webui/models/tools.py) 中的代码。
 

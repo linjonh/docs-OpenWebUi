@@ -4,15 +4,15 @@ title: "DuckDuckGo"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程是社区贡献的内容，并未得到 Open WebUI 团队的支持。它仅作为如何定制 Open WebUI 以满足特定用例的示范。想要贡献？查看贡献教程。
 :::
 
 ## DuckDuckGo API
 
-### Setup
+### 设置
 
-No setup is required to use DuckDuckGo API for Open WebUI's built in web search! DuckDuckGo works out of the box in Open WebUI.
+使用 DuckDuckGo API 进行 Open WebUI 内置网页搜索无需设置！DuckDuckGo 在 Open WebUI 中开箱即用。
 
 :::note
-There is a possibility of your web searches being rate limited.
+您的网页搜索可能会受到速率限制。
 :::

@@ -1,259 +1,259 @@
 ---
 sidebar_position: 5
-title: "🛠️ Local Development Guide"
+title: "🛠️ 本地开发指南"
 ---
 
-# Ready to Contribute to Open WebUI? Let's Get Started! 🚀
+# 准备好为 Open WebUI 做贡献了吗？让我们开始吧！🚀
 
-Excited to dive into Open WebUI development? This comprehensive guide will walk you through setting up your **local development environment** quickly and easily. Whether you're a seasoned developer or just starting out, we'll get you ready to tweak the frontend, enhance the backend, and contribute to the future of Open WebUI! Let's get your development environment up and running in simple, detailed steps!
+是否迫不及待地想要参与 Open WebUI 的开发？这个全面的指南将帮助你快速轻松地设置你的 **本地开发环境**。无论你是经验丰富的开发者还是刚入门，我们都会让你准备好优化前端、增强后端，并为 Open WebUI 的未来贡献力量！以下是详细的步骤，让你的开发环境快速启动并运行！
 
-## Prerequisites
+## 准备工作
 
-Before you begin, ensure your system meets these minimum requirements:
+在开始之前，请确保你的系统满足以下最低要求：
 
-- **Operating System:** Linux (or WSL on Windows), Windows 11, or macOS. *(Recommended for best compatibility)*
-- **Python:** Version **3.11 or higher**. *(Required for backend services)*
-- **Node.js:** Version **22.10 or higher**. *(Required for frontend development)*
-- **IDE (Recommended):** We recommend using an IDE like [VSCode](https://code.visualstudio.com/) for code editing, debugging, and integrated terminal access. Feel free to use your favorite IDE if you have one!
-- **[Optional] GitHub Desktop:** For easier management of the Git repository, especially if you are less familiar with command-line Git, consider installing [GitHub Desktop](https://desktop.github.com/).
+- **操作系统：** Linux（或 Windows 上的 WSL）、Windows 11 或 macOS。*(推荐使用以获得最佳兼容性)*
+- **Python：** 版本 **3.11 或更高**。*(后端服务必需)*
+- **Node.js：** 版本 **22.10 或更高**。*(前端开发必需)*
+- **推荐的 IDE：** 我们推荐使用 [VSCode](https://code.visualstudio.com/) 进行代码编辑、调试和集成终端操作。当然，如果你有更喜欢的 IDE，也可以使用！
+- **[可选] GitHub Desktop：** 如果你对命令行 Git 不太熟悉，可以考虑安装 [GitHub Desktop](https://desktop.github.com/) 来更轻松地管理 Git 仓库。
 
-## Setting Up Your Local Environment
+## 设置本地开发环境
 
-We'll set up both the frontend (user interface) and backend (API and server logic) of Open WebUI.
+我们将同时设置 Open WebUI 的前端（用户界面）和后端（API 和服务器逻辑）。
 
-### 1. Clone the Repository
+### 1. 克隆代码仓库
 
-First, use `git clone` to download the Open WebUI repository to your local machine. This will create a local copy of the project on your computer.
+首先，使用 `git clone` 下载 Open WebUI 仓库到本地机器，这将创建项目的本地副本。
 
-1. **Open your terminal** (or Git Bash if you're on Windows and using Git Bash).
-2. **Navigate to the directory** where you want to store the Open WebUI project.
-3. **Clone the repository:** Run the following command:
+1. **打开终端**（如果你使用 Windows 且选择 Git Bash，可以打开 Git Bash）。
+2. **导航到目录**，选择你希望存储 Open WebUI 项目的位置。
+3. **克隆代码仓库：** 运行以下命令：
 
 ```bash
 git clone https://github.com/open-webui/open-webui.git
 cd open-webui
 ```
 
-   The `git clone` command downloads the project files from GitHub. The `cd open-webui` command then navigates you into the newly created project directory.
+   `git clone` 命令会从 GitHub 下载项目文件，`cd open-webui` 命令则会带你进入刚刚创建的项目目录中。
 
-### 2. Frontend Setup (User Interface)
+### 2. 设置前端（用户界面）
 
-Let's get the user interface (what you see in your browser) up and running first:
+首先让我们启动用户界面（即你浏览器中看到的内容）：
 
-1. **Configure Environment Variables:**
-   - Copy the example environment file to `.env`:
+1. **配置环境变量：**
+   - 将示例环境文件复制到 `.env`：
 
      ```bash
      cp -RPp .env.example .env
      ```
 
-     This command copies the `.env.example` file to a new file named `.env`. The `.env` file is where you'll configure environment variables for the frontend.
+     此命令将 `.env.example` 文件复制到一个新文件 `.env`中，`.env` 文件是你为前端配置环境变量的位置。
 
-   - **Customize `.env`**: Open the `.env` file in your code editor (like VSCode). This file contains configuration variables for the frontend, such as API endpoints and other settings. For local development, the default settings in `.env.example` are usually sufficient to start with. However, you can customize them if needed.
+   - **自定义 `.env` 文件：** 在代码编辑器（如 VSCode）中打开 `.env` 文件。此文件包含前端配置变量，比如 API 端点和其他设置。对于本地开发，`.env.example` 文件中的默认设置通常是足够开始的。但如果需要，你可以根据需求进行自定义。
 
-  **Important:** Do not commit sensitive information to `.env` if you are contributing back to the repository.
+  **重要提示：** 如果你要回传代码，请勿将敏感信息提交到 `.env` 文件中。
 
-1. **Install Frontend Dependencies:**
-   - **Navigate to the frontend directory:** If you're not already in the project root (`open-webui` directory), ensure you are there.
+1. **安装前端依赖项：**
+   - **导航到前端目录：** 如果你还没有在项目根目录（`open-webui` 目录）中，请确保进入其中。
 
      ```bash
-     # If you are not in the project root, run:
+     # 如果尚未进入项目根目录，可以运行以下命令：
      cd open-webui
      ```
 
-   - Install the required JavaScript packages:
+   - 安装必需的 JavaScript 包：
 
      ```bash
      npm install
      ```
 
-     This command uses `npm` (Node Package Manager) to read the `package.json` file in the project root directory and download all the necessary JavaScript libraries and tools required for the frontend to run. This might take a few minutes depending on your internet connection.
+     此命令使用 `npm`（Node 包管理器）读取项目根目录中的 `package.json` 文件，并下载前端运行所需的所有 JavaScript 库和工具。下载时间可能因你的网络连接速度而有所不同。
 
-2. **Start the Frontend Development Server:**
+2. **启动前端开发服务器：**
 
      ```bash
      npm run dev
      ```
 
-     This command launches the frontend development server. If the steps were followed successfully, it will usually indicate the server is running and provide a local URL.
+     此命令会启动前端开发服务器。如果操作成功，通常会显示服务器正在运行的提示，并提供一个本地 URL。
 
-     🎉 **Access the Frontend:** Open your web browser and go to [http://localhost:5173](http://localhost:5173). You should see a message indicating that Open WebUI's frontend is running and is waiting for the backend to be available. Don't worry about that message yet! Let's set up the backend next. **Keep this terminal running** – it's serving your frontend!
+     🎉 **访问前端：** 打开你的浏览器并访问 [http://localhost:5173](http://localhost:5173)。你应该会看到 Open WebUI 的前端正在运行，并且显示消息说明后端尚不可用。别担心这个提示！接下来我们将设置后端。在此期间，**保持这个终端运行** —— 它正在为你的前端提供服务！
 
-### 3. Backend Setup (API and Server)
+### 3. 设置后端（API 和服务器）
 
-For a smoother development experience, we **strongly recommend** using separate terminal instances for your frontend and backend processes. This keeps your workflows organized and makes it easier to manage each part of the application independently.
+为了获得更平顺的开发体验，我们 **强烈建议** 为前端和后端进程分别使用独立的终端实例。这可以让你的工作流更加有序，并方便独立管理应用的各个部分。
 
-**Why Separate Terminals?**
+**为什么要使用独立的终端？**
 
-- **Process Isolation:** The frontend and backend development servers are distinct programs. Running them in separate terminals ensures they don't interfere with each other and allows for independent restarts or stops.
-- **Clearer Logs and Output:** Each terminal will display the logs and output specific to either the frontend or backend. This makes debugging and monitoring much easier, as you're not sifting through interleaved logs.
-- **Reduced Terminal Clutter:** Mixing frontend and backend commands in a single terminal can become confusing. Separate terminals keep your command history and active processes organized.
-- **Improved Workflow Efficiency:** You can work on frontend tasks (like running `npm run dev`) in one terminal and simultaneously manage backend tasks (like starting the server or checking logs) in another, without having to switch contexts constantly within a single terminal.
+- **进程隔离：** 前端和后端开发服务器是不同的程序，将它们运行在独立的终端中可以确保它们不会相互干扰，并允许独立的重启或停止。
+- **更清晰的日志和输出：** 每个终端将显示前端或后端特定的日志和输出。这使得调试和监控更加容易，因为您无需筛选交错的日志。
+- **减少终端混乱：** 在单个终端中混合前端和后端命令可能会变得混乱。使用独立终端，您的命令历史记录和活动进程会更加有序。
+- **提高工作流程效率：** 您可以在一个终端中处理前端任务（如运行 `npm run dev`），同时在另一个终端中管理后端任务（如启动服务器或检查日志），而无需在单个终端中不断切换上下文。
 
-**Using VSCode Integrated Terminals (Recommended):**
+**使用 VSCode 集成终端（推荐）：**
 
-VSCode's integrated terminal feature makes managing multiple terminals incredibly easy. Here's how to leverage it for frontend and backend separation:
+VSCode 的集成终端功能使得管理多个终端变得非常容易。以下是如何利用它来实现前后端的分离：
 
-1. **Frontend Terminal (You likely already have this):** If you followed the Frontend Setup steps, you probably already have a terminal open in VSCode at the project root (`open-webui` directory). This is where you'll run your frontend commands (`npm run dev`, etc.). Ensure you are in the `open-webui` directory for the next steps if you are not already.
+1. **前端终端（您可能已经有了这个）：** 如果您已经按照前端设置步骤，您可能已经在 VSCode 的项目根目录（`open-webui` 目录）打开了一个终端。在这里，您可以运行前端命令（如 `npm run dev` 等）。如果还没有，请确保您进入 `open-webui` 目录后再执行以下步骤。
 
-2. **Backend Terminal (Open a New One):**
-   - In VSCode, go to **Terminal > New Terminal** (or use the shortcut `Ctrl+Shift+` on Windows/Linux or `Cmd+Shift+` on macOS). This will open a new integrated terminal panel.
-   - **Navigate to the `backend` directory:** In this *new* terminal, use the `cd backend` command to change the directory to the `backend` folder within your project. This ensures all backend-related commands are executed in the correct context.
+2. **后端终端（打开一个新终端）：**
+   - 在 VSCode 中，转到 **终端 > 新终端**（或使用快捷键 `Ctrl+Shift+` 对于 Windows/Linux 或 `Cmd+Shift+` 对于 macOS）。这将打开一个新的集成终端面板。
+   - **导航到 `backend` 目录：** 在这个*新*终端中，使用 `cd backend` 命令将目录切换到项目中的 `backend` 文件夹。这样可以确保所有后端相关的命令都在正确的上下文中执行。
 
-   Now you have **two separate terminal instances within VSCode**: one for the frontend (likely in the `open-webui` directory) and one specifically for the backend (inside the `backend` directory). You can easily switch between these terminals within VSCode to manage your frontend and backend processes independently. This setup is highly recommended for a cleaner and more efficient development workflow.
+   现在，您在 VSCode 中有**两个独立的终端实例**：一个用于前端（可能在 `open-webui` 目录），另一个专门用于后端（在 `backend` 目录中）。您可以在 VSCode 中轻松切换这些终端，以独立管理前端和后端进程。推荐这种设置以获得更清洁和高效的开发工作流程。
 
-**Backend Setup Steps (in your *backend* terminal):**
+**后端设置步骤（在您的*后端*终端中）：**
 
-1. **Navigate to the Backend Directory:** (You should already be in the `backend` directory in your *new* terminal from the previous step). If not, run:
+1. **导航到后端目录：**（您应该已经通过上一步在*新*终端中进入了 `backend` 目录）。如果不是，请运行：
 
    ```bash
    cd backend
    ```
 
-2. **Create and Activate a Conda Environment (Recommended):**
-   - We highly recommend using Conda to manage Python dependencies and isolate your project environment. This prevents conflicts with other Python projects on your system and ensures you have the correct Python version and libraries.
+2. **创建并激活 Conda 环境（推荐）：**
+   - 我们强烈建议使用 Conda 来管理 Python 依赖项并隔离项目环境。这可以防止与系统上的其他 Python 项目发生冲突，并确保您具有正确的 Python 版本和库。
 
      ```bash
      conda create --name open-webui python=3.11
      conda activate open-webui
      ```
 
-     - `conda create --name open-webui python=3.11`: This command creates a new Conda environment named `open-webui` using Python version 3.11. If you chose a different Python 3.11.x version, that's fine.
-     - `conda activate open-webui`: This command activates the newly created Conda environment. Once activated, your terminal prompt will usually change to indicate you are in the `open-webui` environment (e.g., it might show `(open-webui)` at the beginning of the line).
+     - `conda create --name open-webui python=3.11`：此命令使用 Python 3.11 创建一个名为 `open-webui` 的新 Conda 环境。如果您选择了不同的 Python 3.11.x 版本，也是可以的。
+     - `conda activate open-webui`：此命令激活刚刚创建的 Conda 环境。一旦激活，您的终端提示通常会改变以显示您正在使用 `open-webui` 环境（例如，它可能在行的开头显示 `(open-webui)`）。
   
-    **Make sure you activate the environment in your backend terminal before proceeding.**
+    **确保您在继续之前在后端终端中激活该环境。**
 
-     *(Using Conda is optional but strongly recommended for managing Python dependencies and avoiding conflicts.)* If you choose not to use Conda, ensure you are using Python 3.11 or higher and proceed to the next step, but be aware of potential dependency conflicts.
+     *(使用 Conda 是可选的，但强烈推荐用于管理 Python 依赖项并避免冲突。）* 如果您选择不使用 Conda，请确保您使用的是 Python 3.11 或更高版本，并继续下一步，但要警惕潜在的依赖项冲突。
 
-1. **Install Backend Dependencies:**
-     - In your *backend* terminal (and with the Conda environment activated if you are using Conda), run:
+1. **安装后端依赖项：**
+     - 在您的*后端*终端（以及激活了 Conda 环境后如果您在使用 Conda 的情况下），运行：
 
      ```bash
      pip install -r requirements.txt -U
      ```
 
-     This command uses `pip` (Python Package Installer) to read the `requirements.txt` file in the `backend` directory. `requirements.txt` lists all the Python libraries that the backend needs to run. `pip install` downloads and installs these libraries into your active Python environment (your Conda environment if you are using it, or your system-wide Python environment otherwise). The `-U` flag ensures you get the latest compatible versions of the libraries.
+     此命令使用 `pip`（Python 包管理器）来读取 `backend` 目录中的 `requirements.txt` 文件。`requirements.txt` 列出了后端运行所需的全部 Python 库。`pip install` 会下载并安装这些库到您的活动 Python 环境（如果使用 Conda，则安装到 Conda 环境；否则安装到系统范围的 Python 环境中）。`-U` 标志确保您安装的是这些库的最新兼容版本。
 
-2. **Start the Backend Development Server:**
-     - In your *backend* terminal, run:
+2. **启动后端开发服务器：**
+     - 在您的*后端*终端中，运行：
 
      ```bash
      sh dev.sh
      ```
 
-     This command executes the `dev.sh` script. This script likely contains the command to start the backend development server. *(You can open and examine the `dev.sh` file in your code editor to see the exact command being run if you are curious.)* The backend server will usually start and print some output to the terminal.
+     此命令执行 `dev.sh` 脚本。该脚本可能包含启动后端开发服务器的命令。*(您可以在代码编辑器中打开并查看 `dev.sh` 文件，了解具体运行的命令，如果好奇的话。）* 后端服务器通常会启动并向终端输出一些日志。
 
-     📄 **Explore the API Documentation:** Once the backend is running, you can access the automatically generated API documentation in your web browser at [http://localhost:8080/docs](http://localhost:8080/docs). This documentation is incredibly valuable for understanding the backend API endpoints, how to interact with the backend, and what data it expects and returns. Keep this documentation handy as you develop!
+     📄 **浏览 API 文档：** 启动后端后，您可以在网页浏览器中访问自动生成的 API 文档，链接为 [http://localhost:8080/docs](http://localhost:8080/docs)。该文档对于了解后端 API 端点、如何与后端交互以及预期的数据输入和输出非常有用。在开发过程中，请随时查看此文档！
 
-🎉 **Congratulations!** If you have followed all the steps, you should now have both the frontend and backend development servers running locally. Go back to your browser tab where you accessed the frontend (usually [http://localhost:5173](http://localhost:5173)). **Refresh the page.** You should now see the full Open WebUI application running in your browser, connected to your local backend!
+🎉 **恭喜！** 如果您按照所有步骤操作，现在您应该已经在本地运行了前端和后端开发服务器。返回浏览器中访问前端的标签页（通常是 [http://localhost:5173](http://localhost:5173)）。**刷新页面。** 您现在应该在浏览器中看到完整的 Open WebUI 应用程序，并连接到您的本地后端！
 
-## Troubleshooting Common Issues
+## 常见问题排查
 
-Here are solutions to some common problems you might encounter during setup or development:
+以下是一些您在设置或开发过程中可能遇到的常见问题及其解决方法：
 
-### 💥 "FATAL ERROR: Reached Heap Limit" (Frontend)
+### 💥 "FATAL ERROR: Reached Heap Limit" （前端）
 
-This error, often seen during frontend development, indicates that Node.js is running out of memory during the build process, especially when working with large frontend applications.
+此错误通常出现在前端开发过程中，当 Node.js 在构建过程中内存不足时，尤其是处理大型前端应用程序时。
 
-**Solution:** Increase the Node.js heap size. This gives Node.js more memory to work with. You have a couple of options:
+**解决方案：** 增加 Node.js 的堆内存大小。这会为 Node.js 提供更多可用内存，您有以下两种选择：
 
-1. **Using `NODE_OPTIONS` Environment Variable (Recommended for Development):**
-   - This is a temporary way to increase the memory limit for the current terminal session. Before running `npm run dev` or `npm run build` in your *frontend* terminal, set the `NODE_OPTIONS` environment variable:
+1. **使用 `NODE_OPTIONS` 环境变量（推荐用于开发）：**
+   - 这是为当前终端会话暂时增加内存限制的方法。在您的*前端*终端中运行 `npm run dev` 或 `npm run build` 之前，设置 `NODE_OPTIONS` 环境变量：
 
      ```bash
-     export NODE_OPTIONS="--max-old-space-size=4096" # For Linux/macOS (bash, zsh)
-     # set NODE_OPTIONS=--max-old-space-size=4096 # For Windows (Command Prompt)
-     # $env:NODE_OPTIONS="--max-old-space-size=4096" # For Windows (PowerShell)
+     export NODE_OPTIONS="--max-old-space-size=4096" # Linux/macOS（bash, zsh）
+     # set NODE_OPTIONS=--max-old-space-size=4096 # Windows（命令提示符）
+     # $env:NODE_OPTIONS="--max-old-space-size=4096" # Windows（PowerShell）
      npm run dev
      ```
 
-     Choose the command appropriate for your operating system and terminal. `4096` represents 4GB of memory. You can try increasing this value further if needed (e.g., `8192` for 8GB). This setting will only apply to commands run in the current terminal session.
+     选择适合您操作系统和终端的命令。`4096` 表示 4GB 内存。如果需要，可以尝试进一步增加此值（例如 `8192` 用于 8GB）。此设置仅对当前终端会话中的命令有效。
 
-2. **Modifying `Dockerfile` (For Dockerized Environments):**
-   - If you are working with Docker, you can permanently set the `NODE_OPTIONS` environment variable within your `Dockerfile`. This is useful for consistent memory allocation in Dockerized environments, as shown in the original guide example:
+2. **修改 `Dockerfile`（针对 Docker 环境）：**
+   - 如果您使用 Docker，可以在您的 `Dockerfile` 中永久设置 `NODE_OPTIONS` 环境变量。这对于在 Docker 环境中保持一致的内存分配非常有用，具体示例如下：
 
      ```dockerfile
      ENV NODE_OPTIONS=--max-old-space-size=4096
      ```
 
-   - **Allocate Sufficient RAM:** Regardless of the method, ensure your system or Docker container has enough RAM available for Node.js to use. **At least 4 GB of RAM is recommended**, and more might be needed for larger projects or complex builds. Close unnecessary applications to free up RAM.
+   - **分配足够的 RAM：** 无论使用哪种方法，都要确保您的系统或 Docker 容器有足够的可用 RAM。**建议至少分配 4GB RAM**，对于更大的项目或复杂的构建可能需要更多内存。关闭不必要的应用程序以释放 RAM。
 
-### ⚠️ Port Conflicts (Frontend & Backend)
+### ⚠️ 端口冲突（前端和后端）
 
-If you see errors related to ports, such as "Address already in use" or "Port already bound," it means another application on your system is already using port `5173` (default for frontend) or `8080` (default for backend). Only one application can use a specific port at a time.
+如果您看到与端口相关的错误，例如 "Address already in use" 或 "Port already bound"，这意味着您的系统中已有另一个应用程序正在使用 `5173` 端口（前端默认端口）或 `8080` 端口（后端默认端口）。一个特定的端口一次只能被一个应用程序使用。
 
-**Solution:**
+**解决方案：**
 
-1. **Identify the Conflicting Process:** You need to find out which application is using the port you need.
-   - **Linux/macOS:** Open a new terminal and use the `lsof` or `netstat` commands:
-     - `lsof -i :5173` (or `:8080` for the backend port)
-     - `netstat -tulnp | grep 5173` (or `8080`)
-     These commands will list the process ID (PID) and the name of the process using the specified port.
-   - **Windows:** Open Command Prompt or PowerShell as an administrator and use `netstat` or `Get-NetTCPConnection`:
-     - `netstat -ano | findstr :5173` (or `:8080`) (Command Prompt)
-     - `Get-Process -Id (Get-NetTCPConnection -LocalPort 5173).OwningProcess` (PowerShell)
-     These commands will also show the PID of the process using the port.
+1. **查找冲突的进程：** 您需要找出正在使用这些端口的应用程序。
+   - **Linux/macOS：** 打开一个新终端，并使用 `lsof` 或 `netstat` 命令：
+     - `lsof -i :5173`（或后端端口 `:8080`）
+     - `netstat -tulnp | grep 5173`（或 `8080`）
+     这些命令会列出使用指定端口的进程 ID（PID）和进程名称。
+   - **Windows：** 以管理员身份打开命令提示符或 PowerShell，使用 `netstat` 或 `Get-NetTCPConnection`：
+     - `netstat -ano | findstr :5173`（或 `:8080`）（命令提示符）
+     - `Get-Process -Id (Get-NetTCPConnection -LocalPort 5173).OwningProcess`（PowerShell）
+     这些命令同样会显示使用该端口的进程 ID。
 
-2. **Terminate the Conflicting Process:** Once you identify the process ID (PID), you can stop the application using that port. **Be careful when terminating processes, especially if you are unsure what they are.**
-   - **Linux/macOS:** Use the `kill` command: `kill <PID>` (replace `<PID>` with the actual process ID). If the process doesn't terminate with `kill`, you can use `kill -9 <PID>` (force kill), but use this with caution.
-   - **Windows:** Use the `taskkill` command in Command Prompt or PowerShell as administrator: `taskkill /PID <PID> /F` (replace `<PID>` with the process ID). The `/F` flag forces termination.
+2. **终止冲突的进程：** 一旦确定进程 ID（PID），您可以终止正在使用该端口的应用程序。**在终止进程时请谨慎，尤其是不确定进程用途时。**
+   - **Linux/macOS：** 使用 `kill` 命令：`kill <PID>`（用实际的进程 ID 替换 `<PID>`）。如果进程未能通过 `kill` 终止，可以使用 `kill -9 <PID>`（强制终止），但请谨慎使用。
+   - **Windows：** 在以管理员身份运行的命令提示符或 PowerShell 中使用 `taskkill` 命令：`taskkill /PID <PID> /F`（用进程 ID 替换 `<PID>`）。`/F` 标志表示强制终止。
 
-3. **Alternatively, Change Ports (Advanced):**
-   - If you cannot terminate the conflicting process (e.g., it's a system service you need), you can configure Open WebUI to use different ports for the frontend and/or backend. This usually involves modifying configuration files.
-     - **Frontend Port:** Check the frontend documentation or configuration files (often in `vite.config.js` or similar) for how to change the development server port. You might need to adjust the `.env` file as well if the frontend uses environment variables for the port.
-     - **Backend Port:** Examine the `dev.sh` script or backend configuration files to see how the backend port is set. You might need to modify the startup command or a configuration file to change the backend port. If you change the backend port, you'll likely need to update the frontend's `.env` file to point to the new backend URL.
+3. **或者，修改端口（高级）：**
+   - 如果您无法终止冲突的进程（例如，它是您所需的系统服务），可以配置 Open WebUI 使用其他端口用于前端和/或后端。这通常需要修改配置文件。
+     - **前端端口：** 检查前端文档或配置文件（通常是 `vite.config.js` 或类似文件），了解如何更改开发服务器端口。如果前端使用环境变量指定端口，可能需要调整 `.env` 文件。
+     - **后端端口：** 查看 `dev.sh` 脚本或后端配置文件，了解后端端口的设置方式。您可能需要修改启动命令或配置文件以更改后端端口。如果更改了后端端口，通常需要更新前端的 `.env` 文件以指向新的后端 URL。
 
-### 🔄 Hot Reload Not Working
+### 🔄 热加载不起作用
 
-Hot reload (or hot module replacement - HMR) is a fantastic development feature that automatically refreshes your browser when you make changes to the code. If it's not working, it can significantly slow down your development workflow.
+热加载（或热模块替换 - HMR）是一项出色的开发功能，可以在您修改代码时自动刷新浏览器。如果它不起作用，将显著降低您的开发效率。
 
-**Troubleshooting Steps:**
+**故障排除步骤：**
 
-1. **Verify Development Servers are Running:** Double-check that both `npm run dev` (frontend) and `sh dev.sh` (backend) are running in their respective terminals and haven't encountered any errors. Look for messages in the terminal output indicating they are running and in "watch mode" or "development mode." If there are errors, address them first.
-2. **Check for Watch Mode/HMR Messages:** When the development servers start, they should usually print messages in the terminal indicating that hot reload or watch mode is enabled. Look for phrases like "HMR enabled," "watching for file changes," or similar. If you don't see these messages, there might be a configuration issue.
-3. **Browser Cache:** Sometimes, your browser's cache can prevent you from seeing the latest changes, even if hot reload is working. Try a **hard refresh** in your browser:
+1. **确保开发服务器正在运行：** 再次检查 `npm run dev`（前端）和 `sh dev.sh`（后端）是否在各自的终端中运行并且没有发生错误。从终端输出消息中寻找它们运行并处于“监视模式”或“开发模式”的指示。如果有错误，先解决这些问题。
+2. **检查是否启用了监视模式/HMR：** 当开发服务器启动时，通常会在终端中打印消息，指示已启用热加载或监视模式。寻找诸如 “HMR enabled” 或 “watching for file changes” 等短语。如果没有看到这些消息，可能是配置有问题。
+3. **浏览器缓存问题：** 有时，浏览器的缓存可能会阻止您看到最新更改，即使热加载正在工作。尝试在浏览器中进行**强制刷新**：
    - **Windows/Linux:** Ctrl+Shift+R
    - **macOS:** Cmd+Shift+R
-   - Alternatively, you can try clearing your browser cache or opening the frontend in a private/incognito browser window.
-4. **Dependency Issues (Frontend):** Outdated or corrupted frontend dependencies can sometimes interfere with hot reloading. Try refreshing your frontend dependencies:
-   - In your *frontend* terminal, run:
+   - 或者，可以尝试清除浏览器缓存或在隐私/隐身模式下打开前端。
+4. **依赖问题（前端）：** 过时或损坏的前端依赖可能会干扰热加载。尝试刷新前端依赖：
+   - 在 *前端* 终端中运行：
   
      ```bash
      rm -rf node_modules && npm install
      ```
 
-     This command deletes the `node_modules` directory (where dependencies are stored) and then reinstalls them from scratch. This can resolve issues caused by corrupted or outdated packages.
-5. **Backend Restart Required (For Backend Changes):** Hot reload typically works best for frontend code changes (UI, styling, components). For significant backend code changes (especially changes to server logic, API endpoints, or dependencies), you might need to **manually restart the backend server** (by stopping `sh dev.sh` in your backend terminal and running it again). Hot reload for backend changes is often less reliable or not automatically configured in many backend development setups.
-6. **IDE/Editor Issues:** In rare cases, issues with your IDE or code editor might prevent file changes from being properly detected by the development servers. Try restarting your IDE or ensuring that files are being saved correctly.
-7. **Configuration Problems (Advanced):** If none of the above steps work, there might be a more complex configuration issue with the frontend or backend development server setup. Consult the project's documentation, configuration files (e.g., `vite.config.js` for frontend, backend server configuration files), or seek help from the Open WebUI community or maintainers.
+     此命令会删除存储依赖的 `node_modules` 目录，然后重新从头安装它们。这可以解决因损坏或过时的包引起的问题。
+5. **后端需要重新启动（针对后端更改）：** 热加载通常最适合前端代码的更改（UI、样式、组件）。对于重大后端代码更改（尤其是服务器逻辑、API 端点或依赖项的更改），您可能需要**手动重新启动后端服务器**（通过在后端终端中停止 `sh dev.sh` 并再次运行）。后端更改的热加载通常不太可靠或许多后端开发设置中未自动配置。
+6. **IDE/编辑器问题：** 在极少数情况下，您的 IDE 或代码编辑器的问题可能导致无法正确检测到文件更改。尝试重启您的 IDE 或确保文件被正确保存。
+7. **配置问题（高级）：** 如果上述步骤均不起作用，则可能是前端或后端开发服务器设置中存在更复杂的配置问题。查看项目的文档、配置文件（例如前端的 `vite.config.js`、后端服务器配置文件）或向 Open WebUI 社区或维护者寻求帮助。
 
-## Contributing to Open WebUI
+## 为 Open WebUI 做贡献
 
-We warmly welcome your contributions to Open WebUI! Your help is valuable in making this project even better. Here's a quick guide for a smooth and effective contribution workflow:
+我们热情欢迎您对 Open WebUI 的贡献！您的帮助对提升项目质量至关重要。以下是顺利有效贡献工作流的快速指南：
 
-1. **Understand the Project Structure:** Take some time to familiarize yourself with the project's directory structure, especially the `frontend` and `backend` folders. Look at the code, configuration files, and documentation to get a sense of how things are organized.
-2. **Start with Small Contributions:** If you are new to the project, consider starting with smaller contributions like:
-   - **Documentation improvements:** Fix typos, clarify explanations, add more details to the documentation.
-   - **Bug fixes:** Address reported bugs or issues.
-   - **Small UI enhancements:** Improve styling, fix minor layout issues.
-   These smaller contributions are a great way to get familiar with the codebase and the contribution process.
-3. **Discuss Larger Changes First:** If you are planning to implement a significant new feature or make substantial changes, it's highly recommended to **discuss your ideas with the project maintainers or community first.** You can do this by:
-   - **Opening an issue** on the GitHub repository to propose your feature or change.
-   - **Joining the Open WebUI community channels** (if available, check the project's README or website for links) and discussing your ideas there.
-   This helps ensure that your contribution aligns with the project's goals and avoids wasted effort on features that might not be merged.
-4. **Create a Separate Branch for Your Work:** **Never commit directly to the `dev` branch.** Always create a new branch for each feature or bug fix you are working on. This keeps your changes isolated and makes it easier to manage and submit pull requests.
-   - To create a new branch (e.g., named `my-feature-branch`) based on the `dev` branch:
+1. **了解项目结构：** 花时间熟悉项目的目录结构，特别是 `frontend` 和 `backend` 文件夹。查看代码、配置文件以及文档，了解其组织方式。
+2. **从小的贡献开始：** 如果您是项目的新手，可以从小型贡献开始，例如：
+   - **改善文档：** 修复拼写错误、澄清说明、为文档添加更多细节。
+   - **修复漏洞：** 解决已报告的错误或问题。
+   - **小型 UI 增强：** 改善样式、修复细微的布局问题。
+   这些较小的贡献是熟悉代码库和贡献流程的好方法。
+3. **先讨论重大更改：** 如果您计划实现重大新功能或进行大规模修改，强烈建议**先与项目维护者或社区讨论您的想法。**您可以通过以下方式进行：
+   - 在 GitHub 仓库中**创建一个 issue**，提出您的功能或更改建议。
+   - **加入 Open WebUI 社区频道**（如果有，可查看项目的 README 或网站以获取链接），并在那里讨论您的想法。
+   这样可以确保您的贡献与项目目标保持一致，并避免对可能不会合并的功能浪费时间。
+4. **为您的工作创建单独的分支：** **切勿直接向 `dev` 分支提交代码。** 始终为您正在处理的每个功能或漏洞修复创建一个新分支。这可以使您的更改保持孤立，并使管理和提交 pull requests 更加方便。
+   - 基于 `dev` 分支创建一个新分支（例如，名为 `my-feature-branch`）：
   
      ```bash
      git checkout dev
-     git pull origin dev # Ensure your local dev branch is up-to-date
+     git pull origin dev # 确保你的本地 dev 分支是最新的
      git checkout -b my-feature-branch
      ```
 
-5. **Commit Changes Frequently and Write Clear Commit Messages:** Make small, logical commits as you develop features or fix bugs. **Write clear and concise commit messages** that explain what changes you made and why. Good commit messages make it easier to understand the history of changes and are essential for collaboration.
-   - Example of a good commit message: `Fix: Corrected typo in documentation for backend setup`
-   - Example of a good commit message: `Feat: Implemented user profile page with basic information display`
-6. **Stay Synced with the `dev` Branch Regularly:** While working on your branch, periodically sync your branch with the latest changes from the `dev` branch to minimize merge conflicts later:
+5. **频繁提交更改并撰写清晰的提交信息：** 在开发功能或修复错误时进行小而逻辑清晰的提交。**撰写清晰简明的提交信息**，解释你进行了哪些更改以及原因。优秀的提交信息可以让团队更容易理解更改的历史，对于协作非常重要。
+   - 好的提交信息示例：`Fix: 修正了后台设置文档中的拼写错误`
+   - 好的提交信息示例：`Feat: 实现了显示基本信息的用户个人资料页面`
+6. **定期与 `dev` 分支保持同步：** 在自己的分支上工作时，定期与 `dev` 分支中的最新变化同步，以减少后续的合并冲突：
 
    ```bash
    git checkout dev
@@ -262,17 +262,17 @@ We warmly welcome your contributions to Open WebUI! Your help is valuable in mak
    git merge dev
    ```
 
-   Resolve any merge conflicts that arise during the `git merge` step.
-7. **Run Tests (If Available) Before Pushing:** While this guide doesn't detail specific testing procedures for Open WebUI, it's a good practice to run any available tests before pushing your code. Check the project's documentation or `package.json` (for frontend) and backend files for test-related commands (e.g., `npm run test`, `pytest`, etc.). Running tests helps ensure your changes haven't introduced regressions or broken existing functionality.
-8. **Submit a Pull Request (PR):** Once you have completed your work, tested it (if applicable), and are ready to contribute your changes, submit a pull request (PR) to the `dev` branch of the Open WebUI repository on GitHub.
-   - **Go to the Open WebUI repository on GitHub.**
-   - **Navigate to your branch.**
-   - **Click the "Contribute" or "Pull Request" button** (usually green).
-   - **Fill out the PR form:**
-     - **Title:** Give your PR a clear and descriptive title that summarizes your changes (e.g., "Fix: Resolved issue with login form validation").
-     - **Description:** Provide a more detailed description of your changes, the problem you are solving (if applicable), and any relevant context. Link to any related issues if there are any.
-   - **Submit the PR.**
+   在 `git merge` 步骤中解决任何合并冲突。
+7. **在推送之前运行测试（如果可用）：** 虽然此指南未详细说明 Open WebUI 的特定测试程序，但在推送代码之前运行任何可用测试是一个良好的实践。查看项目文档或 `package.json`（针对前端）和后端文件获取与测试相关的命令（例如，`npm run test`、`pytest` 等）。运行测试程序可以确保你的更改未引入回归问题或破坏现有功能。
+8. **提交拉取请求（PR）：** 一旦你完成了工作并经过必要的测试（如果适用）且准备贡献更改，请向 Open WebUI 仓库的 `dev` 分支提交拉取请求（PR）。
+   - **进入 GitHub 上的 Open WebUI 仓库。**
+   - **导航到你的分支。**
+   - **点击 "Contribute" 或 "Pull Request" 按钮**（通常是绿色的）。
+   - **填写 PR 表单：**
+     - **标题：** 给你的 PR 提供一个清晰且描述性的标题，摘要说明你的更改（例如，"Fix: 修复登录表单验证的问题"）。
+     - **描述：** 提供更详细的更改说明，解决的问题（如果有）以及任何相关背景。如果有相关问题，请链接到这些问题。
+   - **提交 PR。**
 
-   Project maintainers will review your pull request, provide feedback, and potentially merge your changes. Be responsive to feedback and be prepared to make revisions if requested.
+   项目维护者将审核你的拉取请求，提供反馈并可能合并你的更改。请积极响应反馈并准备好按照要求进行修改。
 
-**Thank you for reading this comprehensive guide and for your interest in contributing to Open WebUI! We're excited to see your contributions and help you become a part of the Open WebUI community!** 🎉 Happy coding!
+**感谢你阅读这份详细的指南并有兴趣为 Open WebUI 做贡献！我们很期待看到你的贡献，并帮助你成为 Open WebUI 社区的一员！** 🎉 祝编码愉快！

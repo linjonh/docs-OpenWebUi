@@ -1,123 +1,123 @@
 ---
 sidebar_position: 6
-title: "📝 Evaluation"
+title: "📝 评估"
 ---
 
 
-## Why Should I Evaluate Models?
+## 为什么要评估模型？
 
-Meet **Alex**, a machine learning engineer at a mid-sized company. Alex knows there are numerous AI models out there—GPTs, LLaMA, and many more—but which one works best for the job at hand? They all sound impressive on paper, but Alex can’t just rely on public leaderboards. These models perform differently depending on the context, and some models may have been trained on the evaluation dataset (sneaky!). Plus, the way these models write can sometimes feel … off.
+认识一下 **Alex**，一位中型公司的机器学习工程师。Alex 知道市面上有很多 AI 模型——如 GPTs、LLaMA 等等——但哪一个最适合目前的工作？这些模型在纸面上看起来都很厉害，但 Alex 不能仅仅依靠公开排行榜。这些模型在不同的场景中表现各异，有些模型甚至可能是在评估数据集上训练过的（很狡猾！）。此外，这些模型的生成文本方式有时会感觉...不太合适。
 
-That's where Open WebUI comes in. It gives Alex and their team an easy way to evaluate models based on their actual needs. No convoluted math. No heavy lifting. Just thumbs up or thumbs down while interacting with the models.
+这就是 Open WebUI 的用武之地。它为 Alex 和团队提供了一种简单的方法，根据实际需要评估模型。没有复杂的数学，没有繁重的工作，只需在与模型交互时投个赞成或反对票。
 
-### TL;DR
+### 总结
 
-- **Why evaluations matter**: Too many models, but not all fit your specific needs. General public leaderboards can't always be trusted.
-- **How to solve it**: Open WebUI offers a built-in evaluation system. Use a thumbs up/down to rate model responses.
-- **What happens behind the scenes**: Ratings adjust your personalized leaderboard, and snapshots from rated chats will be used for future model fine-tuning!
-- **Evaluation options**: 
-  - **Arena Model**: Randomly selects models for you to compare.
-  - **Normal Interaction**: Just chat like usual and rate the responses.
-
----
-
-### Why Is Public Evaluation Not Enough?
-
-- Public leaderboards aren’t tailored to **your** specific use case.
-- Some models are trained on evaluation datasets, affecting the fairness of the results.
-- A model may perform well overall, but its communication style or responses just don’t fit the “vibe” you want.
-
-### The Solution: Personalized Evaluation with Open WebUI
-
-Open WebUI has a built-in evaluation feature that lets you and your team discover the model best suited for your particular needs—all while interacting with the models.
-
-How does it work? Simple!
-
-- **During chats**, leave a thumbs up if you like a response, or a thumbs down if you don’t. If the message has a **sibling message** (like a regenerated response or part of a side-by-side model comparison), you’re contributing to your **personal leaderboard**.
-- **Leaderboards** are easily accessible in the Admin section, helping you track which models are performing best according to your team.
-
-One cool feature? **Whenever you rate a response**, the system captures a **snapshot of that conversation**, which will later be used to refine models or even power future model training. (Do note, this is still being developed!)
+- **为什么评估很重要**: 模型众多，但并非都适合你的具体需求。一般的公开排行榜依赖性不可靠。
+- **如何解决**: Open WebUI 提供了一个内置的评估系统。用赞成/反对来对模型回复进行评分。
+- **幕后机制**: 评分会调整你的个性化排行榜，且评分的对话快照将用于未来模型的微调！
+- **评估选项**: 
+  - **竞技场模式**: 随机选模供你比较。
+  - **普通交互**: 像平常一样聊天并对回复进行评分。
 
 ---
 
-### Two Ways to Evaluate an AI Model
+### 为什么公开评估不够？
 
-Open WebUI provides two straightforward approaches for evaluating AI models. 
+- 公开排行榜未能针对**你的**特定应用场景量身定制。
+- 一些模型是在评估数据集上训练的，影响了结果的公平性。
+- 一个模型可能整体表现不错，但其交流风格或回复可能不符合你想要的“感觉”。
 
-### **1. Arena Model**
+### 解决方案：使用 Open WebUI 进行个性化评估
 
-The **Arena Model** randomly selects from a pool of available models, making sure the evaluation is fair and unbiased. This helps in removing a potential flaw in manual comparison: **ecological validity** – ensuring you don’t knowingly or unknowingly favor one model.
+Open WebUI 内置了评估功能，让你和团队在与模型交互的过程中轻松发现最适合的模型。
 
-How to use it:
-- Select a model from the Arena Model selector.
-- Use it like you normally would, but now you’re in “arena mode.”
+如何操作？很简单！
+
+- **在聊天时**，如果喜欢某个回复就投个赞成票，不喜欢就投反对票。如果消息有**关联消息**（例如重新生成的回复或部分模型对比的一部分），你就在为你的**个人排行榜**贡献数据。
+- **排行榜**可在管理员部分轻松访问，帮助你追踪哪些模型根据团队需求表现最佳。
+
+一个很酷的功能？**每当你评分某个回复时**，系统会捕获一个**对话快照**，以后可以用来优化模型甚至用于未来模型培训。（请注意，这功能仍在开发中！）
+
+---
+
+### 两种评估 AI 模型的方法
+
+Open WebUI 提供了两种简单直接的 AI 模型评估方式。
+
+### **1. 竞技场模式**
+
+**竞技场模式**从可用模型池中随机选择，确保评估公平且不偏袒。这有助于消除手动比较的潜在缺陷：**生态有效性**——确保你不会有意或无意地偏袒某个模型。
+
+使用方法：
+- 从竞技场模型选择器中选择一个模型。
+- 像平常一样使用，但现在你处于“竞技场模式”中。
   
-For your feedback to affect the leaderboard, you need what’s called a **sibling message**. What's a sibling message? A sibling message is just any alternative response generated by the same query (think of message regenerations or having multiple models generating responses side-by-side). This way, you’re comparing responses **head-to-head**.
+你提供反馈影响排行榜时，需要所谓的**关联消息**。什么是关联消息？关联消息是由相同查询生成的任何替代回复（例如消息重生成或多个模型并排生成的回复）。通过这种方式，你是在**正面交锋**中进行比较。
 
-- **Scoring tip**: When you thumbs up one response, the other will automatically get a thumbs down. So, be mindful and only upvote the message you believe is genuinely the best!
-- Once you rate the responses, you can check out the leaderboard to see how models are stacking up.
+- **评分技巧**: 当你对一个回复点赞时，另一个会自动获得反对票。所以请谨慎，只对你认为真正优秀的回复点赞！
+- 一旦你评分了回复，就可以查看排行榜了解模型的表现。
 
-Here’s a sneak peek at how the Arena Model interface works:
+以下是竞技场模式界面的预览：
 
-![Arena Model Example](/images/evaluation/arena.png)
+![竞技场模式示例](/images/evaluation/arena.png)
 
-Need more depth? You can even replicate a [**Chatbot Arena**](https://lmarena.ai/)-style setup!
+需要更深入的玩法？你甚至可以复制一个 [**Chatbot Arena**](https://lmarena.ai/) 样式的设置！
 
-![Chatbot Arena Example](/images/evaluation/arena-many.png)
+![Chatbot Arena 示例](/images/evaluation/arena-many.png)
 
-### **2. Normal Interaction**
+### **2. 普通交互**
 
-No need to switch to “arena mode” if you don't want to. You can use Open WebUI normally and rate the AI model responses as you would in everyday operations. Just thumbs up/down the model responses, whenever you feel like it.  However, **if you want your feedback to be used for ranking on the leaderboard**, you'll need to **swap out the model and interact with a different one**. This ensures there's a **sibling response** to compare it with – only comparisons between two different models will influence rankings.
+如果你不想切换到“竞技场模式”，也可以正常使用 Open WebUI 并在日常操作中对模型回复进行评分。在觉得合适时对模型回复投赞成或反对票即可。然而，**如果你希望你的反馈被用于排行榜排名**，你需要**切换模型并与不同的模型进行交互**。这可以确保有一个**关联消息**进行比较——只有对两个不同模型的比较会影响排名。
 
-For instance, this is how you can rate during a normal interaction:
+例如，这是你如何在普通交互中进行评分：
 
-![Normal Model Rating Interface](/images/evaluation/normal.png)
+![普通模型评分界面](/images/evaluation/normal.png)
 
-And here's an example of setting up a multi-model comparison, similar to an arena:
+以下是设置多个模型比较（类似竞技场）的示例：
 
-![Multi-Model Comparison](/images/evaluation/normal-many.png)
+![多模型比较示例](/images/evaluation/normal-many.png)
 
 ---
 
-## Leaderboard
+## 排行榜
 
-After rating, check out the **Leaderboard** under the Admin Panel. This is where you’ll visually see how models are performing, ranked using an **Elo rating system** (think chess rankings!) You’ll get a real view of which models are truly standing out during the evaluations.
+评分后，请检查管理员面板下的 **排行榜**。这里可以直观地看到模型的表现，它们通过 **Elo 评分系统** 排名（类似象棋排名！）。你将获得一个真实的视图，了解哪些模型在评估过程中真正脱颖而出。
 
-This is a sample leaderboard layout:
+这是一个示例排行榜布局：
 
-![Leaderboard Example](/images/evaluation/leaderboard.png)
+![排行榜示例](/images/evaluation/leaderboard.png)
 
-### Topic-Based Reranking
+### 基于主题的重新排名
 
-When you rate chats, you can **tag them by topic** for more granular insights. This is especially useful if you’re working in different domains like **customer service, creative writing, technical support**, etc.
+在评级聊天时，可以为其 **添加主题标签** 以获取更详细的见解。这在处理不同领域（如 **客户服务、创意写作、技术支持** 等）时特别有用。
 
-#### Automatic Tagging
-Open WebUI tries to **automatically tag chats** based on the conversation topic. However, depending on the model you're using, the automatic tagging feature might **sometimes fail** or misinterpret the conversation. When this happens, it’s best practice to **manually tag your chats** to ensure the feedback is accurate.
+#### 自动标签
+Open WebUI 尝试根据对话主题**自动为聊天添加标签**。然而，具体自动标签功能可能会因所使用的模型而有所差异，**有时可能会失败**或误解对话内容。如果出现这种情况，最佳做法是**手动为聊天添加标签**以确保反馈准确。
 
-- **How to manually tag**: When you rate a response, you'll have the option to add your own tags based on the conversation's context.
+- **如何手动添加标签**：当你对响应进行评级时，将有机会根据对话内容添加自己的标签。
   
-Don't skip this! Tagging is super powerful because it allows you to **re-rank models based on specific topics**. For instance, you might want to see which model performs best for answering technical support questions versus general customer inquiries.
+不要跳过这一步！标签功能非常强大，因为它允许你**基于特定主题重新排名模型**。例如，你可能想了解哪个模型在回答技术支持问题方面的表现最佳，而不是处理一般客户咨询时的表现。
 
-Here’s an example of how re-ranking looks:
+以下是重新排名的示例：
 
-![Reranking Leaderboard by Topic](/images/evaluation/leaderboard-reranked.png)
-
----
-
-### Side Note: Chat Snapshots for Model Fine-Tuning
-
-Whenever you rate a model’s response, Open WebUI *captures a snapshot of that chat*. These snapshots can eventually be used to **fine-tune your own models**—so your evaluations feed into the continuous improvement of the AI.
-
-*(Stay tuned for more updates on this feature, it's actively being developed!)*
+![根据主题重新排名的排行榜](/images/evaluation/leaderboard-reranked.png)
 
 ---
 
-## Summary
+### 小提示：用于模型微调的聊天快照
 
-**In a nutshell**, Open WebUI’s evaluation system has two clear goals:
-1. Help you **easily compare models**.
-2. Ultimately, find the model that meshes best with your individual needs.
+每当你对模型的响应进行评级时，Open WebUI 会 *捕获该聊天的快照*。这些快照最终可用于**微调你自己的模型**，这样你的评估就能融入 AI 的持续改进过程。
 
-At its heart, the system is all about making AI model evaluation **simple, transparent, and customizable** for every user. Whether it's through the Arena Model or Normal Chat Interaction, **you’re in full control of determining which AI model works best for your specific use case**!
+*(敬请期待有关此功能的更多更新，其开发工作正在积极推进！)*
 
-**As always**, all of your data stays securely on **your instance**, and nothing is shared unless you specifically **opt-in for community sharing**. Your privacy and data autonomy are always prioritized.
+---
+
+## 总结
+
+**简单来说**，Open WebUI 的评估系统有两个明确目标：
+1. 帮助你**轻松比较模型**。
+2. 最终找到最适合你个人需求的模型。
+
+系统的核心在于使 AI 模型评估对每位用户而言都变得**简单、透明和可定制**。无论是通过竞技场模型还是正常聊天交互，**你都完全掌控确定哪种 AI 模型最适合你的具体用例**！
+
+**一如既往**，你的所有数据都安全地保存在**你的实例中**，除非你明确选择 **加入社区共享**，否则数据不会共享。始终优先考虑你的隐私和数据自治。

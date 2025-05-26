@@ -1,21 +1,21 @@
 ### Let's Encrypt
 
-Let's Encrypt provides free SSL certificates trusted by most browsers, ideal for production environments.
+Let's Encrypt 提供免费且被大多数浏览器信任的 SSL 证书，非常适合生产环境。
 
-#### Prerequisites
+#### 前置条件
 
-- **Certbot** installed on your system.
-- DNS records properly configured to point to your server.
+- **Certbot** 已安装在您的系统上。
+- DNS 记录已正确配置并指向您的服务器。
 
-#### Steps
+#### 步骤
 
-1. **Create Directories for Nginx Files:**
+1. **为 Nginx 文件创建目录：**
 
     ```bash
     mkdir -p conf.d ssl
     ```
 
-2. **Create Nginx Configuration File:**
+2. **创建 Nginx 配置文件：**
 
     **`conf.d/open-webui.conf`:**
 
@@ -27,7 +27,7 @@ Let's Encrypt provides free SSL certificates trusted by most browsers, ideal for
         location / {
             proxy_pass http://host.docker.internal:3000;
     
-            # Add WebSocket support (Necessary for version 0.5.0 and up)
+            # 添加 WebSocket 支持（适用于 0.5.0 及更高版本）
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
@@ -37,53 +37,53 @@ Let's Encrypt provides free SSL certificates trusted by most browsers, ideal for
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
 
-            # (Optional) Disable proxy buffering for better streaming response from models
+            # （可选）禁用代理缓冲以便更好地流式响应模型数据
             proxy_buffering off;
 
-            # (Optional) Increase max request size for large attachments and long audio messages
+            # （可选）增加最大请求大小以支持大型附件和较长的语音消息
             client_max_body_size 20M;
             proxy_read_timeout 10m;
         }
     }
     ```
 
-3. **Simplified Let's Encrypt Script:**
+3. **简化的 Let's Encrypt 脚本：**
 
     **`enable_letsencrypt.sh`:**
 
     ```bash
     #!/bin/bash
 
-    # Description: Simplified script to obtain and install Let's Encrypt SSL certificates using Certbot.
+    # 描述：简化的脚本，使用 Certbot 获取并安装 Let's Encrypt 的 SSL 证书。
 
     DOMAIN="your_domain_or_IP"
     EMAIL="your_email@example.com"
 
-    # Install Certbot if not installed
+    # 如果 Certbot 未安装，则安装
     if ! command -v certbot &> /dev/null; then
-        echo "Certbot not found. Installing..."
+        echo "未找到 Certbot。正在安装..."
         sudo apt-get update
         sudo apt-get install -y certbot python3-certbot-nginx
     fi
 
-    # Obtain SSL certificate
+    # 获取 SSL 证书
     sudo certbot --nginx -d "$DOMAIN" --non-interactive --agree-tos -m "$EMAIL"
 
-    # Reload Nginx to apply changes
+    # 重新加载 Nginx 以应用更改
     sudo systemctl reload nginx
 
-    echo "Let's Encrypt SSL certificate has been installed and Nginx reloaded."
+    echo "Let's Encrypt 的 SSL 证书已安装，并且 Nginx 已重新加载。"
     ```
 
-    **Make the script executable:**
+    **让脚本可执行：**
 
     ```bash
     chmod +x enable_letsencrypt.sh
     ```
 
-4. **Update Docker Compose Configuration:**
+4. **更新 Docker Compose 配置：**
 
-    Add the Nginx service to your `docker-compose.yml`:
+    在您的 `docker-compose.yml` 中添加 Nginx 服务：
 
     ```yaml
     services:
@@ -99,22 +99,22 @@ Let's Encrypt provides free SSL certificates trusted by most browsers, ideal for
           - open-webui
     ```
 
-5. **Start Nginx Service:**
+5. **启动 Nginx 服务：**
 
     ```bash
     docker compose up -d nginx
     ```
 
-6. **Run the Let's Encrypt Script:**
+6. **运行 Let's Encrypt 脚本：**
 
-    Execute the script to obtain and install the SSL certificate:
+    执行脚本以获取并安装 SSL 证书：
 
     ```bash
     ./enable_letsencrypt.sh
     ```
 
-#### Access the WebUI
+#### 访问 WebUI
 
-Access Open WebUI via HTTPS at:
+通过 HTTPS 访问 Open WebUI：
 
 [https://your_domain_or_IP](https://your_domain_or_IP)

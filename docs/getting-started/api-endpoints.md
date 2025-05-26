@@ -1,64 +1,64 @@
 ---
 sidebar_position: 400
-title: "🔗 API Endpoints"
+title: "🔗 API 端点"
 ---
 
-This guide provides essential information on how to interact with the API endpoints effectively to achieve seamless integration and automation using our models. Please note that this is an experimental setup and may undergo future updates for enhancement.
+本指南提供了有关如何有效地与 API 端点交互以实现无缝集成和利用我们的模型进行自动化的基本信息。请注意，这是一个实验性设置，可能会在未来进行更新以增强功能。
 
-## Authentication
+## 认证
 
-To ensure secure access to the API, authentication is required 🛡️. You can authenticate your API requests using the Bearer Token mechanism. Obtain your API key from **Settings > Account** in the Open WebUI, or alternatively, use a JWT (JSON Web Token) for authentication.
+为了确保安全访问 API，需要进行身份认证 🛡️。您可以使用 Bearer Token 机制对您的 API 请求进行认证。请从 Open WebUI 的 **设置 > 帐户** 获取您的 API 密钥，或者使用 JWT（JSON Web Token）进行认证。
 
-## Notable API Endpoints
+## 主要 API 端点
 
-### 📜 Retrieve All Models
+### 📜 检索所有模型
 
-- **Endpoint**: `GET /api/models`
-- **Description**: Fetches all models created or added via Open WebUI.
-- **Example**:
+- **端点**: `GET /api/models`
+- **描述**: 获取通过 Open WebUI 创建或添加的所有模型。
+- **示例**:
 
   ```bash
   curl -H "Authorization: Bearer YOUR_API_KEY" http://localhost:3000/api/models
   ```
 
-### 💬 Chat Completions
+### 💬 聊天完成
 
-- **Endpoint**: `POST /api/chat/completions`
-- **Description**: Serves as an OpenAI API compatible chat completion endpoint for models on Open WebUI including Ollama models, OpenAI models, and Open WebUI Function models.
+- **端点**: `POST /api/chat/completions`
+- **描述**: 一个与 OpenAI API 兼容的聊天完成端点，支持 Open WebUI 的模型，包括 Ollama 模型、OpenAI 模型和 Open WebUI 功能模型。
 
-- **Curl Example**:
+- **Curl 示例**:
 
   ```bash
   curl -X POST http://localhost:3000/api/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
+  -d &apos;{
         "model": "llama3.1",
         "messages": [
           {
             "role": "user",
-            "content": "Why is the sky blue?"
+            "content": "为什么天空是蓝色的？"
           }
         ]
-      }'
+      }&apos;
   ```
   
-- **Python Example**:
+- **Python 示例**:
   ```python
   import requests
   
   def chat_with_model(token):
-      url = 'http://localhost:3000/api/chat/completions'
+      url = &apos;http://localhost:3000/api/chat/completions&apos;
       headers = {
-          'Authorization': f'Bearer {token}',
-          'Content-Type': 'application/json'
+          &apos;Authorization&apos;: f&apos;Bearer {token}&apos;,
+          &apos;Content-Type&apos;: &apos;application/json&apos;
       }
       data = {
         "model": "granite3.1-dense:8b",
         "messages": [
           {
             "role": "user",
-            "content": "Why is the sky blue?"
+            "content": "为什么天空是蓝色的？"
           }
         ]
       }
@@ -66,209 +66,209 @@ To ensure secure access to the API, authentication is required 🛡️. You can 
       return response.json()
   ```
 
-### 🦙 Ollama API Proxy Support
+### 🦙 Ollama API 代理支持
 
-If you want to interact directly with Ollama models—including for embedding generation or raw prompt streaming—Open WebUI offers a transparent passthrough to the native Ollama API via a proxy route.
+如果您希望直接与 Ollama 模型交互（包括生成嵌入或原始提示流），Open WebUI 提供了一条透明的代理路由，传递到原生的 Ollama API。
 
-- **Base URL**: `/ollama/<api>`
-- **Reference**: [Ollama API Documentation](https://github.com/ollama/ollama/blob/main/docs/api.md)
+- **基础 URL**: `/ollama/<api>`
+- **参考文档**: [Ollama API 文档](https://github.com/ollama/ollama/blob/main/docs/api.md)
 
-#### 🔁 Generate Completion (Streaming)
+#### 🔁 生成完成（流式）
 
 ```bash
-curl http://localhost:3000/ollama/api/generate -d '{
+curl http://localhost:3000/ollama/api/generate -d &apos;{
   "model": "llama3.2",
-  "prompt": "Why is the sky blue?"
-}'
+  "prompt": "为什么天空是蓝色的？"
+}&apos;
 ```
 
-#### 📦 List Available Models
+#### 📦 列出可用模型
 
 ```bash
 curl http://localhost:3000/ollama/api/tags
 ```
 
-#### 🧠 Generate Embeddings
+#### 🧠 生成嵌入
 
 ```bash
-curl -X POST http://localhost:3000/ollama/api/embed -d '{
+curl -X POST http://localhost:3000/ollama/api/embed -d &apos;{
   "model": "llama3.2",
-  "input": ["Open WebUI is great!", "Let's generate embeddings."]
-}'
+  "input": ["Open WebUI 很棒！", "让我们生成嵌入。"]
+}&apos;
 ```
 
-This is ideal for building search indexes, retrieval systems, or custom pipelines using Ollama models behind the Open WebUI.
+这非常适合使用 Ollama 模型在 Open WebUI 背后构建搜索索引、检索系统或自定义管道。
 
-### 🧩 Retrieval Augmented Generation (RAG)
+### 🧩 检索增强生成 (RAG)
 
-The Retrieval Augmented Generation (RAG) feature allows you to enhance responses by incorporating data from external sources. Below, you will find the methods for managing files and knowledge collections via the API, and how to use them in chat completions effectively.
+检索增强生成 (RAG) 功能允许通过整合来自外部数据源的数据来增强响应。以下是通过 API 管理文件和知识集合的方法，以及在聊天完成中有效使用它们的方法。
 
-#### Uploading Files
+#### 上传文件
 
-To utilize external data in RAG responses, you first need to upload the files. The content of the uploaded file is automatically extracted and stored in a vector database.
+若要在 RAG 响应中使用外部数据，您需要先上传文件。上传文件的内容会自动提取并存储在一个向量数据库中。
 
-- **Endpoint**: `POST /api/v1/files/`
-- **Curl Example**:
+- **端点**: `POST /api/v1/files/`
+- **Curl 示例**:
 
   ```bash
   curl -X POST -H "Authorization: Bearer YOUR_API_KEY" -H "Accept: application/json" \
   -F "file=@/path/to/your/file" http://localhost:3000/api/v1/files/
   ```
 
-- **Python Example**:
+- **Python 示例**:
 
   ```python
   import requests
   
   def upload_file(token, file_path):
-      url = 'http://localhost:3000/api/v1/files/'
+      url = &apos;http://localhost:3000/api/v1/files/&apos;
       headers = {
-          'Authorization': f'Bearer {token}',
-          'Accept': 'application/json'
+          &apos;Authorization&apos;: f&apos;Bearer {token}&apos;,
+          &apos;Accept&apos;: &apos;application/json&apos;
       }
-      files = {'file': open(file_path, 'rb')}
+      files = {&apos;file&apos;: open(file_path, &apos;rb&apos;)}
       response = requests.post(url, headers=headers, files=files)
       return response.json()
   ```
 
-#### Adding Files to Knowledge Collections
+#### 将文件添加到知识集合
 
-After uploading, you can group files into a knowledge collection or reference them individually in chats.
+上传文件后，您可以将文件分组到一个知识集合中，也可以在聊天中单独引用它们。
 
-- **Endpoint**: `POST /api/v1/knowledge/{id}/file/add`
-- **Curl Example**:
+- **端点**: `POST /api/v1/knowledge/{id}/file/add`
+- **Curl 示例**:
 
   ```bash
   curl -X POST http://localhost:3000/api/v1/knowledge/{knowledge_id}/file/add \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"file_id": "your-file-id-here"}'
+  -d &apos;{"file_id": "your-file-id-here"}&apos;
   ```
 
-- **Python Example**:
+- **Python 示例**:
 
   ```python
   import requests
 
   def add_file_to_knowledge(token, knowledge_id, file_id):
-      url = f'http://localhost:3000/api/v1/knowledge/{knowledge_id}/file/add'
+      url = f&apos;http://localhost:3000/api/v1/knowledge/{knowledge_id}/file/add&apos;
       headers = {
-          'Authorization': f'Bearer {token}',
-          'Content-Type': 'application/json'
+          &apos;Authorization&apos;: f&apos;Bearer {token}&apos;,
+          &apos;Content-Type&apos;: &apos;application/json&apos;
       }
-      data = {'file_id': file_id}
+      data = {&apos;file_id&apos;: file_id}
       response = requests.post(url, headers=headers, json=data)
       return response.json()
   ```
 
-#### Using Files and Collections in Chat Completions
+#### 在聊天完成中使用文件和集合
 
-You can reference both individual files or entire collections in your RAG queries for enriched responses.
+您可以在RAG查询中参考单个文件或整个集合，以获取丰富的响应。
 
-##### Using an Individual File in Chat Completions
+##### 在聊天完成中使用单个文件
 
-This method is beneficial when you want to focus the chat model's response on the content of a specific file.
+当您希望将聊天模型的响应集中在特定文件的内容上时，此方法非常有用。
 
-- **Endpoint**: `POST /api/chat/completions`
-- **Curl Example**:
+- **端点**: `POST /api/chat/completions`
+- **Curl 示例**:
 
   ```bash
   curl -X POST http://localhost:3000/api/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
+  -d &apos;{
         "model": "gpt-4-turbo",
         "messages": [
-          {"role": "user", "content": "Explain the concepts in this document."}
+          {"role": "user", "content": "解释此文档中的概念。"}
         ],
         "files": [
           {"type": "file", "id": "your-file-id-here"}
         ]
-      }'
+      }&apos;
   ```
 
-- **Python Example**:
+- **Python 示例**:
 
   ```python
   import requests
 
   def chat_with_file(token, model, query, file_id):
-      url = 'http://localhost:3000/api/chat/completions'
+      url = &apos;http://localhost:3000/api/chat/completions&apos;
       headers = {
-          'Authorization': f'Bearer {token}',
-          'Content-Type': 'application/json'
+          &apos;Authorization&apos;: f&apos;Bearer {token}&apos;,
+          &apos;Content-Type&apos;: &apos;application/json&apos;
       }
       payload = {
-          'model': model,
-          'messages': [{'role': 'user', 'content': query}],
-          'files': [{'type': 'file', 'id': file_id}]
+          &apos;model&apos;: model,
+          &apos;messages&apos;: [{&apos;role&apos;: &apos;user&apos;, &apos;content&apos;: query}],
+          &apos;files&apos;: [{&apos;type&apos;: &apos;file&apos;, &apos;id&apos;: file_id}]
       }
       response = requests.post(url, headers=headers, json=payload)
       return response.json()
   ```
 
-##### Using a Knowledge Collection in Chat Completions
+##### 在聊天完成中使用知识集合
 
-Leverage a knowledge collection to enhance the response when the inquiry may benefit from a broader context or multiple documents.
+利用知识集合可以增强响应，尤其当查询可能受益于更广泛的上下文或多个文档时。
 
-- **Endpoint**: `POST /api/chat/completions`
-- **Curl Example**:
+- **端点**: `POST /api/chat/completions`
+- **Curl 示例**:
 
   ```bash
   curl -X POST http://localhost:3000/api/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
+  -d &apos;{
         "model": "gpt-4-turbo",
         "messages": [
-          {"role": "user", "content": "Provide insights on the historical perspectives covered in the collection."}
+          {"role": "user", "content": "提供关于集合中涵盖的历史观点的见解。"}
         ],
         "files": [
           {"type": "collection", "id": "your-collection-id-here"}
         ]
-      }'
+      }&apos;
   ```
 
-- **Python Example**:
+- **Python 示例**:
 
   ```python
   import requests
   
   def chat_with_collection(token, model, query, collection_id):
-      url = 'http://localhost:3000/api/chat/completions'
+      url = &apos;http://localhost:3000/api/chat/completions&apos;
       headers = {
-          'Authorization': f'Bearer {token}',
-          'Content-Type': 'application/json'
+          &apos;Authorization&apos;: f&apos;Bearer {token}&apos;,
+          &apos;Content-Type&apos;: &apos;application/json&apos;
       }
       payload = {
-          'model': model,
-          'messages': [{'role': 'user', 'content': query}],
-          'files': [{'type': 'collection', 'id': collection_id}]
+          &apos;model&apos;: model,
+          &apos;messages&apos;: [{&apos;role&apos;: &apos;user&apos;, &apos;content&apos;: query}],
+          &apos;files&apos;: [{&apos;type&apos;: &apos;collection&apos;, &apos;id&apos;: collection_id}]
       }
       response = requests.post(url, headers=headers, json=payload)
       return response.json()
   ```
 
-These methods enable effective utilization of external knowledge via uploaded files and curated knowledge collections, enhancing chat applications' capabilities using the Open WebUI API. Whether using files individually or within collections, you can customize the integration based on your specific needs.
+这些方法使得通过上传的文件和精心策划的知识集合有效利用外部知识成为可能，从而增强使用Open WebUI API的聊天应用程序的功能。无论是单独使用文件还是使用集合，您都可以根据具体需求自定义集成。
 
-## Advantages of Using Open WebUI as a Unified LLM Provider
+## 使用Open WebUI作为统一LLM提供者的优势
 
-Open WebUI offers a myriad of benefits, making it an essential tool for developers and businesses alike:
+Open WebUI提供了多种优势，使其成为开发者和企业的必备工具：
 
-- **Unified Interface**: Simplify your interactions with different LLMs through a single, integrated platform.
-- **Ease of Implementation**: Quick start integration with comprehensive documentation and community support.
+- **统一界面**: 通过单一集成平台简化与不同LLM的交互。
+- **实现简单**: 快速开始集成，拥有全面的文档和社区支持。
 
-## Swagger Documentation Links
+## Swagger文档链接
 
 :::important
-Make sure to set the `ENV` environment variable to `dev` in order to access the Swagger documentation for any of these services. Without this configuration, the documentation will not be available.
+确保将`ENV`环境变量设置为`dev`，以便访问这些服务的Swagger文档。如果没有此配置，文档将不可用。
 :::
 
-Access detailed API documentation for different services provided by Open WebUI:
+访问Open WebUI提供的不同服务的详细API文档：
 
-| Application | Documentation Path      |
+| 应用程序     | 文档路径               |
 |-------------|-------------------------|
-| Main        | `/docs`                 |
+| 主应用       | `/docs`                |
 
 
-By following these guidelines, you can swiftly integrate and begin utilizing the Open WebUI API. Should you encounter any issues or have questions, feel free to reach out through our Discord Community or consult the FAQs. Happy coding! 🌟
+按照这些指南，您可以快速集成并开始使用Open WebUI API。如果您遇到任何问题或有疑问，请通过我们的Discord社区联系我们，或者查阅常见问题解答。祝您编码愉快！🌟

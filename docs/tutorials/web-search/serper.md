@@ -4,5 +4,5 @@ title: "Serper"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+此教程为社区贡献内容，不受Open WebUI团队支持。它仅作为针对特定使用场景定制Open WebUI的示范教程。想要贡献？请查看贡献教程。
 :::

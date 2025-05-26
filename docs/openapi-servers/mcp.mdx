@@ -1,83 +1,83 @@
 ---
 sidebar_position: 3
-title: "🛰️ MCP Support"
+title: "🛰️ MCP 支持"
 ---
 
-This documentation explains how to easily set up and deploy the [**MCP (Model Context Protocol)-to-OpenAPI proxy server** (mcpo)](https://github.com/open-webui/mcpo) provided by Open WebUI. Learn how you can effortlessly expose MCP-based tool servers using standard, familiar OpenAPI endpoints suitable for end-users and developers.
+本文档介绍如何轻松设置和部署由 Open WebUI 提供的 [**MCP(Model Context Protocol)-to-OpenAPI 代理服务器** (mcpo)](https://github.com/open-webui/mcpo)。了解如何通过标准、熟悉的 OpenAPI 端点，将基于 MCP 的工具服务器公开给终端用户和开发者。
 
-### 📌 What is the MCP Proxy Server?
+### 📌 什么是 MCP 代理服务器?
 
-The MCP-to-OpenAPI proxy server lets you use tool servers implemented with MCP (Model Context Protocol) directly via standard REST/OpenAPI APIs—no need to manage unfamiliar or complicated custom protocols. If you're an end-user or application developer, this means you can interact easily with powerful MCP-based tooling directly through familiar REST-like endpoints.
+MCP-to-OpenAPI 代理服务器允许您使用 MCP(Model Context Protocol) 实现的工具服务器可以直接通过标准的 REST/OpenAPI API 进行访问——不需要管理陌生或复杂的自定义协议。如果你是终端用户或应用开发人员，这意味着您可以通过熟悉的类 REST 端点轻松地与基于 MCP 的强大工具交互。
 
-### 💡 Why Use mcpo?
+### 💡 为什么使用 mcpo?
 
-While MCP tool servers are powerful and flexible, they commonly communicate via standard input/output (stdio)—often running on your local machine where they can easily access your filesystem, environment, and other native system capabilities.
+尽管 MCP 工具服务器十分强大且灵活，但它们通常通过标准输入/输出(stdio)进行通信——通常在您的本地设备运行，可以轻松访问您的文件系统、环境和其他原生系统功能。
 
-That’s a strength—but also a limitation.
+这是一种优势——但同时也是一种限制。
 
-If you want to deploy your main interface (like Open WebUI) on the cloud, you quickly run into a problem: your cloud instance can’t speak directly to an MCP server running locally on your machine via stdio.
+如果你希望在云端部署你的主界面(例如 Open WebUI)，很快就会遇到一个问题：你的云实例无法通过 stdio 直接与运行在本地设备上的 MCP 服务器交流。
 
-[That’s where mcpo comes in with a game-changing solution.](https://github.com/open-webui/mcpo)
+[这就是 mcpo 带来的革命性解决方案。](https://github.com/open-webui/mcpo)
 
-MCP servers typically rely on raw stdio communication, which is:
+MCP 服务器通常依赖原始的 stdio 通信，其特点包括：
 
-- 🔓 Inherently insecure across environments
-- ❌ Incompatible with most modern tools, UIs, or platforms
-- 🧩 Lacking critical features like authentication, documentation, and error handling
+- 🔓 在跨环境中存在固有的不安全性
+- ❌ 与大多数现代工具、UI 或平台不兼容
+- 🧩 缺乏关键功能，例如身份验证、文档以及错误处理
 
-The mcpo proxy eliminates those issues—automatically:
+mcpo 代理自动消除了这些问题：
 
-- ✅ Instantly compatible with existing OpenAPI tools, SDKs, and clients
-- 🛡 Wraps your tools with secure, scalable, and standards-based HTTP endpoints
-- 🧠 Auto-generates interactive OpenAPI documentation for every tool, entirely config-free
-- 🔌 Uses plain HTTP—no socket setup, daemon juggling, or platform-specific glue code
+- ✅ 立即与现有的 OpenAPI 工具、SDK 和客户端兼容
+- 🛡 使用安全、可扩展和基于标准的 HTTP 端点对工具进行封装
+- 🧠 为每个工具自动生成交互式 OpenAPI 文档，完全无配置
+- 🔌 使用纯 HTTP——无需套接字设置、守护程序管理或平台特定的胶水代码
 
-So even though adding mcpo might at first seem like "just one more layer"—in reality, it simplifies everything while giving you:
+因此，尽管添加 mcpo 乍一看可能像是 "仅仅多了一层"——但实际上，它简化了所有操作，同时为您提供：
 
-- Better integration ✅
-- Better security ✅
-- Better scalability ✅
-- Happier developers & users ✅
+- 更好的集成 ✅
+- 更好的安全性 ✅
+- 更好的可扩展性 ✅
+- 更满意的开发者和用户 ✅
 
-✨ With mcpo, your local-only AI tools become cloud-ready, UI-friendly, and instantly interoperable—without changing a single line of tool server code.
+✨ 使用 mcpo，你的本地 AI 工具将变得云端准备、UI 友好，并能够立即互操作——无需更改工具服务器代码的一行。
 
-### ✅ Quickstart: Running the Proxy Locally
+### ✅ 快速开始：在本地运行代理
 
-Here's how simple it is to launch the MCP-to-OpenAPI proxy server using the lightweight, easy-to-use tool **mcpo** ([GitHub Repository](https://github.com/open-webui/mcpo)):
+以下是使用轻量且易于使用的工具 **mcpo** ([GitHub Repository](https://github.com/open-webui/mcpo)) 启动 MCP-to-OpenAPI 代理服务器的简单步骤：
 
-1. **Prerequisites**
-   - **Python 3.8+** with `pip` installed.
-   - MCP-compatible application (for example: `mcp-server-time`)
-   - (Optional but recommended) `uv` installed for faster startup and zero-config convenience.
+1. **先决条件**
+   - **Python 3.8+**，并安装了 `pip`。
+   - MCP 兼容的应用程序(例如：`mcp-server-time`)
+   - (可选但推荐) 安装 `uv`，以实现更快启动和零配置的便利。
 
-2. **Install mcpo**
+2. **安装 mcpo**
 
-Using **uv** (recommended):
+使用 **uv** (推荐)：
 
 ```bash
 uvx mcpo --port 8000 -- your_mcp_server_command
 ```
 
-Or using `pip`:
+或使用 `pip`：
 
 ```bash
 pip install mcpo
 mcpo --port 8000 -- your_mcp_server_command
 ```
 
-3. 🚀 **Run the Proxy Server**
+3. 🚀 **运行代理服务器**
 
-To start your MCP-to-OpenAPI proxy server, you need an MCP-compatible tool server. If you don't have one yet, the MCP community provides various ready-to-use MCP server implementations.
+要启动 MCP-to-OpenAPI 代理服务器，你需要一个 MCP 兼容的工具服务器。如果你还没有，请查看 MCP 社区提供的一些现成的 MCP 服务器实现。
 
-✨ **Where to find MCP Servers?**
+✨ **在哪里找到 MCP 服务器?**
 
-You can discover officially supported MCP servers at the following repository example:
+你可以在以下示例库中找到官方支持的 MCP 服务器：
 
 - [modelcontextprotocol/servers on GitHub](https://github.com/modelcontextprotocol/servers)
 
-For instance, the popular **Time MCP Server** is documented [here](https://github.com/modelcontextprotocol/servers/blob/main/src/time/README.md), and is typically referenced clearly in the README, inside the provided MCP configuration. Specifically, the README states:
+例如，流行的 **时间 MCP 服务器** 文档在 [这里](https://github.com/modelcontextprotocol/servers/blob/main/src/time/README.md)，且通常会在 README 文件中清楚地引用提供的 MCP 配置。尤其是 README 中指出：
 
-> Add to your Claude settings:
+> 添加到你的 Claude 设置：
 >
 > ```json
 > "mcpServers": {   
@@ -88,113 +88,113 @@ For instance, the popular **Time MCP Server** is documented [here](https://githu
 > }
 > ```
 
-🔑 **Translating this MCP setup to a quick local proxy command**:
+🔑 **将此 MCP 设置翻译为快速的本地代理命令**：
 
-You can easily run the recommended MCP server (`mcp-server-time`) directly through the **MCP-to-OpenAPI proxy** (`mcpo`) like this:
+你可以通过 **MCP-to-OpenAPI 代理** (`mcpo`) 轻松运行推荐的 MCP 服务器 (`mcp-server-time`)，如下所示：
 
 ```bash
 uvx mcpo --port 8000 -- uvx mcp-server-time --local-timezone=America/New_York
 ```
 
-That's it! You're now running the MCP-to-OpenAPI Proxy locally and exposing the powerful **MCP Time Server** through standard OpenAPI endpoints accessible at:
+就是这样！你现在已启动 MCP-to-OpenAPI 代理，并通过以下标准 OpenAPI 端点公开强大的 **MCP 时间服务器**：
 
-- 📖 **Interactive OpenAPI Documentation:** [`http://localhost:8000/docs`](http://localhost:8000/docs)
+- 📖 **交互式 OpenAPI 文档：** [`http://localhost:8000/docs`](http://localhost:8000/docs)
 
-Feel free to replace `uvx mcp-server-time --local-timezone=America/New_York` with your preferred MCP Server command from other available MCP implementations found in the official repository.
+随意将 `uvx mcp-server-time --local-timezone=America/New_York` 替换为你喜欢的 MCP 服务器命令，该命令可在官方库的其他 MCP 实现中找到。
 
-🤝 **To integrate with Open WebUI after launching the server, check our [docs](https://docs.openwebui.com/openapi-servers/open-webui/).**
+🤝 **启动服务器后，要集成 Open WebUI，请查看我们的 [文档](https://docs.openwebui.com/openapi-servers/open-webui/)。**
 
-### 🚀 Accessing the Generated APIs
+### 🚀 访问生成的 API
 
-As soon as it starts, the MCP Proxy (`mcpo`) automatically:
+一旦启动，MCP代理（`mcpo`）会自动执行以下操作：
 
-- Discovers MCP tools dynamically and generates REST endpoints.
-- Creates interactive, human-readable OpenAPI documentation accessible at:
+- 动态发现MCP工具并生成REST端点。
+- 创建交互式、用户友好的OpenAPI文档，可通过以下地址访问：
   - `http://localhost:8000/docs`
 
-Simply call the auto-generated API endpoints directly via HTTP clients, AI agents, or other OpenAPI tools of your preference.
+只需通过HTTP客户端、AI代理或您喜欢的其他OpenAPI工具直接调用自动生成的API端点。
 
-### 📖 Example Workflow for End-Users
+### 📖 给终端用户的示例工作流程
 
-Assuming you started the above server command (`uvx mcp-server-time`):
+假设您已启动上述服务器命令（`uvx mcp-server-time`）：
 
-- Visit your local API documentation at `http://localhost:8000/docs`.
-- Select a generated endpoint (e.g. `/get_current_time`) and use the provided interactive form.
-- Click "**Execute**" and instantly receive your response.
+- 在 `http://localhost:8000/docs` 查看本地API文档。
+- 选择一个生成的端点（例如 `/get_current_time`）并使用提供的交互式表单。
+- 点击“**Execute**”按钮并立即接收您的响应。
 
-No setup complexity—just instant REST APIs.
+无需复杂设置——即刻拥有REST API。
 
 
-## 🚀 Deploying in Production (Example)
+## 🚀 生产环境部署（示例）
 
-Deploying your MCP-to-OpenAPI proxy (powered by mcpo) is straightforward. Here's how to easily Dockerize and deploy it to cloud or VPS solutions:
+部署您的MCP到OpenAPI代理（由mcpo驱动）非常简单。以下是如何将其轻松Docker化并部署到云或VPS的步骤：
 
-### 🐳 Dockerize your Proxy Server using mcpo
+### 🐳 使用mcpo对代理服务器进行Docker化
 
-1. **Dockerfile Example**
+1. **Dockerfile示例**
 
-Create the following `Dockerfile` inside your deployment directory:
+在您的部署目录中创建如下`Dockerfile`：
 
 ```dockerfile
 FROM python:3.11-slim
 WORKDIR /app
 RUN pip install mcpo uv
-# Replace with your MCP server command; example: uvx mcp-server-time
+# 替换为您的MCP服务器命令；示例：uvx mcp-server-time
 CMD ["uvx", "mcpo", "--host", "0.0.0.0", "--port", "8000", "--", "uvx", "mcp-server-time", "--local-timezone=America/New_York"]
 ```
 
-2. **Build & Run the Container Locally**
+2. **在本地构建并运行容器**
 
 ```bash
 docker build -t mcp-proxy-server .
 docker run -d -p 8000:8000 mcp-proxy-server
 ```
 
-3. **Deploying Your Container**
+3. **部署容器**
 
-Push to DockerHub or another registry:
+推送到DockerHub或其他注册表：
 
 ```bash
 docker tag mcp-proxy-server yourdockerusername/mcp-proxy-server:latest
 docker push yourdockerusername/mcp-proxy-server:latest
 ```
 
-Deploy using Docker Compose, Kubernetes YAML manifests, or your favorite cloud container services (AWS ECS, Azure Container Instances, Render.com, or Heroku).
+使用Docker Compose、Kubernetes YAML清单或您喜欢的云端容器服务（如AWS ECS、Azure Container Instances、Render.com或Heroku）进行部署。
 
-✔️ Your production MCP servers are now effortlessly available via REST APIs!
+✔️ 您的生产MCP服务器现在可通过REST API轻松访问！
 
-## 🧑‍💻 Technical Details and Background 
+## 🧑‍💻 技术细节和背景
 
-### 🍃 How It Works (Technical Summary)
+### 🍃 工作原理（技术摘要）
 
-- **Dynamic Schema Discovery & Endpoints:** At server startup, the proxy connects to the MCP server to query available tools. It automatically builds FastAPI endpoints based on the MCP tool schemas, creating concise and clear REST endpoints.
+- **动态架构发现与端点**：服务器启动时，代理连接到MCP服务器以查询可用的工具。它基于MCP工具的架构自动生成FastAPI端点，创建简洁明了的REST端点。
 
-- **OpenAPI Auto-documentation:** Endpoints generated are seamlessly documented and available via FastAPI's built-in Swagger UI (`/docs`). No extra doc writing required.
+- **OpenAPI自动文档**：生成的端点与FastAPI内置Swagger UI（`/docs`）无缝关联，提供自动生成的文档，无需额外书写。
 
-- **Asynchronous & Performant**: Built on robust asynchronous libraries, ensuring speed and reliability for concurrent users.
+- **异步且高性能**：基于强大的异步库构建，确保多用户并发情况下的速度与可靠性。
 
-### 📚 Under the Hood:
+### 📚 核心技术：
 
-- FastAPI (Automatic routing & docs generation)
-- MCP Client (Standard MCP integration & schema discovery)
-- Standard JSON over HTTP (Easy integration)
+- FastAPI（自动路由和文档生成）
+- MCP客户端（标准的MCP集成与架构发现）
+- 基于HTTP的标准JSON（便于集成）
 
-## ⚡️ Why is the MCP-to-OpenAPI Proxy Superior?
+## ⚡️ MCP到OpenAPI代理为何卓越？
 
-Here's why leveraging MCP servers through OpenAPI via the proxy approach is significantly better and why Open WebUI enthusiastically supports it:
+以下是为什么通过代理方式来利用MCP服务器并通过OpenAPI进行访问更优，以及Open WebUI对此强烈支持的原因：
 
-- **User-friendly & Familiar Interface**: No custom clients; just HTTP REST endpoints you already know. 
-- **Instant Integration**: Immediately compatible with thousands of existing REST/OpenAPI tools, SDKs, and services.
-- **Powerful & Automatic Docs**: Built-in Swagger UI documentation is automatically generated, always accurate, and maintained.
-- **No New Protocol overhead**: Eliminates the necessity to directly handle MCP-specific protocol complexities and socket communication issues.
-- **Battle-Tested Security & Stability**: Inherits well-established HTTPS transport, standard auth methods (JWT, API keys), solid async libraries, and FastAPI’s proven robustness.
-- **Future-Proof**: MCP proxy uses existing, stable, standard REST/OpenAPI formats guaranteed long-term community support and evolution.
+- **用户友好且熟悉的接口**：无需定制客户端，只需使用您已熟悉的HTTP REST端点。
+- **即时集成**：与数以千计的现有REST/OpenAPI工具、SDK和服务完全兼容。
+- **强大且自动化的文档**：内置Swagger UI文档会自动生成，始终准确且维护良好。
+- **无需新的协议开销**：免去直接处理MCP特定协议复杂性和套接字通信问题的必要性。
+- **经过实战检验的安全性与稳定性**：继承了成熟的HTTPS传输、标准认证方法（如JWT、API密钥）、稳固的异步库以及FastAPI的可靠性。
+- **未来适应性**：MCP代理使用现有、稳定、标准的REST/OpenAPI格式，社区长期支持与进化有保障。
 
-🌟 **Bottom line:** MCP-to-OpenAPI makes your powerful MCP-based AI tools broadly accessible through intuitive, reliable, and scalable REST endpoints. Open WebUI proudly supports and recommends this best-in-class approach.
+🌟 **总结**：通过MCP-to-OpenAPI，使您的强大的基于MCP的AI工具可以通过简单、可靠、可扩展的REST端点向更广用户开放。Open WebUI对此卓越的方法深感自豪并强烈推荐。
 
 
-## 📢 Community & Support
+## 📢 社区与支持
 
-- For questions, suggestions, or feature requests, please use our [GitHub Issue tracker](https://github.com/open-webui/openapi-servers/issues) or join our [Community Discussions](https://github.com/open-webui/openapi-servers/discussions).
+- 如果有疑问、建议或功能请求，请使用我们的 [GitHub问题追踪工具](https://github.com/open-webui/openapi-servers/issues)，或加入我们的 [社区讨论](https://github.com/open-webui/openapi-servers/discussions)。
 
-Happy integrations! 🌟🚀
+祝您的集成愉快！🌟🚀

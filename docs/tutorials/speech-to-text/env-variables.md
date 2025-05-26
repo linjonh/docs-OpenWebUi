@@ -1,26 +1,26 @@
 ---
 sidebar_position: 2
-title: "Environment Variables"
+title: "环境变量"
 ---
 
 
-# Environment Variables List
+# 环境变量列表
 
 
 :::info
-For a complete list of all Open WebUI environment variables, see the [Environment Variable Configuration](/getting-started/env-configuration) page.
+有关所有 Open WebUI 环境变量的完整列表，请参阅[环境变量配置](/getting-started/env-configuration)页面。
 :::
 
-The following is a summary of the environment variables for speech to text (STT).
+以下是语音转文本（STT）环境变量的摘要。
 
-# Environment Variables For Speech To Text (STT)
+# 语音转文本 (STT) 的环境变量
 
-| Variable | Description |
+| 变量 | 描述 |
 |----------|-------------|
-| `WHISPER_MODEL` | Sets the Whisper model to use for local Speech-to-Text |
-| `WHISPER_MODEL_DIR` | Specifies the directory to store Whisper model files |
-| `WHISPER_LANGUAGE` | Specifies the ISO 639-1 (ISO 639-2 for Hawaiian and Cantonese) Speech-to-Text language to use for Whisper (language is predicted unless set) |
-| `AUDIO_STT_ENGINE` | Specifies the Speech-to-Text engine to use (empty for local Whisper, or `openai`) |
-| `AUDIO_STT_MODEL` | Specifies the Speech-to-Text model for OpenAI-compatible endpoints |
-| `AUDIO_STT_OPENAI_API_BASE_URL` | Sets the OpenAI-compatible base URL for Speech-to-Text |
-| `AUDIO_STT_OPENAI_API_KEY` | Sets the OpenAI API key for Speech-to-Text |
+| `WHISPER_MODEL` | 设置用于本地语音转文本的 Whisper 模型 |
+| `WHISPER_MODEL_DIR` | 指定存储 Whisper 模型文件的目录 |
+| `WHISPER_LANGUAGE` | 指定 Whisper 用于语音转文本的 ISO 639-1（夏威夷语和粤语使用 ISO 639-2）语言（语言默认预测除非设置） |
+| `AUDIO_STT_ENGINE` | 指定要使用的语音转文本引擎（本地 Whisper 留空或设置为 `openai`） |
+| `AUDIO_STT_MODEL` | 为兼容 OpenAI 的端点指定语音转文本模型 |
+| `AUDIO_STT_OPENAI_API_BASE_URL` | 设置语音转文本的 OpenAI 兼容基本 URL |
+| `AUDIO_STT_OPENAI_API_KEY` | 设置语音转文本的 OpenAI API 密钥 |

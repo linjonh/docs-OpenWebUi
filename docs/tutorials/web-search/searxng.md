@@ -4,85 +4,85 @@ title: "SearXNG"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程是社区贡献的内容，不由 Open WebUI 团队提供支持。仅作为如何为您的特定使用案例自定义 Open WebUI 的演示。想要贡献？查看贡献教程。
 :::
 
-This guide provides instructions on how to set up web search capabilities in Open WebUI using SearXNG in Docker.
+本指南提供了使用 Docker 中的 SearXNG 在 Open WebUI 中设置网页搜索功能的说明。
 
 ## SearXNG (Docker)
 
-> "**SearXNG is a free internet metasearch engine which aggregates results from various search services and databases. Users are neither tracked nor profiled.**"
+> "**SearXNG 是一个免费的互联网元搜索引擎，它聚合来自各种搜索服务和数据库的结果。用户既不会被跟踪，也不会被分析。**"
 
-## 1. SearXNG Configuration
+## 1. SearXNG 配置
 
-To configure SearXNG optimally for use with Open WebUI, follow these steps:
+按照以下步骤为 Open WebUI 优化配置 SearXNG：
 
-**Step 1: `git clone` SearXNG Docker and navigate to the folder:**
+**第 1 步：`git clone` SearXNG Docker 并导航到文件夹：**
 
-1. Create a New Directory `searxng-docker`
+1. 创建一个新目录 `searxng-docker`
 
- Clone the searxng-docker repository. This folder will contain your SearXNG configuration files. Refer to the [SearXNG documentation](https://docs.searxng.org/) for configuration instructions.
+ 克隆 searxng-docker 仓库。该文件夹将包含您的 SearXNG 配置文件。请参阅 [SearXNG 文档](https://docs.searxng.org/) 了解配置说明。
 
 ```bash
 git clone https://github.com/searxng/searxng-docker.git
 ```
 
-Navigate to the `searxng-docker` repository:
+导航到 `searxng-docker` 仓库：
 
 ```bash
 cd searxng-docker
 ```
 
-**Step 2: Locate and and modify the `.env` file:**
+**第 2 步：定位并修改 `.env` 文件：**
 
-1. Uncomment `SEARXNG_HOSTNAME` from the `.env` file and set it accordingly:
+1. 在 `.env` 文件中取消注释 `SEARXNG_HOSTNAME` 并进行相应设置：
 
 ```bash
-# By default listen on https://localhost
-# To change this:
-# * uncomment SEARXNG_HOSTNAME, and replace <host> by the SearXNG hostname
-# * uncomment LETSENCRYPT_EMAIL, and replace <email> by your email (require to create a Let's Encrypt certificate)
+# 默认监听 https://localhost
+# 如需更改：
+# * 取消注释 SEARXNG_HOSTNAME，并将 <host> 替换为 SearXNG 主机名
+# * 取消注释 LETSENCRYPT_EMAIL，并将 <email> 替换为您的电子邮件（需要创建 Let&apos;s Encrypt 证书）
 
 SEARXNG_HOSTNAME=localhost:8080/
 # LETSENCRYPT_EMAIL=<email>
 
-# Optional:
-# If you run a very small or a very large instance, you might want to change the amount of used uwsgi workers and threads per worker
-# More workers (= processes) means that more search requests can be handled at the same time, but it also causes more resource usage
+# 可选项：
+# 如果运行的是非常小或非常大的实例，您可能需要更改使用的 uwsgi 工作线程及每个工作的线程数
+# 更多的工作线程（= 进程）意味着可以同时处理更多的搜索请求，但也会导致更多资源使用
 
 # SEARXNG_UWSGI_WORKERS=4
 # SEARXNG_UWSGI_THREADS=4
 ```
 
-**Step 3: Modify the `docker-compose.yaml` file**
+**第 3 步：修改 `docker-compose.yaml` 文件**
 
-3. Remove the `localhost` restriction by modifying the `docker-compose.yaml` file:
+3. 修改 `docker-compose.yaml` 文件去掉 `localhost` 限制：
 
 ```bash
 sed -i "s/127.0.0.1:8080/0.0.0.0:8080/"
 ```
 
-**Step 4: Grant Necessary Permissions**
+**第 4 步：授予必要的权限**
 
-4. Allow the container to create new config files by running the following command in the root directory:
+4. 在根目录运行以下命令允许容器创建新的配置文件：
 
 ```bash
 sudo chmod a+rwx searxng-docker/searxng
 ```
 
-**Step 5: Create a Non-Restrictive `limiter.toml` File**
+**第 5 步：创建一个非限制性的 `limiter.toml` 文件**
 
-5. Create a non-restrictive `searxng-docker/searxng/limiter.toml` config file:
+5. 创建一个非限制性的 `searxng-docker/searxng/limiter.toml` 配置文件：
 
 <details>
 <summary>searxng-docker/searxng/limiter.toml</summary>
 
 ```bash
-# This configuration file updates the default configuration file
-# See https://github.com/searxng/searxng/blob/master/searx/botdetection/limiter.toml
+# 此配置文件更新默认配置文件
+# 请参阅 https://github.com/searxng/searxng/blob/master/searx/botdetection/limiter.toml
 
 [botdetection.ip_limit]
-# activate link_token method in the ip_limit method
+# 在 ip_limit 方法中激活 link_token 方法
 link_token = false
 
 [botdetection.ip_lists]
@@ -92,78 +92,78 @@ pass_ip = []
 
 </details>
 
-**Step 6: Remove the Default `settings.yml` File**
+**第 6 步：删除默认的 `settings.yml` 文件**
 
-6. Delete the default `searxng-docker/searxng/settings.yml` file if it exists, as it will be regenerated on the first launch of SearXNG:
+6. 如果存在，请删除默认的 `searxng-docker/searxng/settings.yml` 文件，因为它将在 SearXNG 的首次启动时重新生成：
 
 ```bash
 rm searxng-docker/searxng/settings.yml
 ```
 
-**Step 7: Create a Fresh `settings.yml` File**
+**第 7 步：创建一个新的 `settings.yml` 文件**
 
 :::note
-On the first run, you must remove `cap_drop: - ALL` from the `docker-compose.yaml` file for the `searxng` service to successfully create `/etc/searxng/uwsgi`.ini. This is necessary because the `cap_drop: - ALL` directive removes all capabilities, including those required for the creation of the `uwsgi.ini` file. After the first run, you should re-add `cap_drop: - ALL` to the `docker-compose.yaml` file for security reasons.
+首次运行时，您必须从 `docker-compose.yaml` 文件中的 `cap_drop: - ALL` 中移除 `searxng` 服务，以成功创建 `/etc/searxng/uwsgi.ini`。这是必要的，因为 `cap_drop: - ALL` 指令移除了所有能力，包括创建 `uwsgi.ini` 文件所需的能力。在第一次运行之后，出于安全考虑，您应该将 `cap_drop: - ALL` 重新添加到 `docker-compose.yaml` 文件中。
 :::
 
-7. Bring up the container momentarily to generate a fresh settings.yml file:
+7. 短暂启动容器以生成一个新的 settings.yml 文件：
 
 ```bash
 docker compose up -d ; sleep 10 ; docker compose down
 ```
 
-**Step 8: Add Formats and Update Port Number**
+**第 8 步：添加格式并更新端口号**
 
-8. Add HTML and JSON formats to the `searxng-docker/searxng/settings.yml` file:
+8. 在 `searxng-docker/searxng/settings.yml` 文件中添加 HTML 和 JSON 格式：
 
 ```bash
-sed -i 's/formats: \[\"html\"\/]/formats: [\"html\", \"json\"]/' searxng-docker/searxng/settings.yml
+sed -i &apos;s/formats: \[\"html\"\/]/formats: [\"html\", \"json\"]/&apos; searxng-docker/searxng/settings.yml
 ```
 
-Generate a secret key for your SearXNG instance:
+为您的 SearXNG 实例生成一个秘密密钥：
 
 ```bash
 sed -i "s|ultrasecretkey|$(openssl rand -hex 32)|g" searxng-docker/searxng/settings.yml
 ```
 
-Windows users can use the following powershell script to generate the secret key:
+Windows 用户可以使用以下 PowerShell 脚本生成秘密密钥：
 
 ```powershell
 $randomBytes = New-Object byte[] 32
 (New-Object Security.Cryptography.RNGCryptoServiceProvider).GetBytes($randomBytes)
 $secretKey = -join ($randomBytes | ForEach-Object { "{0:x2}" -f $_ })
-(Get-Content searxng-docker/searxng/settings.yml) -replace 'ultrasecretkey', $secretKey | Set-Content searxng-docker/searxng/settings.yml
+(Get-Content searxng-docker/searxng/settings.yml) -replace &apos;ultrasecretkey&apos;, $secretKey | Set-Content searxng-docker/searxng/settings.yml
 ```
 
-Update the port number in the `server` section to match the one you set earlier (in this case, `8080`):
+在 `server` 部分更新端口号以匹配您之前设置的端口号（此例为 `8080`）：
 
 ```bash
-sed -i 's/port: 8080/port: 8080/' searxng-docker/searxng/settings.yml
+sed -i &apos;s/port: 8080/port: 8080/&apos; searxng-docker/searxng/settings.yml
 ```
 
-Change the `bind_address` as desired:
+根据需要更改 `bind_address`：
 
 ```bash
-sed -i 's/bind_address: "0.0.0.0"/bind_address: "127.0.0.1"/' searxng-docker/searxng/settings.yml
+sed -i &apos;s/bind_address: "0.0.0.0"/bind_address: "127.0.0.1"/&apos; searxng-docker/searxng/settings.yml
 ```
 
-#### Configuration Files
+#### 配置文件
 
-#### searxng-docker/searxng/settings.yml (Extract)
+#### searxng-docker/searxng/settings.yml（摘录）
 
-The default `settings.yml` file contains many engine settings. Below is an extract of what the default `settings.yml` file might look like:
+默认的`settings.yml`文件包含许多引擎设置。以下是默认`settings.yml`文件的一个摘录示例：
 
 <details>
 <summary>searxng-docker/searxng/settings.yml</summary>
 
 ```yaml
-# see https://docs.searxng.org/admin/settings/settings.html#settings-use-default-settings
+# 请参阅 https://docs.searxng.org/admin/settings/settings.html#settings-use-default-settings
 use_default_settings: true
 
 server:
-  # base_url is defined in the SEARXNG_BASE_URL environment variable, see .env and docker-compose.yml
-  secret_key: "ultrasecretkey"  # change this!
-  limiter: true  # can be disabled for a private instance
+  # base_url 在 SEARXNG_BASE_URL 环境变量中定义，请参阅 .env 和 docker-compose.yml
+  secret_key: "ultrasecretkey"  # 更改此值！
+  limiter: true  # 对于私有实例可以禁用
   image_proxy: true
   port: 8080
   bind_address: "0.0.0.0"
@@ -177,74 +177,74 @@ search:
   default_lang: ""
   formats:
     - html
-    - json # json is required
-  # remove format to deny access, use lower case.
+    - json # 必须包含 JSON 格式
+  # 移除格式将拒绝访问，请使用小写。
   # formats: [html, csv, json, rss]
 redis:
-  # URL to connect redis database. Is overwritten by ${SEARXNG_REDIS_URL}.
-  # https://docs.searxng.org/admin/settings/settings_redis.html#settings-redis
+  # 连接 Redis 数据库的 URL，被 ${SEARXNG_REDIS_URL} 覆盖。
+  # 请参阅 https://docs.searxng.org/admin/settings/settings_redis.html#settings-redis
   url: redis://redis:6379/0
 ```
 
-The port in the settings.yml file for SearXNG should match that of the port number in your docker-compose.yml file for SearXNG.
+在 SearXNG 的 settings.yml 文件中设置的端口应与 docker-compose.yml 文件中 SearXNG 的端口号相匹配。
 
 </details>
 
-**Step 9: Update `uwsgi.ini` File**
+**步骤 9：更新 `uwsgi.ini` 文件**
 
-9. Ensure your `searxng-docker/searxng/uwsgi.ini` file matches the following:
+9. 确保你的 `searxng-docker/searxng/uwsgi.ini` 文件与以下内容匹配：
 
 <details>
 <summary>searxng-docker/searxng/uwsgi.ini</summary>
 
 ```ini
 [uwsgi]
-# Who will run the code
+# 代码运行的用户
 uid = searxng
 gid = searxng
 
-# Number of workers (usually CPU count)
-# default value: %k (= number of CPU core, see Dockerfile)
+# 工作进程的数量（通常是 CPU 数量）
+# 默认值: %k (= CPU 核心数量，请参阅 Dockerfile)
 workers = %k
 
-# Number of threads per worker
-# default value: 4 (see Dockerfile)
+# 每个工作进程的线程数量
+# 默认值: 4 (请参阅 Dockerfile)
 threads = 4
 
-# The right granted on the created socket
+# 创建的套接字的权限
 chmod-socket = 666
 
-# Plugin to use and interpreter config
+# 使用的插件和解释器配置
 single-interpreter = true
 master = true
 plugin = python3
 lazy-apps = true
 enable-threads = 4
 
-# Module to import
+# 要导入的模块
 module = searx.webapp
 
-# Virtualenv and python path
+# 虚拟环境和 Python 路径
 pythonpath = /usr/local/searxng/
 chdir = /usr/local/searxng/searx/
 
-# automatically set processes name to something meaningful
+# 自动设置进程名称为有意义的名称
 auto-procname = true
 
-# Disable request logging for privacy
+# 隐私原因禁用请求日志
 disable-logging = true
 log-5xx = true
 
-# Set the max size of a request (request-body excluded)
+# 设置请求的最大大小（不包括请求正文）
 buffer-size = 8192
 
-# No keep alive
-# See https://github.com/searx/searx-docker/issues/24
+# 无持久连接
+# 请参阅 https://github.com/searx/searx-docker/issues/24
 add-header = Connection: close
 
-# uwsgi serves the static files
+# uwsgi 服务静态文件
 static-map = /static=/usr/local/searxng/searx/static
-# expires set to one day
+# 设置过期时间为一天
 static-expires = /* 86400
 static-gzip-all = True
 offload-threads = 4
@@ -252,13 +252,13 @@ offload-threads = 4
 
 </details>
 
-## 2. Alternative Setup
+## 2. 替代设置
 
-Alternatively, if you don't want to modify the default configuration, you can simply create an empty `searxng-docker` folder and follow the rest of the setup instructions.
+或者，如果您不想修改默认配置，可以简单地创建一个空的`searxng-docker`文件夹并按照其余设置说明进行操作。
 
-### Docker Compose Setup
+### Docker Compose 设置
 
-Add the following environment variables to your Open WebUI `docker-compose.yaml` file:
+将以下环境变量添加到您的 Open WebUI 的`docker-compose.yaml`文件：
 
 ```yaml
 services:
@@ -271,14 +271,14 @@ services:
       SEARXNG_QUERY_URL: "http://searxng:8080/search?q=<query>"
 ```
 
-Create a `.env` file for SearXNG:
+为 SearXNG 创建一个 `.env` 文件：
 
 ```
 # SearXNG
 SEARXNG_HOSTNAME=localhost:8080/
 ```
 
-Next, add the following to SearXNG's `docker-compose.yaml` file:
+接下来，将以下内容添加到 SearXNG 的 `docker-compose.yaml` 文件：
 
 ```yaml
 services:
@@ -306,61 +306,61 @@ services:
         max-file: "1"
 ```
 
-Your stack is ready to be launched with:
+您的栈可以使用以下命令启动：
 
 ```bash
 docker compose up -d
 ```
 
 :::note
-On the first run, you must remove `cap_drop: - ALL` from the `docker-compose.yaml` file for the `searxng` service to successfully create `/etc/searxng/uwsgi`.ini. This is necessary because the `cap_drop: - ALL` directive removes all capabilities, including those required for the creation of the `uwsgi.ini` file. After the first run, you should re-add `cap_drop: - ALL` to the `docker-compose.yaml` file for security reasons.
+首次运行时，必须从`docker-compose.yaml`文件中移除`cap_drop: - ALL`，以便`searxng`服务成功创建`/etc/searxng/uwsgi.ini`。这是因为`cap_drop: - ALL`指令移除了所有能力，包括创建`uwsgi.ini`文件所需的能力。首次运行后，应为了安全原因重新添加`cap_drop: - ALL`到`docker-compose.yaml`文件中。
 :::
 
-Alternatively, you can run SearXNG directly using `docker run`:
+或者，可以直接使用`docker run`运行 SearXNG：
 
 ```bash
 docker run --name searxng --env-file .env -v ./searxng:/etc/searxng:rw -p 8080:8080 --restart unless-stopped --cap-drop ALL --cap-add CHOWN --cap-add SETGID --cap-add SETUID --cap-add DAC_OVERRIDE --log-driver json-file --log-opt max-size=1m --log-opt max-file=1 searxng/searxng:latest
 ```
 
-## 3. Confirm Connectivity
+## 3. 确认连接
 
-Confirm connectivity to SearXNG from your Open WebUI container instance in your command line interface:
+从您的 Open WebUI 容器实例确认与 SearXNG 的连接，在命令行中运行以下命令：
 
 ```bash
 docker exec -it open-webui curl http://host.docker.internal:8080/search?q=this+is+a+test+query&format=json
 ```
 
-## 4. GUI Configuration
+## 4. GUI 配置
 
-1. Navigate to: `Admin Panel` -> `Settings` -> `Web Search`
-2. Toggle `Enable Web Search`
-3. Set `Web Search Engine` from dropdown menu to `searxng`
-4. Set `Searxng Query URL` to one of the following examples:
+1. 导航至：`管理面板` -> `设置` -> `网页搜索`
+2. 切换开启`启用网页搜索`
+3. 从下拉菜单中设置`网页搜索引擎`为`searxng`
+4. 将 `Searxng Query URL` 设置为以下示例之一：
 
-* `http://searxng:8080/search?q=<query>` (using the container name and exposed port, suitable for Docker-based setups)
-* `http://host.docker.internal:8080/search?q=<query>` (using the `host.docker.internal` DNS name and the host port, suitable for Docker-based setups)
-* `http://<searxng.local>/search?q=<query>` (using a local domain name, suitable for local network access)
-* `https://<search.domain.com>/search?q=<query>` (using a custom domain name for a self-hosted SearXNG instance, suitable for public or private access)
+* `http://searxng:8080/search?q=<query>` （使用容器名称和暴露端口，适用于基于 Docker 的设置）
+* `http://host.docker.internal:8080/search?q=<query>` （使用 `host.docker.internal` DNS 名称和主机端口，适用于基于 Docker 的设置）
+* `http://<searxng.local>/search?q=<query>` （使用本地域名，适用于本地网络访问）
+* `https://<search.domain.com>/search?q=<query>` （使用自定义域名的自托管 SearXNG 实例，适用于公共或私人访问）
 
-**Do note the `/search?q=<query>` part is mandatory.**
+**请注意，`/search?q=<query>` 部分是必须的。**
 
-5. Adjust the `Search Result Count` and `Concurrent Requests` values accordingly
-6. Save changes
+5. 根据需要调整 `搜索结果数量` 和 `并发请求` 的值
+6. 保存更改
 
-![SearXNG GUI Configuration](/images/tutorial_searxng_config.png)
+![SearXNG GUI 配置](/images/tutorial_searxng_config.png)
 
-## 5. Using Web Search in a Chat
+## 5. 在聊天中使用网页搜索
 
-To access Web Search, Click on the + next to the message input field.
+要访问网页搜索，点击消息输入字段旁边的 `+`。
 
-Here you can toggle Web Search On/Off.
+在这里您可以开启/关闭网页搜索。
 
-![Web Search UI Toggle](/images/web_search_toggle.png)
+![网页搜索界面切换](/images/web_search_toggle.png)
 
-By following these steps, you will have successfully set up SearXNG with Open WebUI, enabling you to perform web searches using the SearXNG engine.
+按照这些步骤，您将成功设置 SearXNG 和 Open WebUI，从而能够使用 SearXNG 引擎进行网页搜索。
 
-#### Note
+#### 注意
 
-You will have to explicitly toggle this On/Off in a chat.
+您需要在聊天中显式地开启/关闭该功能。
 
-This is enabled on a per session basis eg. reloading the page, changing to another chat will toggle off.
+这是基于单个会话启用的，例如重新加载页面或切换到另一个聊天时会自动关闭。

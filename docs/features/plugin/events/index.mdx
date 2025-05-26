@@ -1,39 +1,39 @@
 ---
 sidebar_position: 3
-title: "⛑️ Events"
+title: "⛑️ 事件"
 ---
 
-# ⛑️ Events: Using `__event_emitter__` and `__event_call__` in Open WebUI
+# ⛑️ 事件：在 Open WebUI 中使用 `__event_emitter__` 和 `__event_call__`
 
-Open WebUI's plugin architecture is not just about processing input and producing output—**it's about real-time, interactive communication with the UI and users**. To make your Tools, Functions, and Pipes more dynamic, Open WebUI provides a built-in event system via the `__event_emitter__` and `__event_call__` helpers.
+Open WebUI 的插件架构不仅仅是输入处理和输出生成——**它强调与 UI 和用户之间的实时交互**。为了让您的工具、函数和管道更加动态，Open WebUI 提供了通过 `__event_emitter__` 和 `__event_call__` 实现的内置事件系统。
 
-This guide explains **what events are**, **how you can trigger them** from your code, and **the full catalog of event types** you can use (including much more than just `"input"`).
-
----
-
-## 🌊 What Are Events?
-
-**Events** are real-time notifications or interactive requests sent from your backend code (Tool, or Function) to the web UI. They allow you to update the chat, display notifications, request confirmation, run UI flows, and more.
-
-- Events are sent using the `__event_emitter__` helper for one-way updates, or `__event_call__` when you need user input or a response (e.g., confirmation, input, etc.).
-
-**Metaphor:**  
-Think of Events like push notifications and modal dialogs that your plugin can trigger, making the chat experience richer and more interactive.
+本指南解释了**什么是事件**、**如何在代码中触发它们**以及**您可以使用的完整事件类型目录**（包括远不止 `"input"` 这种）。
 
 ---
 
-## 🧰 Basic Usage
+## 🌊 什么是事件？
 
-### Sending an Event
+**事件**是从后端代码（工具或函数）发送到 Web UI 的实时通知或交互请求。它们允许您更新聊天、显示通知、请求确认、运行 UI 流程等等。
 
-You can trigger an event anywhere inside your Tool, or Function by calling:
+- 使用 `__event_emitter__` 辅助函数发送事件用于单向更新；当需要用户输入或响应（比如确认、输入等）时，使用 `__event_call__`。
+
+**比喻:**
+可以将事件想象成推送通知和模式对话框，您的插件可以触发这些事件，从而丰富并增强聊天体验的交互性。
+
+---
+
+## 🧰 基本用法
+
+### 发送事件
+
+您可以在工具或函数的任意位置通过调用触发事件：
 
 ```python
 await __event_emitter__(
     {
-        "type": "status",  # See the event types list below
+        "type": "status",  # 请参考下面的事件类型列表
         "data": {
-            "description": "Processing started!",
+            "description": "处理已开始！",
             "done": False,
             "hidden": False,
         },
@@ -41,77 +41,77 @@ await __event_emitter__(
 )
 ```
 
-You **do not** need to manually add fields like `chat_id` or `message_id`—these are handled automatically by Open WebUI.
+您**无需**手动添加像 `chat_id` 或 `message_id` 这样的字段——这些由 Open WebUI 自动处理。
 
-### Interactive Events
+### 交互式事件
 
-When you need to pause execution until the user responds (e.g., confirm/cancel dialogs, code execution, or input), use `__event_call__`:
+当您需要暂停执行以等待用户响应（如确认/取消对话框、代码执行或输入）时，请使用 `__event_call__`：
 
 ```python
 result = await __event_call__(
     {
-        "type": "input",  # Or "confirmation", "execute"
+        "type": "input",  # 或 "confirmation", "execute"
         "data": {
-            "title": "Please enter your password",
-            "message": "Password is required for this action",
-            "placeholder": "Your password here",
+            "title": "请输入您的密码",
+            "message": "此操作需要密码",
+            "placeholder": "在此输入您的密码",
         },
     }
 )
-# result will contain the user's input value
+# result 将包含用户输入的值
 ```
 
 ---
 
-## 📜 Event Payload Structure
+## 📜 事件负载结构
 
-When you emit or call an event, the basic structure is:
+当您发出或调用事件时，基本结构如下：
 
 ```json
 {
-  "type": "event_type",   // See full list below
-  "data": { ... }         // Event-specific payload
+  "type": "event_type",   // 请参阅下面的完整列表
+  "data": { ... }         // 事件特定的负载
 }
 ```
 
-Most of the time, you only set `"type"` and `"data"`. Open WebUI fills in the routing automatically.
+大多数情况下，您只需设置 `"type"` 和 `"data"`。Open WebUI 会自动填充路由信息。
 
 ---
 
-## 🗂 Full List of Event Types
+## 🗂 支持的事件类型完整列表
 
-Below is a comprehensive table of **all supported `type` values** for events, along with their intended effect and data structure. (This is based on up-to-date analysis of Open WebUI event handling logic.)
+以下是**所有支持的 `type` 值**的完整表格，并附上其预期效果和数据结构。（基于 Open WebUI 事件处理逻辑的最新分析）
 
-| type                        | When to use                                   | Data payload structure (examples)                                  |
-|-----------------------------|-----------------------------------------------|--------------------------------------------------------------------|
-| `status`                    | Show a status update/history for a message    | `{description: ..., done: bool, hidden: bool}`                     |
-| `chat:completion`           | Provide a chat completion result              | (Custom, see Open WebUI internals)                                 |
-| `chat:message:delta`,<br/>`message` | Append content to the current message              | `{content: "text to append"}`                                      |
-| `chat:message`,<br/>`replace`        | Replace current message content completely          | `{content: "replacement text"}`                                    |
-| `chat:message:files`,<br/>`files`   | Set or overwrite message files (for uploads, output) | `{files: [...]}`                                                   |
-| `chat:title`                | Set (or update) the chat conversation title   | Topic string OR `{title: ...}`                                     |
-| `chat:tags`                 | Update the set of tags for a chat             | Tag array or object                                                |
-| `source`,<br/>`citation`              | Add a source/citation, or code execution result     | For code: See [below.](#code-execution-event)                      |
-| `notification`              | Show a notification ("toast") in the UI       | `{type: "info" or "success" or "error" or "warning", content: "..."}`      |
-| `confirmation` <br/>(needs `__event_call__`) | Ask for confirmation (OK/Cancel dialog)         | `{title: "...", message: "..."}`                                   |
-| `input` <br/>(needs `__event_call__`)    | Request simple user input ("input box" dialog)      | `{title: "...", message: "...", placeholder: "...", value: ...}`   |
-| `execute` <br/>(needs `__event_call__`)  | Request user-side code execution and return result  | `{code: "...javascript code..."}`                                  |
+| 类型                        | 使用场景                                   | 数据负载结构（示例）                                  |
+|-----------------------------|-------------------------------------------|--------------------------------------------------------------------|
+| `status`                    | 显示消息的状态更新/历史记录    | `{description: ..., done: bool, hidden: bool}`                     |
+| `chat:completion`           | 提供聊天完成结果                 | （自定义，请参阅 Open WebUI 内部文档）                           |
+| `chat:message:delta`,<br/>`message` | 向当前消息追加内容              | `{content: "追加的文本"}`                                      |
+| `chat:message`,<br/>`replace`        | 完全替换当前消息内容          | `{content: "替换的文本"}`                                    |
+| `chat:message:files`,<br/>`files`   | 设置或覆盖消息文件（用于上传或输出） | `{files: [...]}`                                                   |
+| `chat:title`                | 设置（或更新）聊天会话标题   | 主题字符串或 `{title: ...}`                                      |
+| `chat:tags`                 | 更新聊天的标签集             | 标签数组或对象                                                |
+| `source`,<br/>`citation`              | 添加来源/引用或代码执行结果     | 关于代码：参见 [下文。](#代码执行事件)                      |
+| `notification`              | 在 UI 中显示通知（“弹出提示”）       | `{type: "info" 或 "success" 或 "error" 或 "warning", content: "..."}`      |
+| `confirmation` <br/>(需要 `__event_call__`) | 请求确认（确定/取消对话框）         | `{title: "...", message: "..."}`                                   |
+| `input` <br/>(需要 `__event_call__`)    | 请求简单用户输入（“输入框”对话框）      | `{title: "...", message: "...", placeholder: "...", value: ...}`   |
+| `execute` <br/>(需要 `__event_call__`)  | 请求用户端执行代码并返回结果  | `{code: "...javascript code..."}`                                  |
 
-**Other/Advanced types:**
+**其他/高级类型：**
 
-- You can define your own types and handle them at the UI layer (or use upcoming event-extension mechanisms).
+- 您可以在UI层定义自己的类型并处理它们（或者使用即将推出的事件扩展机制）。
 
-### ❗ Details on Specific Event Types
+### ❗ 特定事件类型的详细信息
 ### `status`
 
-Show a status/progress update in the UI:
+在UI中显示状态/进度更新：
 
 ```python
 await __event_emitter__(
     {
         "type": "status",
         "data": {
-            "description": "Step 1/3: Fetching data...",
+            "description": "步骤 1/3：正在获取数据...",
             "done": False,
             "hidden": False,
         },
@@ -121,26 +121,26 @@ await __event_emitter__(
 
 ---
 
-### `chat:message:delta` or `message`
+### `chat:message:delta` 或 `message`
 
-**Streaming output** (append text):
+**流式输出**（追加文本）：
 
 ```python
 await __event_emitter__(
     {
-        "type": "chat:message:delta",  # or simply "message"
+        "type": "chat:message:delta",  # 或简单写作 "message"
         "data": {
-            "content": "Partial text, "
+            "content": "部分文本，"
         },
     }
 )
 
-# Later, as you generate more:
+# 后续生成更多内容时：
 await __event_emitter__(
     {
         "type": "chat:message:delta",
         "data": {
-            "content": "next chunk of response."
+            "content": "响应的下一个部分。"
         },
     }
 )
@@ -148,16 +148,16 @@ await __event_emitter__(
 
 ---
 
-### `chat:message` or `replace`
+### `chat:message` 或 `replace`
 
-**Set (or replace) the entire message content:**
+**设置（或替换）整个消息内容：**
 
 ```python
 await __event_emitter__(
     {
-        "type": "chat:message",  # or "replace"
+        "type": "chat:message",  # 或 "replace"
         "data": {
-            "content": "Final, complete response."
+            "content": "最终的完整响应。"
         },
     }
 )
@@ -165,17 +165,17 @@ await __event_emitter__(
 
 ---
 
-### `files` or `chat:message:files`
+### `files` 或 `chat:message:files`
 
-**Attach or update files:**
+**附加或更新文件：**
 
 ```python
 await __event_emitter__(
     {
-        "type": "files",  # or "chat:message:files"
+        "type": "files",  # 或 "chat:message:files"
         "data": {
             "files": [
-               # Open WebUI File Objects
+               # Open WebUI 文件对象
             ]
         },
     }
@@ -186,14 +186,14 @@ await __event_emitter__(
 
 ### `chat:title`
 
-**Update the chat's title:**
+**更新聊天标题：**
 
 ```python
 await __event_emitter__(
     {
         "type": "chat:title",
         "data": {
-            "title": "Market Analysis Bot Session"
+            "title": "市场分析机器人会话"
         },
     }
 )
@@ -203,14 +203,14 @@ await __event_emitter__(
 
 ### `chat:tags`
 
-**Update the chat's tags:**
+**更新聊天标签：**
 
 ```python
 await __event_emitter__(
     {
         "type": "chat:tags",
         "data": {
-            "tags": ["finance", "AI", "daily-report"]
+            "tags": ["金融", "AI", "每日汇报"]
         },
     }
 )
@@ -218,29 +218,29 @@ await __event_emitter__(
 
 ---
 
-### `source` or `citation` (and code execution)
+### `source` 或 `citation`（以及代码执行）
 
-**Add a reference/citation:**
+**添加参考/引用：**
 
 ```python
 await __event_emitter__(
     {
-        "type": "source",  # or "citation"
+        "type": "source",  # 或 "citation"
         "data": {
-            # Open WebUI Source (Citation) Object
+            # Open WebUI 引用对象
         }
     }
 )
 ```
 
-**For code execution (track execution state):**
+**对于代码执行（跟踪执行状态）：**
 
 ```python
 await __event_emitter__(
     {
         "type": "source",
         "data": {
-            # Open WebUI Code Source (Citation) Object
+            # Open WebUI 代码引用对象
         }
     }
 )
@@ -250,7 +250,7 @@ await __event_emitter__(
 
 ### `notification`
 
-**Show a toast notification:**
+**显示一个弹出通知：**
 
 ```python
 await __event_emitter__(
@@ -258,7 +258,7 @@ await __event_emitter__(
         "type": "notification",
         "data": {
             "type": "info",  # "success", "warning", "error"
-            "content": "The operation completed successfully!"
+            "content": "操作已成功完成！"
         }
     }
 )
@@ -266,47 +266,47 @@ await __event_emitter__(
 
 ---
 
-### `confirmation` (**requires** `__event_call__`)
+### `confirmation`（**需要** `__event_call__`）
 
-**Show a confirm dialog and get user response:**
+**显示一个确认对话框并获取用户响应：**
 
 ```python
 result = await __event_call__(
     {
         "type": "confirmation",
         "data": {
-            "title": "Are you sure?",
-            "message": "Do you really want to proceed?"
+            "title": "您确定吗？",
+            "message": "您真的希望继续操作吗？"
         }
     }
 )
 
-if result:  # or check result contents
+if result:  # 或检查result的内容
     await __event_emitter__({
         "type": "notification",
-        "data": {"type": "success", "content": "User confirmed operation."}
+        "data": {"type": "success", "content": "用户确认了操作。"}
     })
 else:
     await __event_emitter__({
         "type": "notification",
-        "data": {"type": "warning", "content": "User cancelled."}
+        "data": {"type": "warning", "content": "用户取消了操作。"}
     })
 ```
 
 ---
 
-### `input` (**requires** `__event_call__`)
+### `input`（**需要** `__event_call__`）
 
-**Prompt user for text input:**
+**提示用户输入文本：**
 
 ```python
 result = await __event_call__(
     {
         "type": "input",
         "data": {
-            "title": "Enter your name",
-            "message": "We need your name to proceed.",
-            "placeholder": "Your full name"
+            "title": "请输入您的姓名",
+            "message": "我们需要您的姓名以继续。",
+            "placeholder": "您的全名"
         }
     }
 )
@@ -315,16 +315,16 @@ user_input = result
 await __event_emitter__(
     {
         "type": "notification",
-        "data": {"type": "info", "content": f"You entered: {user_input}"}
+        "data": {"type": "info", "content": f"您输入的是：{user_input}"}
     }
 )
 ```
 
 ---
 
-### `execute` (**requires** `__event_call__`)
+### `execute`（**需要** `__event_call__`）
 
-**Run code dynamically on the user's side:**
+**在用户端动态运行代码：**
 
 ```python
 result = await __event_call__(
@@ -341,7 +341,7 @@ await __event_emitter__(
         "type": "notification",
         "data": {
             "type": "info",
-            "content": f"Code executed, result: {result}"
+            "content": f"代码已执行，结果：{result}"
         }
     }
 )
@@ -349,73 +349,73 @@ await __event_emitter__(
 
 ---
 
-## 🏗️ When & Where to Use Events
+## 🏗️ 事件的使用时机与场景
 
-- **From any Tool, or Function** in Open WebUI.
-- To **stream responses**, show progress, request user data, update the UI, or display supplementary info/files.
-- `await __event_emitter__` is for one-way messages (fire and forget).
-- `await __event_call__` is for when you need a response from the user (input, execute, confirmation).
-
----
-
-## 💡 Tips & Advanced Notes
-
-- **Multiple types per message:** You can emit several events of different types for one message—for example, show `status` updates, then stream with `chat:message:delta`, then complete with a `chat:message`.
-- **Custom event types:** While the above list is the standard, you may use your own types and detect/handle them in custom UI code.
-- **Extensibility:** The event system is designed to evolve—always check the [Open WebUI documentation](https://github.com/open-webui/open-webui) for the most current list and advanced usage.
+- **从Open WebUI的任何工具或功能调用。**
+- 用于**流式响应**、显示进度、请求用户数据、更新UI或展示补充信息/文件。
+- `await __event_emitter__` 适用于单向消息（触发后无需管其结果）。
+- `await __event_call__` 用于需要从用户获取响应的情况（输入、执行、确认）。
 
 ---
 
-## 🧐 FAQ
+## 💡 提示与高级注意事项
 
-### Q: How do I trigger a notification for the user?
-Use `notification` type:
+- **每条消息支持多种类型：** 您可以为一条消息发出多个不同类型的事件，例如，显示`status`更新，然后以`chat:message:delta`流式消息，最后以`chat:message`完成。
+- **自定义事件类型：** 虽然上述列表是标准类型，但您也可以使用自定义类型并在UI代码中检测/处理它们。
+- **扩展性:** 事件系统被设计为可扩展——始终查看 [Open WebUI 文档](https://github.com/open-webui/open-webui)，以获取最新的列表和高级用法。
+
+---
+
+## 🧐 常见问题
+
+### 问: 如何触发用户通知？
+使用 `notification` 类型：
 ```python
 await __event_emitter__({
     "type": "notification",
-    "data": {"type": "success", "content": "Task complete"}
+    "data": {"type": "success", "content": "任务完成"}
 })
 ```
 
-### Q: How do I prompt the user for input and get their answer?
-Use:
+### 问: 如何提示用户输入并获取他们的答案？
+使用：
 ```python
 response = await __event_call__({
     "type": "input",
     "data": {
-        "title": "What's your name?",
-        "message": "Please enter your preferred name:",
-        "placeholder": "Name"
+        "title": "你的名字是什么？",
+        "message": "请输入你喜欢的名字：",
+        "placeholder": "名字"
     }
 })
-# response will be: {"value": "user's answer"}
+# response 将是: {"value": "用户的答案"}
 ```
 
-### Q: What event types are available for `__event_call__`?
-- `"input"`: Input box dialog
-- `"confirmation"`: Yes/No, OK/Cancel dialog
-- `"execute"`: Run provided code on client and return result
+### 问: `__event_call__` 有哪些事件类型可用？
+- `"input"`: 输入框对话框
+- `"confirmation"`: 是/否，确定/取消对话框
+- `"execute"`: 在客户端运行提供的代码并返回结果
 
-### Q: Can I update files attached to a message?
-Yes—use the `"files"` or `"chat:message:files"` event type with a `{files: [...]}` payload.
+### 问: 我可以更新附加到消息的文件吗？
+可以——使用 `"files"` 或 `"chat:message:files"` 事件类型，并携带 `{files: [...]}` 负载。
 
-### Q: Can I update the conversation title or tags?
-Absolutely: use `"chat:title"` or `"chat:tags"` accordingly.
+### 问: 我可以更新对话标题或标签吗？
+当然可以：分别使用 `"chat:title"` 或 `"chat:tags"`。
 
-### Q: Can I stream responses (partial tokens) to the user?
-Yes—emit `"chat:message:delta"` events in a loop, then finish with `"chat:message"`.
-
----
-
-## 📝 Conclusion
-
-**Events** give you real-time, interactive superpowers inside Open WebUI. They let your code update content, trigger notifications, request user input, stream results, handle code, and much more—seamlessly plugging your backend intelligence into the chat UI.
-
-- Use `__event_emitter__` for one-way status/content updates.
-- Use `__event_call__` for interactions that require user follow-up (input, confirmation, execution).
-
-Refer to this document for common event types and structures, and explore Open WebUI source code or docs for breaking updates or custom events!
+### 问: 我可以向用户流式传输响应（部分令牌）吗？
+可以——循环发射 `"chat:message:delta"` 事件，然后以 `"chat:message"` 完成。
 
 ---
 
-**Happy event-driven coding in Open WebUI! 🚀**
+## 📝 结论
+
+**事件** 在 Open WebUI 内为您提供实时互动的超级能力。它们可以让您的代码更新内容、触发通知、请求用户输入、流式传输结果、处理代码等——将您的后端智能无缝接入聊天 UI。
+
+- 使用 `__event_emitter__` 进行单向状态/内容更新。
+- 使用 `__event_call__` 进行需要用户交互的操作（输入、确认、执行）。
+
+参考本文档以了解常见事件类型和结构，并探索 Open WebUI 源代码或文档，以获取重大更新或自定义事件！
+
+---
+
+**在 Open WebUI 中愉快地进行事件驱动编码吧！🚀**

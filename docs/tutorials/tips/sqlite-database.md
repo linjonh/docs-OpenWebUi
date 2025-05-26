@@ -1,22 +1,22 @@
 ---
 sidebar_position: 11
-title: "💠 SQLite Database Overview"
+title: "💠 SQLite 数据库概述"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程为社区贡献内容，不由 Open WebUI 团队提供支持。它仅用于展示如何根据具体使用案例定制 Open WebUI。有意贡献？请查看贡献教程。
 :::
 
 > [!WARNING]  
-> This documentation was created based on the current version (0.5.11) and is constantly being updated.
+> 此文档基于当前版本 (0.5.11) 创建，并会持续更新。
 
-# Open-WebUI Internal SQLite Database
+# Open-WebUI 内部 SQLite 数据库
 
-For Open-WebUI, the SQLite database serves as the backbone for user management, chat history, file storage, and various other core functionalities. Understanding this structure is essential for anyone looking to contribute to or maintain the project effectively.
+对于 Open-WebUI，SQLite 数据库是用户管理、聊天历史、文件存储以及其他各种核心功能的基石。了解其结构对于想要有效维护或贡献此项目的人来说至关重要。
 
-## Internal SQLite Location
+## 内部 SQLite 位置
 
-You can find the SQLite database at `root` -> `data` -> `webui.db`
+你可以在 `root` -> `data` -> `webui.db` 位置找到 SQLite 数据库
 
 ```
 📁 Root (/)
@@ -32,245 +32,245 @@ You can find the SQLite database at `root` -> `data` -> `webui.db`
 └── 📄 start_windows.bat
 ```
 
-## Copy Database Locally
+## 本地复制数据库
 
-If you want to copy the Open-WebUI SQLite database running in the container to your local machine, you can use:
+如果你想将容器中运行的 Open-WebUI SQLite 数据库复制到本地机器，可以使用以下命令：
 
 ```bash
 docker cp open-webui:/app/backend/data/webui.db ./webui.db
 ```
 
-Alternatively, you can access the database within the container using:
+或者，你也可以通过以下操作在容器内部访问数据库：
 
 ```bash
 docker exec -it open-webui /bin/sh
 ```
 
-## Table Overview
+## 表概览
 
-Here is a complete list of tables in Open-WebUI's SQLite database. The tables are listed alphabetically and numbered for convenience.
+以下是 Open-WebUI SQLite 数据库中的完整表清单。为方便起见，表按字母顺序排列并附带编号。
 
-| **No.** | **Table Name**   | **Description**                                              |
-| ------- | ---------------- | ------------------------------------------------------------ |
-| 01      | auth             | Stores user authentication credentials and login information |
-| 02      | channel          | Manages chat channels and their configurations               |
-| 03      | channel_member   | Tracks user membership and permissions within channels       |
-| 04      | chat             | Stores chat sessions and their metadata                      |
-| 05      | chatidtag        | Maps relationships between chats and their associated tags   |
-| 06      | config           | Maintains system-wide configuration settings                 |
-| 07      | document         | Stores documents and their metadata for knowledge management |
-| 08      | feedback         | Captures user feedback and ratings                           |
-| 09      | file             | Manages uploaded files and their metadata                    |
-| 10      | folder           | Organizes files and content into hierarchical structures     |
-| 11      | function         | Stores custom functions and their configurations             |
-| 12      | group            | Manages user groups and their permissions                    |
-| 13      | knowledge        | Stores knowledge base entries and related information        |
-| 14      | memory           | Maintains chat history and context memory                    |
-| 15      | message          | Stores individual chat messages and their content            |
-| 16      | message_reaction | Records user reactions (emojis/responses) to messages        |
-| 17      | migrate_history  | Tracks database schema version and migration records         |
-| 18      | model            | Manages AI model configurations and settings                 |
-| 19      | prompt           | Stores templates and configurations for AI prompts           |
-| 20      | tag              | Manages tags/labels for content categorization               |
-| 21      | tool             | Stores configurations for system tools and integrations      |
-| 22      | user             | Maintains user profiles and account information              |
+| **编号** | **表名**         | **描述**                                                |
+| ------- | ---------------- | ------------------------------------------------------- |
+| 01      | auth             | 存储用户认证凭据和登录信息                               |
+| 02      | channel          | 管理聊天频道及其配置                                     |
+| 03      | channel_member   | 跟踪频道内的用户成员和权限                               |
+| 04      | chat             | 存储聊天会话及其元数据                                   |
+| 05      | chatidtag        | 映射聊天与其关联标签之间的关系                           |
+| 06      | config           | 维护系统范围的配置设置                                   |
+| 07      | document         | 存储知识管理相关的文档及元数据                           |
+| 08      | feedback         | 捕捉用户反馈和评分                                       |
+| 09      | file             | 管理上传的文件及其元数据                                 |
+| 10      | folder           | 将文件和内容组织为层次结构                               |
+| 11      | function         | 存储自定义函数及其配置                                   |
+| 12      | group            | 管理用户组及其权限                                       |
+| 13      | knowledge        | 存储知识库条目及相关信息                                 |
+| 14      | memory           | 维护聊天历史和上下文记忆                                 |
+| 15      | message          | 存储单独的聊天消息及其内容                               |
+| 16      | message_reaction | 记录用户对消息的反应（表情符号/回复）                   |
+| 17      | migrate_history  | 跟踪数据库模式版本和迁移记录                             |
+| 18      | model            | 管理 AI 模型配置和设置                                   |
+| 19      | prompt           | 存储 AI 提示的模板和配置                                 |
+| 20      | tag              | 管理用于内容分类的标签/标识                              |
+| 21      | tool             | 存储系统工具和集成配置                                   |
+| 22      | user             | 维护用户资料和账户信息                                   |
 
-Note: there are two additional tables in Open-WebUI's SQLite database that are not related to Open-WebUI's core functionality, that have been excluded:
+注意：Open-WebUI SQLite 数据库中还有两个与核心功能无关的表，它们已被排除在外：
 
-- Alembic Version table
-- Migrate History table
+- Alembic Version 表
+- Migrate History 表
 
-Now that we have all the tables, let's understand the structure of each table.
+现在我们已经列出了所有的表，接下来让我们了解每个表的结构。
 
-## Auth Table
+## Auth 表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**   |
-| --------------- | ------------- | --------------- | ----------------- |
-| id              | String        | PRIMARY KEY     | Unique identifier |
-| email           | String        | -               | User's email      |
-| password        | Text          | -               | Hashed password   |
-| active          | Boolean       | -               | Account status    |
+| **列名**      | **数据类型**   | **约束**        | **描述**          |
+| ------------- | -------------- | --------------- | ----------------- |
+| id            | String         | PRIMARY KEY     | 唯一标识符        |
+| email         | String         | -               | 用户的邮箱         |
+| password      | Text           | -               | 哈希密码           |
+| active        | Boolean        | -               | 账户状态           |
 
-Things to know about the auth table:
+关于 auth 表需要了解的事项：
 
-- Uses UUID for primary key
-- One-to-One relationship with `users` table (shared id)
+- 使用 UUID 作为主键
+- 与 `users` 表为一对一关系（共享 id）
 
-## Channel Table
+## Channel 表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**                     |
-| --------------- | ------------- | --------------- | ----------------------------------- |
-| id              | Text          | PRIMARY KEY     | Unique identifier (UUID)            |
-| user_id         | Text          | -               | Owner/creator of channel            |
-| type            | Text          | nullable        | Channel type                        |
-| name            | Text          | -               | Channel name                        |
-| description     | Text          | nullable        | Channel description                 |
-| data            | JSON          | nullable        | Flexible data storage               |
-| meta            | JSON          | nullable        | Channel metadata                    |
-| access_control  | JSON          | nullable        | Permission settings                 |
-| created_at      | BigInteger    | -               | Creation timestamp (nanoseconds)    |
-| updated_at      | BigInteger    | -               | Last update timestamp (nanoseconds) |
+| **列名**      | **数据类型**   | **约束**        | **描述**                         |
+| ------------- | -------------- | --------------- | -------------------------------- |
+| id              | Text          | PRIMARY KEY     | 唯一标识符 (UUID)                 |
+| user_id         | Text          | -               | 频道的拥有者/创建者               |
+| type            | Text          | nullable        | 频道类型                          |
+| name            | Text          | -               | 频道名称                          |
+| description     | Text          | nullable        | 频道描述                          |
+| data            | JSON          | nullable        | 灵活的数据存储                    |
+| meta            | JSON          | nullable        | 频道元数据                        |
+| access_control  | JSON          | nullable        | 权限设置                          |
+| created_at      | BigInteger    | -               | 创建时间戳（纳秒）                |
+| updated_at      | BigInteger    | -               | 最后更新时间戳（纳秒）            |
 
-Things to know about the auth table:
+关于认证表需要了解的内容：
 
-- Uses UUID for primary key
-- Case-insensitive channel names (stored lowercase)
+- 使用UUID作为主键
+- 频道名称不区分大小写（以小写形式存储）
 
-## Channel Member Table
+## 频道成员表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**                              |
-| --------------- | ------------- | --------------- | -------------------------------------------- |
-| id              | TEXT          | NOT NULL        | Unique identifier for the channel membership |
-| channel_id      | TEXT          | NOT NULL        | Reference to the channel                     |
-| user_id         | TEXT          | NOT NULL        | Reference to the user                        |
-| created_at      | BIGINT        | -               | Timestamp when membership was created        |
+| **列名称**      | **数据类型**  | **约束条件**     | **描述**                                   |
+| --------------- | ------------- | --------------- | ---------------------------------------- |
+| id              | TEXT          | NOT NULL        | 频道成员的唯一标识符                     |
+| channel_id      | TEXT          | NOT NULL        | 引用频道                                 |
+| user_id         | TEXT          | NOT NULL        | 引用用户                                 |
+| created_at      | BIGINT        | -               | 创建成员关系的时间戳                     |
 
-## Chat Table
+## 聊天表
 
-| **Column Name** | **Data Type** | **Constraints**         | **Description**          |
-| --------------- | ------------- | ----------------------- | ------------------------ |
-| id              | String        | PRIMARY KEY             | Unique identifier (UUID) |
-| user_id         | String        | -                       | Owner of the chat        |
-| title           | Text          | -                       | Chat title               |
-| chat            | JSON          | -                       | Chat content and history |
-| created_at      | BigInteger    | -                       | Creation timestamp       |
-| updated_at      | BigInteger    | -                       | Last update timestamp    |
-| share_id        | Text          | UNIQUE, nullable        | Sharing identifier       |
-| archived        | Boolean       | default=False           | Archive status           |
-| pinned          | Boolean       | default=False, nullable | Pin status               |
-| meta            | JSON          | server_default="{}"     | Metadata including tags  |
-| folder_id       | Text          | nullable                | Parent folder ID         |
+| **列名称**      | **数据类型**  | **约束条件**             | **描述**               |
+| --------------- | ------------- | ----------------------- | ---------------------- |
+| id              | String        | PRIMARY KEY             | 唯一标识符 (UUID)      |
+| user_id         | String        | -                       | 聊天的创建者           |
+| title           | Text          | -                       | 聊天标题               |
+| chat            | JSON          | -                       | 聊天内容及历史记录     |
+| created_at      | BigInteger    | -                       | 创建时间戳             |
+| updated_at      | BigInteger    | -                       | 最后更新时间戳         |
+| share_id        | Text          | UNIQUE, nullable        | 分享标识符             |
+| archived        | Boolean       | default=False           | 存档状态               |
+| pinned          | Boolean       | default=False, nullable | 置顶状态               |
+| meta            | JSON          | server_default="{}"     | 包含标签的元数据       |
+| folder_id       | Text          | nullable                | 父文件夹ID             |
 
-## Chat ID Tag Table
+## 聊天标签表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**    |
+| **列名称**      | **数据类型**  | **约束条件**     | **描述**            |
 | --------------- | ------------- | --------------- | ------------------ |
-| id              | VARCHAR(255)  | NOT NULL        | Unique identifier  |
-| tag_name        | VARCHAR(255)  | NOT NULL        | Name of the tag    |
-| chat_id         | VARCHAR(255)  | NOT NULL        | Reference to chat  |
-| user_id         | VARCHAR(255)  | NOT NULL        | Reference to user  |
-| timestamp       | INTEGER       | NOT NULL        | Creation timestamp |
+| id              | VARCHAR(255)  | NOT NULL        | 唯一标识符         |
+| tag_name        | VARCHAR(255)  | NOT NULL        | 标签名称           |
+| chat_id         | VARCHAR(255)  | NOT NULL        | 引用聊天           |
+| user_id         | VARCHAR(255)  | NOT NULL        | 引用用户           |
+| timestamp       | INTEGER       | NOT NULL        | 创建时间戳         |
 
-## Config
+## 配置
 
-| **Column Name** | **Data Type** | **Constraints** | **Default**       | **Description**        |
+| **列名称**      | **数据类型**  | **约束条件**     | **默认值**         | **描述**                |
 | --------------- | ------------- | --------------- | ----------------- | ---------------------- |
-| id              | INTEGER       | NOT NULL        | -                 | Primary key identifier |
-| data            | JSON          | NOT NULL        | -                 | Configuration data     |
-| version         | INTEGER       | NOT NULL        | -                 | Config version number  |
-| created_at      | DATETIME      | NOT NULL        | CURRENT_TIMESTAMP | Creation timestamp     |
-| updated_at      | DATETIME      | -               | CURRENT_TIMESTAMP | Last update timestamp  |
+| id              | INTEGER       | NOT NULL        | -                 | 主键标识符             |
+| data            | JSON          | NOT NULL        | -                 | 配置信息               |
+| version         | INTEGER       | NOT NULL        | -                 | 配置版本号             |
+| created_at      | DATETIME      | NOT NULL        | CURRENT_TIMESTAMP | 创建时间戳             |
+| updated_at      | DATETIME      | -               | CURRENT_TIMESTAMP | 最后更新时间戳         |
 
-## Feedback Table
+## 反馈表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**                 |
-| --------------- | ------------- | --------------- | ------------------------------- |
-| id              | Text          | PRIMARY KEY     | Unique identifier (UUID)        |
-| user_id         | Text          | -               | User who provided feedback      |
-| version         | BigInteger    | default=0       | Feedback version number         |
-| type            | Text          | -               | Type of feedback                |
-| data            | JSON          | nullable        | Feedback data including ratings |
-| meta            | JSON          | nullable        | Metadata (arena, chat_id, etc)  |
-| snapshot        | JSON          | nullable        | Associated chat snapshot        |
-| created_at      | BigInteger    | -               | Creation timestamp              |
-| updated_at      | BigInteger    | -               | Last update timestamp           |
+| **列名称**      | **数据类型**  | **约束条件**     | **描述**                     |
+| --------------- | ------------- | --------------- | --------------------------- |
+| id              | Text          | PRIMARY KEY     | 唯一标识符 (UUID)           |
+| user_id         | Text          | -               | 提供反馈的用户               |
+| version         | BigInteger    | default=0       | 反馈版本号                   |
+| type            | Text          | -               | 反馈类型                     |
+| data            | JSON          | nullable        | 包含评分的反馈数据           |
+| meta            | JSON          | nullable        | 元数据（如竞技场、聊天ID等） |
+| snapshot        | JSON          | nullable        | 相关聊天快照                 |
+| created_at      | BigInteger    | -               | 创建时间戳                  |
+| updated_at      | BigInteger    | -               | 最后更新时间戳               |
 
-# File Table
+# 文件表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**       |
+| **列名**       | **数据类型**   | **约束条件**      | **描述**                 |
 | --------------- | ------------- | --------------- | --------------------- |
-| id              | String        | PRIMARY KEY     | Unique identifier     |
-| user_id         | String        | -               | Owner of the file     |
-| hash            | Text          | nullable        | File hash/checksum    |
-| filename        | Text          | -               | Name of the file      |
-| path            | Text          | nullable        | File system path      |
-| data            | JSON          | nullable        | File-related data     |
-| meta            | JSON          | nullable        | File metadata         |
-| access_control  | JSON          | nullable        | Permission settings   |
-| created_at      | BigInteger    | -               | Creation timestamp    |
-| updated_at      | BigInteger    | -               | Last update timestamp |
+| id              | String        | PRIMARY KEY     | 唯一标识符               |
+| user_id         | String        | -               | 文件的所有者             |
+| hash            | Text          | nullable        | 文件哈希/校验和           |
+| filename        | Text          | -               | 文件名                  |
+| path            | Text          | nullable        | 文件系统路径              |
+| data            | JSON          | nullable        | 与文件相关的数据           |
+| meta            | JSON          | nullable        | 文件元数据                |
+| access_control  | JSON          | nullable        | 权限设置                 |
+| created_at      | BigInteger    | -               | 创建时间戳                |
+| updated_at      | BigInteger    | -               | 最后更新时间戳             |
 
-The `meta` field's expected structure:
+`meta` 字段的预期结构：
 
 ```python
 {
-    "name": string,          # Optional display name
-    "content_type": string,  # MIME type
-    "size": integer,         # File size in bytes
-    # Additional metadata supported via ConfigDict(extra="allow")
+    "name": string,          # 可选的显示名称
+    "content_type": string,  # MIME 类型
+    "size": integer,         # 文件大小（字节）
+    # 通过 ConfigDict(extra="allow") 支持的附加元数据
 }
 ```
 
-## Folder Table
+## 文件夹表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**                |
+| **列名**       | **数据类型**   | **约束条件**      | **描述**                     |
 | --------------- | ------------- | --------------- | ------------------------------ |
-| id              | Text          | PRIMARY KEY     | Unique identifier (UUID)       |
-| parent_id       | Text          | nullable        | Parent folder ID for hierarchy |
-| user_id         | Text          | -               | Owner of the folder            |
-| name            | Text          | -               | Folder name                    |
-| items           | JSON          | nullable        | Folder contents                |
-| meta            | JSON          | nullable        | Folder metadata                |
-| is_expanded     | Boolean       | default=False   | UI expansion state             |
-| created_at      | BigInteger    | -               | Creation timestamp             |
-| updated_at      | BigInteger    | -               | Last update timestamp          |
+| id              | Text          | PRIMARY KEY     | 唯一标识符 (UUID)            |
+| parent_id       | Text          | nullable        | 用于层级关系的父文件夹 ID       |
+| user_id         | Text          | -               | 文件夹的所有者               |
+| name            | Text          | -               | 文件夹名称                   |
+| items           | JSON          | nullable        | 文件夹内容                   |
+| meta            | JSON          | nullable        | 文件夹元数据                 |
+| is_expanded     | Boolean       | default=False   | UI 展开状态                 |
+| created_at      | BigInteger    | -               | 创建时间戳                   |
+| updated_at      | BigInteger    | -               | 最后更新时间戳                |
 
-Things to know about the folder table:
+关于文件夹表需要了解事项：
 
-- Folders can be nested (parent_id reference)
-- Root folders have null parent_id
-- Folder names must be unique within same parent
+- 文件夹可以嵌套（通过 parent_id 引用）
+- 根文件夹的 parent_id 为 null
+- 同一父级下文件夹名称必须唯一
 
-## Function Table
+## 函数表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**           |
+| **列名**       | **数据类型**   | **约束条件**      | **描述**                  |
 | --------------- | ------------- | --------------- | ------------------------- |
-| id              | String        | PRIMARY KEY     | Unique identifier         |
-| user_id         | String        | -               | Owner of the function     |
-| name            | Text          | -               | Function name             |
-| type            | Text          | -               | Function type             |
-| content         | Text          | -               | Function content/code     |
-| meta            | JSON          | -               | Function metadata         |
-| valves          | JSON          | -               | Function control settings |
-| is_active       | Boolean       | -               | Function active status    |
-| is_global       | Boolean       | -               | Global availability flag  |
-| created_at      | BigInteger    | -               | Creation timestamp        |
-| updated_at      | BigInteger    | -               | Last update timestamp     |
+| id              | String        | PRIMARY KEY     | 唯一标识符                |
+| user_id         | String        | -               | 函数的所有者              |
+| name            | Text          | -               | 函数名称                  |
+| type            | Text          | -               | 函数类型                  |
+| content         | Text          | -               | 函数内容/代码             |
+| meta            | JSON          | -               | 函数元数据                |
+| valves          | JSON          | -               | 函数控制设定              |
+| is_active       | Boolean       | -               | 函数激活状态              |
+| is_global       | Boolean       | -               | 全局可用性标志            |
+| created_at      | BigInteger    | -               | 创建时间戳                |
+| updated_at      | BigInteger    | -               | 最后更新时间戳             |
 
-Things to know about the folder table:
+关于函数表需要了解事项：
 
-- `type` can only be: ["filter", "action"]
+- `type` 只能是: ["filter", "action"]
 
-## Group Table
+## 群组表
 
-| **Column Name** | **Data Type** | **Constraints**     | **Description**          |
+| **列名**       | **数据类型**   | **约束条件**           | **描述**                  |
 | --------------- | ------------- | ------------------- | ------------------------ |
-| id              | Text          | PRIMARY KEY, UNIQUE | Unique identifier (UUID) |
-| user_id         | Text          | -                   | Group owner/creator      |
-| name            | Text          | -                   | Group name               |
-| description     | Text          | -                   | Group description        |
-| data            | JSON          | nullable            | Additional group data    |
-| meta            | JSON          | nullable            | Group metadata           |
-| permissions     | JSON          | nullable            | Permission configuration |
-| user_ids        | JSON          | nullable            | List of member user IDs  |
-| created_at      | BigInteger    | -                   | Creation timestamp       |
-| updated_at      | BigInteger    | -                   | Last update timestamp    |
+| id              | Text          | PRIMARY KEY, UNIQUE | 唯一标识符 (UUID)         |
+| user_id         | Text          | -                   | 群组所有者/创建者         |
+| name            | Text          | -                   | 群组名称                  |
+| description     | Text          | -                   | 群组描述                  |
+| data            | JSON          | nullable            | 附加群组数据              |
+| meta            | JSON          | nullable            | 群组元数据                |
+| permissions     | JSON          | nullable            | 权限配置                  |
+| user_ids        | JSON          | nullable            | 成员用户 ID 列表          |
+| created_at      | BigInteger    | -                   | 创建时间戳                |
+| updated_at      | BigInteger    | -                   | 最后更新时间戳             |
 
-## Knowledge Table
+## 知识表
 
-| **Column Name** | **Data Type** | **Constraints**     | **Description**            |
+| **列名**       | **数据类型**   | **约束条件**           | **描述**                   |
 | --------------- | ------------- | ------------------- | -------------------------- |
-| id              | Text          | PRIMARY KEY, UNIQUE | Unique identifier (UUID)   |
-| user_id         | Text          | -                   | Knowledge base owner       |
-| name            | Text          | -                   | Knowledge base name        |
-| description     | Text          | -                   | Knowledge base description |
-| data            | JSON          | nullable            | Knowledge base content     |
-| meta            | JSON          | nullable            | Additional metadata        |
-| access_control  | JSON          | nullable            | Access control rules       |
-| created_at      | BigInteger    | -                   | Creation timestamp         |
-| updated_at      | BigInteger    | -                   | Last update timestamp      |
+| id              | Text          | PRIMARY KEY, UNIQUE | 唯一标识符 (UUID)           |
+| user_id         | Text          | -                   | 知识库所有者               |
+| name            | Text          | -                   | 知识库名称                 |
+| description     | Text          | -                   | 知识库描述                 |
+| data            | JSON          | nullable            | 知识库内容                 |
+| meta            | JSON          | nullable            | 附加元数据                 |
+| access_control  | JSON          | nullable            | 访问控制规则               |
+| created_at      | BigInteger    | -                   | 创建时间戳                 |
+| updated_at      | BigInteger    | -                   | 最后更新时间戳             |
 
-The `access_control` fields expected structure:
+`access_control`字段的预期结构：
 
 ```python
 {
@@ -285,143 +285,143 @@ The `access_control` fields expected structure:
 }
 ```
 
-## Memory Table
+## 内存表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**          |
-| --------------- | ------------- | --------------- | ------------------------ |
-| id              | String        | PRIMARY KEY     | Unique identifier (UUID) |
-| user_id         | String        | -               | Memory owner             |
-| content         | Text          | -               | Memory content           |
-| created_at      | BigInteger    | -               | Creation timestamp       |
-| updated_at      | BigInteger    | -               | Last update timestamp    |
+| **列名**         | **数据类型**   | **约束条件**      | **描述**                  |
+| --------------- | ------------- | ---------------- | ------------------------ |
+| id              | String        | PRIMARY KEY      | 唯一标识符 (UUID)        |
+| user_id         | String        | -                | 内存所有者               |
+| content         | Text          | -                | 内存内容                 |
+| created_at      | BigInteger    | -                | 创建时间戳               |
+| updated_at      | BigInteger    | -                | 最后更新时间戳           |
 
-## Message Table
+## 消息表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**                     |
-| --------------- | ------------- | --------------- | ----------------------------------- |
-| id              | Text          | PRIMARY KEY     | Unique identifier (UUID)            |
-| user_id         | Text          | -               | Message author                      |
-| channel_id      | Text          | nullable        | Associated channel                  |
-| parent_id       | Text          | nullable        | Parent message for threads          |
-| content         | Text          | -               | Message content                     |
-| data            | JSON          | nullable        | Additional message data             |
-| meta            | JSON          | nullable        | Message metadata                    |
-| created_at      | BigInteger    | -               | Creation timestamp (nanoseconds)    |
-| updated_at      | BigInteger    | -               | Last update timestamp (nanoseconds) |
+| **列名**         | **数据类型**   | **约束条件**      | **描述**                           |
+| --------------- | ------------- | ---------------- | ----------------------------------- |
+| id              | Text          | PRIMARY KEY      | 唯一标识符 (UUID)                 |
+| user_id         | Text          | -                | 消息作者                           |
+| channel_id      | Text          | nullable         | 关联的频道                         |
+| parent_id       | Text          | nullable         | 线程的父消息                       |
+| content         | Text          | -                | 消息内容                           |
+| data            | JSON          | nullable         | 附加的消息数据                     |
+| meta            | JSON          | nullable         | 消息元数据                         |
+| created_at      | BigInteger    | -                | 创建时间戳（纳秒）                 |
+| updated_at      | BigInteger    | -                | 最后更新时间戳（纳秒）             |
 
-## Message Reaction Table
+## 消息反应表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**          |
-| --------------- | ------------- | --------------- | ------------------------ |
-| id              | Text          | PRIMARY KEY     | Unique identifier (UUID) |
-| user_id         | Text          | -               | User who reacted         |
-| message_id      | Text          | -               | Associated message       |
-| name            | Text          | -               | Reaction name/emoji      |
-| created_at      | BigInteger    | -               | Reaction timestamp       |
+| **列名**         | **数据类型**   | **约束条件**      | **描述**                  |
+| --------------- | ------------- | ---------------- | ------------------------ |
+| id              | Text          | PRIMARY KEY      | 唯一标识符 (UUID)        |
+| user_id         | Text          | -                | 反应的用户               |
+| message_id      | Text          | -                | 关联的消息               |
+| name            | Text          | -                | 反应名称/表情            |
+| created_at      | BigInteger    | -                | 反应时间戳               |
 
-## Model Table
+## 模型表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**        |
-| --------------- | ------------- | --------------- | ---------------------- |
-| id              | Text          | PRIMARY KEY     | Model identifier       |
-| user_id         | Text          | -               | Model owner            |
-| base_model_id   | Text          | nullable        | Parent model reference |
-| name            | Text          | -               | Display name           |
-| params          | JSON          | -               | Model parameters       |
-| meta            | JSON          | -               | Model metadata         |
-| access_control  | JSON          | nullable        | Access permissions     |
-| is_active       | Boolean       | default=True    | Active status          |
-| created_at      | BigInteger    | -               | Creation timestamp     |
-| updated_at      | BigInteger    | -               | Last update timestamp  |
+| **列名**         | **数据类型**   | **约束条件**      | **描述**                |
+| --------------- | ------------- | ---------------- | ------------------------ |
+| id              | Text          | PRIMARY KEY      | 模型标识符               |
+| user_id         | Text          | -                | 模型所有者               |
+| base_model_id   | Text          | nullable         | 父模型引用               |
+| name            | Text          | -                | 显示名称                 |
+| params          | JSON          | -                | 模型参数                 |
+| meta            | JSON          | -                | 模型元数据               |
+| access_control  | JSON          | nullable         | 访问权限                 |
+| is_active       | Boolean       | default=True     | 激活状态                 |
+| created_at      | BigInteger    | -                | 创建时间戳               |
+| updated_at      | BigInteger    | -                | 最后更新时间戳           |
 
-## Prompt Table
+## 提示表
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**           |
+| **列名**         | **数据类型**   | **约束条件**      | **描述**                  |
+| --------------- | ------------- | ---------------- | ------------------------ |
+| command         | String        | PRIMARY KEY      | 唯一指令标识符            |
+| user_id         | String        | -                | 提示所有者                |
+| title           | Text          | -                | 提示标题                  |
+| content         | Text          | -                | 提示内容/模板             |
+| timestamp       | BigInteger    | -                | 最后更新时间戳             |
+| access_control  | JSON          | nullable         | 访问权限                  |
+
+## 标签表
+
+| **列名** | **数据类型** | **约束条件** | **描述**           |
 | --------------- | ------------- | --------------- | ------------------------- |
-| command         | String        | PRIMARY KEY     | Unique command identifier |
-| user_id         | String        | -               | Prompt owner              |
-| title           | Text          | -               | Prompt title              |
-| content         | Text          | -               | Prompt content/template   |
-| timestamp       | BigInteger    | -               | Last update timestamp     |
-| access_control  | JSON          | nullable        | Access permissions        |
+| id              | 字符串        | 主键（复合）      | 标准化标签标识           |
+| name            | 字符串        | -               | 显示名称                 |
+| user_id         | 字符串        | 主键（复合）      | 标签所属者               |
+| meta            | JSON          | 可为空           | 标签元数据               |
 
-## Tag Table
+关于标签表需要了解的事项：
 
-| **Column Name** | **Data Type** | **Constraints** | **Description**           |
-| --------------- | ------------- | --------------- | ------------------------- |
-| id              | String        | PK (composite)  | Normalized tag identifier |
-| name            | String        | -               | Display name              |
-| user_id         | String        | PK (composite)  | Tag owner                 |
-| meta            | JSON          | nullable        | Tag metadata              |
+- 主键是复合主键（id, user_id）
 
-Things to know about the tag table:
+## 工具表
 
-- Primary key is composite (id, user_id)
-
-## Tool Table
-
-| **Column Name** | **Data Type** | **Constraints** | **Description**       |
+| **列名** | **数据类型** | **约束条件** | **描述**           |
 | --------------- | ------------- | --------------- | --------------------- |
-| id              | String        | PRIMARY KEY     | Unique identifier     |
-| user_id         | String        | -               | Tool owner            |
-| name            | Text          | -               | Tool name             |
-| content         | Text          | -               | Tool content/code     |
-| specs           | JSON          | -               | Tool specifications   |
-| meta            | JSON          | -               | Tool metadata         |
-| valves          | JSON          | -               | Tool control settings |
-| access_control  | JSON          | nullable        | Access permissions    |
-| created_at      | BigInteger    | -               | Creation timestamp    |
-| updated_at      | BigInteger    | -               | Last update timestamp |
+| id              | 字符串        | 主键             | 唯一标识符             |
+| user_id         | 字符串        | -               | 工具所属者             |
+| name            | 文本          | -               | 工具名称               |
+| content         | 文本          | -               | 工具内容/代码          |
+| specs           | JSON          | -               | 工具规格               |
+| meta            | JSON          | -               | 工具元数据             |
+| valves          | JSON          | -               | 工具控制设置           |
+| access_control  | JSON          | 可为空           | 访问权限               |
+| created_at      | 大整数        | -               | 创建时间戳             |
+| updated_at      | 大整数        | -               | 最近更新时间戳         |
 
-## User Table
+## 用户表
 
-| **Column Name**   | **Data Type** | **Constraints**  | **Description**          |
+| **列名**           | **数据类型** | **约束条件**     | **描述**               |
 | ----------------- | ------------- | ---------------- | ------------------------ |
-| id                | String        | PRIMARY KEY      | Unique identifier        |
-| name              | String        | -                | User's name              |
-| email             | String        | -                | User's email             |
-| role              | String        | -                | User's role              |
-| profile_image_url | Text          | -                | Profile image path       |
-| last_active_at    | BigInteger    | -                | Last activity timestamp  |
-| updated_at        | BigInteger    | -                | Last update timestamp    |
-| created_at        | BigInteger    | -                | Creation timestamp       |
-| api_key           | String        | UNIQUE, nullable | API authentication key   |
-| settings          | JSON          | nullable         | User preferences         |
-| info              | JSON          | nullable         | Additional user info     |
-| oauth_sub         | Text          | UNIQUE           | OAuth subject identifier |
+| id                | 字符串        | 主键             | 唯一标识符             |
+| name              | 字符串        | -               | 用户的名称              |
+| email             | 字符串        | -               | 用户的邮箱              |
+| role              | 字符串        | -               | 用户的角色              |
+| profile_image_url | 文本          | -               | 用户头像路径            |
+| last_active_at    | 大整数        | -               | 最近活跃时间戳          |
+| updated_at        | 大整数        | -               | 最近更新时间戳          |
+| created_at        | 大整数        | -               | 创建时间戳              |
+| api_key           | 字符串        | 唯一，可为空     | API认证密钥            |
+| settings          | JSON          | 可为空           | 用户偏好设置           |
+| info              | JSON          | 可为空           | 额外的用户信息          |
+| oauth_sub         | 文本          | 唯一            | OAuth主题标识符        |
 
-# Entity Relationship Diagram
+# 实体关系图
 
-To help visualize the relationship between the tables, refer to the below Entity Relationship Diagram (ERD) generated with Mermaid.
+为了帮助可视化表之间的关系，请参考以下由Mermaid生成的实体关系图（ERD）。
 
 ```mermaid
 erDiagram
-    %% User and Authentication
-    user ||--o{ auth : "has"
-    user ||--o{ chat : "owns"
-    user ||--o{ channel : "owns"
-    user ||--o{ message : "creates"
-    user ||--o{ folder : "owns"
-    user ||--o{ file : "owns"
-    user ||--o{ feedback : "provides"
-    user ||--o{ function : "manages"
-    user ||--o{ group : "manages"
-    user ||--o{ knowledge : "manages"
-    user ||--o{ memory : "owns"
-    user ||--o{ model : "manages"
-    user ||--o{ prompt : "creates"
-    user ||--o{ tag : "creates"
-    user ||--o{ tool : "manages"
+    %% 用户与认证
+    user ||--o{ auth : "拥有"
+    user ||--o{ chat : "拥有"
+    user ||--o{ channel : "拥有"
+    user ||--o{ message : "创建"
+    user ||--o{ folder : "拥有"
+    user ||--o{ file : "拥有"
+    user ||--o{ feedback : "提供"
+    user ||--o{ function : "管理"
+    user ||--o{ group : "管理"
+    user ||--o{ knowledge : "管理"
+    user ||--o{ memory : "拥有"
+    user ||--o{ model : "管理"
+    user ||--o{ prompt : "创建"
+    user ||--o{ tag : "创建"
+    user ||--o{ tool : "管理"
 
-    %% Content Relationships
-    message ||--o{ message_reaction : "has"
-    chat ||--o{ tag : "tagged_with"
-    chat }|--|| folder : "organized_in"
-    channel ||--o{ message : "contains"
-    message ||--o{ message : "replies"
+    %% 内容关系
+    message ||--o{ message_reaction : "具有"
+    chat ||--o{ tag : "与标签关联"
+    chat }|--|| folder : "组织于"
+    channel ||--o{ message : "包含"
+    message ||--o{ message : "回复"
 
     user {
-        string id PK
+        string id 主键
         string name
         string email
         string role
@@ -434,27 +434,27 @@ erDiagram
     }
 
     auth {
-        string id PK
+        string id 主键
         string email
         text password
         boolean active
     }
 
     chat {
-        string id PK
-        string user_id FK
+        string id 主键
+        string user_id 外键
         string title
         json chat
         text share_id
         boolean archived
         boolean pinned
         json meta
-        text folder_id FK
+        text folder_id 外键
     }
 
     channel {
-        text id PK
-        text user_id FK
+        text id 主键
+        text user_id 外键
         text name
         text description
         json data
@@ -463,25 +463,25 @@ erDiagram
     }
 
     message {
-        text id PK
-        text user_id FK
-        text channel_id FK
-        text parent_id FK
+        text id 主键
+        text user_id 外键
+        text channel_id 外键
+        text parent_id 外键
         text content
         json data
         json meta
     }
 
     message_reaction {
-        text id PK
-        text user_id FK
-        text message_id FK
+        text id 主键
+        text user_id 外键
+        text message_id 外键
         text name
     }
 
     feedback {
-        text id PK
-        text user_id FK
+        text id 主键
+        text user_id 外键
         bigint version
         text type
         json data
@@ -490,98 +490,98 @@ erDiagram
     }
 
     file {
-        string id PK
-        string user_id FK
+        string id 主键
+        string user_id 外键
         text hash
         text filename
         text path
         json data
         json meta
-        json access_control
+        json 访问控制
     }
 
-    folder {
-        text id PK
-        text parent_id FK
-        text user_id FK
-        text name
-        json items
-        json meta
-        boolean is_expanded
+    文件夹 {
+        text id 主键
+        text parent_id 外键
+        text user_id 外键
+        text 名称
+        json 项目
+        json 元数据
+        boolean 展开状态
     }
 
-    function {
-        string id PK
-        string user_id FK
-        text name
-        text content
-        json meta
-        json valves
-        boolean is_active
-        boolean is_global
+    功能 {
+        string id 主键
+        string user_id 外键
+        text 名称
+        text 内容
+        json 元数据
+        json 阀门
+        boolean 活跃状态
+        boolean 全局状态
     }
 
-    group {
-        text id PK
-        text user_id FK
-        text name
-        text description
-        json data
-        json meta
-        json permissions
-        json user_ids
+    组 {
+        text id 主键
+        text user_id 外键
+        text 名称
+        text 描述
+        json 数据
+        json 元数据
+        json 权限
+        json 用户ID列表
     }
 
-    knowledge {
-        text id PK
-        text user_id FK
-        text name
-        text description
-        json data
-        json meta
-        json access_control
+    知识 {
+        text id 主键
+        text user_id 外键
+        text 名称
+        text 描述
+        json 数据
+        json 元数据
+        json 访问控制
     }
 
-    memory {
-        string id PK
-        string user_id FK
-        text content
+    记忆 {
+        string id 主键
+        string user_id 外键
+        text 内容
     }
 
-    model {
-        text id PK
-        text user_id FK
-        text base_model_id FK
-        text name
-        json params
-        json meta
-        json access_control
-        boolean is_active
+    模型 {
+        text id 主键
+        text user_id 外键
+        text base_model_id 外键
+        text 名称
+        json 参数
+        json 元数据
+        json 访问控制
+        boolean 活跃状态
     }
 
-    prompt {
-        string command PK
-        string user_id FK
-        text title
-        text content
-        json access_control
+    提示 {
+        string 命令 主键
+        string user_id 外键
+        text 标题
+        text 内容
+        json 访问控制
     }
 
-    tag {
-        string id PK "composite"
-        string user_id PK "composite"
-        string name
-        json meta
+    标签 {
+        string id 主键 "复合"
+        string user_id 主键 "复合"
+        string 名称
+        json 元数据
     }
 
-    tool {
-        string id PK
-        string user_id FK
-        text name
-        text content
-        json specs
-        json meta
-        json valves
-        json access_control
+    工具 {
+        string id 主键
+        string user_id 外键
+        text 名称
+        text 内容
+        json 规格
+        json 元数据
+        json 阀门
+        json 访问控制
     }
 ```

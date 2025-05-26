@@ -1,10 +1,10 @@
 ---
 sidebar_position: 7
-title: "❓ FAQ"
+title: "❓ 常见问题"
 ---
 
-# FAQ
+# 常见问题
 
-**What's the difference between Functions and Pipelines?**
+**Functions和Pipelines有什么区别？**
 
-The main difference between Functions and Pipelines is that Functions are executed directly on the Open WebUI server, while Pipelines are executed on a separate server, potentially reducing the load on your Open WebUI instance.
+Functions和Pipelines的主要区别在于Functions直接在Open WebUI服务器上执行，而Pipelines是在一个独立的服务器上执行，这可能会减少你的Open WebUI实例的负载。

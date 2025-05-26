@@ -1,121 +1,121 @@
 ---
 sidebar_position: 2
-title: "🛠️ Development"
+title: "🛠️ 开发"
 ---
 
 
 
-## Writing A Custom Toolkit
+## 编写自定义工具包
 
-Toolkits are defined in a single Python file, with a top level docstring with metadata and a `Tools` class.
+工具包定义在一个单独的 Python 文件中，具有包含元数据的顶级文档字符串和一个 `Tools` 类。
 
-### Example Top-Level Docstring
+### 示例顶级文档字符串
 
 ```python
 """
-title: String Inverse
-author: Your Name
-author_url: https://website.com
-git_url: https://github.com/username/string-reverse.git
-description: This tool calculates the inverse of a string
-required_open_webui_version: 0.4.0
-requirements: langchain-openai, langgraph, ollama, langchain_ollama
-version: 0.4.0
-licence: MIT
+标题: 字符串逆转
+作者: 你的名字
+作者链接: https://website.com
+git链接: https://github.com/username/string-reverse.git
+描述: 该工具计算字符串的逆序
+所需的最低Open WebUI版本: 0.4.0
+依赖: langchain-openai, langgraph, ollama, langchain_ollama
+版本: 0.4.0
+许可: MIT
 """
 ```
 
-### Tools Class
+### Tools 类
 
-Tools have to be defined as methods within a class called `Tools`, with optional subclasses called `Valves` and `UserValves`, for example:
+工具必须定义为一个名为 `Tools` 的类中的方法，可选地还可以有名为 `Valves` 和 `UserValves` 的子类，例如：
 
 ```python
 class Tools:
     def __init__(self):
-        """Initialize the Tool."""
+        """初始化工具。"""
         self.valves = self.Valves()
 
     class Valves(BaseModel):
-        api_key: str = Field("", description="Your API key here")
+        api_key: str = Field("", description="你的API密钥")
 
     def reverse_string(self, string: str) -> str:
         """
-        Reverses the input string.
-        :param string: The string to reverse
+        将输入字符串逆转。
+        :param string: 要逆转的字符串
         """
-        # example usage of valves
+        # 使用阀门示例
         if self.valves.api_key != "42":
-            return "Wrong API key"
+            return "错误的API密钥"
         return string[::-1] 
 ```
 
-### Type Hints
-Each tool must have type hints for arguments. The types may also be nested, such as `queries_and_docs: list[tuple[str, int]]`. Those type hints are used to generate the JSON schema that is sent to the model. Tools without type hints will work with a lot less consistency.
+### 类型提示
+每个工具必须为参数提供类型提示。类型也可以是嵌套的，例如 `queries_and_docs: list[tuple[str, int]]`。这些类型提示用于生成发送到模型的 JSON Schema。没有类型提示的工具工作的一致性会大大降低。
 
-### Valves and UserValves - (optional, but HIGHLY encouraged)
+### 阀门和用户阀门 - （可选，但强烈推荐）
 
-Valves and UserValves are used for specifying customizable settings of the Tool, you can read more on the dedicated [Valves & UserValves](../valves/index.mdx) page.
+阀门和用户阀门用于指定工具的可自定义设置，你可以在专门的[阀门和用户阀门](../valves/index.mdx)页面中了解更多。
 
-### Optional Arguments
-Below is a list of optional arguments your tools can depend on:
-- `__event_emitter__`: Emit events (see following section)
-- `__event_call__`: Same as event emitter but can be used for user interactions
-- `__user__`: A dictionary with user information. It also contains the `UserValves` object in `__user__["valves"]`.
-- `__metadata__`: Dictionary with chat metadata
-- `__messages__`: List of previous messages
-- `__files__`: Attached files
-- `__model__`: A dictionary with model information
+### 可选参数
+以下是您的工具可以依赖的可选参数列表：
+- `__event_emitter__`: 发出事件（请参阅以下部分）
+- `__event_call__`: 与事件发射器相同，但可用于用户交互
+- `__user__`: 包含用户信息的字典，还包含用户阀门对象 `UserValves`，位于 `__user__["valves"]`。
+- `__metadata__`: 包含对话元数据的字典
+- `__messages__`: 之前消息的列表
+- `__files__`: 附件文件
+- `__model__`: 包含模型信息的字典
 
-Just add them as argument to any method of your Tool class just like `__user__` in the example above.
+只需像上面的示例中对待 `__user__` 一样，将它们添加到工具类中任何方法的参数中即可。
 
-### Event Emitters
-Event Emitters are used to add additional information to the chat interface. Similarly to Filter Outlets, Event Emitters are capable of appending content to the chat. Unlike Filter Outlets, they are not capable of stripping information. Additionally, emitters can be activated at any stage during the Tool.
+### 事件发射器
+事件发射器用于向聊天界面添加额外的信息。与过滤出口类似，事件发射器可以将内容附加到聊天中。与过滤出口不同，它们无法删除信息。此外，发射器可以在工具期间的任何阶段激活。
 
-There are two different types of Event Emitters:
+有两种不同类型的事件发射器：
 
-If the model seems to be unable to call the tool, make sure it is enabled (either via the Model page or via the `+` sign next to the chat input field). You can also turn the `Function Calling` argument of the `Advanced Params` section of the Model page from `Default` to `Native`.
+如果模型似乎无法调用工具，请确保它已启用（可以通过模型页面或聊天输入框旁的 `+` 图标打开）。您还可以将模型页面 `高级参数` 部分的 `功能调用` 参数从 `默认` 更改为 `原生`。
 
-#### Status
-This is used to add statuses to a message while it is performing steps. These can be done at any stage during the Tool. These statuses appear right above the message content. These are very useful for Tools that delay the LLM response or process large amounts of information. This allows you to inform users what is being processed in real-time.
+#### 状态
+这用于在执行步骤时向消息添加状态。它们可以在工具的任何阶段完成。这些状态显示在消息内容的正上方。对于延迟LLM响应或处理大量信息的工具来说非常有用。这允许您实时通知用户正在处理的内容。
 
 ```python
 await __event_emitter__(
             {
-                "type": "status", # We set the type here
-                "data": {"description": "Message that shows up in the chat", "done": False, "hidden": False}, 
-                # Note done is False here indicating we are still emitting statuses
+                "type": "status", # 在此设置类型
+                "data": {"description": "显示在聊天中的消息", "done": False, "hidden": False}, 
+                # 注意这里的done为False，表示我们仍然在发出状态
             }
         )
 ```
 
 <details>
-<summary>Example</summary>
+<summary>示例</summary>
 
 ```python
 async def test_function(
         self, prompt: str, __user__: dict, __event_emitter__=None
     ) -> str:
         """
-        This is a demo
+        这是一个演示
 
-        :param test: this is a test parameter
+        :param test: 这是一个测试参数
         """
 
         await __event_emitter__(
             {
-                "type": "status", # We set the type here
-                "data": {"description": "Message that shows up in the chat", "done": False}, 
-                # Note done is False here indicating we are still emitting statuses
+                "type": "status", # 在此设置类型
+                "data": {"description": "显示在聊天中的消息", "done": False}, 
+                # 注意这里的done为False，表示我们仍然在发出状态
             }
         )
 
-        # Do some other logic here
+        # 此处执行其他逻辑
         await __event_emitter__(
             {
                 "type": "status",
-                "data": {"description": "Completed a task message", "done": True, "hidden": False},
-                # Note done is True here indicating we are done emitting statuses
-                # You can also set "hidden": True if you want to remove the status once the message is returned
+                "data": {"description": "完成任务消息", "done": True, "hidden": False},
+                # 注意这里done为True，表示我们已完成发出状态
+                # 如果希望在消息返回后移除状态，可以设置为 "hidden": True
             }
         )
 
@@ -123,45 +123,45 @@ async def test_function(
             await __event_emitter__(
                 {
                     "type": "status",
-                    "data": {"description": f"An error occured: {e}", "done": True},
+                    "data": {"description": f"发生错误: {e}", "done": True},
                 }
             )
 
-            return f"Tell the user: {e}"
+            return f"告诉用户: {e}"
 ```
 </details>
 
-#### Message
-This type is used to append a message to the LLM at any stage in the Tool. This means that you can append messages, embed images, and even render web pages before, or after, or during the LLM response.
+#### 消息
+该类型用于在工具中的任意阶段向LLM追加消息。这意味着您可以在LLM响应之前、之后或期间追加消息、嵌入图片，甚至渲染网页。
 
 ```python
 await __event_emitter__(
                     {
-                        "type": "message", # We set the type here
-                        "data": {"content": "This message will be appended to the chat."},
-                        # Note that with message types we do NOT have to set a done condition
+                        "type": "message", # 我们在这里设置类型
+                        "data": {"content": "此消息将被追加到聊天中。"},
+                        # 注意，对于消息类型我们不需要设置完成条件
                     }
                 )
 ```
 
 <details>
-<summary>Example</summary>
+<summary>示例</summary>
 
 ```python
 async def test_function(
         self, prompt: str, __user__: dict, __event_emitter__=None
     ) -> str:
         """
-        This is a demo
+        这是一个演示
 
-        :param test: this is a test parameter
+        :param test: 这是一个测试参数
         """
 
         await __event_emitter__(
                     {
-                        "type": "message", # We set the type here
-                        "data": {"content": "This message will be appended to the chat."},
-                        # Note that with message types we do NOT have to set a done condition
+                        "type": "message", # 我们在这里设置类型
+                        "data": {"content": "此消息将被追加到聊天中。"},
+                        # 注意，对于消息类型我们不需要设置完成条件
                     }
                 )
 
@@ -169,16 +169,16 @@ async def test_function(
             await __event_emitter__(
                 {
                     "type": "status",
-                    "data": {"description": f"An error occured: {e}", "done": True},
+                    "data": {"description": f"发生了一个错误: {e}", "done": True},
                 }
             )
 
-            return f"Tell the user: {e}"
+            return f"告诉用户: {e}"
 ```
 </details>
 
-#### Citations
-This type is used to provide citations or references in the chat. You can utilize it to specify the content, the source, and any relevant metadata. Below is an example of how to emit a citation event:
+#### 引用
+该类型用于在聊天中提供引用或参考文献。您可以利用它来指定内容、来源和任何相关的元数据。以下是发出引用事件的示例：
 
 ```python
 await __event_emitter__(
@@ -197,23 +197,23 @@ await __event_emitter__(
     }
 )
 ```
-If you are sending multiple citations, you can iterate over citations and call the emitter multiple times. When implementing custom citations, ensure that you set `self.citation = False` in your `Tools` class `__init__` method. Otherwise, the built-in citations will override the ones you have pushed in. For example:
+如果您要发送多个引用，可以迭代引用并多次调用发射器。当实现自定义引用时，请确保在`Tools`类的`__init__`方法中设置`self.citation = False`。否则，内置的引用会覆盖您推送的引用内容。例如：
 
 ```python
 def __init__(self):
     self.citation = False
 ```
 
-Warning: if you set `self.citation = True`, this will replace any custom citations you send with the automatically generated return citation. By disabling it, you can fully manage your own citation references.
+警告：如果您设置`self.citation = True`，这将用自动生成的返回引用替换您发送的任何自定义引用。通过禁用它，您可以完全管理自己的引用。
 
 <details>
-<summary>Example</summary>
+<summary>示例</summary>
 
 ```python
 class Tools:
     class UserValves(BaseModel):
         test: bool = Field(
-            default=True, description="test"
+            default=True, description="测试"
         )
 
     def __init__(self):
@@ -223,51 +223,51 @@ async def test_function(
         self, prompt: str, __user__: dict, __event_emitter__=None
     ) -> str:
         """
-        This is a demo that just creates a citation
+        这是一个只创建引用的演示
 
-        :param test: this is a test parameter
+        :param test: 这是一个测试参数
         """
 
         await __event_emitter__(
             {
                 "type": "citation",
                 "data": {
-                    "document": ["This message will be appended to the chat as a citation when clicked into"],
+                    "document": ["此消息将作为引用追加到聊天中，当点击时显示具体内容"],
                     "metadata": [
                         {
                             "date_accessed": datetime.now().isoformat(),
                             "source": title,
                         }
                     ],
-                    "source": {"name": "Title of the content", "url": "http://link-to-citation"},
+                    "source": {"name": "内容标题", "url": "http://引用链接"},
                 },
             }
         )
 ```
 </details>
 
-## External packages
+## 外部包
 
-In the Tools definition metadata you can specify custom packages. When you click `Save` the line will be parsed and `pip install` will be run on all requirements at once.
+在工具定义的元数据中，您可以指定自定义包。当您点击“保存”时，这些内容将被解析，并且`pip install`将一次性安装所有依赖。
 
-Keep in mind that as pip is used in the same process as Open WebUI, the UI will be completely unresponsive during the installation.
+请记住，由于pip与Open WebUI在同一进程中运行，因此安装期间UI会完全无响应。
 
-No measures are taken to handle package conflicts with Open WebUI's requirements. That means that specifying requirements can break Open WebUI if you're not careful. You might be able to work around this by specifying `open-webui` itself as a requirement.
+未采取任何措施来处理与Open WebUI依赖项冲突的包。这意味着，如果您不小心，指定的依赖可能会破坏Open WebUI。您可以尝试通过将`open-webui`本身指定为依赖来解决此问题。
 
 
 <details>
-<summary>Example</summary>
+<summary>示例</summary>
 
 ```python
 """
-title: myToolName
-author: myName
-funding_url: [any link here will be shown behind a `Heart` button for users to show their support to you]
-version: 1.0.0
-# the version is displayed in the UI to help users keep track of updates.
-license: GPLv3
-description: [recommended]
-requirements: package1>=2.7.0,package2,package3
+标题: myToolName
+作者: myName
+捐赠链接: [任何链接都会显示在一个“心形”按钮后，供用户支持您]
+版本: 1.0.0
+# 版本信息会显示在UI中，帮助用户追踪更新。
+许可证: GPLv3
+描述: [推荐]
+依赖: package1>=2.7.0,package2,package3
 """
 ```
 

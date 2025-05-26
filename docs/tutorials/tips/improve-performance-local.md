@@ -1,85 +1,85 @@
 ---
 sidebar_position: 12
-title: "⚡ Improve Local LLM Performance with Dedicated Task Models"
+title: "⚡ 用专用任务模型提升本地LLM性能"
 ---
 
-# Improve Performance with Dedicated Task Models
+# 用专用任务模型提升性能
 
-Open-WebUI provides several automated features—such as title generation, tag creation, autocomplete, and search query generation—to enhance the user experience. However, these features can generate multiple simultaneous requests to your local model, which may impact performance on systems with limited resources.
+Open-WebUI提供了多个自动化功能，例如标题生成、标签创建、自动补全和搜索查询生成，以增强用户体验。然而，这些功能可能会同时向您的本地模型发送多个请求，从而在资源有限的系统上影响性能。
 
-This guide explains how to optimize your setup by configuring a dedicated, lightweight task model or by selectively disabling automation features, ensuring that your primary chat functionality remains responsive and efficient.
+本指南将解释如何通过配置专用的轻量化任务模型或选择性地禁用自动化功能来优化设置，从而确保主要聊天功能保持响应快速且高效。
 
 ---
 
 > [!TIP]
->## Why Does Open-WebUI Feel Slow?
->By default, Open-WebUI has several background tasks that can make it feel like magic but can also place a heavy load on local resources:
->- **Title Generation**
->- **Tag Generation**
->- **Autocomplete Generation** (this function triggers on every keystroke)
->- **Search Query Generation**
+>## 为什么Open-WebUI运行速度感觉较慢？
+>默认情况下，Open-WebUI有多个后台任务，这些任务让应用感觉很神奇，但也会增加本地资源的负担：
+>- **标题生成**
+>- **标签生成**
+>- **自动补全生成**（此功能会在每次按键时触发）
+>- **搜索查询生成**
 >
->Each of these features makes asynchronous requests to your model. For example, continuous calls from the autocomplete feature can significantly delay responses on devices with limited memory >or processing power, such as a Mac with 32GB of RAM running a 32B quantized model.
+>这些功能都会通过异步请求访问您的模型。例如，自动补全功能的持续调用可能会显著延迟设备响应，尤其是在运行如32B量化模型的32GB内存的Mac这样的设备上。
 >
->Optimizing the task model can help isolate these background tasks from your main chat application, improving overall responsiveness.
+>优化任务模型可以帮助将这些后台任务与主要聊天应用隔离开，提升整体响应能力。
 >
 ---
 
-## ⚡ How to Optimize Task Model Performance
+## ⚡ 如何优化任务模型性能
 
-Follow these steps to configure an efficient task model:
+按照以下步骤配置高效的任务模型：
 
-### Step 1: Access the Admin Panel
+### 第一步：访问管理面板
 
-1. Open Open-WebUI in your browser.
-2. Navigate to the **Admin Panel**.
-3. Click on **Settings** in the sidebar.
+1. 在浏览器中打开Open-WebUI。
+2. 导航到**管理面板**。
+3. 点击侧边栏中的**设置**。
 
-### Step 2: Configure the Task Model
+### 第二步：配置任务模型
 
-1. Go to **Interface > Set Task Model**.
-2. Choose one of the following options based on your needs:
+1. 前往**界面 > 设置任务模型**。
+2. 根据需求选择以下选项之一：
 
-   - **Lightweight Local Model (Recommended)**
-     - Select a compact model such as **Llama 3.2 3B** or **Qwen2.5 3B**.
-     - These models offer rapid responses while consuming minimal system resources.
+   - **轻量化本地模型（推荐）**
+     - 选择紧凑型模型，例如 **Llama 3.2 3B** 或 **Qwen2.5 3B**。
+     - 这些模型能够快速响应，同时占用的系统资源较少。
 
-   - **Hosted API Endpoint (For Maximum Speed)**
-     - Connect to a hosted API service to handle task processing.
-     - This can be very cheap. For example, OpenRouter offers Llama and Qwen models at less than **1.5 cents per million input tokens**.
+   - **托管API端点（最快速度）**
+     - 连接托管的API服务以处理任务。
+     - 这可能非常便宜，例如，OpenRouter提供的Llama和Qwen模型的成本不到**每百万输入tokens 1.5美分**。
 
-   - **Disable Unnecessary Automation**
-     - If certain automated features are not required, disable them to reduce extraneous background calls—especially features like autocomplete.
+   - **禁用非必要自动化**
+     - 如果某些自动化功能不需要，可以禁用它们以减少额外的后台调用——尤其是像自动补全这样的功能。
 
-![Local Model Configuration Set to Qwen2.5:3b](/images/tutorials/tips/set-task-model.png)
+![本地模型配置成Qwen2.5:3b](/images/tutorials/tips/set-task-model.png)
 
-### Step 3: Save Your Changes and Test
+### 第三步：保存更改并测试
 
-1. Save the new configuration.
-2. Interact with your chat interface and observe the responsiveness.
-3. If necessary, adjust by further disabling unused automation features or experimenting with different task models.
-
----
-
-## 🚀 Recommended Setup for Local Models
-
-| Optimization Strategy           | Benefit                                  | Recommended For                        |
-|---------------------------------|------------------------------------------|----------------------------------------|
-| **Lightweight Local Model**     | Minimizes resource usage                 | Systems with limited hardware          |
-| **Hosted API Endpoint**         | Offers the fastest response times        | Users with reliable internet/API access|
-| **Disable Automation Features** | Maximizes performance by reducing load   | Those focused on core chat functionality|
-
-Implementing these recommendations can greatly improve the responsiveness of Open-WebUI while allowing your local models to efficiently handle chat interactions.
+1. 保存新的配置。
+2. 与聊天界面交互并观察响应速度。
+3. 如有必要，进一步禁用未使用的自动化功能或尝试不同的任务模型来调整效果。
 
 ---
 
-## 💡 Additional Tips
+## 🚀 本地模型的推荐设置
 
-- **Monitor System Resources:** Use your operating system’s tools (such as Activity Monitor on macOS or Task Manager on Windows) to keep an eye on resource usage.
-- **Reduce Parallel Model Calls:** Limiting background automation prevents simultaneous requests from overwhelming your LLM.
-- **Experiment with Configurations:** Test different lightweight models or hosted endpoints to find the optimal balance between speed and functionality.
-- **Stay Updated:** Regular updates to Open-WebUI often include performance improvements and bug fixes, so keep your software current.
+| 优化策略                     | 优势                                    | 推荐的用户类型                          |
+|-------------------------------|------------------------------------------|----------------------------------------|
+| **轻量化本地模型**             | 最大限度减少资源使用                     | 硬件资源有限的系统                      |
+| **托管API端点**                | 提供最快的响应时间                       | 有稳定网络/API访问的用户                |
+| **禁用自动化功能**              | 通过降低负载来提升性能                   | 专注于核心聊天功能的用户                 |
+
+实施这些建议可以显著提升Open-WebUI的响应能力，同时使您的本地模型能够高效处理聊天交互。
 
 ---
 
-By applying these configuration changes, you'll support a more responsive and efficient Open-WebUI experience, allowing your local LLM to focus on delivering high-quality chat interactions without unnecessary delays.
+## 💡 其他提示
+
+- **监控系统资源:** 使用操作系统的工具（例如macOS上的活动监视器或Windows上的任务管理器）来关注资源使用情况。
+- **减少并行模型调用:** 限制后台自动化，防止同时请求过多压垮LLM。
+- **试验不同配置:** 测试不同的轻量化模型或托管端点，以找到速度和功能之间的最佳平衡。
+- **保持更新:** Open-WebUI的定期更新通常包括性能改进和错误修复，请确保您的软件是最新版本。
+
+---
+
+通过应用这些配置更改，您可以支持一个更加响应迅速且高效的Open-WebUI体验，使您的本地LLM专注于高质量的聊天互动，而不会受到不必要的延迟影响。

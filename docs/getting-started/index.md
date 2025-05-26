@@ -1,6 +1,6 @@
 ---
 sidebar_position: 200
-title: "🚀 Getting Started"
+title: "🚀 开始指南"
 ---
 
 
@@ -10,26 +10,26 @@ import { TopBanners } from "@site/src/components/TopBanners";
 <TopBanners />
 
 
-Welcome to the **Open WebUI Documentation Hub!** Below is a list of essential guides and resources to help you get started, manage, and develop with Open WebUI.
+欢迎来到 **Open WebUI 文档中心！** 以下是一些关键指南和资源，帮助您开始使用、管理和开发 Open WebUI。
 
 ---
 
-## ⏱️ Quick Start  
+## ⏱️ 快速开始
 
-Get up and running quickly with our [Quick Start Guide](/getting-started/quick-start).
-
----
-
-## 🛠️ Advanced Topics  
-
-Take a deeper dive into configurations and development tips in our [Advanced Topics Guide](/getting-started/advanced-topics).
+通过我们的[快速开始指南](/getting-started/quick-start)迅速上手。
 
 ---
 
-## 🔄 Updating Open WebUI
+## 🛠️ 进阶主题
 
-Stay current with the latest features and security patches with our [Updating Open WebUI](./updating) guide.
+通过我们的[进阶主题指南](/getting-started/advanced-topics)，深入了解配置和开发技巧。
 
 ---
 
-Happy exploring! 🎉 If you have questions, join our [community](https://discord.gg/5rJgQTnV4s) or raise an issue on [GitHub](https://github.com/open-webui/open-webui).
+## 🔄 更新 Open WebUI
+
+使用我们的[Open WebUI 更新指南](./updating)保持最新功能和安全更新。
+
+---
+
+愉快探索吧！🎉 如果您有任何问题，欢迎加入我们的[社区](https://discord.gg/5rJgQTnV4s)或在[GitHub](https://github.com/open-webui/open-webui)上提交问题。

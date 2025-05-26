@@ -1,40 +1,40 @@
 ---
 sidebar_position: 321
-title: "🐍 Jupyter Notebook Integration"
+title: "🐍 Jupyter Notebook 集成"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程是社区贡献内容，并未获得 Open WebUI 团队的支持。它仅作为如何根据您的特定需求定制 Open WebUI 的一个示例。想要贡献？请查看贡献教程。
 :::
 
 > [!WARNING]
-> This documentation was created based on the current version (0.5.16) and is constantly being updated.
+> 本文档基于当前版本（0.5.16）创建，并在不断更新中。
 
 
-# Jupyter Notebook Integration
+# Jupyter Notebook 集成
 
-Starting in v0.5.11, Open-WebUI released a new feature called `Jupyter Notebook Support in Code Interpreter`. This feature allow you to integrate Open-WebUI with Jupyter. There have already been several improvements to this feauture over the subsequent releases, so review the release notes carefully.
+从 v0.5.11 开始，Open-WebUI 发布了一项新功能，名为 `代码解释器中的 Jupyter Notebook 支持`。此功能允许您将 Open-WebUI 集成到 Jupyter 中。在随后的版本中，该功能已经有了许多改进，因此请仔细查看发布说明。
 
-This tutorial walks you through the basics of setting-up the connection between the two services.
+本教程将带您了解如何设置两项服务之间的连接的基础知识。
 
-- [See v0.5.11 Release Notes](https://github.com/open-webui/open-webui/releases/tag/v0.5.11)
-- [See v0.5.15 Release Notes](https://github.com/open-webui/open-webui/releases/tag/v0.5.14)
+- [查看 v0.5.11 发布说明](https://github.com/open-webui/open-webui/releases/tag/v0.5.11)
+- [查看 v0.5.15 发布说明](https://github.com/open-webui/open-webui/releases/tag/v0.5.14)
 
-## What are Jupyter Notebooks
+## 什么是 Jupyter Notebook
 
-Jupyter Notebook is an open-source web application that allows users to create and share documents containing live code, equations, visualizations, and narrative text. It's particularly popular in data science, scientific computing, and education because it enables users to combine executable code (in languages like Python, R, or Julia) with explanatory text, images, and interactive visualizations all in one document. Jupyter Notebooks are especially useful for data analysis and exploration because they allow users to execute code in small, manageable chunks while documenting their thought process and findings along the way. This format makes it easy to experiment, debug code, and create comprehensive, shareable reports that demonstrate both the analysis process and results.
+Jupyter Notebook 是一个开源的网络应用，允许用户创建和共享包含实时代码、方程式、可视化和叙述性文本的文档。由于用户能够将可执行代码（如 Python、R 或 Julia）与解释性文本、图像和交互式可视化组合到同一个文档中，它在数据科学、科学计算和教育领域非常受欢迎。Jupyter Notebook 特别适合于数据分析和探索，因为它允许用户以小且易管理的块执行代码，同时记录思路和发现。这种格式使用户可以轻松地试验、调试代码以及创建全面且可共享的报告，展示分析过程和结果。
 
-See Jupyter's website for more info at: [Project Juptyer](https://jupyter.org/)
+更多信息请参见 Jupyter 的官网：[Project Juptyer](https://jupyter.org/)
 
-## Step 0: Configuration Summary
+## 第 0 步：配置摘要
 
-Here is the target configuration we're going to set-up through this tutorial.
+以下是本教程中要设置的目标配置。
 
-![Code Execution Configuration](/images/tutorials/jupyter/jupyter-code-execution.png)
+![代码执行配置](/images/tutorials/jupyter/jupyter-code-execution.png)
 
-# Step 1: Launch OUI and Jupyter
+# 第 1 步：启动 OUI 和 Jupyter
 
-To accomplish this, I used `docker-compose` to launch a stack that includes both services, along with my LLMs, but this should also work if run each docker container separately.
+为实现这一目标，我使用了 `docker-compose` 启动一个包含两项服务（以及我的 LLMs）的栈，但如果分别运行每个 Docker 容器，这也是可行的。
 
 ```yaml title="docker-compose.yml"
 version: "3.8"
@@ -64,28 +64,28 @@ open-webui:
 jupyter_data:
 ```
 
-You can launch the above stack by running the below command in the directory where the `docker-compose` file is saved:
+您可以通过运行以下命令启动位于 `docker-compose` 文件所在目录的栈：
 
-```bash title="Run docker-compose"
+```bash title="运行 docker-compose"
 docker-compose up -d
 ```
 
-You should now be able to access both services at the following URLs:
+现在，您应该能够通过以下 URL 访问两项服务：
 
-| Service | URL |
+| 服务 | URL |
 | ---------- | ----------------------- |
 | Open-WebUI | `http://localhost:3000` |
 | Jupyter | `http://localhost:8888` |
 
-When accessing the Jupyter service, you will need the `JUPYTER_TOKEN` defined above. For this tutorial, I've picked a dummary token value of `123456`.
+在访问 Jupyter 服务时，您将需要以上定义的 `JUPYTER_TOKEN`。对于本教程，我选择了一个虚拟 token 值 `123456`。
 
-![Code Execution Configuration](/images/tutorials/jupyter/jupyter-token.png)
+![代码执行配置](/images/tutorials/jupyter/jupyter-token.png)
 
-# Step 2: Configure Code Execution for Jupyter
+# 第 2 步：为 Jupyter 配置代码执行
 
-Now that we have Open-WebUI and Jupter running, we need to configure Open-WebUI's Code Execution to use Jupyter under Admin Panel -> Settings -> Code Execution. Since Open-WebUI is constantly releasing and improving this feature, I recommend always reviewing the possible configuraitons in the [`configs.py` file](https://github.com/open-webui/open-webui/blob/6fedd72e3973e1d13c9daf540350cd822826bf27/backend/open_webui/routers/configs.py#L72) for the latest and greatest. As of v0.5.16, this includes the following:
+现在我们运行了 Open-WebUI 和 Jupyter，需要在 Admin Panel -> Settings -> Code Execution 中将 Open-WebUI 的代码执行配置为使用 Jupyter。由于 Open-WebUI 不断发布和改进此功能，我建议您始终查看 [`configs.py` 文件](https://github.com/open-webui/open-webui/blob/6fedd72e3973e1d13c9daf540350cd822826bf27/backend/open_webui/routers/configs.py#L72) 以获取最新和最全面的配置。截至 v0.5.16，包括如下配置：
 
-| Open-WebUI Env Var | Value |
+| Open-WebUI 环境变量 | 值 |
 | ------------------------------------- | -------------------------------- |
 | `ENABLE_CODE_INTERPRETER` | True |
 | `CODE_EXECUTION_ENGINE` | jupyter |
@@ -99,60 +99,60 @@ Now that we have Open-WebUI and Jupter running, we need to configure Open-WebUI'
 | `CODE_INTERPRETER_JUPYTER_AUTH_TOKEN` | 123456 |
 | `CODE_INTERPRETER_JUPYTER_TIMEOUT` | 60 |
 
-## Step 3: Test the Connection
+## 第 3 步：测试连接
 
-To start, let's confirm what's in our Jupyter directory. As you can see from the image below, we only have an empty `work` folder.
+首先，让我们确认 Jupyter 目录中有什么。如以下图片所示，我们只有一个空的 `work` 文件夹。
 
-![Code Execution Configuration](/images/tutorials/jupyter/jupyter-empty.png)
+![代码执行配置](/images/tutorials/jupyter/jupyter-empty.png)
 
-### Create a CSV
+### 创建一个CSV文件
 
-Let's run our first prompt. Make sure you've selected the `Code Execution` button.
-
-```
-Prompt: Create two CSV files using fake data. The first CSV should be created using vanilla python and the second CSV should be created using the pandas library. Name the CSVs data1.csv and data2.csv
-```
-
-![Code Execution Configuration](/images/tutorials/jupyter/jupyter-create-csv.png)
-
-We can see the CSVs were created and are now accessible within Jupyter.
-
-![Code Execution Configuration](/images/tutorials/jupyter/jupyter-view-csv.png)
-
-### Create a Visualization
-
-Let's run our second prompt. Again, make sure you've selected the `Code Execution` button.
+让我们运行第一个提示。请确保您已经选择了`代码执行`按钮。
 
 ```
-Prompt: Create several visualizations in python using matplotlib and seaborn and save them to jupyter
+提示：使用虚构数据创建两个CSV文件。第一个CSV使用纯Python创建，第二个CSV使用pandas库创建。将CSV文件命名为data1.csv和data2.csv。
 ```
 
-![Code Execution Configuration](/images/tutorials/jupyter/jupyter-create-viz.png)
+![代码执行配置](/images/tutorials/jupyter/jupyter-create-csv.png)
 
-We can see the visualizations were created and are now accessible within Jupyter.
+可以看到CSV文件已被创建，现在可以在Jupyter中访问。
 
-![Code Execution Configuration](/images/tutorials/jupyter/jupyter-view-viz.png)
+![代码执行配置](/images/tutorials/jupyter/jupyter-view-csv.png)
 
-### Create a Notebook
+### 创建可视化
 
-Let's run our last prompt together. In this prompt, we'll create an entirely new notebook using just a prompt.
+让我们运行第二个提示。同样，请确保您已经选择了`代码执行`按钮。
 
 ```
-Prompt: Write python code to read and write json files and save it to my notebook called notebook.ipynb
+提示：使用matplotlib和seaborn在Python中创建多个可视化，并保存到Jupyter。
 ```
 
-![Code Execution Configuration](/images/tutorials/jupyter/jupyter-create-notebook.png)
+![代码执行配置](/images/tutorials/jupyter/jupyter-create-viz.png)
 
-We can see the visualizations were created and are now accessible within Jupyter.
+可以看到可视化图表已被创建，现在可以在Jupyter中访问。
 
-![Code Execution Configuration](/images/tutorials/jupyter/jupyter-view-notebook.png)
+![代码执行配置](/images/tutorials/jupyter/jupyter-view-viz.png)
 
-## Note about workflow
+### 创建一个笔记本
 
-While testing this feature, I noticed several times that Open-WebUI would not automatically save the code or output generated within Open-WebUI to my instance of Jupyter. To force it to output the file/item I created, I often followed this two-step workflow, which first creates the code artifact I want and then asks it to save it to my instance of Jupyter.
+让我们一起运行最后一个提示。在这个提示中，我们将仅通过提示创建一个全新的笔记本。
 
-![Code Execution Configuration](/images/tutorials/jupyter/jupyter-workflow.png)
+```
+提示：编写Python代码来读取和写入JSON文件，并将其保存到名为notebook.ipynb的笔记本中。
+```
 
-## How are you using this feature?
+![代码执行配置](/images/tutorials/jupyter/jupyter-create-notebook.png)
 
-Are you using the Code Execution feature and/or Jupyter? If so, please reach out. I'd love to hear how you're using it so I can continue adding examples to this tutorial of other awesome ways you can use this feature!
+可以看到可视化图表已被创建，现在可以在Jupyter中访问。
+
+![代码执行配置](/images/tutorials/jupyter/jupyter-view-notebook.png)
+
+## 关于工作流程的说明
+
+在测试此功能时，我多次注意到Open-WebUI不会自动将生成的代码或输出保存到我的Jupyter实例中。为强制输出我创建的文件/项目，我经常按照以下两步工作流程，首先创建我想要的代码构件，然后让它将其保存到我的Jupyter实例中。
+
+![代码执行配置](/images/tutorials/jupyter/jupyter-workflow.png)
+
+## 您如何使用这个功能？
+
+您是否在使用代码执行功能和/或Jupyter？如果是，请联系我们。我非常想知道您如何使用它，这样我就可以继续在本教程中添加其他有趣示例，展示您可以如何使用此功能！

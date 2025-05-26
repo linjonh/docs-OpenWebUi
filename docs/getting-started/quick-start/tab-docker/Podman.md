@@ -1,35 +1,35 @@
 
-# Using Podman
+# 使用 Podman
 
-Podman is a daemonless container engine for developing, managing, and running OCI Containers.
+Podman 是一个无守护进程的容器引擎，用于开发、管理和运行 OCI 容器。
 
-## Basic Commands
+## 基本命令
 
-- **Run a Container:**
+- **运行容器：**
 
   ```bash
   podman run -d --name openwebui -p 3000:8080 -v open-webui:/app/backend/data ghcr.io/open-webui/open-webui:main
   ```
 
-- **List Running Containers:**
+- **列出正在运行的容器：**
 
   ```bash
   podman ps
   ```
 
-## Networking with Podman
+## 使用 Podman 进行网络配置
 
-If networking issues arise, use slirp4netns to adjust the pod's network settings to allow the container to access your computer's ports.
+如果出现网络问题，可以使用 slirp4netns 调整 pod 的网络设置，以允许容器访问您计算机的端口。
 
-Ensure you have [slirp4netns installed](https://github.com/rootless-containers/slirp4netns?tab=readme-ov-file#install), remove the previous container if it exists using `podman rm`, and start a new container with
+确保您已[安装 slirp4netns](https://github.com/rootless-containers/slirp4netns?tab=readme-ov-file#install)，如果之前存在容器，请使用 `podman rm` 移除它，并通过以下命令启动一个新的容器
 
 ```bash
   podman run -d --network=slirp4netns:allow_host_loopback=true --name openwebui -p 3000:8080 -v open-webui:/app/backend/data ghcr.io/open-webui/open-webui:main
 ```
 
-If you are using Ollama from your computer (not running inside a container),
+如果您在使用 Ollama（未在容器中运行），
 
-Once inside open-webui, navigate to Settings > Admin Settings > Connections and create a new Ollama API connection to `http://10.0.2.2:[OLLAMA PORT]`. By default, the Ollama port is 11434.
+进入 open-webui 后，导航到 设置 > 管理设置 > 连接，然后创建一个新的 Ollama API 连接到 `http://10.0.2.2:[OLLAMA 端口]`。默认情况下，Ollama 端口是 11434。
 
 
-Refer to the Podman [documentation](https://podman.io/) for advanced configurations.
+有关高级配置，请参考 Podman [文档](https://podman.io/)。

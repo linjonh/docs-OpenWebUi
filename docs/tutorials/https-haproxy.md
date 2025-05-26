@@ -1,45 +1,42 @@
 ---
 sidebar_position: 201
-title: "🔒 HTTPS using HAProxy"
+title: "🔒 使用 HAProxy 实现 HTTPS"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程由社区贡献，并未得到 Open WebUI 团队的支持。它仅作为如何根据您的特定需求自定义 Open WebUI 的示范。想要贡献？查看贡献教程。
 :::
 
-# HAProxy Configuration for Open WebUI
+# 针对 Open WebUI 的 HAProxy 配置
 
-HAProxy (High Availability Proxy) is specialized load-balancing and reverse proxy solution that is highly configurable and designed to handle large amounts of connections with a relatively low resource footprint. for more information, please see: https://www.haproxy.org/
+HAProxy（高可用代理）是一种专门的负载均衡和反向代理解决方案，具有高度可配置性，并设计用于以相对较低的资源开销处理大量连接。更多信息请访问：https://www.haproxy.org/
 
-## Install HAProxy and Let's Encrypt
+## 安装 HAProxy 和 Let&apos;s Encrypt
 
-First, install HAProxy and Let's Encrypt's certbot:
-### Redhat derivatives
+首先，安装 HAProxy 和 Let&apos;s Encrypt 的 certbot：
+### Redhat 衍生系统
 ```sudo dnf install haproxy certbot openssl -y```
-### Debian derivatives
+### Debian 衍生系统
 ```sudo apt install haproxy certbot openssl -y```
 
-## HAProxy Configuration Basics
+## HAProxy 配置基础
 
-HAProxy's configuration is by default stored in ```/etc/haproxy/haproxy.cfg```. This file contains all the configuration directives that determine how HAProxy will operate.
+HAProxy 的配置默认存储在 ```/etc/haproxy/haproxy.cfg``` 文件中。该文件包含了所有定义 HAProxy 如何运行的配置指令。
 
-The base configuration for HAProxy to work with Open WebUI is pretty simple. 
+将 HAProxy 配置为支持 Open WebUI 的基础配置相对简单。
 
 ```
  #---------------------------------------------------------------------
-# Global settings
+# 全局设置
 #---------------------------------------------------------------------
 global
-    # to have these messages end up in /var/log/haproxy.log you will
-    # need to:
+    # 如果想将这些消息记录到 /var/log/haproxy.log，您需要：
     #
-    # 1) configure syslog to accept network log events.  This is done
-    #    by adding the '-r' option to the SYSLOGD_OPTIONS in
-    #    /etc/sysconfig/syslog
+    # 1) 配置 syslog 以接受网络日志事件。通过向 /etc/sysconfig/syslog 中的
+    #    SYSLOGD_OPTIONS 添加 &apos;-r&apos; 选项实现
     #
-    # 2) configure local2 events to go to the /var/log/haproxy.log
-    #   file. A line like the following can be added to
-    #   /etc/sysconfig/syslog
+    # 2) 配置 local2 事件将其写入 /var/log/haproxy.log 文件。
+    #   可以在 /etc/sysconfig/syslog 中添加如下行：
     #
     #    local2.*                       /var/log/haproxy.log
     #
@@ -52,11 +49,10 @@ global
     group       haproxy
     daemon
 	
-	#adjust the dh-param if too low
+	#调整 dh-param 值，如果过低
     tune.ssl.default-dh-param 2048
 #---------------------------------------------------------------------
-# common defaults that all the 'listen' and 'backend' sections will
-# use if not designated in their block
+# 所有 &apos;listen&apos; 和 &apos;backend&apos; 部分的通用默认值
 #---------------------------------------------------------------------
 defaults
     mode                    http
@@ -78,92 +74,92 @@ defaults
 
 #http
 frontend web
-	#Non-SSL
+	#非 SSL
     bind 0.0.0.0:80
 	#SSL/TLS
 	bind 0.0.0.0:443 ssl crt /path/to/ssl/folder/
 
-    #Let's Encrypt SSL
+    #Let&apos;s Encrypt SSL
     acl letsencrypt-acl path_beg /.well-known/acme-challenge/
     use_backend letsencrypt-backend if letsencrypt-acl
 
-	#Subdomain method
+	#子域名方式
     acl chat-acl hdr(host) -i subdomain.domain.tld
-    #Path Method
+    #路径方式
     acl chat-acl path_beg /owui/
     use_backend owui_chat if chat-acl
 
-#Pass SSL Requests to Lets Encrypt
+#将 SSL 请求传递给 Let&apos;s Encrypt
 backend letsencrypt-backend
     server letsencrypt 127.0.0.1:8688
     
-#OWUI Chat
+#OWUI 聊天
 backend owui_chat
-    # add X-FORWARDED-FOR
+    # 添加 X-FORWARDED-FOR
     option forwardfor
-    # add X-CLIENT-IP
+    # 添加 X-CLIENT-IP
     http-request add-header X-CLIENT-IP %[src]
 	http-request set-header X-Forwarded-Proto https if { ssl_fc }
     server chat <ip>:3000
 ```
 
-You will see that we have ACL records (routers) for both Open WebUI and Let's Encrypt.  To use WebSocket with OWUI, you need to have an SSL configured, and the easiest way to do that is to use Let's Encrypt.
+可以看到，我们为 Open WebUI 和 Let&apos;s Encrypt 配置了 ACL 记录（路由器）。要在 Open WebUI 中使用 WebSocket，您需要配置 SSL，最简单的方法是使用 Let&apos;s Encrypt。
 
-You can use either the subdomain method or the path method for routing traffic to Open WebUI. The subdomain method requires a dedicated subdomain (e.g., chat.yourdomain.com), while the path method allows you to access Open WebUI through a specific path on your domain (e.g., yourdomain.com/owui/). Choose the method that best suits your needs and update the configuration accordingly.
+您可以选择使用子域名方法或者路径方法来将流量路由到 Open WebUI。子域名方法需要一个专用子域名（例如，chat.yourdomain.com），而路径方法允许您通过域名的特定路径访问 Open WebUI（例如，yourdomain.com/owui/）。请选择最适合您需求的方法并相应更新配置。
 
 :::info
-You will need to expose port 80 and 443 to your HAProxy server. These ports are required for Let's Encrypt to validate your domain and for HTTPS traffic. You will also need to ensure your DNS records are properly configured to point to your HAProxy server. If you are running HAProxy at home, you will need to use port forwarding in your router to forward ports 80 and 443 to your HAProxy server.
+您需要将 80 和 443 端口暴露给您的 HAProxy 服务器。这些端口对于 Let&apos;s Encrypt 验证您的域名以及处理 HTTPS 流量是必需的。此外，您需要确保您的 DNS 记录已正确配置且指向您的 HAProxy 服务器。如果您在家中运行 HAProxy，则需要在路由器中使用端口转发，将 80 和 443 端口转发到您的 HAProxy 服务器。
 :::
 
-## Issuing SSL Certificates with Let's Encrypt
+## 使用 Let&apos;s Encrypt 签发 SSL 证书
 
-Before starting HAProxy, you will want to generate a self signed certificate to use as a placeholder until Let's Encrypt issues a proper one. Here's how to generate a self-signed certificate:
+在启动 HAProxy 之前，您需要生成一个自签名证书，以便在 Let&apos;s Encrypt 签发正式证书之前使用。以下是如何生成自签名证书：
 
 ```
 openssl req -x509 -newkey rsa:2048 -keyout /tmp/haproxy.key -out /tmp/haproxy.crt -days 3650 -nodes -subj "/CN=localhost"
 ```
 
-Then combine the key and certificate into a PEM file that HAProxy can use:
+然后将密钥和证书合并成一个HAProxy可用的PEM文件：
 
 ```cat /tmp/haproxy.crt /tmp/haproxy.key > /etc/haproxy/certs/haproxy.pem```
 
 :::info
-Make sure you update the HAProxy configuration based on your needs and configuration.
+确保根据您的需求和配置更新HAProxy配置。
 :::
 
-Once you have your HAProxy configuration set up, you can use certbot to obtain and manage your SSL certificates. Certbot will handle the validation process with Let's Encrypt and automatically update your certificates when they are close to expiring (assuming you use the certbot auto-renewal service).
+一旦您的HAProxy配置设置完成，您可以使用certbot来获取和管理您的SSL证书。Certbot将处理与Let's Encrypt的验证过程，并在证书即将过期时（假设您使用certbot自动续订服务）自动更新您的证书。
 
-You can validate the HAProxy configuration by running `haproxy -c -f /etc/haproxy/haproxy.cfg`. If there are no errors, you can start HAProxy with `systemctl start haproxy` and verify it's running with `systemctl status haproxy`.
+您可以通过运行`haproxy -c -f /etc/haproxy/haproxy.cfg`验证HAProxy配置。如果没有错误，您可以通过`systemctl start haproxy`启动HAProxy，并通过`systemctl status haproxy`验证其是否运行。
 
-To ensure HAProxy starts with the system, `systemctl enable haproxy`.
+要确保HAProxy随系统启动运行，可以执行`systemctl enable haproxy`。
 
-When you have HAProxy configured, you can use Let's encrypt to issue your valid SSL certificate.
-First, you will need to register with Let's Encrypt.  You should only need to do this one time:
+配置好HAProxy后，您可以使用Let's Encrypt发放有效的SSL证书。
+首先，您需要注册Let's Encrypt。这只需要执行一次：
 
 `certbot register --agree-tos --email your@email.com --non-interactive`
 
-Then you can request your certificate:
+然后，您可以请求您的证书：
 
 ```
 certbot certonly -n --standalone --preferred-challenges http --http-01-port-8688 -d yourdomain.com
 ```
 
-Once the certificate is issued, you will need to merge the certificate and private key files into a single PEM file that HAProxy can use.
+证书颁发后，您需要将证书和私钥文件合并到一个HAProxy可用的PEM文件中。
 
 ```
 cat /etc/letsencrypt/live/{domain}/fullchain.pem /etc/letsencrypt/live/{domain}/privkey.pem > /etc/haproxy/certs/{domain}.pem
 chmod 600 /etc/haproxy/certs/{domain}.pem
 chown haproxy:haproxy /etc/haproxy/certs/{domain}.pem
 ```
-You can then restart HAProxy to apply the new certificate:
+然后，您可以重启HAProxy以应用新的证书：
 `systemctl restart haproxy`
 
-## HAProxy Manager (Easy Deployment Option)
+## HAProxy管理器（便捷部署选项）
 
-If you would like to have something manage your HAProxy configuration and Let's Encrypt SSLs automatically, I have written a simple python script and created a docker container you can use to create and manage your HAProxy config and manage the Let's Encrypt certificate lifecycle. 
+如果您希望有一个工具自动管理您的HAProxy配置和Let's Encrypt SSL证书，我编写了一个简单的Python脚本并创建了一个Docker容器，您可以用来创建和管理您的HAProxy配置并管理Let's Encrypt证书生命周期。
 
 https://github.com/shadowdao/haproxy-manager
 
 :::warning
-Please do not expose port 8000 publicly if you use the script or container!
+如果您使用该脚本或容器，请勿公开暴露端口8000！
 :::

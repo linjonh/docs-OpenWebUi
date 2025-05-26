@@ -1,447 +1,447 @@
 ---
 sidebar_position: 400
-title: "⭐ Features"
+title: "⭐ 功能特点"
 ---
 
 import { TopBanners } from "@site/src/components/TopBanners";
 
 <TopBanners />
 
-## Key Features of Open WebUI ⭐
+## Open WebUI 的主要功能 ⭐
 
-- 🚀 **Effortless Setup**: Install seamlessly using Docker, Kubernetes, Podman, Helm Charts (`kubectl`, `kustomize`, `podman`, or `helm`) for a hassle-free experience with support for both `:ollama` image with bundled Ollama and `:cuda` with CUDA support.
+- 🚀 **轻松安装**：通过 Docker、Kubernetes、Podman、Helm Charts（`kubectl`，`kustomize`，`podman` 或 `helm`）轻松安装，支持包含 Ollama 的 `:ollama` 镜像以及支持 CUDA 的 `:cuda`，体验无忧设置。
 
-- 🛠️ **Guided Initial Setup**: Complete the setup process with clarity, including an explicit indication of creating an admin account during the first-time setup.
+- 🛠️ **引导式初始设置**：完成设置过程具有清晰指示，包括首次使用时明确创建管理员账户的提示。
 
-- 🤝 **OpenAI API Integration**: Effortlessly integrate OpenAI-compatible APIs for versatile conversations alongside Ollama models. The OpenAI API URL can be customized to integrate Open WebUI seamlessly with various third-party applications.
+- 🤝 **OpenAI API 集成**：轻松集成与 OpenAI 兼容的 API，用于与 Ollama 模型一起进行多样化的会话。OpenAI API 的 URL 可定制，使 Open WebUI 能够无缝集成各种第三方应用程序。
 
-- 🛡️ **Granular Permissions and User Groups**: By allowing administrators to create detailed user roles, user groups, and permissions across the workspace, we ensure a secure user environment for all users involved. This granularity not only enhances security, but also allows for customized user experiences, fostering a sense of ownership and responsibility amongst users.
+- 🛡️ **细粒度权限和用户组**：允许管理员在工作空间内创建详细的用户角色、用户组和权限，为所有用户提供安全的用户环境。这种细粒度不仅增强了安全性，还能提供定制化的用户体验，培养用户的归属感和责任感。
 
-- 📱 **Responsive Design**: Enjoy a seamless experience across desktop PCs, laptops, and mobile devices.
+- 📱 **响应式设计**：在桌面电脑、笔记本电脑和移动设备上享受无缝体验。
 
-- 📱 **Progressive Web App for Mobile**: Enjoy a native progressive web application experience on your mobile device with offline access on `localhost` or a personal domain, and a smooth user interface. In order for our PWA to be installable on your device, it must be delivered in a secure context. This usually means that it must be served over HTTPS.
+- 📱 **针对移动设备的渐进式网络应用（PWA）**：在您的移动设备上享受原生渐进式网络应用体验，可在 `localhost` 或个人域名离线访问，并拥有流畅的用户界面。为了使我们的 PWA 可安装在您的设备上，它必须以安全的上下文提供服务。这通常意味着它必须通过 HTTPS 提供服务。
 
   :::info
 
-  - To set up a PWA, you'll need some understanding of technologies like Linux, Docker, and reverse proxies such as `Nginx`, `Caddy`, or `Traefik`. Using these tools can help streamline the process of building and deploying a PWA tailored to your needs. While there's no "one-click install" option available, and your available option to securely deploy your Open WebUI instance over HTTPS requires user experience, using these resources can make it easier to create and deploy a PWA tailored to your needs.
+  - 要设置 PWA，您需要对 Linux、Docker 和诸如 `Nginx`、`Caddy` 或 `Traefik` 等反向代理技术有一定了解。使用这些工具可以帮助您简化构建和部署符合您需求的 PWA 的过程。虽然没有"一键安装"选项，且安全部署您的 Open WebUI 实例到 HTTPS 需要一定的用户经验，但使用这些资源可以更方便地创建和部署适应您要求的 PWA。
 
   :::
 
-- ✒️🔢 **Full Markdown and LaTeX Support**: Elevate your LLM experience with comprehensive Markdown, LaTex, and Rich Text capabilities for enriched interaction.
+- ✒️🔢 **完整的 Markdown 和 LaTeX 支持**：通过全面的 Markdown、LaTeX 和富文本功能提升您的 LLM 体验，实现丰富的交互。
 
-- 🧩 **Model Builder**: Easily create custom models from base Ollama models directly from Open WebUI. Create and add custom characters and agents, customize model elements, and import models effortlessly through [Open WebUI Community](https://openwebui.com/) integration.
+- 🧩 **模型构建器**：直接从 Open WebUI 从基础的 Ollama 模型轻松创建自定义模型。可以创建和添加自定义角色和代理，定制模型元素，并通过 [Open WebUI 社区](https://openwebui.com/) 集成轻松导入模型。
 
-- 📚 **Local and Remote RAG Integration**: Dive into the future of chat interactions and explore your documents with our cutting-edge Retrieval Augmented Generation (RAG) technology within your chats. Documents can be loaded into the `Documents` tab of the Workspace, after which they can be accessed using the pound key [`#`] before a query, or by starting the prompt with the pound key [`#`], followed by a URL for webpage content integration.
+- 📚 **本地和远程 RAG 集成**：利用我们的前沿检索增强生成（RAG）技术，探索未来的聊天交互并浏览您的文档。文档可以加载到工作空间的 `Documents` 标签页中，然后可通过使用键 [`#`] 在查询前调用，或者以键 [`#`] 开头后跟 URL 实现网页内容集成。
 
-- 📄 **Document Extraction**: Extract text and data from various document formats including PDFs, Word documents, Excel spreadsheets, PowerPoint presentations, and more. Our advanced document processing capabilities enable seamless integration with your knowledge base, allowing for accurate retrieval and generation of information from complex documents while preserving their structure and formatting.
+- 📄 **文档提取**：从各种文档格式（包括 PDF、Word 文档、Excel 电子表格、PowerPoint 演示等）提取文本和数据。我们的先进文档处理能力支持与您的知识库无缝集成，允许从复杂文档中准确检索和生成信息，同时保持其结构和格式。
 
-- 🔍 **Web Search for RAG**: You can perform web searches using a selection of various search providers and inject the results directly into your local Retrieval Augmented Generation (RAG) experience.
+- 🔍 **用于 RAG 的网页搜索**：您可以使用多种搜索提供商进行网页搜索，并将结果直接注入到您的本地检索增强生成（RAG）体验中。
 
-- 🌐 **Web Browsing Capabilities**: Integrate websites seamlessly into your chat experience by using the `#` command followed by a URL. This feature enables the incorporation of web content directly into your conversations, thereby enhancing the richness and depth of your interactions.
+- 🌐 **网页浏览功能**：通过使用 `#` 命令后跟 URL，将网站无缝集成到您的聊天体验之中。这项功能可直接将网页内容纳入您的对话，从而增强交互的丰富性和深度。
 
-- 🎨 **Image Generation Integration**: Seamlessly incorporate image generation capabilities to enrich your chat experience with dynamic visual content.
+- 🎨 **图像生成集成**：无缝集成图像生成功能，用动态视觉内容丰富您的聊天体验。
 
-- ⚙️ **Concurrent Model Utilization**: Effortlessly engage with multiple models simultaneously, harnessing their unique strengths for optimal responses. Leverage a diverse set of model modalities in parallel to enhance your experience.
+- ⚙️ **同时使用多个模型**：轻松与多个模型同时交互，利用它们的独特优势以获取最佳回复。在并行模式下利用多种模型模态，增强您的体验。
 
-- 🔐 **Role-Based Access Control (RBAC)**: Ensure secure access with restricted permissions. Only authorized individuals can access your Ollama, while model creation and pulling rights are exclusively reserved for administrators.
+- 🔐 **基于角色的访问控制（RBAC）**：确保使用受限权限的安全访问。只有授权人员可以访问您的 Ollama，而模型创建和拉取权限仅限于管理员。
 
-- 🌐🌍 **Multilingual Support**: Experience Open WebUI in your preferred language with our internationalization (`i18n`) support. We invite you to join us in expanding our supported languages! We're actively seeking contributors!
+- 🌐🌍 **多语言支持**：通过我们的国际化（`i18n`）支持，以您偏好的语言体验 Open WebUI。我们邀请您加入我们，扩展支持的语言范围！我们正在积极寻找贡献者！
 
-- 🌟 **Continuous Updates**: We are committed to improving Open WebUI with regular updates, fixes, and new features.
+- 🌟 **持续更新**：我们致力于通过定期更新、修复和新增功能，不断改进 Open WebUI。
 
-## And many more remarkable features including... ⚡️
-
----
-
-### 🔧 Pipelines Support
-
-- 🔧 **Pipelines Framework**: Seamlessly integrate and customize your Open WebUI experience with our modular plugin framework for enhanced customization and functionality (https://github.com/open-webui/pipelines). Our framework allows for the easy addition of custom logic and integration of Python libraries, from AI agents to home automation APIs.
-
-- 📥 **Upload Pipeline**: Pipelines can be uploaded directly from the `Admin Panel` > `Settings` > `Pipelines` menu, streamlining the pipeline management process.
-
-#### The possibilities with our Pipelines framework knows no bounds and are practically limitless. Start with a few pre-built pipelines to help you get started!
-
-- 🔗 **Function Calling**: Integrate [Function Calling](https://github.com/open-webui/pipelines/blob/main/examples/filters/function_calling_filter_pipeline.py) seamlessly through Pipelines to enhance your LLM interactions with advanced function calling capabilities.
-
-- 📚 **Custom RAG**: Integrate a [custom Retrieval Augmented Generation (RAG)](https://github.com/open-webui/pipelines/tree/main/examples/pipelines/rag) pipeline seamlessly to enhance your LLM interactions with custom RAG logic.
-
-- 📊 **Message Monitoring with Langfuse**: Monitor and analyze message interactions in real-time usage statistics via [Langfuse](https://github.com/open-webui/pipelines/blob/main/examples/filters/langfuse_filter_pipeline.py) pipeline.
-
-- ⚖️ **User Rate Limiting**: Manage API usage efficiently by controlling the flow of requests sent to LLMs to prevent exceeding rate limits with [Rate Limit](https://github.com/open-webui/pipelines/blob/main/examples/filters/rate_limit_filter_pipeline.py) pipeline.
-
-- 🌍 **Real-Time LibreTranslate Translation**: Integrate real-time translations into your LLM interactions using [LibreTranslate](https://github.com/open-webui/pipelines/blob/main/examples/filters/libretranslate_filter_pipeline.py) pipeline, enabling cross-lingual communication.
-  - Please note that this pipeline requires further setup with LibreTranslate in a Docker container to work.
-
-- 🛡️ **Toxic Message Filtering**: Our [Detoxify](https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py) pipeline automatically filters out toxic messages to maintain a clean and safe chat environment.
-
-- 🔒 **LLM-Guard**: Ensure secure LLM interactions with [LLM-Guard](https://github.com/open-webui/pipelines/blob/main/examples/filters/llmguard_prompt_injection_filter_pipeline.py) pipeline, featuring a Prompt Injection Scanner that detects and mitigates crafty input manipulations targeting large language models. This protects your LLMs from data leakage and adds a layer of resistance against prompt injection attacks.
-
-- 🕒 **Conversation Turn Limits**: Improve interaction management by setting limits on conversation turns with [Conversation Turn Limit](https://github.com/open-webui/pipelines/blob/main/examples/filters/conversation_turn_limit_filter.py) pipeline.
-
-- 📈 **OpenAI Generation Stats**: Our [OpenAI](https://github.com/open-webui/pipelines/blob/main/examples/pipelines/providers/openai_manifold_pipeline.py) pipeline provides detailed generation statistics for OpenAI models.
-
-- **🚀 Multi-Model Support**: Our seamless integration with various AI models from [various providers](https://github.com/open-webui/pipelines/tree/main/examples/pipelines/providers) expands your possibilities with a wide range of language models to select from and interact with.
-
-#### In addition to the extensive features and customization options, we also provide [a library of example pipelines ready to use](https://github.com/open-webui/pipelines/tree/main/examples) along with [a practical example scaffold pipeline](https://github.com/open-webui/pipelines/blob/main/examples/scaffolds/example_pipeline_scaffold.py) to help you get started. These resources will streamline your development process and enable you to quickly create powerful LLM interactions using Pipelines and Python. Happy coding! 💡
+## 以及更多卓越的功能包括... ⚡️
 
 ---
 
-### 🖥️ User Experience
+### 🔧 流水线支持
 
-- 🖥️ **Intuitive Interface**: The chat interface has been designed with the user in mind, drawing inspiration from the user interface of ChatGPT.
+- 🔧 **流水线框架**：通过我们的模块化插件框架无缝集成和定制您的 Open WebUI 体验，以增强自定义和功能（https://github.com/open-webui/pipelines）。我们的框架支持轻松添加自定义逻辑和集成 Python 库，从 AI 代理到家庭自动化 API。
 
-- ⚡ **Swift Responsiveness**: Enjoy reliably fast and responsive performance.
+- 📥 **上传流水线**：流水线可直接从 `Admin Panel` > `Settings` > `Pipelines` 菜单中上传，简化流水线管理流程。
 
-- 🎨 **Splash Screen**: A simple loading splash screen for a smoother user experience.
+#### 我们的流水线框架的可能性不受限制，几乎是无限的。从一些预构建的流水线开始，帮助您入门！
 
-- 🌐 **Personalized Interface**: Choose between a freshly designed search landing page and the classic chat UI from Settings > Interface, allowing for a tailored experience.
+- 🔗 **函数调用**：通过流水线无缝集成[函数调用](https://github.com/open-webui/pipelines/blob/main/examples/filters/function_calling_filter_pipeline.py)，为您的 LLM 交互提供先进的函数调用能力。
 
-- 📦 **Pip Install Method**: Installation of Open WebUI can be accomplished via the command `pip install open-webui`, which streamlines the process and makes it more accessible to new users. For further information, please visit: https://pypi.org/project/open-webui/.
+- 📚 **自定义 RAG**：无缝集成[自定义检索增强生成 (RAG)](https://github.com/open-webui/pipelines/tree/main/examples/pipelines/rag) 流水线，以增强您的 LLM 交互的自定义 RAG 逻辑。
 
-- 🌈 **Theme Customization**: Personalize your Open WebUI experience with a range of options, including a variety of solid, yet sleek themes, customizable chat background images, and three mode options: Light, Dark, or OLED Dark mode - or let *Her* choose for you! ;)
+- 📊 **使用 Langfuse 监控消息**：通过 [Langfuse](https://github.com/open-webui/pipelines/blob/main/examples/filters/langfuse_filter_pipeline.py) 流水线，监控并分析实时消息互动使用统计信息。
 
-- 🖼️ **Custom Background Support**: Set a custom background from Settings > Interface to personalize your experience.
+- ⚖️ **用户速率限制**：通过[速率限制](https://github.com/open-webui/pipelines/blob/main/examples/filters/rate_limit_filter_pipeline.py)流水线管理 API 使用，控制发送到 LLM 的请求流量，防止超出速率限制。
 
-- 📝 **Rich Banners with Markdown**: Create visually engaging announcements with markdown support in banners, enabling richer and more dynamic content.
+- 🌍 **实时 LibreTranslate 翻译**：通过 [LibreTranslate](https://github.com/open-webui/pipelines/blob/main/examples/filters/libretranslate_filter_pipeline.py) 流水线在您的 LLM 交互中集成实时翻译，实现跨语言通信。
+  - 请注意，此流水线需要通过 Docker 容器中的 LibreTranslate 进行进一步设置才能工作。
 
-- 💻 **Code Syntax Highlighting**: Our syntax highlighting feature enhances code readability, providing a clear and concise view of your code.
+- 🛡️ **有害消息过滤**：我们的 [Detoxify](https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py) 流水线自动过滤有害消息，以维护一个干净、安全的聊天环境。
 
-- 🗨️ **Markdown Rendering in User Messages**: User messages are now rendered in Markdown, enhancing readability and interaction.
+- 🔒 **LLM-Guard**：通过 [LLM-Guard](https://github.com/open-webui/pipelines/blob/main/examples/filters/llmguard_prompt_injection_filter_pipeline.py) 流水线确保 LLM 交互的安全。它具有提示注入扫描器，能够检测和缓解针对大型语言模型的复杂输入操纵。这可以保护您的 LLM 数据免遭泄露，并增强对提示注入攻击的抵抗力。
 
-- 🎨 **Flexible Text Input Options**: Switch between rich text input and legacy text area input for chat, catering to user preferences and providing a choice between advanced formatting and simpler text input.
+- 🕒 **会话轮次限制**：通过[会话轮次限制](https://github.com/open-webui/pipelines/blob/main/examples/filters/conversation_turn_limit_filter.py)流水线设置会话轮次数量上限，从而改善交互管理。
 
-- 👆 **Effortless Code Sharing** : Streamline the sharing and collaboration process with convenient code copying options, including a floating copy button in code blocks and click-to-copy functionality from code spans, saving time and reducing frustration.
+- 📈 **OpenAI 生成统计**：我们的 [OpenAI](https://github.com/open-webui/pipelines/blob/main/examples/pipelines/providers/openai_manifold_pipeline.py) 流水线提供 OpenAI 模型的详细生成统计数据。
 
-- 🎨 **Interactive Artifacts**: Render web content and SVGs directly in the interface, supporting quick iterations and live changes for enhanced creativity and productivity.
+- **🚀 多模型支持**：我们与[不同供应商](https://github.com/open-webui/pipelines/tree/main/examples/pipelines/providers)的各种 AI 模型无缝集成，扩展了您的选择和交互范围。
 
-- 🖊️ **Live Code Editing**: Supercharged code blocks allow live editing directly in the LLM response, with live reloads supported by artifacts, streamlining coding and testing.
-
-- 🔍 **Enhanced SVG Interaction**: Pan and zoom capabilities for SVG images, including Mermaid diagrams, enable deeper exploration and understanding of complex concepts.
-
-- 🔍 **Text Select Quick Actions**: Floating buttons appear when text is highlighted in LLM responses, offering deeper interactions like "Ask a Question" or "Explain", and enhancing overall user experience.
-
-- ↕️ **Bi-Directional Chat Support**: You can easily switch between left-to-right and right-to-left chat directions to accommodate various language preferences.
-
-- 📱 **Mobile Accessibility**: The sidebar can be opened and closed on mobile devices with a simple swipe gesture.
-
-- 🤳 **Haptic Feedback on Supported Devices**: Android devices support haptic feedback for an immersive tactile experience during certain interactions.
-
-- 🔍 **User Settings Search**: Quickly search for settings fields, improving ease of use and navigation.
-
-- 📜 **Offline Swagger Documentation**: Access developer-friendly Swagger API documentation offline, ensuring full accessibility wherever you are.
-
-- 💾 **Performance Optimizations**: Lazy loading of large dependencies minimizes initial memory usage, boosting performance and reducing loading times.
-
-- 🚀 **Persistent and Scalable Configuration**: Open WebUI configurations are stored in a database (webui.db), allowing for seamless load balancing, high-availability setups, and persistent settings across multiple instances, making it easy to access and reuse your configurations.
-
-- 🔄 **Portable Import/Export**: Easily import and export Open WebUI configurations, simplifying the process of replicating settings across multiple systems.
-
-- ❓ **Quick Access to Documentation & Shortcuts**: The question mark button located at the bottom right-hand corner of the main UI screen (available on larger screens like desktop PCs and laptops) provides users with easy access to the Open WebUI documentation page and available keyboard shortcuts.
-
-- 📜 **Changelog & Check for Updates**: Users can access a comprehensive changelog and check for updates in the `Settings` > `About` > `See What's New` menu, which provides a quick overview of the latest features, improvements, and bug fixes, as well as the ability to check for updates.
+#### 除了广泛的功能和自定义选项外，我们还提供[一系列示例流水线库](https://github.com/open-webui/pipelines/tree/main/examples)可供使用，以及[一个实用的示例模板流水线](https://github.com/open-webui/pipelines/blob/main/examples/scaffolds/example_pipeline_scaffold.py)来帮助您快速入门。这些资源将简化您的开发流程，并使您能够快速使用流水线和 Python 创建强大的 LLM 交互。编码愉快！💡
 
 ---
 
-### 💬 Conversations
+### 🖥️ 用户体验
 
-- 💬 **True Asynchronous Chat**: Enjoy uninterrupted multitasking with true asynchronous chat support, allowing you to create chats, navigate away, and return anytime with responses ready.
+- 🖥️ **直观界面**：聊天界面以用户为核心设计，借鉴了 ChatGPT 的用户界面设计。
 
-- 🔔 **Chat Completion Notifications**: Stay updated with instant in-UI notifications when a chat finishes in a non-active tab, ensuring you never miss a completed response.
+- ⚡ **响应迅速**：享受可靠的快速响应性能。
 
-- 🌐 **Notification Webhook Integration**: Receive timely updates for long-running chats or external integration needs with configurable webhook notifications, even when your tab is closed.
+- 🎨 **加载画面**：提供简单的加载画面，优化用户体验。
 
-- 📚 **Channels (Beta)**: Explore real-time collaboration between users and AIs with Discord/Slack-style chat rooms, build bots for channels, and unlock asynchronous communication for proactive multi-agent workflows.
+- 🌐 **个性化界面**：可在设置 > 界面中选择全新的搜索启动页或经典聊天 UI，提供个性化的体验。
 
-- 🖊️ **Typing Indicators in Channels**: Enhance collaboration with real-time typing indicators in channels, keeping everyone engaged and informed.
+- 📦 **Pip 安装方法**: 可以通过运行命令 `pip install open-webui` 安装 Open WebUI，这简化了安装流程，让新用户更易上手。了解更多信息，请访问: https://pypi.org/project/open-webui/。
 
-- 👤 **User Status Indicators**: Quickly view a user's status by clicking their profile image in channels, providing better coordination and availability insights.
+- 🌈 **主题自定义**: 使用多种选项个性化您的 Open WebUI 体验，包括一系列的高质量主题，可定制的聊天背景图像，以及三种模式选择：浅色模式、深色模式或 OLED 深色模式 - 或者让 *Her* 为您选择！;)
 
-- 💬 **Chat Controls**: Easily adjust parameters for each chat session, offering more precise control over your interactions.
+- 🖼️ **支持自定义背景**: 从设置 > 界面中设置自定义背景，个性化您的使用体验。
 
-- 💖 **Favorite Response Management**: Easily mark and organize favorite responses directly from the chat overview, enhancing ease of retrieval and access to preferred responses.
+- 📝 **支持 Markdown 的丰富横幅**: 使用 Markdown 在横幅中创建视觉效果更强的公告，支持更丰富和动态的内容呈现。
 
-- 📌 **Pinned Chats**: Support for pinned chats, allowing you to keep important conversations easily accessible.
+- 💻 **代码语法高亮**: 我们的语法高亮功能增强了代码的可读性，提供清晰且简洁的代码视图。
 
-- 🔍 **RAG Embedding Support**: Change the Retrieval Augmented Generation (RAG) embedding model directly in the `Admin Panel` > `Settings` > `Documents` menu, enhancing document processing. This feature supports Ollama and OpenAI models.
+- 🗨️ **用户消息中的 Markdown 渲染**: 用户消息现在支持 Markdown 渲染，增强了消息的可读性与交互性。
 
-- 📜 **Citations in RAG Feature**: The Retrieval Augmented Generation (RAG) feature allows users to easily track the context of documents fed to LLMs with added citations for reference points.
+- 🎨 **灵活的文本输入选项**: 可在聊天中切换丰富文本输入与传统文本区域输入，满足用户偏好，同时提供高级格式化或简洁文本输入的选择。
 
-- 🌟 **Enhanced RAG Pipeline**: A togglable hybrid search sub-feature for our RAG embedding feature that enhances the RAG functionality via `BM25`, with re-ranking powered by `CrossEncoder`, and configurable relevance score thresholds.
+- 👆 **轻松分享代码**: 提供便捷代码复制选项，如代码块中的浮动复制按钮及代码段的点击复制功能，简化共享与协作过程，节约时间并减少挫败感。
 
-- 📹 **YouTube RAG Pipeline**: The dedicated Retrieval Augmented Generation (RAG) pipeline for summarizing YouTube videos via video URLs enables smooth interaction with video transcriptions directly.
+- 🎨 **互动式产出物**: 直接在界面中渲染网页内容和 SVG，支持快速迭代与实时改动，提高创意和生产力。
 
-- 📁 **Comprehensive Document Retrieval**: Toggle between full document retrieval and traditional snippets, enabling comprehensive tasks like summarization and supporting enhanced document capabilities.
+- 🖊️ **实时代码编辑**: 增强型代码块支持在 LLM 响应中直接实时编辑，并支持通过产出物实时重载，简化了编码与测试流程。
 
-- 🌟 **RAG Citation Relevance**: Easily assess citation accuracy with the addition of relevance percentages in RAG results.
+- 🔍 **增强的 SVG 交互**: SVG 图像（包括 Mermaid 图表）的平移和缩放功能，让您能够更深入地探索和理解复杂概念。
 
-- 🗂️ **Advanced RAG**: Improve RAG accuracy with smart pre-processing of chat history to determine the best queries before retrieval.
+- 🔍 **文本选择快捷操作**: 在 LLM 响应中高亮文本时将出现浮动按钮，提供更深层的交互选项，如“提问”或“解释”，提升整体用户体验。
 
-- 📚 **Inline Citations for RAG**: Benefit from seamless inline citations for Retrieval-Augmented Generation (RAG) responses, improving traceability and providing source clarity for newly uploaded files.
+- ↕️ **双向聊天支持**: 您可以轻松切换聊天方向为从左到右或从右到左，以适应不同语言的需求。
 
-- 📁 **Large Text Handling**: Optionally convert large pasted text into a file upload to be used directly with RAG, keeping the chat interface cleaner.
+- 📱 **移动设备访问性**: 在移动设备上可以通过简单的滑动手势打开和关闭侧边栏。
 
-- 🔄 **Multi-Modal Support**: Effortlessly engage with models that support multi-modal interactions, including images (`e.g., LLaVA`).
+- 🤳 **支持设备的触觉反馈**: 安卓设备支持触觉反馈，为某些交互提供沉浸式的触觉体验。
 
-- 🤖 **Multiple Model Support**: Quickly switch between different models for diverse chat interactions.
+- 🔍 **用户设置搜索**: 可快速搜索设置字段，提高使用和导航的便利性。
 
-- 🔀 **Merge Responses in Many Model Chat**: Enhances the dialogue by merging responses from multiple models into a single, coherent reply.
+- 📜 **离线 Swagger 文档**: 可离线访问开发者友好的 Swagger API 文档，在任何地方确保完全可访问性。
 
-- ✅ **Multiple Instances of Same Model in Chats**: Enhanced many model chat to support adding multiple instances of the same model.
+- 💾 **性能优化**: 对大型依赖进行惰性加载，减少初始内存使用，提升性能并缩短加载时间。
 
-- 💬 **Temporary Chat Feature**: Introduced a temporary chat feature, deprecating the old chat history setting to enhance user interaction flexibility.
+- 🚀 **持久且可扩展的配置**: Open WebUI 配置存储在数据库（webui.db）中，支持无缝负载均衡、高可用性设置以及多个实例之间的持久设置，使您的配置易于访问和重用。
 
-- 🖋️ **User Message Editing**: Enhanced the user chat editing feature to allow saving changes without sending.
+- 🔄 **便携的导入/导出功能**: 可轻松导入和导出 Open WebUI 配置，简化在多个系统间复用设置的过程。
 
-- 💬 **Efficient Conversation Editing**: Create new message pairs quickly and intuitively using the Cmd/Ctrl+Shift+Enter shortcut, streamlining conversation length tests.
+- ❓ **快速访问文档和快捷键**: 主界面屏幕右下角的问号按钮（桌面 PC 和笔记本电脑等大屏设备可用）让用户轻松访问 Open WebUI 文档页面以及可用快捷键。
 
-- 🖼️ **Client-Side Image Compression**: Save bandwidth and improve performance with client-side image compression, allowing you to compress images before upload from Settings > Interface.
-
-- 👥 **'@' Model Integration**: By seamlessly switching to any accessible local or external model during conversations, users can harness the collective intelligence of multiple models in a single chat. This can done by using the `@` command to specify the model by name within a chat.
-
-- 🏷️ **Conversation Tagging** : Effortlessly categorize and locate tagged chats for quick reference and streamlined data collection using our efficient 'tag:' query system, allowing you to manage, search, and organize your conversations without cluttering the interface.
-
-- 🧠 **Auto-Tagging**: Conversations can optionally be automatically tagged for improved organization, mirroring the efficiency of auto-generated titles.
-
-- 👶 **Chat Cloning**: Easily clone and save a snapshot of any chat for future reference or continuation. This feature makes it easy to pick up where you left off or share your session with others. To create a copy of your chat, simply click on the `Clone` button in the chat's dropdown options. Can you keep up with your clones?
-
-- ⭐ **Visualized Conversation Flows**: Interactive messages diagram for improved visualization of conversation flows, enhancing understanding and navigation of complex discussions.
-
-- 📁 **Chat Folders**: Organize your chats into folders, drag and drop them for easy management, and export them seamlessly for sharing or analysis.
-
-- 📤 **Easy Chat Import**: Import chats into your workspace by simply dragging and dropping chat exports (JSON) onto the sidebar.
-
-- 📜 **Prompt Preset Support**: Instantly access custom preset prompts using the `/` command in the chat input. Load predefined conversation starters effortlessly and expedite your interactions. Import prompts with ease through [Open WebUI Community](https://openwebui.com/) integration or create your own!
-
-- 📅 **Prompt Variables Support**: Prompt variables such as `{{CLIPBOARD}}`, `{{CURRENT_DATE}}`, `{{CURRENT_DATETIME}}`, `{{CURRENT_TIME}}`, `{{CURRENT_TIMEZONE}}`, `{{CURRENT_WEEKDAY}}`, `{{USER_NAME}}`, `{{USER_LANGUAGE}}`, and `{{USER_LOCATION}}` can be utilized in the system prompt or by using a slash command to select a prompt directly within a chat.
-  - Please note that the `{{USER_LOCATION}}` prompt variable requires a secure connection over HTTPS. To utilize this particular prompt variable, please ensure that `{{USER_LOCATION}}` is toggled on from the `Settings` > `Interface` menu.
-  - Please note that the `{{CLIPBOARD}}` prompt variables requires access to your device's clipboard.
-
-- 🧠 **Memory Feature**: Manually add information you want your LLMs to remember via the `Settings` > `Personalization` > `Memory` menu. Memories can be added, edited, and deleted.
+- 📜 **更新日志与检查更新**: 用户可以通过 `设置` > `关于` > `查看新内容` 菜单访问完整的更新日志并检查更新，快速了解最新功能、改进以及修复，同时提供更新检查的能力。
 
 ---
 
-### 💻 Model Management
+### 💬 对话
 
+- 💬 **真正的异步聊天**: 享受不中断的多任务体验，通过支持真正的异步聊天，您可创建聊天、离开界面，随时返回查看已准备好的回复。
 
-- 🛠️ **Model Builder**: All models can be built and edited with a persistent model builder mode within the models edit page.
+- 🔔 **聊天完成通知**: 当前不活跃标签中的聊天完成时，将通过即时界面内通知保持更新，确保您不会遗漏任何完成的回复。
 
-- 📚 **Knowledge Support for Models**: The ability to attach tools, functions, and knowledge collections directly to models from a model's edit page, enhancing the information available to each model.
+- 🌐 **通知 Webhook 集成**: 配置 Webhook 通知，即使标签页关闭，也能获取长时间运行的聊天或外部集成需求的及时更新。
 
-- 🗂️ **Model Presets**: Create and manage model presets for both the Ollama and OpenAI API.
+- 📚 **频道（Beta）**: 探索用户与 AI 之间的实时协作，支持类似 Discord/Slack 风格的聊天室，构建频道机器人，并解锁异步通信以推动多代理主动工作流。
 
-- 🏷️ **Model Tagging**: The models workspace enables users to organize their models using tagging.
+- 🖊️ **频道中的实时输入指示器**: 通过频道中的实时输入指示器增强协作性，让每个人都能保持参与并了解最新情况。
 
-- 📋 **Model Selector Dropdown Ordering**: Models can be effortlessly organized by dragging and dropping them into desired positions within the model workspace, which will then reflect the changes in the model dropdown menu.
+- 👤 **用户状态指示器**: 通过点击频道中的用户头像快速查看其状态，提供更好的协调和可用性洞察。
 
-- 🔍 **Model Selector Dropdown**: Easily find and select your models with fuzzy search and detailed model information with model tags and model descriptions.
+- 💬 **聊天控制**: 轻松调整每个聊天会话的参数，为您的互动提供更精确的控制。
 
-- ⌨️ **Arrow Keys Model Selection**: Use arrow keys for quicker model selection, enhancing accessibility.
+- 💖 **收藏回复管理**: 直接在聊天总览中标记和整理收藏回复，方便检索和访问首选回复。
 
-- 🔧 **Quick Actions in Model Workspace**: Enhanced Shift key quick actions for hiding/displaying and deleting models in the model workspace.
+- 📌 **置顶聊天**: 支持置顶聊天，让重要对话方便访问。
 
-- 😄 **Transparent Model Usage**: Stay informed about the system's state during queries with knowledge-augmented models, thanks to visible status displays.
+- 🔍 **RAG嵌入支持**: 在`管理面板` > `设置` > `文档`菜单中直接更改检索增强生成（RAG）嵌入模型，优化文档处理。此功能支持Ollama和OpenAI模型。
 
-- ⚙️ **Fine-Tuned Control with Advanced Parameters**: Gain a deeper level of control by adjusting model parameters such as `seed`, `temperature`, `frequency penalty`, `context length`, `seed`, and more.
+- 📜 **RAG功能中的引文**: 检索增强生成（RAG）功能通过新增引文点，使用户能轻松追踪传递给大模型的文档内容上下文。
 
-- 🔄 **Seamless Integration**: Copy any `ollama run {model:tag}` CLI command directly from a model's page on [Ollama library](https://ollama.com/library/) and paste it into the model dropdown to easily select and pull models.
+- 🌟 **增强型RAG管道**: 我们的RAG嵌入功能支持切换式混合搜索子功能，基于`BM25`算法增强RAG功能，并通过`CrossEncoder`进行重新排序，同时可配置相关性分数阈值。
 
-- 🗂️ **Create Ollama Modelfile**: To create a model file for Ollama, navigate to the `Admin Panel` > `Settings` > `Models` > `Create a model` menu.
+- 📹 **YouTube RAG管道**: 专为通过视频URL总结YouTube视频的检索增强生成（RAG）管道，支持直接与视频转录交互。
 
-- ⬆️ **GGUF File Model Creation**: Effortlessly create Ollama models by uploading GGUF files directly from Open WebUI from the `Admin Settings` > `Settings` > `Model` > `Experimental` menu. The process has been streamlined with the option to upload from your machine or download GGUF files from Hugging Face.
+- 📁 **综合文档检索**: 支持在全文检索和传统片段之间切换，支持总结等综合任务，提升文档能力。
 
-- ⚙️ **Default Model Setting**: The default model preference for new chats can be set in the `Settings` > `Interface` menu on mobile devices, or can more easily be set in a new chat under the model selector dropdown on desktop PCs and laptops.
+- 🌟 **RAG引文相关性**: 通过在RAG结果中添加相关性百分比，轻松评估引文的准确性。
 
-- 💡 **LLM Response Insights**: Details of every generated response can be viewed, including external model API insights and comprehensive local model info.
+- 🗂️ **高级RAG**: 智能预处理聊天历史以确定最佳查询，从而提升RAG的准确性。
 
-- 🕒 **Model Details at a Glance**: View critical model details, including model hash and last modified timestamp, directly in the Models workspace for enhanced tracking and management.
+- 📚 **RAG的内联引文**: 利用检索增强生成（RAG）响应的无缝内联引文，改善可追溯性，并为新上传的文件提供来源清晰度。
 
-- 📥🗑️ **Download/Delete Models**: Models can be downloaded or deleted directly from Open WebUI with ease.
+- 📁 **处理大文本**: 可选择将大量粘贴文本转换为文件上传，以直接用于RAG，让聊天界面更整洁。
 
-- 🔄 **Update All Ollama Models**: A convenient button allows users to update all their locally installed models in one operation, streamlining model management.
+- 🔄 **多模态支持**: 无缝与支持多模态交互（如：图像）的模型进行对话（例如，LLaVA）。
 
-- 🍻 **TavernAI Character Card Integration**: Experience enhanced visual storytelling with TavernAI Character Card Integration in our model builder. Users can seamlessly incorporate TavernAI character card PNGs directly into their model files, creating a more immersive and engaging user experience.
+- 🤖 **多模型支持**: 快速在不同模型间切换，以支持多样化的聊天互动。
 
-- 🎲 **Model Playground (Beta)**: Try out models with the model playground area (`beta`), which enables users to test and explore model capabilities and parameters with ease in a sandbox environment before deployment in a live chat environment.
+- 🔀 **多模型聊天中的合并回复**: 将多个模型的回复合并为单一连贯的回复以增强对话质量。
 
----
+- ✅ **同一模型的多实例支持**: 增强多模型聊天以支持添加同一模型的多个实例。
 
-### 👥 Collaboration
+- 💬 **临时聊天功能**: 引入临时聊天功能，废弃原来的聊天历史设置，以提升用户交互的灵活性。
 
-- 🗨️ **Local Chat Sharing**: Generate and share chat links between users in an efficient and seamless manner, thereby enhancing collaboration and communication.
+- 🖋️ **用户消息编辑**: 优化用户聊天编辑功能，以允许保存更改而无需发送。
 
-- 👍👎 **RLHF Annotation**: Enhance the impact of your messages by rating them with either a thumbs up or thumbs down AMD provide a rating for the response on a scale of 1-10, followed by the option to provide textual feedback, facilitating the creation of datasets for Reinforcement Learning from Human Feedback (`RLHF`). Utilize your messages to train or fine-tune models, all while ensuring the confidentiality of locally saved data.
+- 💬 **高效对话编辑**: 使用Cmd/Ctrl+Shift+Enter快捷键快速直观地创建新的消息对，简化对话长度测试。
 
-- 🔧 **Comprehensive Feedback Export**: Export feedback history data to JSON for seamless integration with RLHF processing and further analysis, providing valuable insights for improvement.
+- 🖼️ **客户端图像压缩**: 使用客户端图像压缩节省带宽并提高性能，可通过`设置` > `界面`选项在上传前压缩图像。
 
-- 🤝 **Community Sharing**: Share your chat sessions with the [Open WebUI Community](https://openwebui.com/) by clicking the `Share to Open WebUI Community` button. This feature allows you to engage with other users and collaborate on the platform.
-  - To utilize this feature, please sign-in to your Open WebUI Community account. Sharing your chats fosters a vibrant community, encourages knowledge sharing, and facilitates joint problem-solving. Please note that community sharing of chat sessions is an optional feature. Only Admins can toggle this feature on or off in the `Admin Settings` > `Settings` > `General` menu.
+- 👥 **`@`模型集成**: 通过会话期间无缝切换到任何可访问的本地或外部模型，用户可以在单个聊天中利用多个模型的集体智能。在聊天中使用`@`命令通过名称指定模型即可实现。
 
-- 🏆 **Community Leaderboard**: Compete and track your performance in real-time with our leaderboard system, which utilizes the ELO rating system and allows for optional sharing of feedback history.
+- 🏷️ **对话标签**: 通过高效的`tag:`查询系统轻松分类和定位已标记的聊天，以快速参考和优化数据收集，使您能够管理、搜索和组织对话，并保持界面整洁。
 
-- ⚔️ **Model Evaluation Arena**: Conduct blind A/B testing of models directly from the Admin Settings for a true side-by-side comparison, making it easier to find the best model for your needs.
+- 🧠 **自动标记**: 对话可以选择自动标记以提升组织效率，类似于自动生成标题的高效功能。
 
-- 🎯 **Topic-Based Rankings**: Discover more accurate rankings with our experimental topic-based re-ranking system, which adjusts leaderboard standings based on tag similarity in feedback.
+- 👶 **聊天克隆**: 轻松克隆并保存任何聊天的快照以供将来参考或继续。这一功能使您可以快速从中断处继续或与他人共享您的会话。要创建聊天副本，只需点击聊天下拉选项中的`克隆`按钮。您能跟上您的克隆吗？
 
-- 📂 **Unified and Collaborative Workspace** : Access and manage all your model files, prompts, documents, tools, and functions in one convenient location, while also enabling multiple users to collaborate and contribute to models, knowledge, prompts, or tools, streamlining your workflow and enhancing teamwork.
+- ⭐ **对话流可视化**: 互动消息图表提供改善对话流的可视化功能，帮助您更好地理解和导航复杂讨论。
 
----
+- 📁 **聊天文件夹**: 将您的聊天整理到文件夹中，拖放进行轻松管理，并无缝导出以进行分享或分析。
 
-### 📚 History & Archive
+- 📤 **轻松导入聊天**: 只需将聊天导出文件（JSON）拖放到侧边栏，即可将聊天导入您的工作空间。
 
-- 📜 **Chat History**: Access and manage your conversation history with ease via the chat navigation sidebar. Toggle off chat history in the `Settings` > `Chats` menu to prevent chat history from being created with new interactions.
+- 📜 **提示预设支持**: 使用聊天输入中的 `/` 命令即时访问自定义预设提示。轻松加载预定义对话开场白，加快您的交互速度。通过 [Open WebUI Community](https://openwebui.com/) 集成导入提示，或者创建您自己的提示！
 
-- 🔄 **Regeneration History Access**: Easily revisit and explore your entire LLM response regeneration history.
+- 📅 **提示变量支持**: 提示变量如 `{{CLIPBOARD}}`, `{{CURRENT_DATE}}`, `{{CURRENT_DATETIME}}`, `{{CURRENT_TIME}}`, `{{CURRENT_TIMEZONE}}`, `{{CURRENT_WEEKDAY}}`, `{{USER_NAME}}`, `{{USER_LANGUAGE}}`, 和 `{{USER_LOCATION}}` 可以在系统提示中使用，或通过斜杠命令直接在聊天中选择一个提示。
+  - 请注意，`{{USER_LOCATION}}` 提示变量需要通过 HTTPS 的安全连接。要使用此特定提示变量，请确保在 `设置` > `界面` 菜单中开启 `{{USER_LOCATION}}`。
+  - 请注意，`{{CLIPBOARD}}` 提示变量需要对您设备的剪贴板进行访问。
 
-- 📬 **Archive Chats**: Effortlessly store away completed conversations you've had with models for future reference or interaction, maintaining a tidy and clutter-free chat interface.
-
-- 🗃️ **Archive All Chats**: This feature allows you to quickly archive all of your chats at once.
-
-- 📦 **Export All Archived Chats as JSON**: This feature enables users to easily export all their archived chats in a single JSON file, which can be used for backup or transfer purposes.
-
-- 📄 **Download Chats as JSON/PDF/TXT**: Easily download your chats individually in your preferred format of `.json`, `.pdf`, or `.txt` format.
-
-- 📤📥 **Import/Export Chat History**: Seamlessly move your chat data in and out of the platform via `Import Chats` and `Export Chats` options.
-
-- 🗑️ **Delete All Chats**: This option allows you to permanently delete all of your chats, ensuring a fresh start.
+- 🧠 **记忆功能**: 可以通过 `设置` > `个性化` > `记忆` 菜单手动添加您希望 LLM 记住的信息。记忆信息可以添加、编辑和删除。
 
 ---
 
-### 🎙️ Audio, Voice, & Accessibility
+### 💻 模型管理
 
-- 🗣️ **Voice Input Support**: Engage with your model through voice interactions; enjoy the convenience of talking to your model directly. Additionally, explore the option for sending voice input automatically after 3 seconds of silence for a streamlined experience.
-  - Microphone access requires manually setting up a secure connection over HTTPS to work, or [manually whitelisting your URL at your own risk](https://docs.openwebui.com/troubleshooting/microphone-error).
 
-- 😊 **Emoji Call**: Toggle this feature on from the `Settings` > `Interface` menu, allowing LLMs to express emotions using emojis during voice calls for a more dynamic interaction.
-  - Microphone access requires a secure connection over HTTPS for this feature to work.
+- 🛠️ **模型构建器**: 所有模型都可以在模型编辑页面中使用持久化的模型构建模式进行创建和编辑。
 
-- 🎙️ **Hands-Free Voice Call Feature**: Initiate voice calls without needing to use your hands, making interactions more seamless.
-  - Microphone access is required using a secure connection over HTTPS for this feature to work.
+- 📚 **模型知识支持**: 能够直接从模型的编辑页面为模型附加工具、功能和知识集合，提升每个模型的信息可用性。
 
-- 📹 **Video Call Feature**: Enable video calls with supported vision models like LlaVA and GPT-4o, adding a visual dimension to your communications.
-  - Both Camera & Microphone access is required using a secure connection over HTTPS for this feature to work.
+- 🗂️ **模型预设**: 为 Ollama 和 OpenAI API 创建和管理模型预设。
 
-- 👆 **Tap to Interrupt**: Stop the AI’s speech during voice conversations with a simple tap on mobile devices, ensuring seamless control over the interaction.
+- 🏷️ **模型标签**: 模型工作区允许用户通过标签来组织管理模型。
 
-- 🎙️ **Voice Interrupt**: Stop the AI’s speech during voice conversations with your voice on mobile devices, ensuring seamless control over the interaction.
+- 📋 **模型选择菜单排序**: 可以通过拖放的方式在模型工作区中轻松排列模型，以便在模型下拉菜单中反映这些更改。
 
-- 🔊 **Configurable Text-to-Speech Endpoint**: Customize your Text-to-Speech experience with configurable OpenAI-compatible endpoints for reading aloud LLM responses.
+- 🔍 **模型选择下拉菜单**: 使用模糊搜索和详细的标签与描述信息，轻松找到并选择您的模型。
 
-- 🔗 **Direct Call Mode Access**: Activate call mode directly from a URL, providing a convenient shortcut for mobile device users.
+- ⌨️ **方向键模型选择**: 使用方向键快速选择模型，提高操作便捷性。
 
-- ✨ **Customizable Text-to-Speech**: Control how message content is segmented for Text-to-Speech (TTS) generation requests, allowing for flexible speech output options.
+- 🔧 **模型工作区快速操作**: 增强的 Shift 键快速操作功能，用于在模型工作区隐藏/显示和删除模型。
 
-- 🔊 **Azure Speech Services Integration**: Supports Azure Speech services for Text-to-Speech (TTS), providing users with a wider range of speech synthesis options.
+- 😄 **透明的模型使用**: 查询带有知识增强模型时，借助可见的状态显示，随时了解系统状态。
 
-- 🎚️ **Customizable Audio Playback**: Allows users to adjust audio playback speed to their preferences in Call mode settings, enhancing accessibility and usability.
+- ⚙️ **高级参数微调控制**: 通过调整 `seed`、`temperature`、`frequency penalty`、`context length` 等参数，获得更深层次的控制。
 
-- 🎵 **Broad Audio Compatibility**: Enjoy support for a wide range of audio file format transcriptions with RAG, including 'audio/x-m4a', to broaden compatibility with audio content within the platform.
+- 🔄 **无缝集成**: 从 [Ollama library](https://ollama.com/library/) 的模型页面直接复制任何 `ollama run {model:tag}` CLI 命令，并粘贴到模型下拉菜单中，以便轻松选择和拉取模型。
 
-- 🔊 **Audio Compression**: Experimental audio compression allows navigating around the 25MB limit for OpenAI's speech-to-text processing, expanding the possibilities for audio-based interactions.
+- 🗂️ **创建 Ollama 模型文件**: 要为 Ollama 创建模型文件，请前往 `管理员面板` > `设置` > `模型` > `创建模型` 菜单。
 
-- 🗣️ **Experimental SpeechT5 TTS**: Enjoy local SpeechT5 support for improved text-to-speech capabilities.
+- ⬆️ **GGUF 文件模型创建**: 通过从 `管理员设置` > `设置` > `模型` > `实验性` 菜单中直接上传 GGUF 文件，从 Open WebUI 无缝创建 Ollama 模型。此流程包含从本地设备上传或从 Hugging Face 下载 GGUF 文件的选项。
 
----
+- ⚙️ **默认模型设置**: 可以在移动设备的 `设置` > `界面` 菜单中设置新的聊天默认模型首选项，或者更方便地在桌面 PC 和笔记本的模型下拉菜单中直接设置。
 
-### 🐍 Code Execution
+- 💡 **LLM 响应洞察**: 可查看每次生成响应的详细信息，包括外部模型 API 的洞察以及全面的本地模型信息。
 
-- 🚀 **Versatile, UI-Agnostic, OpenAI-Compatible Plugin Framework**: Seamlessly integrate and customize [Open WebUI Pipelines](https://github.com/open-webui/pipelines) for efficient data processing and model training, ensuring ultimate flexibility and scalability.
+- 🕒 **模型细节一览无遗**: 在 Models 工作区直接查看关键信息，包括模型哈希和最后修改时间戳，以便更好地跟踪和管理。
 
-- 🛠️ **Native Python Function Calling**: Access the power of Python directly within Open WebUI with native function calling. Easily integrate custom code to build unique features like custom RAG pipelines, web search tools, and even agent-like actions via a built-in code editor to seamlessly develop and integrate function code within the `Tools` and `Functions` workspace.
+- 📥🗑️ **下载/删除模型**: 可以直接从 Open WebUI 轻松下载或删除模型。
 
-- 🐍 **Python Code Execution**: Execute Python code locally in the browser via Pyodide with a range of libraries supported by Pyodide.
+- 🔄 **更新所有 Ollama 模型**: 一个便捷的按钮允许用户一次性更新所有本地安装的模型，简化模型管理。
 
-- 🌊 **Mermaid Rendering**: Create visually appealing diagrams and flowcharts directly within Open WebUI using the [Mermaid Diagramming and charting tool](https://mermaid.js.org/intro/), which supports Mermaid syntax rendering.
+- 🍻 **TavernAI 角色卡片集成**: 在我们的模型构建器中，通过 TavernAI 角色卡片集成，体验增强的故事叙述效果。用户可以将 TavernAI 的角色卡片 PNG 无缝纳入到模型文件中，创造更具沉浸感和吸引力的用户体验。
 
-- 🔗 **Iframe Support**: Enables rendering HTML directly into your chat interface using functions and tools.
+- 🎲 **模型游乐场（Beta）**: 使用模型游乐场区域（`beta`）试用模型，用户可以在上线前预先在沙盒环境中测试和探索模型功能及参数。
 
 ---
 
-### 🔒 Integration & Security
+### 👥 协作
 
-- ✨ **Multiple OpenAI-Compatible API Support**: Seamlessly integrate and customize various OpenAI-compatible APIs, enhancing the versatility of your chat interactions.
+- 🗨️ **本地聊天分享**: 在用户之间高效无缝地生成和分享聊天链接，从而增强协作和沟通。
 
-- 🔑 **Simplified API Key Management**: Easily generate and manage secret keys to leverage Open WebUI with OpenAI libraries, streamlining integration and development.
+- 👍👎 **RLHF 标注**：通过为消息给予点赞或点踩来增强其效果，并对回复进行1到10分的评分，同时提供文本反馈的选项，以便创建用于人类反馈强化学习（`RLHF`）的数据集。使用您的消息来训练或微调模型，同时确保本地保存数据的保密性。
 
-- 🌐 **HTTP/S Proxy Support**: Configure network settings easily using the `http_proxy` or `https_proxy` environment variable. These variables, if set, should contain the URLs for HTTP and HTTPS proxies, respectively.
+- 🔧 **全面的反馈导出**：将反馈历史数据导出为JSON，便于与RLHF处理集成和进一步分析，从而提供改进的有价值见解。
 
-- 🌐🔗 **External Ollama Server Connectivity**: Seamlessly link to an external Ollama server hosted on a different address by configuring the environment variable.
+- 🤝 **社区分享**：通过点击`分享到Open WebUI社区`按钮，与[Open WebUI社区](https://openwebui.com/)分享您的聊天会话。这一功能使您能够与其他用户互动并在平台上进行协作。
+  - 要使用此功能，请登录您的Open WebUI社区帐户。共享您的聊天有助于打造活跃的社区，促进知识共享，并推动共同问题解决。请注意，聊天会话的社区共享是可选功能。只有管理员可以在“管理员设置”>“设置”>“常规”菜单中切换此功能。
 
-- 🛢️ **Flexible Database Integration**: Seamlessly connect to custom databases, including SQLite, Postgres, and multiple vector databases like Milvus, using environment variables for flexible and scalable data management.
+- 🏆 **社区排行榜**：通过排行榜系统实时竞争和跟踪您的表现，该系统采用ELO评分系统并允许选择性共享反馈历史。
 
-- 🌐🗣️ **External Speech-to-Text Support**: The addition of external speech-to-text (`STT`) services provides enhanced flexibility, allowing users to choose their preferred provider for seamless interaction.
+- ⚔️ **模型评估竞技场**：直接从管理员设置中进行模型的盲评A/B测试，实现真正的对比，为您的需求选择最佳模型变得更加容易。
 
-- 🌐 **Remote ChromaDB Support**: Extend the capabilities of your database by connecting to remote ChromaDB servers.
+- 🎯 **基于主题的排名**：通过实验性的基于主题的重新排名系统发现更准确的排名，它根据反馈中的标签相似性调整排行榜的排位。
 
-- 🔀 **Multiple Ollama Instance Load Balancing**: Effortlessly distribute chat requests across multiple Ollama instances for enhanced performance and reliability.
-
-- 🚀 **Advanced Load Balancing and Reliability**: Utilize enhanced load balancing capabilities, stateless instances with full Redis support, and automatic web socket re-connection to promote better performance, reliability, and scalability in WebUI, ensuring seamless and uninterrupted interactions across multiple instances.
-
-- ☁️ **Experimental S3 Support**: Enable stateless WebUI instances with S3 support for enhanced scalability and balancing heavy workloads.
-
-- 🛠️ **OAuth Management for User Groups**: Enhance control and scalability in collaborative environments with group-level management via OAuth integration.
+- 📂 **统一和协作的工作空间**：在一个方便的位置访问和管理您的模型文件、提示、文档、工具和功能，同时允许多个用户协作并为模型、知识、提示或工具作出贡献，简化工作流程并增强团队合作。
 
 ---
 
-### 👑 Administration
+### 📚 历史与归档
 
-- 👑 **Super Admin Assignment**: Automatically assigns the first sign-up as a super admin with an unchangeable role that cannot be modified by anyone else, not even other admins.
+- 📜 **聊天历史**：通过聊天导航侧栏轻松访问和管理您的对话历史。在`设置` > `聊天`菜单中关闭聊天历史以防止新互动的聊天历史被创建。
 
-- 🛡️ **Granular User Permissions**: Restrict user actions and access with customizable role-based permissions, ensuring that only authorized individuals can perform specific tasks.
+- 🔄 **重生成历史访问**：轻松重新访问并探索您的整个LLM响应重生成历史。
 
-- 👥 **Multi-User Management**: Intuitive admin panel with pagination allows you to seamlessly manage multiple users, streamlining user administration and simplifying user life-cycle management.
+- 📬 **归档聊天**：轻松存储您与模型进行的已完成对话以备将来参考或互动，保持清晰整洁的聊天界面。
 
-- 🔧 **Admin Panel**: The user management system is designed to streamline the on-boarding and management of users, offering the option to add users directly or in bulk via CSV import.
+- 🗃️ **归档所有聊天**：此功能允许您一次性快速归档所有聊天。
 
-- 👥 **Active Users Indicator**: Monitor the number of active users and which models are being utilized by whom to assist in gauging when performance may be impacted due to a high number of users.
+- 📦 **将所有归档聊天导出为JSON**：此功能使用户能够轻松地将所有归档的聊天导出为单个JSON文件，用于备份或传输。
 
-- 🔒 **Default Sign-Up Role**: Specify the default role for new sign-ups to `pending`, `user`, or `admin`, providing flexibility in managing user permissions and access levels for new users.
+- 📄 **下载聊天为JSON/PDF/TXT**：单独以`.json`、`.pdf`或`.txt`格式下载聊天内容，根据您的需求选择首选格式。
 
-- 🔒 **Prevent New Sign-Ups**: Enable the option to disable new user sign-ups, restricting access to the platform and maintaining a fixed number of users.
+- 📤📥 **导入/导出聊天历史**：通过`导入聊天`和`导出聊天`选项无缝地移动您的聊天数据进出平台。
 
-- 🔒 **Prevent Chat Deletion**: Ability for admins to toggle a setting that prevents all users from deleting their chat messages, ensuring that all chat messages are retained for audit or compliance purposes.
+- 🗑️ **删除所有聊天**：此选项允许您永久删除所有聊天，确保一个全新的开始。
 
-- 🔗 **Webhook Integration**: Subscribe to new user sign-up events via webhook (compatible with `Discord`, `Google Chat`, `Slack` and `Microsoft Teams`), providing real-time notifications and automation capabilities.
+---
 
-- 📣 **Configurable Notification Banners**: Admins can create customizable banners with persistence in config.json, featuring options for content, background color (`info`, `warning`, `error`, or `success`), and dismissibility. Banners are accessible only to logged-in users, ensuring the confidentiality of sensitive information.
+### 🎙️ 音频、语音与辅助功能
 
-- 🛡️ **Model Whitelisting**: Enhance security and access control by allowing admins to whitelist models for users with the `user` role, ensuring that only authorized models can be accessed.
+- 🗣️ **支持语音输入**：通过语音与您的模型互动；享受直接与模型对话的便利。此外，探索在3秒钟静音后自动发送语音输入的选项，提升流畅体验。
+  - 使用麦克风需要手动设置通过HTTPS的安全连接工作，或者[自行承担风险手动将URL列入白名单](https://docs.openwebui.com/troubleshooting/microphone-error)。
 
-- 🔑 **Admin Control for Community Sharing**: Admins can enable or disable community sharing for all users via a toggle in the `Admin Panel` > `Settings` menu. This toggle allows admins to manage accessibility and privacy, ensuring a secure environment. Admins have the option of enabling or disabling the `Share on Community` button for all users, which allows them to control community engagement and collaboration.
+- 😊 **表情符号通话**：从`设置` > `界面`菜单中打开此功能，允许LLM在语音通话中使用表情符号表达情绪，实现更具动态的互动。
+  - 使用麦克风访问此功能需要通过HTTPS的安全连接。
 
-- 📧 **Trusted Email Authentication**: Optionally authenticate using a trusted email header, adding an extra layer of security and authentication to protect your Open WebUI instance.
+- 🎙️ **免提语音通话功能**：无需使用双手即可发起语音通话，使互动更加顺畅。
+  - 此功能需要通过HTTPS的安全连接使用麦克风。
 
-- 🔒 **Backend Reverse Proxy Support**: Bolster security through direct communication between Open WebUI's backend and Ollama. This key feature eliminates the need to expose Ollama over the local area network (LAN). Requests made to the `/ollama/api` route from Open WebUI are seamlessly redirected to Ollama from the backend, enhancing overall system security and providing an additional layer of protection.
+- 📹 **视频通话功能**：启用支持视觉模型（如LlaVA和GPT-4o）的视频通话，为您的交流增加视觉维度。
+  - 使用该功能需要通过HTTPS的安全连接获取摄像头和麦克风权限。
 
-- 🔒 **Authentication**: Please note that Open WebUI does not natively support federated authentication schemes such as SSO, OAuth, SAML, or OIDC. However, it can be configured to delegate authentication to an authenticating reverse proxy, effectively achieving a Single Sign-On (`SSO`) experience. This setup allows you to centralize user authentication and management, enhancing security and user convenience. By integrating Open WebUI with an authenticating reverse proxy, you can leverage existing authentication systems and streamline user access to Open WebUI. For more information on configuring this feature, please refer to the [Federated Authentication Support](https://docs.openwebui.com/features/sso).
+- 👆 **点击中断**：在语音对话期间通过在移动设备上简单点击即可中断AI的讲话，确保对互动的无缝控制。
 
-- 🔓 **Optional Authentication**: Enjoy the flexibility of disabling authentication by setting `WEBUI_AUTH` to `False`. This is an ideal solution for fresh installations without existing users or can be useful for demonstration purposes.
+- 🎙️ **语音中断**：通过在移动设备上讲话中断AI的语音交谈，确保对互动的无缝控制。
 
-- 🚫 **Advanced API Security**: Block API users based on customized model filters, enhancing security and control over API access.
+- 🔊 **可配置的文本转语音终端**：通过配置兼容OpenAI的终端来自定义您的文本转语音体验，用于大声朗读LLM的响应。
 
-- ❗ **Administrator Updates**: Ensure administrators stay informed with immediate update notifications upon login, keeping them up-to-date on the latest changes and system statuses.
+- 🔗 **直接通话模式访问**：从URL直接激活通话模式，为移动设备用户提供便利的快捷方式。
 
-- 👥 **User Group Management**: Create and manage user groups for seamless organization and control.
+- ✨ **可定制的文字转语音**：控制消息内容如何分段用于文字转语音（TTS）生成请求，提供灵活的语音输出选项。
 
-- 🔐 **Group-Based Access Control**: Set granular access to models, knowledge, prompts, and tools based on user groups, allowing for more controlled and secure environments.
+- 🔊 **Azure语音服务集成**：支持Azure语音服务的文字转语音（TTS），为用户提供更广泛的语音合成选项。
 
-- 🛠️ **Granular User Permissions**: Easily manage workspace permissions, including file uploads, deletions, edits, and temporary chats, as well as model, knowledge, prompt, and tool creation.
+- 🎚️ **可定制的音频播放**：允许用户在通话模式设置中根据自身喜好调整音频播放速度，提高可访问性和可用性。
 
-- 🔑 **LDAP Authentication**: Enhance security and scalability with LDAP support for user management.
+- 🎵 **广泛的音频兼容性**：通过RAG支持广泛的音频文件格式转录，包括&apos;audio/x-m4a&apos;，扩大平台内音频内容的兼容性。
 
-- 🌐 **Customizable OpenAI Connections**: Enjoy smooth operation with custom OpenAI setups, including prefix ID support and explicit model ID support for APIs.
+- 🔊 **音频压缩**：实验性的音频压缩能绕过OpenAI&apos;的语音转文本处理的25MB限制，扩展基于音频交互的可能性。
 
-- 🔐 **Ollama API Key Management**: Manage Ollama credentials, including prefix ID support, for secure and efficient operation.
+- 🗣️ **实验性的SpeechT5 TTS**：享受本地SpeechT5支持，增强文字转语音能力。
 
-- 🔄 **Connection Management**: Easily enable or disable individual OpenAI and Ollama connections as needed.
+---
 
-- 🎨 **Intuitive Model Workspace**: Manage models across users and groups with a redesigned and user-friendly interface.
+### 🐍 代码执行
 
-- 🔑 **API Key Authentication**: Tighten security by easily enabling or disabling API key authentication.
+- 🚀 **多功能、UI无关、兼容OpenAI的插件框架**：无缝集成和定制[Open WebUI Pipelines](https://github.com/open-webui/pipelines)，用于高效的数据处理和模型训练，确保最终的灵活性和可扩展性。
 
-- 🔄 **Unified Model Reset**: Reset and remove all models from the Admin Settings with a one-click option.
+- 🛠️ **原生Python函数调用**：在Open WebUI中直接调用Python功能。轻松集成自定义代码以构建独特功能，例如自定义RAG管道、网页搜索工具，甚至代理行为，通过内置代码编辑器在`Tools`和`Functions`工作区中无缝开发和集成函数代码。
 
-- 🔓 **Flexible Model Access Control**: Easily bypass model access controls for user roles when not required, using the 'BYPASS_MODEL_ACCESS_CONTROL' environment variable, simplifying workflows in trusted environments.
+- 🐍 **Python代码执行**：通过Pyodide直接在浏览器中本地执行Python代码，支持范围广泛的Pyodide库。
 
-- 🔒 **Configurable API Key Authentication Restrictions**: Flexibly configure endpoint restrictions for API key authentication, now off by default for a smoother setup in trusted environments.
+- 🌊 **Mermaid渲染**：使用[Mermaid图解和制图工具](https://mermaid.js.org/intro/)在Open WebUI中直接创建视觉上吸引人的图表和流程图，支持Mermaid语法渲染。
+
+- 🔗 **Iframe支持**：支持通过函数和工具直接将HTML渲染到聊天界面中。
+
+---
+
+### 🔒 集成与安全
+
+- ✨ **多种兼容OpenAI的API支持**：无缝集成和定制多种兼容OpenAI的API，增强聊天互动的多功能性。
+
+- 🔑 **简化的API密钥管理**：轻松生成和管理密钥以利用Open WebUI与OpenAI库的结合，简化集成和开发。
+
+- 🌐 **HTTP/S代理支持**：通过`http_proxy`或`https_proxy`环境变量轻松配置网络设置。如果设置了这些变量，应包含HTTP和HTTPS代理的URL。
+
+- 🌐🔗 **外部Ollama服务器连接**：通过配置环境变量轻松连接到托管在不同地址的外部Ollama服务器。
+
+- 🛢️ **灵活的数据库集成**：通过环境变量无缝连接到自定义数据库，包括SQLite、Postgres，以及多种向量数据库如Milvus，实现灵活和可扩展的数据管理。
+
+- 🌐🗣️ **外部语音转文本支持**：添加外部语音转文本（`STT`）服务，提供更大的灵活性，使用户可以选择首选的提供商以实现无缝交互。
+
+- 🌐 **远程ChromaDB支持**：通过连接到远程ChromaDB服务器扩展数据库功能。
+
+- 🔀 **多实例Ollama负载均衡**：轻松分配聊天请求到多个Ollama实例以提高性能和可靠性。
+
+- 🚀 **高级负载均衡与可靠性**：利用增强的负载均衡功能、支持全Redis的无状态实例以及自动WebSocket重新连接功能，在WebUI中提升性能、可靠性和可扩展性，确保在多个实例之间实现无缝和不中断的交互。
+
+- ☁️ **实验性的S3支持**：通过S3支持启用无状态WebUI实例，从而增强可扩展性并处理繁重工作负载。
+
+- 🛠️ **用户组的OAuth管理**：通过OAuth集成实现组级管理，提升协作环境中的控制和可扩展性。
+
+---
+
+### 👑 管理
+
+- 👑 **超级管理员分配**：首次注册自动分配为超级管理员，其角色无法被其他人修改，包括其他管理员。
+
+- 🛡️ **细粒度用户权限**：通过可定制的基于角色的权限限制用户操作和访问，确保只有授权的个人可以执行特定任务。
+
+- 👥 **多用户管理**：带分页的直观管理面板允许您轻松管理多个用户，简化用户管理并优化用户生命周期管理。
+
+- 🔧 **管理面板**：用户管理系统旨在简化用户的入职和管理，提供直接添加用户或通过CSV文件批量导入用户的选项。
+
+- 👥 **活跃用户指示器**：监控活跃用户数量以及每个用户使用的模型，帮助判断由于用户数量过多可能影响性能的情况。
+
+- 🔒 **默认注册角色**：将新注册用户的默认角色指定为`pending`（待定）、`user`（用户）或`admin`（管理员），灵活管理新用户的权限和访问级别。
+
+- 🔒 **禁止新用户注册**：启用选项以禁用新用户注册，限制平台访问并维护固定的用户数量。
+
+- 🔒 **防止聊天删除**：管理员可以切换设置，防止所有用户删除聊天消息，确保所有聊天记录能够保留用于审计或合规目的。
+
+- 🔗 **Webhook集成**：通过Webhook（兼容`Discord`、`Google Chat`、`Slack`和`Microsoft Teams`）订阅新用户注册事件，提供实时通知和自动化能力。
+
+- 📣 **可配置通知横幅**：管理员可以在config.json中创建可定制的横幅，支持内容、背景颜色（`info`、`warning`、`error`或`success`）和可否关闭选项。横幅仅向登录用户可见，确保敏感信息的保密性。
+
+- 🛡️ **模型白名单**：通过允许管理员对`user`角色用户启用模型白名单，提高安全性和访问控制，确保只有授权的模型可被访问。
+
+- 🔑 **社区共享管理员控制**：管理员可以通过`Admin Panel` > `Settings`菜单中的切换选项，对所有用户开启或禁用社区共享。此切换允许管理员管理访问性和隐私，确保安全环境。管理员可选择针对所有用户开启或禁用`Share on Community`按钮，从而控制社区互动和合作。
+
+- 📧 **可信电子邮件认证**：可选择通过可信电子邮件头进行认证，为Open WebUI实例增加额外的安全性和认证层。
+
+- 🔒 **后台反向代理支持**：通过Open WebUI后台与Ollama之间的直接通信提高安全性。此关键功能免去通过局域网（LAN）暴露Ollama的需求。Open WebUI对`/ollama/api`路由的请求会从后台无缝重定向至Ollama，增强整体系统安全性并提供额外的保护层。
+
+- 🔒 **认证**：需注意，Open WebUI并未原生支持联邦认证协议（如SSO、OAuth、SAML或OIDC）。但可以配置为将认证委派给认证反向代理，从而有效实现单点登录（`SSO`）体验。此设置允许集中化用户认证和管理，提升安全性和用户便利性。通过将Open WebUI整合至认证反向代理，可以利用现有的认证系统并简化用户访问Open WebUI的流程。有关配置此功能的更多信息，请参阅[联邦认证支持](https://docs.openwebui.com/features/sso)。
+
+- 🔓 **可选认证**：通过将`WEBUI_AUTH`设置为`False`，享受禁用认证的灵活性。这是对于刚安装且尚无用户或展示用途的理想解决方案。
+
+- 🚫 **高级API安全性**：根据自定义模型过滤阻止API用户，提高API访问的安全性和控制能力。
+
+- ❗ **管理员更新**：确保管理员在登录时即时收到更新通知，掌握最新变化和系统状态。
+
+- 👥 **用户组管理**：创建和管理用户组，实现高效的组织和控制。
+
+- 🔐 **基于组的访问控制**：为模型、知识、提示和工具设置基于用户组的细粒度访问权限，营造更加可控和安全的环境。
+
+- 🛠️ **细粒度用户权限**：轻松管理工作区的权限，包括文件上传、删除、编辑和临时聊天，以及模型、知识、提示和工具的创建。
+
+- 🔑 **LDAP认证**：通过LDAP支持增强安全性和可扩展性，以便管理用户。
+
+- 🌐 **可定制的OpenAI连接**：享受与定制的OpenAI设置兼容的流畅操作，包括前缀ID支持和显式模型ID支持API。
+
+- 🔐 **Ollama API密钥管理**：管理Ollama凭证（包括前缀ID支持），以实现安全高效的操作。
+
+- 🔄 **连接管理**：轻松启用或禁用单个OpenAI和Ollama连接。
+
+- 🎨 **直观的模型工作区**：通过重新设计的用户友好界面对用户和组进行模型管理。
+
+- 🔑 **API密钥认证**：通过轻松启用或禁用API密钥认证来加强安全性。
+
+- 🔄 **统一模型重置**：通过一键选项重置并从管理员设置中移除所有模型。
+
+- 🔓 **灵活的模型访问控制**：当不需要时，借助环境变量&apos;BYPASS_MODEL_ACCESS_CONTROL&apos;轻松绕过用户角色的模型访问控制，从而简化可信环境中的工作流程。
+
+- 🔒 **可配置的 API 密钥认证限制**：灵活配置 API 密钥认证的端点限制，现在默认关闭，在可信环境中提供更流畅的设置体验。
 
 ---

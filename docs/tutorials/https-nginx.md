@@ -1,41 +1,41 @@
 ---
 sidebar_position: 200
-title: "🔒 HTTPS using Nginx"
+title: "🔒 使用 Nginx 配置 HTTPS"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程由社区贡献，未获得 Open WebUI 团队支持。它仅作为一个如何根据您的特定用例定制 Open WebUI 的演示。想要贡献？查看贡献教程。
 :::
 
-# HTTPS using Nginx
+# 使用 Nginx 配置 HTTPS
 
-Ensuring secure communication between your users and the Open WebUI is paramount. HTTPS (HyperText Transfer Protocol Secure) encrypts the data transmitted, protecting it from eavesdroppers and tampering. By configuring Nginx as a reverse proxy, you can seamlessly add HTTPS to your Open WebUI deployment, enhancing both security and trustworthiness.
+确保您的用户与 Open WebUI 之间的安全通信至关重要。HTTPS（超文本传输安全协议）对传输的数据进行加密，保护其免受窃听和篡改。通过将 Nginx 配置为反向代理，您可以无缝地为 Open WebUI 部署添加 HTTPS，从而增强安全性和可信度。
 
-This guide provides three methods to set up HTTPS:
+本指南提供了三种设置 HTTPS 的方法：
 
-- **Self-Signed Certificates**: Ideal for development and internal use, using docker.
-- **Let's Encrypt**: Perfect for production environments requiring trusted SSL certificates, using docker.
-- **Windows+Self-Signed**: Simplified instructions for development and internal use on windows, no docker required.
+- **自签名证书**：适用于开发和内部使用，使用 Docker。
+- **Let&apos;s Encrypt**：适用于需要受信任 SSL 证书的生产环境，使用 Docker。
+- **Windows + 自签名**：简化用于 Windows 上的开发和内部使用，无需 Docker。
 
-Choose the method that best fits your deployment needs.
+选择最适合您部署需求的方法。
 
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from &apos;@theme/Tabs&apos;;
+import TabItem from &apos;@theme/TabItem&apos;;
 
-import NginxProxyManager from './tab-nginx/NginxProxyManager.md';
-import SelfSigned from './tab-nginx/SelfSigned.md';
-import LetsEncrypt from './tab-nginx/LetsEncrypt.md';
-import Windows from './tab-nginx/Windows.md';
+import NginxProxyManager from &apos;./tab-nginx/NginxProxyManager.md&apos;;
+import SelfSigned from &apos;./tab-nginx/SelfSigned.md&apos;;
+import LetsEncrypt from &apos;./tab-nginx/LetsEncrypt.md&apos;;
+import Windows from &apos;./tab-nginx/Windows.md&apos;;
 
 <Tabs>
-  <TabItem value="NginxProxyManager" label="Nginx Proxy Manager">
+  <TabItem value="NginxProxyManager" label="Nginx 代理管理器">
     <NginxProxyManager />
   </TabItem>
-  <TabItem value="letsencrypt" label="Let's Encrypt">
+  <TabItem value="letsencrypt" label="Let&apos;s Encrypt">
     <LetsEncrypt />
   </TabItem>
-  <TabItem value="selfsigned" label="Self-Signed">
+  <TabItem value="selfsigned" label="自签名">
     <SelfSigned />
   </TabItem>
   <TabItem value="windows" label="Windows">
@@ -44,12 +44,12 @@ import Windows from './tab-nginx/Windows.md';
 </Tabs>
 
 
-## Next Steps
+## 下一步
 
-After setting up HTTPS, access Open WebUI securely at:
+设置 HTTPS 后，可通过以下地址安全访问 Open WebUI：
 
 - [https://localhost](https://localhost)
 
-Ensure that your DNS records are correctly configured if you're using a domain name. For production environments, it's recommended to use Let's Encrypt for trusted SSL certificates.
+如果使用域名，请确保您的 DNS 记录已正确配置。对于生产环境，建议使用 Let&apos;s Encrypt 以获取受信任的 SSL 证书。
 
 ---

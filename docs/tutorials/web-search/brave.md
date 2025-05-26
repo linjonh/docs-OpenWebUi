@@ -1,17 +1,17 @@
 ---
 sidebar_position: 2
-title: "Brave"
+title: "勇敢"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程是社区贡献并未获得 Open WebUI 团队支持。它仅作为示例展示如何根据您的具体使用情况定制 Open WebUI。想要贡献？请查看贡献教程。
 :::
 
 ## Brave API
 
-### Docker Compose Setup
+### Docker Compose 设置
 
-Add the following environment variables to your Open WebUI `docker-compose.yaml` file:
+在 Open WebUI 的 `docker-compose.yaml` 文件中添加以下环境变量：
 
 ```yaml
 services:

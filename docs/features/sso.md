@@ -1,149 +1,149 @@
 ---
 sidebar_position: 19
-title: "🔒 SSO: Federated Authentication Support"
+title: "🔒 SSO：联合认证支持"
 ---
 
-# Federated Authentication Support
+# 联合认证支持
 
-Open WebUI supports several forms of federated authentication:
+Open WebUI支持多种形式的联合认证：
 
 1. OAuth2
     1. Google
     1. Microsoft
     1. Github
     1. OIDC
-1. Trusted Header
+1. 可信头
 
 ## OAuth
 
-There are several global configuration options for OAuth:
+OAuth有以下全局配置选项：
 
-1. `ENABLE_OAUTH_SIGNUP` - if `true`, allows accounts to be created when logging in with OAuth. Distinct from `ENABLE_SIGNUP`.
-1. `OAUTH_MERGE_ACCOUNTS_BY_EMAIL` - allows logging into an account that matches the email address provided by the OAuth provider.
-    - This is considered insecure as not all OAuth providers verify email addresses, and may allow accounts to be hijacked.
-1. `OAUTH_UPDATE_PICTURE_ON_LOGIN` - if `true`, users will have OAuth-provided profile pictures updated on login.
-    - If the OAuth picture claim is disabled by setting `OAUTH_PICTURE_CLAIM` to the empty string, this configuration will be ignored.
-1. `OAUTH_PICTURE_CLAIM` - can be used to customize or disable profile picture storage. The default, `picture`, will work for most providers; if set to the empty string, all users will receive the default person profile picture.
+1. `ENABLE_OAUTH_SIGNUP` - 如果为`true`，允许使用OAuth登录时创建账户。与`ENABLE_SIGNUP`不同。
+1. `OAUTH_MERGE_ACCOUNTS_BY_EMAIL` - 允许登录与OAuth提供的电子邮件地址匹配的账户。
+    - 这被认为是不安全的，因为并不是所有的OAuth提供商都会验证电子邮件地址，可能会导致账户被劫持。
+1. `OAUTH_UPDATE_PICTURE_ON_LOGIN` - 如果为`true`，用户将在登录时更新OAuth提供的个人资料图片。
+    - 如果通过设置`OAUTH_PICTURE_CLAIM`为空字符串禁用OAuth图片声明，则会忽略此配置。
+1. `OAUTH_PICTURE_CLAIM` - 可用于自定义或禁用个人资料图片存储。默认值`picture`对大多数提供商有效；如果设置为空字符串，则所有用户将接收默认的人物头像。
 
 ### Google
 
-To configure a Google OAuth client, please refer to [Google's documentation](https://support.google.com/cloud/answer/6158849) on how to create a Google OAuth client for a **web application**.
-The allowed redirect URI should include `<open-webui>/oauth/google/callback`.
+要配置Google OAuth客户端，请参阅[Google的文档](https://support.google.com/cloud/answer/6158849)，了解如何为**Web应用程序**创建Google OAuth客户端。
+允许的重定向URI应包括`<open-webui>/oauth/google/callback`。
 
-The following environment variables are required:
+需要以下环境变量：
 
-1. `GOOGLE_CLIENT_ID` - Google OAuth client ID
-1. `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
+1. `GOOGLE_CLIENT_ID` - Google OAuth客户端ID
+1. `GOOGLE_CLIENT_SECRET` - Google OAuth客户端密钥
 
 ### Microsoft
 
-To configure a Microsoft OAuth client, please refer to [Microsoft's documentation](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) on how to create a Microsoft OAuth client for a **web application**.
-The allowed redirect URI should include `<open-webui>/oauth/microsoft/callback`.
+要配置Microsoft OAuth客户端，请参阅[Microsoft的文档](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app)，了解如何为**Web应用程序**创建Microsoft OAuth客户端。
+允许的重定向URI应包括`<open-webui>/oauth/microsoft/callback`。
 
-Support for Microsoft OAuth is currently limited to a single tenant, that is a single Entra organization or personal Microsoft accounts.
+目前对Microsoft OAuth的支持仅限于单一租户，即单一Entra组织或个人Microsoft账户。
 
-The following environment variables are required:
+需要以下环境变量：
 
-1. `MICROSOFT_CLIENT_ID` - Microsoft OAuth client ID
-1. `MICROSOFT_CLIENT_SECRET` - Microsoft OAuth client secret
-1. `MICROSOFT_CLIENT_TENANT_ID` - Microsoft tenant ID - use `9188040d-6c67-4c5b-b112-36a304b66dad` for personal accounts
+1. `MICROSOFT_CLIENT_ID` - Microsoft OAuth客户端ID
+1. `MICROSOFT_CLIENT_SECRET` - Microsoft OAuth客户端密钥
+1. `MICROSOFT_CLIENT_TENANT_ID` - Microsoft租户ID - 对于个人账户使用`9188040d-6c67-4c5b-b112-36a304b66dad`
 
 ### Github
 
-To configure a Github OAuth Client, please refer to [Github's documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps) on how to create a OAuth App or Github App for a **web application**.
-The allowed redirect URI should include `<open-webui>/oauth/github/callback`.
+要配置Github OAuth客户端，请参阅[Github的文档](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)，了解如何为**Web应用程序**创建OAuth应用或Github应用。
+允许的重定向URI应包括`<open-webui>/oauth/github/callback`。
 
-The following environment variables are required:
+需要以下环境变量：
 
-1. `GITHUB_CLIENT_ID` - Github OAuth App Client ID
-1. `GITHUB_CLIENT_SECRET` - Github OAuth App Client Secret
+1. `GITHUB_CLIENT_ID` - Github OAuth应用客户端ID
+1. `GITHUB_CLIENT_SECRET` - Github OAuth应用客户端密钥
 
 ### OIDC
 
-Any authentication provider that supports OIDC can be configured.
-The `email` claim is required.
-`name` and `picture` claims are used if available.
-The allowed redirect URI should include `<open-webui>/oauth/oidc/callback`.
+任何支持OIDC的认证提供商都可以进行配置。
+`email`声明是必需的。
+`name`和`picture`声明在可用时会被使用。
+允许的重定向URI应包括`<open-webui>/oauth/oidc/callback`。
 
-The following environment variables are used:
+使用以下环境变量：
 
-1. `OAUTH_CLIENT_ID` - OIDC client ID
-1. `OAUTH_CLIENT_SECRET` - OIDC client secret
-1. `OPENID_PROVIDER_URL` - OIDC well known URL, for example `https://accounts.google.com/.well-known/openid-configuration`
-1. `OAUTH_PROVIDER_NAME` - Name of the provider to show on the UI, defaults to SSO
-1. `OAUTH_SCOPES` - Scopes to request. Defaults to `openid email profile`
+1. `OAUTH_CLIENT_ID` - OIDC客户端ID
+1. `OAUTH_CLIENT_SECRET` - OIDC客户端密钥
+1. `OPENID_PROVIDER_URL` - OIDC通用URL，例如`https://accounts.google.com/.well-known/openid-configuration`
+1. `OAUTH_PROVIDER_NAME` - 在UI中显示的提供商名称，默认为SSO
+1. `OAUTH_SCOPES` - 要请求的范围。默认为`openid email profile`
 
-### OAuth Role Management
+### OAuth角色管理
 
-Any OAuth provider that can be configured to return roles in the access token can be used to manage roles in Open WebUI.
-To use this feature set `ENABLE_OAUTH_ROLE_MANAGEMENT` to `true`.
-You can configure the following environment variables to match the roles returned by the OAuth provider:
+任何能够配置返回角色的访问令牌OAuth提供商都可以被用于在Open WebUI中管理角色。
+要使用此功能，请将`ENABLE_OAUTH_ROLE_MANAGEMENT`设置为`true`。
+可以配置以下环境变量以匹配OAuth提供商返回的角色：
 
-1. `OAUTH_ROLES_CLAIM` - The claim that contains the roles. Defaults to `roles`. Can also be nested, for example `user.roles`.
-1. `OAUTH_ALLOWED_ROLES` - A comma-separated list of roles that are allowed to log in (receive open webui role `user`).
-1. `OAUTH_ADMIN_ROLES` - A comma-separated list of roles that are allowed to log in as an admin (receive open webui role `admin`).
+1. `OAUTH_ROLES_CLAIM` - 包含角色的声明。默认值为`roles`。也可以嵌套，例如`user.roles`。
+1. `OAUTH_ALLOWED_ROLES` - 允许登录的角色的逗号分隔列表（接收open webui角色`user`）。
+1. `OAUTH_ADMIN_ROLES` - 允许以管理员身份登录的角色的逗号分隔列表（接收open webui角色`admin`）。
 
 :::info
 
-If changing the role of a logged in user, they will need to log out and log back in to receive the new role.
+如果更改已登录用户的角色，他们需要注销并重新登录以接收新角色。
 
 :::
 
-### OAuth Group Management
+### OAuth组管理
 
-Any OAuth provider that can be configured to return groups in the access token can be used to manage user groups in Open WebUI upon user login.
-To enable this synchronization, set `ENABLE_OAUTH_GROUP_MANAGEMENT` to `true`.
+任何能够配置返回组信息的访问令牌OAuth提供商都可以在用户登录时用于管理Open WebUI中的用户组。
+要启用此同步功能，请将`ENABLE_OAUTH_GROUP_MANAGEMENT`设置为`true`。
 
-You can configure the following environment variables:
+可以配置以下环境变量：
 
-1. `OAUTH_GROUP_CLAIM` - The claim in the ID/access token containing the user's group memberships. Defaults to `groups`. Can also be nested, for example `user.memberOf`. Required if `ENABLE_OAUTH_GROUP_MANAGEMENT` is true.
-1. `ENABLE_OAUTH_GROUP_CREATION` - If `true` (and `ENABLE_OAUTH_GROUP_MANAGEMENT` is also `true`), Open WebUI will perform **Just-in-Time (JIT) group creation**. This means it will automatically create groups during OAuth login if they are present in the user's OAuth claims but do not yet exist in the system. Defaults to `false`. If `false`, only memberships in *existing* Open WebUI groups will be managed.
+1. `OAUTH_GROUP_CLAIM` - ID/访问令牌中包含用户组成员资格的声明。默认值为`groups`。也可以嵌套，例如`user.memberOf`。如果`ENABLE_OAUTH_GROUP_MANAGEMENT`为true，则必需配置。
+1. `ENABLE_OAUTH_GROUP_CREATION` - 如果设置为 `true`（同时 `ENABLE_OAUTH_GROUP_MANAGEMENT` 也为 `true`），Open WebUI 将执行 **即时 (JIT) 组创建**。这意味着它将在 OAuth 登录期间自动创建组，如果这些组存在于用户的 OAuth 声明中但尚未在系统中创建。默认为 `false`。如果设置为 `false`，则仅管理用户属于 Open WebUI *现有*组的成员关系。
 
-:::warning Strict Group Synchronization
-When `ENABLE_OAUTH_GROUP_MANAGEMENT` is set to `true`, a user's group memberships in Open WebUI are **strictly synchronized** with the groups received in their OAuth claims upon each login.
+:::warning 严格的组同步
+当 `ENABLE_OAUTH_GROUP_MANAGEMENT` 设置为 `true` 时，用户在 Open WebUI 中的组成员关系会与每次登录时 OAuth 声明中接收的组严格同步。
 
-*   Users will be **added** to Open WebUI groups that match their OAuth claims.
-*   Users will be **removed** from any Open WebUI groups (including those manually created or assigned within Open WebUI) if those groups are **not** present in their OAuth claims for that login session.
+*   用户会自动**添加**到与其 OAuth 声明匹配的 Open WebUI 组。
+*   如果用户在本次登录会话中 OAuth 声明中**未包含**的组，则用户会从任何 Open WebUI 组中**移除**（包括那些手动创建或在 Open WebUI 中分配的组）。
 
-Ensure all necessary groups are correctly configured in your OAuth provider and included in the group claim (`OAUTH_GROUP_CLAIM`).
+确保所有必要的组在您的 OAuth 提供程序中正确配置，并包括在组声明 (`OAUTH_GROUP_CLAIM`) 中。
 :::
 
-:::warning Admin Users
-Admin users' group memberships are **not** automatically updated via OAuth group management.
+:::warning 管理员用户
+管理员用户的组成员关系**不会**通过 OAuth 组管理自动更新。
 :::
 
-:::info Login Required for Updates
+:::info 需要登录以完成更新
 
-If a user's groups change in the OAuth provider, they will need to log out of Open WebUI and log back in for the changes to be reflected.
+如果用户的组在 OAuth 提供程序中发生变化，他们需要退出 Open WebUI 并重新登录以使更改生效。
 
 :::
 
-## Trusted Header
+## 可信请求头
 
-Open WebUI is able to delegate authentication to an authenticating reverse proxy that passes in the user's details in HTTP headers.
-There are several example configurations that are provided in this page.
+Open WebUI 可以将身份认证委托给一个认证的反向代理，该代理通过 HTTP 请求头传递用户详细信息。
+本页面提供了几个配置示例。
 
 :::danger
 
-Incorrect configuration can allow users to authenticate as any user on your Open WebUI instance.
-Make sure to allow only the authenticating proxy access to Open WebUI, such as setting `HOST=127.0.0.1` to only listen on the loopback interface.
+配置错误可能允许用户在您的 Open WebUI 实例中以任意用户身份认证。
+确保仅允许认证代理访问 Open WebUI，例如通过设置 `HOST=127.0.0.1` 仅监听环回接口。
 
 :::
 
-### Generic Configuration
+### 通用配置
 
-When the `WEBUI_AUTH_TRUSTED_EMAIL_HEADER` environment variable is set, Open WebUI will use the value of the header specified as the email address of the user, handling automatic registration and login.
+当设置了 `WEBUI_AUTH_TRUSTED_EMAIL_HEADER` 环境变量时，Open WebUI 将使用指定请求头中的值作为用户的电子邮件地址进行自动注册和登录。
 
-For example, setting `WEBUI_AUTH_TRUSTED_EMAIL_HEADER=X-User-Email` and passing a HTTP header of `X-User-Email: example@example.com` would authenticate the request with the email `example@example.com`.
+例如，设置 `WEBUI_AUTH_TRUSTED_EMAIL_HEADER=X-User-Email` 并传递 HTTP 请求头 `X-User-Email: example@example.com`，则使用电子邮件 `example@example.com` 认证请求。
 
-Optionally, you can also define the `WEBUI_AUTH_TRUSTED_NAME_HEADER` to determine the name of any user being created using trusted headers. This has no effect if the user already exists.
+另外，可以定义 `WEBUI_AUTH_TRUSTED_NAME_HEADER` 来确定通过可信请求头创建的用户的名称。如果用户已存在，则此设置无效。
 
 ### Tailscale Serve
 
-[Tailscale Serve](https://tailscale.com/kb/1242/tailscale-serve) allows you to share a service within your tailnet, and Tailscale will set the header `Tailscale-User-Login` with the email address of the requester.
+[Tailscale Serve](https://tailscale.com/kb/1242/tailscale-serve) 允许您在 Tailscale 网络中共享服务，并且 Tailscale 会设置请求头 `Tailscale-User-Login` 包含请求者的电子邮件地址。
 
-Below is an example serve config with a corresponding Docker Compose file that starts a Tailscale sidecar, exposing Open WebUI to the tailnet with the tag `open-webui` and hostname `open-webui`, and can be reachable at `https://open-webui.TAILNET_NAME.ts.net`.
-You will need to create an OAuth client with device write permission to pass into the Tailscale container as `TS_AUTHKEY`.
+以下是一个 Serve 配置示例及相应的 Docker Compose 文件，它启动一个 Tailscale 边车，将 Open WebUI 暴露给具有 `open-webui` 标签和主机名 `open-webui` 的 Tailscale 网络，并可通过 `https://open-webui.TAILNET_NAME.ts.net` 访问。
+您需要创建一个具有设备写权限的 OAuth 客户端，并将其作为 `TS_AUTHKEY` 传入 Tailscale 容器。
 
 ```json title="tailscale/serve.json"
 {
@@ -202,64 +202,64 @@ volumes:
 
 :::warning
 
-If you run Tailscale in the same network context as Open WebUI, then by default users will be able to directly reach out to Open WebUI without going through the Serve proxy.
-You will need use Tailscale's ACLs to restrict access to only port 443.
+如果您在与 Open WebUI 相同的网络上下文中运行 Tailscale，则默认情况下用户可以直接访问 Open WebUI，而无需经过 Serve 代理。
+您需要使用 Tailscale 的 ACL 限制仅访问端口 443。
 
 :::
 
-### Cloudflare Tunnel with Cloudflare Access
+### 使用 Cloudflare Tunnel 和 Cloudflare Access
 
-[Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/get-started/create-remote-tunnel/) can be used with [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/policies/access/) to protect Open WebUI with SSO.
-This is barely documented by Cloudflare, but `Cf-Access-Authenticated-User-Email` is set with the email address of the authenticated user.
+[Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/get-started/create-remote-tunnel/) 可以与 [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/policies/access/) 配合使用，通过 SSO 保护 Open WebUI。
+虽然 Cloudflare 的官方文档几乎未提到此配合，但请求头 `Cf-Access-Authenticated-User-Email` 被设置为已认证用户的电子邮件地址。
 
-Below is an example Docker Compose file that sets up a Cloudflare sidecar.
-Configuration is done via the dashboard.
-From the dashboard, get a tunnel token, set the tunnel backend to `http://open-webui:8080`, and ensure that "Protect with Access" is checked and configured.
+以下是一个设置 Cloudflare 边车的 Docker Compose 文件示例。
+通过仪表盘进行配置。
+从仪表盘获取隧道令牌，将隧道后端设置为 `http://open-webui:8080`，并确保启用 "Protect with Access" 功能并完成配置。
 
 ```yaml title="docker-compose.yaml"
 ---
-services:
+服务项目:
   open-webui:
-    image: ghcr.io/open-webui/open-webui:main
-    volumes:
+    镜像: ghcr.io/open-webui/open-webui:main
+    卷:
       - open-webui:/app/backend/data
-    environment:
+    环境变量:
       - HOST=127.0.0.1
       - WEBUI_AUTH_TRUSTED_EMAIL_HEADER=Cf-Access-Authenticated-User-Email
-    restart: unless-stopped
+    重启策略: unless-stopped
   cloudflared:
-    image: cloudflare/cloudflared:latest
-    environment:
+    镜像: cloudflare/cloudflared:latest
+    环境变量:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-    command: tunnel run
-    restart: unless-stopped
+    命令: tunnel run
+    重启策略: unless-stopped
 
-volumes:
+卷:
   open-webui: {}
 
 ```
 
 ### oauth2-proxy
 
-[oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) is an authenticating reverse proxy that implements social OAuth providers and OIDC support.
+[oauth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/) 是一个支持社会化OAuth供应商和OIDC的身份验证反向代理。
 
-Given the large number of potential configurations, below is an example of a potential setup with Google OAuth.
-Please refer to `oauth2-proxy`'s documentation for detailed setup and any potential security gotchas.
+由于潜在的配置项非常多，下面提供了一个使用Google OAuth的示例设置。
+请参考`oauth2-proxy`的文档以获取详细的设置及可能存在的安全注意事项。
 
 ```yaml title="docker-compose.yaml"
-services:
+服务项目:
   open-webui:
-    image: ghcr.io/open-webui/open-webui:main
-    volumes:
+    镜像: ghcr.io/open-webui/open-webui:main
+    卷:
       - open-webui:/app/backend/data
-    environment:
+    环境变量:
       - 'HOST=127.0.0.1'
       - 'WEBUI_AUTH_TRUSTED_EMAIL_HEADER=X-Forwarded-Email'
       - 'WEBUI_AUTH_TRUSTED_NAME_HEADER=X-Forwarded-User'
-    restart: unless-stopped
+    重启策略: unless-stopped
   oauth2-proxy:
-    image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
-    environment:
+    镜像: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
+    环境变量:
       OAUTH2_PROXY_HTTP_ADDRESS: 0.0.0.0:4180
       OAUTH2_PROXY_UPSTREAMS: http://open-webui:8080/
       OAUTH2_PROXY_PROVIDER: google
@@ -269,18 +269,18 @@ services:
       OAUTH2_PROXY_REDIRECT_URL: REPLACEME_OAUTH_CALLBACK_URL
       OAUTH2_PROXY_COOKIE_SECRET: REPLACEME_COOKIE_SECRET
       OAUTH2_PROXY_COOKIE_SECURE: "false"
-    restart: unless-stopped
-    ports:
+    重启策略: unless-stopped
+    端口:
       - 4180:4180/tcp
 ```
 
 
 ### Authentik
 
-To configure a [Authentik](https://goauthentik.io/) OAuth client, please refer to [documentation](https://docs.goauthentik.io/docs/applications) on how to create an application and `OAuth2/OpenID Provider`.
-The allowed redirect URI should include `<open-webui>/oauth/oidc/callback`.
+配置 [Authentik](https://goauthentik.io/) OAuth 客户端，请参考[文档](https://docs.goauthentik.io/docs/applications)了解如何创建应用程序以及`OAuth2/OpenID Provider`。
+允许的重定向 URI 应包括 `<open-webui>/oauth/oidc/callback`。
 
-While creating provider, please note `App-name`, `Client-ID` and `Client-Secret` and use it for open-webui environment variables:
+创建提供者时，请记录下`应用名称`、`客户端ID`和`客户端密钥`，并将其用在open-webui环境变量中:
 
 ```
       - 'ENABLE_OAUTH_SIGNUP=true'
@@ -295,7 +295,7 @@ While creating provider, please note `App-name`, `Client-ID` and `Client-Secret`
 
 ### Authelia
 
-[Authelia](https://www.authelia.com/) can be configured to return a header for use with trusted header authentication.
-Documentation is available [here](https://www.authelia.com/integration/trusted-header-sso/introduction/).
+[Authelia](https://www.authelia.com/) 可以配置为返回一个用于受信任头部身份验证的标头。
+文档请参考[这里](https://www.authelia.com/integration/trusted-header-sso/introduction/)。
 
-No example configs are provided due to the complexity of deploying Authelia.
+由于部署Authelia的复杂性，未提供示例配置。

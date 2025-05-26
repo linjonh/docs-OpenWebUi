@@ -1,61 +1,61 @@
-## Quick Start with Docker 🐳
+## 使用 Docker 快速开始 🐳
 
-Follow these steps to install Open WebUI with Docker.
+按照以下步骤使用 Docker 安装 Open WebUI。
 
-## Step 1: Pull the Open WebUI Image
+## 第一步：拉取 Open WebUI 镜像
 
-Start by pulling the latest Open WebUI Docker image from the GitHub Container Registry.
+首先，从 GitHub 容器注册表中拉取最新的 Open WebUI Docker 镜像。
 
 ```bash
 docker pull ghcr.io/open-webui/open-webui:main
 ```
 
-## Step 2: Run the Container
+## 第二步：运行容器
 
-Run the container with default settings. This command includes a volume mapping to ensure persistent data storage.
+以默认设置运行容器。此命令包括一个卷映射，以确保持久化数据存储。
 
 ```bash
 docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:main
 ```
 
-### Important Flags
+### 重要参数
 
-- **Volume Mapping (`-v open-webui:/app/backend/data`)**: Ensures persistent storage of your data. This prevents data loss between container restarts.
-- **Port Mapping (`-p 3000:8080`)**: Exposes the WebUI on port 3000 of your local machine.
+- **卷映射 (`-v open-webui:/app/backend/data`)**：确保您的数据持久存储。这可以防止容器重启时数据丢失。
+- **端口映射 (`-p 3000:8080`)**：将 WebUI 暴露在本地机器的 3000 端口上。
 
-### Using GPU Support
+### 使用 GPU 支持
 
-For Nvidia GPU support, add `--gpus all` to the `docker run` command:
+对于 Nvidia GPU 支持，向 `docker run` 命令添加 `--gpus all`：
 
 ```bash
 docker run -d -p 3000:8080 --gpus all -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:cuda
 ```
 
 
-#### Single-User Mode (Disabling Login)
+#### 单用户模式（禁用登录）
 
-To bypass the login page for a single-user setup, set the `WEBUI_AUTH` environment variable to `False`:
+对于单用户设置，绕过登录页面，设置 `WEBUI_AUTH` 环境变量为 `False`：
 
 ```bash
 docker run -d -p 3000:8080 -e WEBUI_AUTH=False -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:main
 ```
 
 :::warning
-You cannot switch between single-user mode and multi-account mode after this change.
+进行此更改后，无法再在单用户模式和多账户模式之间切换。
 :::
 
-#### Advanced Configuration: Connecting to Ollama on a Different Server
+#### 高级配置：连接到其他服务器上的 Ollama
 
-To connect Open WebUI to an Ollama server located on another host, add the `OLLAMA_BASE_URL` environment variable:
+要将 Open WebUI 连接到位于其他主机上的 Ollama 服务器，请添加 `OLLAMA_BASE_URL` 环境变量：
 
 ```bash
 docker run -d -p 3000:8080 -e OLLAMA_BASE_URL=https://example.com -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
 ```
 
-## Access the WebUI
+## 访问 WebUI
 
-After the container is running, access Open WebUI at:
+容器运行后，通过以下地址访问 Open WebUI：
 
 [http://localhost:3000](http://localhost:3000)
 
-For detailed help on each Docker flag, see [Docker's documentation](https://docs.docker.com/engine/reference/commandline/run/).
+有关每个 Docker 参数的详细帮助，请参阅 [Docker 的文档](https://docs.docker.com/engine/reference/commandline/run/)。

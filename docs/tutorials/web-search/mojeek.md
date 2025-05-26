@@ -4,22 +4,22 @@ title: "Mojeek"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程由社区贡献，并未获得 Open WebUI 团队的支持。其仅作为如何根据您的特定使用案例自定义 Open WebUI 的演示。想要贡献？请查看贡献教程。
 :::
 
-## Mojeek Search API
+## Mojeek 搜索 API
 
-### Setup
+### 设置
 
-1. Please visit [Mojeek Search API page](https://www.mojeek.com/services/search/web-search-api/) to obtain an `API key`
-2. With `API key`, open `Open WebUI Admin panel` and click `Settings` tab, and then click `Web Search`
-3. Enable `Web search` and Set `Web Search Engine` to `mojeek`
-4. Fill `Mojeek Search API Key` with the `API key`
-5. Click `Save`
+1. 请访问 [Mojeek 搜索 API 页面](https://www.mojeek.com/services/search/web-search-api/) 以获取 `API key`
+2. 使用 `API key`，打开 `Open WebUI 管理面板` 并点击 `设置` 标签，然后点击 `网页搜索`
+3. 启用 `网页搜索` 并将 `网页搜索引擎` 设置为 `mojeek`
+4. 在 `Mojeek 搜索 API 密钥` 中填写 `API key`
+5. 点击 `保存`
 
-### Docker Compose Setup
+### Docker Compose 设置
 
-Add the following environment variables to your Open WebUI `docker-compose.yaml` file:
+将以下环境变量添加到 Open WebUI 的 `docker-compose.yaml` 文件中：
 
 ```yaml
 services:

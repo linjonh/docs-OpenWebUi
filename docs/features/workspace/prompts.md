@@ -1,63 +1,63 @@
 ---
 sidebar_position: 2
-title: "📚 Prompts"
+title: "📚 提示"
 ---
 
-The `Prompts` section of the `Workspace` within Open WebUI enables users to create, manage, and share custom prompts. This feature streamlines interactions with AI models by allowing users to save frequently used prompts and easily access them through slash commands.
+`Workspace` 中的 `Prompts` 部分允许用户在 Open WebUI 中创建、管理和共享自定义提示。此功能通过保存常用提示并通过斜杠命令轻松访问它们，从而简化与 AI 模型的交互。
 
-### Prompt Management
+### 提示管理
 
-The Prompts interface provides several key features for managing your custom prompts:
+Prompts 界面提供了几项关键功能，以帮助管理自定义提示：
 
-* **Create**: Design new prompts with customizable titles, access levels, and content.
-* **Share**: Share prompts with other users based on configured access permissions.
-* **Access Control**: Set visibility and usage permissions for each prompt (refer to [Permissions](./permissions.md) for more details).
-* **Slash Commands**: Quickly access prompts using custom slash commands during chat sessions.
+* **创建**: 设计具有可自定义标题、访问级别和内容的新提示。
+* **共享**: 根据配置的访问权限与其他用户共享提示。
+* **访问控制**: 为每个提示设置可见性和使用权限（更多详情请参阅 [权限](./permissions.md) ）。
+* **斜杠命令**: 在聊天会话中快速通过自定义斜杠命令访问提示。
 
-### Creating and Editing Prompts
+### 创建和编辑提示
 
-When creating or editing a prompt, you can configure the following settings:
+创建或编辑提示时，可以配置以下设置：
 
-* **Title**: Give your prompt a descriptive name for easy identification.
-* **Access**: Set the access level to control who can view and use the prompt.
-* **Command**: Define a slash command that will trigger the prompt (e.g., `/summarize`).
-* **Prompt Content**: Write the actual prompt text that will be sent to the model.
+* **标题**: 给您的提示设置一个易于识别的描述性名称。
+* **访问**: 设置访问级别以控制谁可以查看和使用该提示。
+* **命令**: 定义一个将触发提示的斜杠命令（例如，`/summarize`）。
+* **提示内容**: 写下将发送到模型的实际提示文本。
 
-### Prompt Variables
+### 提示变量
 
-Open WebUI supports dynamic prompt variables that can be included in your prompts:
+Open WebUI 支持可以包含在提示中的动态提示变量：
 
-* **Clipboard Content**: Use `{{CLIPBOARD}}` to insert content from your clipboard.
-* **Date and Time**:
-  * `{{CURRENT_DATE}}`: Current date
-  * `{{CURRENT_DATETIME}}`: Current date and time
-  * `{{CURRENT_TIME}}`: Current time
-  * `{{CURRENT_TIMEZONE}}`: Current timezone
-  * `{{CURRENT_WEEKDAY}}`: Current day of the week
-* **User Information**:
-  * `{{USER_NAME}}`: Current user's name
-  * `{{USER_LANGUAGE}}`: User's selected language
-  * `{{USER_LOCATION}}`: User's location (requires HTTPS and Settings > Interface toggle)
+* **剪贴板内容**: 使用 `{{CLIPBOARD}}` 插入剪贴板中的内容。
+* **日期和时间**:
+  * `{{CURRENT_DATE}}`: 当前日期
+  * `{{CURRENT_DATETIME}}`: 当前日期和时间
+  * `{{CURRENT_TIME}}`: 当前时间
+  * `{{CURRENT_TIMEZONE}}`: 当前时区
+  * `{{CURRENT_WEEKDAY}}`: 当前星期几
+* **用户信息**:
+  * `{{USER_NAME}}`: 当前用户的姓名
+  * `{{USER_LANGUAGE}}`: 用户选择的语言
+  * `{{USER_LOCATION}}`: 用户的位置（需要 HTTPS 和设置 > 界面切换）
 
-### Variable Usage Guidelines
+### 变量使用指南
 
-* Enclose variables with double curly braces: `{{variable}}`
-* The `{{USER_LOCATION}}` variable requires:
-  * A secure HTTPS connection
-  * Enabling the feature in Settings > Interface
-* The `{{CLIPBOARD}}` variable requires clipboard access permission from your device
+* 用双花括号括住变量： `{{variable}}`
+* `{{USER_LOCATION}}` 变量需要：
+  * 一个安全的 HTTPS 连接
+  * 在设置 > 界面中启用此功能
+* `{{CLIPBOARD}}` 变量需要设备授予剪贴板访问权限
 
-### Access Control and Permissions
+### 访问控制和权限
 
-Prompt management is controlled by the following permission settings:
+提示管理受以下权限设置控制：
 
-* **Prompts Access**: Users need the `USER_PERMISSIONS_WORKSPACE_PROMPTS_ACCESS` permission to create and manage prompts.
-* For detailed information about configuring permissions, refer to the [Permissions documentation](./permissions.md).
+* **提示访问**: 用户需要 `USER_PERMISSIONS_WORKSPACE_PROMPTS_ACCESS` 权限才能创建和管理提示。
+* 有关配置权限的详细信息，请参阅 [权限文档](./permissions.md)。
 
-### Best Practices
+### 最佳实践
 
-* Use clear, descriptive titles for your prompts
-* Create intuitive slash commands that reflect the prompt's purpose
-* Document any specific requirements or expected inputs in the prompt description
-* Test prompts with different variable combinations to ensure they work as intended
-* Consider access levels carefully when sharing prompts with other users - public sharing means that it will appear automatically for all users when they hit `/` in a chat, so you want to avoid creating too many.
+* 为提示使用清晰、描述性的标题
+* 创建符合提示用途的直观斜杠命令
+* 在提示描述中记录任何特定要求或预期输入
+* 使用不同的变量组合测试提示，以确保它们按预期工作
+* 在与其他用户共享提示时仔细考虑访问级别——公开共享意味着它将在所有用户按聊天中的 `/` 时自动显示，因此您需要避免创建太多提示。

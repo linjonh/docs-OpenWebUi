@@ -1,178 +1,178 @@
 ---
 sidebar_position: 10
-title: "❓ FAQ"
+title: "❓ 常见问题"
 ---
 
-#### 🌐 Q: Why isn't my local OpenAPI tool server accessible from the WebUI interface?
+#### 🌐 问：为什么我的本地 OpenAPI 工具服务器无法从 WebUI 界面访问？
 
-**A:** If your tool server is running locally (e.g. http://localhost:8000), browser-based clients may be restricted from accessing it due to CORS (Cross-Origin Resource Sharing) policies.
+**答：** 如果您的工具服务器运行在本地（例如：http://localhost:8000），基于浏览器的客户端可能因跨域资源共享 (CORS) 策略而无法访问。
 
-Make sure to explicitly enable CORS headers in your OpenAPI server. For example, if you're using FastAPI, you can add:
+请确保在 OpenAPI 服务器中显式启用 CORS 标头。例如，如果您使用的是 FastAPI，则可以添加以下代码：
 
 ```python
 from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # or specify your client origin
+    allow_origins=["*"],  # 或指定您的客户端来源
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 ```
 
-Also, if Open WebUI is served over HTTPS (e.g. https://yourdomain.com), your local server must meet one of the following conditions:
+另外，如果 Open WebUI 通过 HTTPS 提供服务（例如：https://yourdomain.com），您的本地服务器必须满足以下条件之一：
 
-- Be accessed from the same domain using HTTPS (e.g. https://localhost:8000).
-- OR run on localhost (127.0.0.1) to allow browsers to relax security for local development.
-- Otherwise, browsers may block insecure requests from HTTPS pages to HTTP APIs due to mixed-content rules.
+- 使用 HTTPS 从相同域访问（例如：https://localhost:8000）。
+- **或者** 运行在 localhost（127.0.0.1）以允许浏览器放宽本地开发的安全限制。
+- 否则，浏览器可能会因混合内容规则阻止 HTTPS 页面调用 HTTP API 的不安全请求。
 
-To work securely in production over HTTPS, your OpenAPI servers must also be served over HTTPS.
+为了能够在生产环境中通过 HTTPS 安全运行，您的 OpenAPI 服务器也必须通过 HTTPS 提供服务。
 
 ---
 
-#### 🚀 Q: Do I need to use FastAPI for my server implementation?
+#### 🚀 问：我的服务器实现是否必须使用 FastAPI？
 
-**A:**  No! While our reference implementations are written using FastAPI for clarity and ease of use, you can use any framework or language that produces a valid OpenAPI (Swagger) specification. Some common choices include:
+**答：** 不！虽然我们的参考实现是使用 FastAPI 编写的，因为它清晰易用，但您可以使用任何能够生成有效 OpenAPI（Swagger）规范的框架或语言。以下是一些常见选项：
 
 - FastAPI (Python)
 - Flask + Flask-RESTX (Python)
 - Express + Swagger UI (JavaScript/Node)
 - Spring Boot (Java)
-- Go with Swag or Echo
+- Go 使用 Swag 或 Echo
 
-The key is to ensure your server exposes a valid OpenAPI schema, and that it communicates over HTTP(S).
-It is important to set a custom operationId for all endpoints.
+关键是确保您的服务器公开一个有效的 OpenAPI 模式，并通过 HTTP(S) 进行通信。
+重要的是为所有端点设置一个自定义的 operationId。
 
 ---
 
 
-#### 🚀 Q: Why choose OpenAPI over MCP?
+#### 🚀 问：为什么选择 OpenAPI 而不是 MCP？
 
-**A:** OpenAPI wins over MCP in most real-world scenarios due to its simplicity, tooling ecosystem, stability, and developer-friendliness. Here's why:
+**答：** OpenAPI 在大多数实际场景中比 MCP 更胜一筹，因为它简单、工具生态完善、稳定且对开发者友好。以下是原因：
 
-- ✅ **Reuse Your Existing Code**: If you’ve built REST APIs before, you're mostly done—you don’t need to rewrite your logic. Just define a compliant OpenAPI spec and expose your current code as a tool server.
+- ✅ **复用您的现有代码**：如果您以前构建过 REST API，那您几乎已经完成了——您无需重写逻辑，只需定义一个兼容的 OpenAPI 规范，并将现有代码作为工具服务器公开即可。
   
-  With MCP, you had to reimplement your tool logic inside a custom protocol layer, duplicating work and increasing the surface area to maintain.
+  MCP 要求您在自定义协议层中重新实现工具逻辑，重复工作并增加了维护面。
 
-- 💼 **Less to Maintain & Debug**: OpenAPI fits naturally into modern dev workflows. You can test endpoints with Postman, inspect logs with built-in APIs, troubleshoot easily with mature ecosystem tools—and often without modifying your core app at all.
+- 💼 **维护更少，调试更少**：OpenAPI 自然适应现代开发工作流。您可以使用 Postman 测试端点，借助内置 API 检查日志，使用成熟的生态工具轻松排查问题——而通常无需修改核心应用。
 
-  MCP introduced new layers of transport, schema parsing, and runtime quirks, all of which had to be debugged manually.
+  MCP 引入了新的传输层、模式解析和运行时怪癖，这些都需要手动调试。
 
-- 🌍 **Standards-Based**: OpenAPI is widely adopted across the tech industry. Its well-defined structure means tools, agents, and servers can interoperate immediately, without needing special bridges or translations.
+- 🌍 **基于标准**：OpenAPI 在技术行业中广泛采用。其结构定义良好，这意味着工具、代理和服务器可以立即进行互操作，无需特殊的桥接或转换。
 
-- 🧰 **Better Tooling**: There’s an entire universe of tools that support OpenAPI—automatic client/server generation, documentation, validation, mocking, testing, and even security audit tools.
+- 🧰 **更好的工具支持**：支持 OpenAPI 的工具生态非常丰富——自动客户端/服务器生成、文档生成、验证、模拟、测试，甚至包括安全审计工具。
 
-- 🔐 **First-Class Security Support**: OpenAPI includes native support for things like OAuth2, JWTs, API Keys, and HTTPS—making it easier to build secure endpoints with common libraries and standards.
+- 🔐 **一流的安全支持**：OpenAPI 原生支持 OAuth2、JWT、API 密钥和 HTTPS 等功能，使用常见的库和标准构建安全端点更为容易。
 
-- 🧠 **More Devs Already Know It**: Using OpenAPI means you're speaking a language already familiar to backend teams, frontend developers, DevOps, and product engineers. There’s no learning curve or costly onboarding required.
+- 🧠 **更多开发者已经熟悉它**：使用 OpenAPI 意味着您使用的是后端团队、前端开发人员、DevOps 和产品工程师已经熟悉的语言，不需要学习曲线或昂贵的入门培训。
 
-- 🔄 **Future-Proof & Extensible**: OpenAPI evolves with API standards and remains forward-compatible. MCP, by contrast, was bespoke and experimental—often requiring changes as the surrounding ecosystem changed.
+- 🔄 **面向未来且可扩展**：OpenAPI 随着 API 标准演进，并保持向前兼容。相比之下，MCP 是专有且实验性的——经常需要对生态变化做出调整。
 
-🧵 Bottom line: OpenAPI lets you do more with less effort, less code duplication, and fewer surprises. It’s a production-ready, developer-friendly route to powering LLM tools—without rebuilding everything from scratch.
+🧵 总结：OpenAPI 让您以更少的努力、更少的代码重复和更少的意外实现更多功能。它是一种适合生产环境、开发者友好的方式，为 LLM 工具提供支持，而无需从头构建一切。
 
 
 ---
 
-#### 🔐 Q: How do I secure my OpenAPI tool server?
+#### 🔐 问：如何保护我的 OpenAPI 工具服务器？
 
-**A:** OpenAPI supports industry-standard security mechanisms like:
+**答：** OpenAPI 支持以下行业标准的安全机制：
 
 - OAuth 2.0
-- API Key headers
-- JWT (JSON Web Token)
-- Basic Auth
+- API 密钥标头
+- JWT（JSON Web 令牌）
+- 基本身份验证
 
-Use HTTPS in production to encrypt data in transit, and restrict endpoints with proper auth/authz methods as appropriate. You can incorporate these directly in your OpenAPI schema using the securitySchemes field.
-
----
-
-#### ❓ Q: What kind of tools can I build using OpenAPI tool servers?
-
-**A:** If it can be exposed via a REST API, you can build it. Common tool types include:
-
-- Filesystem operations (read/write files, list directories)
-- Git and document repository access
-- Database querying or schema exploration
-- Web scrapers or summarizers
-- External SaaS integrations (e.g., Salesforce, Jira, Slack)
-- LLM-attached memory stores / RAG components
-- Secure internal microservices exposed to your agent
+在生产环境中使用 HTTPS 加密传输数据，并通过适当的认证/授权方法限制端点访问。您可以通过在 OpenAPI 模式中使用 securitySchemes 字段直接集成这些安全机制。
 
 ---
 
-#### 🔌 Q: Can I run more than one tool server at the same time?
+#### ❓ 问：使用 OpenAPI 工具服务器可以构建什么工具？
 
-**A:** Absolutely. Each tool server runs independently and exposes its own OpenAPI schema. Your agent configuration can point to multiple tool servers, allowing you to mix and match based on need.
+**答：** 如果可以通过 REST API 公开，您就可以构建它。常见的工具类型包括：
 
-There's no limit—just ensure each server runs on its own port or address and is reachable by the agent host.
-
----
-
-#### 🧪 Q: How do I test a tool server before linking it to an LLM agent?
-
-**A:** You can test your OpenAPI tool servers using:
-
-- Swagger UI or ReDoc (built into FastAPI by default)
-- Postman or Insomnia
-- curl or httpie from the command line
-- Python’s requests module
-- OpenAPI validators and mockers
-
-Once validated, you can register the tool server with an LLM agent or through Open WebUI.
+- 文件系统操作（读/写文件，列出目录）
+- Git 和文档存储库访问
+- 数据库查询或模式探索
+- 网络爬取或摘要工具
+- 外部 SaaS 集成（例如 Salesforce、Jira、Slack）
+- 附加到 LLM 的存储器或 RAG 组件
+- 保护内部微服务，使其可以通过您的代理暴露
 
 ---
 
-#### 🛠️ Q: Can I extend or customize the reference servers?
+#### 🔌 问题：我可以同时运行多个工具服务器吗？
 
-**A:** Yes! All servers in the servers/ directory are built to be simple templates. Fork and modify them to:
+**回答：** 当然可以。每个工具服务器独立运行并暴露其自己的 OpenAPI 架构。您的代理配置可以指向多个工具服务器，根据需求自由组合。
 
-- Add new endpoints and business logic
-- Integrate authentication
-- Change response formats
-- Connect to new services or internal APIs
-- Deploy via Docker, Kubernetes, or any cloud host
+没有限制——只需确保每个服务器运行在自己的端口或地址上，并能被代理主机访问。
 
 ---
 
-#### 🌍 Q: Can I run OpenAPI tool servers on cloud platforms like AWS or GCP?
+#### 🧪 问题：在将工具服务器链接到 LLM 代理之前如何进行测试？
 
-**A:** Yes. These servers are plain HTTP services. You can deploy them as:
+**回答：** 可以使用以下方法测试您的 OpenAPI 工具服务器：
 
-- AWS Lambda with API Gateway (serverless)
-- EC2 or GCP Compute Engine instances
-- Kubernetes services in GKE/EKS/AKS
-- Cloud Run or App Engine
-- Render, Railway, Heroku, etc.
+- Swagger UI 或 ReDoc（默认内置于 FastAPI）
+- Postman 或 Insomnia
+- 命令行中的 curl 或 httpie
+- Python 的 requests 模块
+- OpenAPI 验证器和模拟器
 
-Just make sure they’re securely configured and publicly reachable (or VPN'd) if needed by the agent or user.
+验证通过后，您可以将工具服务器注册到 LLM 代理或通过 Open WebUI 进行注册。
 
 ---
 
-#### 🧪 Q: What if I have an existing MCP server?
+#### 🛠️ 问题：我可以扩展或自定义参考服务器吗？
 
-**A:** Great news! You can use our MCP-to-OpenAPI Bridge: [mcpo](https://github.com/open-webui/mcpo), exposing your existing MCP-based tools as OpenAPI-compatible APIs is now easier than ever. No rewrites, no headaches — just plug and go! 🚀
+**回答：** 可以！ servers/ 目录中的所有服务器都是简单模板。您可以修改或分叉它们以：
 
-If you've already built tools using the MCP protocol, `mcpo` helps you instantly unlock compatibility with Open WebUI and any OpenAPI-based agent — ensuring your hard work remains fully accessible and future-ready.
+- 添加新的端点和业务逻辑
+- 整合身份验证
+- 改变响应格式
+- 连接到新服务或内部 API
+- 通过 Docker、Kubernetes 或任何云服务进行部署
 
-[Check out the optional Bridge to MCP section in the docs for setup instructions.](https://github.com/open-webui/openapi-servers?tab=readme-ov-file#-bridge-to-mcp-optional)
+---
 
-**Quick Start:**
+#### 🌍 问题：我可以在 AWS 或 GCP 等云平台上运行 OpenAPI 工具服务器吗？
+
+**回答：** 可以。这些服务器是普通的 HTTP 服务。您可以以以下方式部署它们：
+
+- 使用 API Gateway 的 AWS Lambda（无服务器）
+- EC2 或 GCP Compute Engine 实例
+- GKE/EKS/AKS 中的 Kubernetes 服务
+- Cloud Run 或 App Engine
+- Render、Railway、Heroku 等
+
+只需确保安全配置，并在需要时能被代理或用户安全访问（通过公网或者 VPN）。
+
+---
+
+#### 🧪 问题：如果我已经有现有的 MCP 服务器怎么办？
+
+**回答：** 好消息！您可以使用我们的 MCP-to-OpenAPI 桥接器：[mcpo](https://github.com/open-webui/mcpo)，将现有的基于 MCP 的工具暴露为兼容 OpenAPI 的 API，轻松完成，无需重写，无需烦恼 —— 插上即用！🚀
+
+如果您已经使用 MCP 协议构建了工具，`mcpo` 可以帮助您瞬间解锁与 Open WebUI 和任何基于 OpenAPI 的代理的兼容性 —— 确保您的成果完全可访问并适应未来。
+
+[查看文档中的可选 MCP 桥接部分了解设置说明。](https://github.com/open-webui/openapi-servers?tab=readme-ov-file#-bridge-to-mcp-optional)
+
+**快速开始：**
 ```bash
 uvx mcpo --port 8000 -- uvx mcp-server-time --local-timezone=America/New_York
 ```
 
-✨ That’s it — your MCP server is now OpenAPI-ready!
+✨ 就这样，您的 MCP 服务器现在已经准备好支持 OpenAPI！
 
 ---
 
-#### 🗂️ Q: Can one OpenAPI server implement multiple tools?
+#### 🗂️ 问题：一个 OpenAPI 服务器是否可以实现多个工具？
 
-**A:** Yes. A single OpenAPI server can offer multiple related capabilities grouped under different endpoints. For example, a document server may provide search, upload, OCR, and summarization—all within one schema.
+**回答：** 可以。单个 OpenAPI 服务器可以提供多个相关功能，这些功能通过不同的端点进行分组。例如，一个文档服务器可能提供搜索、上传、OCR 和摘要——全部包含在一个架构中。
 
-You can also modularize completely by creating one OpenAPI server per tool if you prefer isolation and flexibility.
+您也可以完全模块化，根据需要通过创建每个工具的单独 OpenAPI 服务器来实现隔离和灵活性。
 
 ---
 
-🙋 Have more questions? Visit the GitHub discussions for help and feedback from the community:  
-👉 [Community Discussions](https://github.com/open-webui/openapi-servers/discussions)
+🙋 还有更多问题吗？访问 GitHub 讨论版，获取社区的帮助和反馈：
+👉 [社区讨论](https://github.com/open-webui/openapi-servers/discussions)

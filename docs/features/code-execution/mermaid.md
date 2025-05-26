@@ -1,37 +1,37 @@
 ---
 sidebar_position: 3
-title: "🌊 MermaidJS Rendering"
+title: "🌊 MermaidJS 渲染"
 ---
 
-# 🌊 MermaidJS Rendering Support in Open WebUI
+# 🌊 Open WebUI 中的 MermaidJS 渲染支持
 
-## Overview
+## 概述
 
-Open WebUI supports rendering of visually appealing MermaidJS diagrams, flowcharts, pie charts and more, directly within the chat interface. MermaidJS is a powerful tool for visualizing complex information and ideas, and when paired with the capabilities of a large language model (LLM), it can be a powerful tool for generating and exploring new ideas.
+Open WebUI 支持直接在聊天界面内渲染视觉效果优美的 MermaidJS 图表、流程图、饼图等内容。MermaidJS 是用于可视化复杂信息和想法的强大工具，而当它与大型语言模型（LLM）的能力结合时，可以为生成和探索新点子提供强有力的支持。
 
-## Using MermaidJS in Open WebUI
+## 在 Open WebUI 中使用 MermaidJS
 
-To generate a MermaidJS diagram, simply ask an LLM within any chat to create a diagram or chart using MermaidJS. For example, you can ask the LLM to:
+要生成 MermaidJS 图表，只需在聊天中向 LLM 发出请求，要求通过 MermaidJS 创建一个图表或图表。例如，您可以要求 LLM：
 
-* "Create a flowchart for a simple decision-making process for me using Mermaid. Explain how the flowchart works."
-* "Use Mermaid to visualize a decision tree to determine whether it's suitable to go for a walk outside."
+* "使用 Mermaid 创建一个简单决策流程的流程图，并解释流程图的工作方式。"
+* "采用 Mermaid 可视化一个决策树，来判断是否适合外出散步。"
 
-Note that for the LLM's response to be rendered correctly, it must begin with the word `mermaid` followed by the MermaidJS code. You can reference the [MermaidJS documentation](https://mermaid.js.org/intro/) to ensure the syntax is correct and provide structured prompts to the LLM to guide it towards generating better MermaidJS syntax.
+注意，为了 LLM 的响应能正确渲染，代码必须以 `mermaid` 一词开始，并跟随 MermaidJS 代码。您可以参考 [MermaidJS 文档](https://mermaid.js.org/intro/) 来确保语法正确，并提供结构化的提示以指导 LLM 生成更好的 MermaidJS 语法。
 
-## Visualizing MermaidJS Code Directly in the Chat
+## 在聊天中直接可视化 MermaidJS 代码
 
-When you request a MermaidJS visualization, the Large Language Model (LLM) will generate the necessary code. Open WebUI will automatically render the visualization directly within the chat interface, as long as the code uses valid MermaidJS syntax.
+当您请求 MermaidJS 的可视化时，大型语言模型（LLM）会生成必要的代码。只要代码使用了有效的 MermaidJS 语法，Open WebUI 会自动在聊天界面中直接渲染可视化内容。
 
-If the model generates MermaidJS syntax, but the visualization does not render, it usually indicates a syntax error in the code. Don't worry – you'll be notified of any errors once the response has been fully generated. If this happens, try referencing the [MermaidJS documentation](https://mermaid.js.org/intro/) to identify the issue and revise the prompt accordingly.
+如果模型生成了 MermaidJS 语法，但可视化未成功渲染，这通常是由于代码存在语法错误。不用担心——当响应完全生成后，您会被通知出现的错误。如果发生这种情况，可以参考 [MermaidJS 文档](https://mermaid.js.org/intro/) 找出问题并相应修改提示。
 
-## Interacting with Your Visualization
+## 与可视化内容的交互
 
-Once your visualization is displayed, you can:
+当您的可视化内容显示后，您可以：
 
-* Zoom in and out to examine it more closely.
-* Copy the original MermaidJS code used to generate the visualization by clicking the copy button at the top-right corner of the display area.
+* 缩放以更仔细地查看内容。
+* 点击显示区域右上角的复制按钮复制生成可视化的原始 MermaidJS 代码。
 
-### Example
+### 示例
 
 ```mermaid
 graph TD;
@@ -43,7 +43,7 @@ graph TD;
   E-->F;
 ```
 
-This will generate a flowchart like the following:
+这将生成一个如下的流程图：
 
 ```markdown
  startAncestor [ start ]
@@ -55,4 +55,4 @@ D --> F[F]
 E --> F[F]
 ```
 
-Experimenting with different types of diagrams and charts can help you develop a more nuanced understanding of how to effectively leverage MermaidJS within Open WebUI. For smaller models, consider referencing the [MermaidJS documentation](https://mermaid.js.org/intro/) to provide guidance for the LLM, or have it summarize the documentation into comprehensive notes or a system prompt. By following these guidelines and exploring the capabilities of MermaidJS, you can unlock the full potential of this powerful tool in Open WebUI.
+尝试不同类型的图表和图形，有助于您更好地理解如何在 Open WebUI 内有效利用 MermaidJS。对于更小的模型，可以参考 [MermaidJS 文档](https://mermaid.js.org/intro/) 为 LLM 提供指导，或者让 LLM 将文档总结成全面的注释或系统提示。通过遵循这些指南并探索 MermaidJS 的功能，您可以在 Open WebUI 中充分发挥这一强大工具的潜力。

@@ -1,68 +1,68 @@
 ---
 sidebar_position: 4
-title: "⚙️ Chat Parameters"
+title: "⚙️ 聊天参数"
 ---
 
-Within Open WebUI, there are three levels to setting a **System Prompt** and **Advanced Parameters**: per-chat basis, per-model basis, and per-account basis. This hierarchical system allows for flexibility while maintaining structured administration and control.
+在 Open WebUI 中，设置**系统提示**和**高级参数**分为三个层次：按聊天实例、按模型实例、按帐号实例。这种分层系统既提供了灵活性又保持了规范的管理与控制。
 
-## System Prompt and Advanced Parameters Hierarchy Chart
+## 系统提示和高级参数的层级图
 
-| **Level** | **Definition** | **Modification Permissions** | **Override Capabilities** |
+| **级别** | **定义** | **修改权限** | **覆盖能力** |
 | --- | --- | --- | --- |
-| **Per-Chat** | System prompt and advanced parameters for a specific chat instance | Users can modify, but cannot override model-specific settings | Restricted from overriding model-specific settings |
-| **Per-Account** | Default system prompt and advanced parameters for a specific user account | Users can set, but may be overridden by model-specific settings | User settings can be overridden by model-specific settings |
-| **Per-Model** | Default system prompt and advanced parameters for a specific model | Administrators can set, Users cannot modify | Admin-specific settings take precedence, User settings can be overridden |
+| **按聊天实例** | 针对某一具体聊天实例的系统提示和高级参数设置 | 用户可修改，但不可覆盖模型特定设置 | 不允许覆盖模型特定设置 |
+| **按帐号实例** | 针对特定用户帐号的默认系统提示和高级参数 | 用户可设置，但可能被模型特定设置覆盖 | 用户设置可被模型特定设置覆盖 |
+| **按模型实例** | 针对特定模型的默认系统提示和高级参数 | 管理员可以设置，用户无法修改 | 管理员设置优先，用户设置可被覆盖 |
 
-### 1. **Per-chat basis:**
+### 1. **按聊天实例基准：**
 
-- **Description**: The per-chat basis setting refers to the system prompt and advanced parameters configured for a specific chat instance. These settings are only applicable to the current conversation and do not affect future chats.
-- **How to set**: Users can modify the system prompt and advanced parameters for a specific chat instance within the right-hand sidebar's **Chat Controls** section in Open WebUI.
-- **Override capabilities**: Users are restricted from overriding the **System Prompt** or specific **Advanced Parameters** already set by an administrator on a per-model basis (**#2**). This ensures consistency and adherence to model-specific settings.
+- **描述**：按聊天实例基准设置是指为特定聊天实例配置的系统提示和高级参数。这些设置仅适用于当前会话，不会影响未来的聊天。
+- **设置方式**：用户可以通过 Open WebUI 右侧边栏的 **Chat Controls（聊天控制）** 部分修改特定聊天实例的系统提示和高级参数。
+- **覆盖能力**：用户不能覆盖管理员为模型特定设置的**系统提示**或特定**高级参数**（**#2**）。这一机制确保了模型特定设置的一致性和遵循性。
 
 <details>
-<summary>Example Use Case</summary>
-:::tip **Per-chat basis**:
-Suppose a user wants to set a custom system prompt for a specific conversation. They can do so by accessing the **Chat Controls** section and modifying the **System Prompt** field. These changes will only apply to the current chat session.
+<summary>示例用例</summary>
+:::tip **按聊天实例基准**：
+假设某用户想为特定会话设置自定义系统提示。他可以通过访问 **Chat Controls（聊天控制）** 部分并修改 **System Prompt（系统提示）** 字段来实现。这些更改只会应用于当前聊天会话。
 :::
 </details>
 
-### 2. **Per-account basis:**
+### 2. **按帐号实例基准：**
 
-- **Description**: The per-account basis setting refers to the default system prompt and advanced parameters configured for a specific user account. Any user-specific changes can serve as a fallback in situations where lower-level settings aren't defined.
-- **How to set**: Users can set their own system prompt and advanced parameters for their account within the **General** section of the **Settings** menu in Open WebUI.
-- **Override capabilities**: Users have the ability to set their own system prompt on their account, but they must be aware that such parameters can still be overridden if an administrator has already set the **System Prompt** or specific **Advanced Parameters** on a per-model basis for the particular model being used.
+- **描述**：按帐号实例基准设置是指为特定用户帐号配置的默认系统提示和高级参数。在未定义较低级别设置的情况下，用户特定更改可以作为备用设置生效。
+- **设置方式**：用户可以通过 Open WebUI **Settings（设置）** 菜单的 **General（通用）** 部分设置其帐号的系统提示和高级参数。
+- **覆盖能力**：用户可以为其帐号设置自定义系统提示，但需要注意，如果管理员已经为特定模型设置了**系统提示**或特定**高级参数**，这些用户设置可能仍会被覆盖。
 
 <details>
-<summary>Example Use Case</summary>
-:::tip **Per-account basis**:
-Suppose a user wants to set their own system prompt for their account. They can do so by accessing the **Settings** menu and modifying the **System Prompt** field.
+<summary>示例用例</summary>
+:::tip **按帐号实例基准**：
+假设用户想为其帐号设置自己的系统提示。他可以通过访问 **Settings（设置）** 菜单并修改 **System Prompt（系统提示）** 字段来实现。
 :::
 </details>
 
-### 3. **Per-model basis:**
+### 3. **按模型实例基准：**
 
-- **Description**: The per-model basis setting refers to the default system prompt and advanced parameters configured for a specific model. These settings are applicable to all chat instances using that model.
-- **How to set**: Administrators can set the default system prompt and advanced parameters for a specific model within the **Models** section of the **Workspace** in Open WebUI.
-- **Override capabilities**: **User** accounts are restricted from modifying the **System Prompt** or specific **Advanced Parameters** on a per-model basis (**#3**). This restriction prevents users from inappropriately altering default settings.
-- **Context length preservation:** When a model's **System Prompt** or specific **Advanced Parameters** are set manually in the **Workspace** section by an Admin, said **System Prompt** or manually set **Advanced Parameters** cannot be overridden or adjusted on a per-account basis within the **General** settings or **Chat Controls** section by a **User** account. This ensures consistency and prevents excessive reloading of the model whenever a user's context length setting changes.
-- **Model precedence:** If a model's **System Prompt** or specific **Advanced Parameters** value is pre-set in the Workspace section by an Admin, any context length changes made by a **User** account in the **General** settings or **Chat Controls** section will be disregarded, maintaining the pre-configured value for that model. Be advised that parameters left untouched by an **Admin** account can still be manually adjusted by a **User** account on a per-account or per-chat basis.
+- **描述**：按模型实例基准设置是指为特定模型配置的默认系统提示和高级参数。这些设置适用于使用该模型的所有聊天实例。
+- **设置方式**：管理员可以通过 Open WebUI 的 **Workspace（工作区）** 的 **Models（模型）** 部分为特定模型设置默认系统提示和高级参数。
+- **覆盖能力**：**用户**帐号无法修改按模型实例基准设置的**系统提示**或特定**高级参数**（**#3**）。此限制旨在防止用户不适当地更改默认设置。
+- **上下文长度保持：** 当管理员在 **Workspace（工作区）** 部分手动设置了模型的**系统提示**或特定**高级参数**时，该**系统提示**或手动设置的**高级参数**不能在 **General（通用）** 设置或 **Chat Controls（聊天控制）** 部分被**用户**帐号按帐号或聊天实例基准覆盖或调整。这确保了设置的一致性，并防止用户的上下文长度设置变化导致模型过度重新加载。
+- **模型优先级：** 如果某模型的**系统提示**或特定**高级参数**值已由管理员在 **Workspace（工作区）** 部分预置，则**用户**帐号在 **General（通用）** 设置或 **Chat Controls（聊天控制）** 部分做出的任何上下文长度更改将被忽略，保持该模型的预配置值。需要注意的是，由**管理员**帐号留下的未设置参数仍可由**用户**帐号在按帐号或按聊天实例基准手动调整。
 
 <details>
-<summary>Example Use Case</summary>
-:::tip **Per-model basis**:
-Suppose an administrator wants to set a default system prompt for a specific model. They can do so by accessing the **Models** section and modifying the **System Prompt** field for the corresponding model. Any chat instances using this model will automatically use the model's system prompt and advanced parameters.
+<summary>示例用例</summary>
+:::tip **按模型设置**:
+假设管理员希望为特定模型设置默认系统提示。他们可以通过访问**模型**部分并修改对应模型的**系统提示**字段来实现。任何使用该模型的聊天实例都会自动使用该模型的系统提示和高级参数。
 :::
 </details>
 
 
-## **Optimize System Prompt Settings for Maximum Flexibility**
+## **优化系统提示设置以实现最大灵活性**
 
-:::tip **Bonus Tips**
-**This tip applies for both administrators and user accounts. To achieve maximum flexibility with your system prompts, we recommend considering the following setup:**
+:::tip **额外提示**
+**这一提示适用于管理员和用户账户。为了实现系统提示的最大灵活性，我们建议考虑以下设置：**
 
-- Assign your primary System Prompt (**i.e., to give an LLM a defining character**) you want to use in your **General** settings **System Prompt** field. This sets it on a per-account level and allows it to work as the system prompt across all your LLMs without requiring adjustments within a model from the **Workspace** section.
+- 在你的**通用**设置中的**系统提示**字段中分配主要的系统提示（**即，为LLM赋予一个定义性的特征**）。这样将其设置为按账户级别的提示，使其能够在所有LLM中作为系统提示工作，而无需在**工作区**部分内对模型进行调整。
 
-- For your secondary System Prompt (**i.e, to give an LLM a task to perform**), choose whether to place it in the **System Prompt** field within the **Chat Controls** sidebar (on a per-chat basis) or the **Models** section of the **Workspace** section (on a per-model basis) for Admins, allowing you to set them directly. This allows your account-level system prompt to work in conjunction with either the per-chat level system prompt provided by **Chat Controls**, or the per-model level system prompt provided by **Models**.
+- 对于次要的系统提示（**即，为LLM分配一个任务**），选择将其放置在**聊天控制**侧边栏中的**系统提示**字段中（按聊天设置），或者放置在**工作区**部分的**模型**部分中（按模型设置，适用于管理员），允许直接设置。这样，你的账户级别系统提示能够与**聊天控制**提供的按聊天级别系统提示，或**模型**提供的按模型级别系统提示联合工作。
 
-- As an administrator, you should assign your LLM parameters on a per-model basis using **Models** section for optimal flexibility. For both of these secondary System Prompts, ensure to set them in a manner that maximizes flexibility and minimizes required adjustments across different per-account or per-chat instances. It is essential for both your Admin account as well as all User accounts to understand the priority order by which system prompts within **Chat Controls** and the **Models** section will be applied to the **LLM**.
+- 作为管理员，你应该在**模型**部分按模型级别分配LLM参数以实现最佳灵活性。对于这些次要系统提示，确保以一种最大化灵活性并最小化在不同账户或聊天实例之间进行调整的方式进行设置。对于你的管理员账户以及所有用户账户来说，理解**聊天控制**和**模型**部分的系统提示在**LLM**中应用的优先级顺序至关重要。
 :::

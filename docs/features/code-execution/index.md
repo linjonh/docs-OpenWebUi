@@ -1,16 +1,16 @@
 ---
 sidebar_position: 5
-title: "🐍 Code Execution"
+title: "🐍 代码执行"
 ---
 
-Open WebUI offers powerful code execution capabilities directly within your chat interface, enabling you to transform ideas into actionable results without leaving the platform.
+Open WebUI 提供了强大的代码执行功能，您可以直接在聊天界面中实现，将想法转化为可操作的结果，而无需离开平台。
 
-## Key Features
+## 关键功能
 
-- **Python Code Execution**: Run Python scripts directly in your browser using Pyodide, with support for popular libraries like pandas and matplotlib no setup required.
+- **Python代码执行**：使用 Pyodide 在浏览器中直接运行 Python 脚本，并支持 pandas 和 matplotlib 等流行库，无需配置。
 
-- **MermaidJS Rendering**: Create and visualize flowcharts, diagrams, and other visual representations with MermaidJS syntax that automatically renders in your chat.
+- **MermaidJS 渲染**：使用 MermaidJS 语法创建和可视化流程图、图表及其他可视化表达，自动在聊天中渲染。
 
-- **Interactive Artifacts**: Generate and interact with rich content like HTML websites, SVG graphics, and JavaScript visualizations directly within your conversations.
+- **交互式成果**：直接在会话中生成并交互包括 HTML 网站、SVG 图形和 JavaScript 可视化在内的丰富内容。
 
-These execution capabilities bridge the gap between conversation and implementation, allowing you to explore ideas, analyze data, and create visual content seamlessly while chatting with AI models.
+这些执行功能弥合了对话与实施之间的鸿沟，让您在与 AI 模型聊天的同时，无缝地探索想法，分析数据，并创建可视化内容。

@@ -1,139 +1,139 @@
 ---
-sidebar_position: 2  
-title: "⚙️ Tools"  
+sidebar_position: 2
+title: "⚙️ 工具"
 ---
 
-# ⚙️ What are Tools?
+# ⚙️ 什么是工具？
 
-Tools are small Python scripts that add superpowers to your LLM. When enabled, they allow your chatbot to do amazing things — like search the web, scrape data, generate images, talk back using AI voices, and more.
+工具是小型的 Python 脚本，为你的 LLM 增加超级能力。启用后，它们可以让你的聊天机器人完成令人惊叹的任务——例如搜索网页、抓取数据、生成图像、使用 AI 声音进行语音输出等等。
 
-Think of Tools as useful plugins that your AI can use when chatting with you.
-
----
-
-## 🚀 What Can Tools Help Me Do?
-
-Here are just a few examples of what Tools let your AI assistant do:
-
-- 🌍 Web Search: Get real-time answers by searching the internet.
-- 🖼️ Image Generation: Create images from your prompts.
-- 🔊 Voice Output: Generate AI voices using ElevenLabs.
-
-Explore ready-to-use tools here:  
-🧰 [Tools Showcase](https://openwebui.com/tools)
+可以将工具视为你的 AI 在与您聊天时可以使用的实用插件。
 
 ---
 
+## 🚀 工具能帮助我做什么？
 
-## 📦 How to Install Tools
+以下是工具可以帮助你的 AI 助手完成的一些例子：
 
-There are two easy ways to install Tools in Open WebUI:
+- 🌍 网页搜索：通过搜索互联网获取实时答案。
+- 🖼️ 图像生成：根据你的提示生成图像。
+- 🔊 语音输出：使用 ElevenLabs 生成 AI 语音。
 
-1. Go to [Community Tool Library](https://openwebui.com/tools)
-2. Choose a Tool, then click the Get button.
-3. Enter your Open WebUI instance’s IP address or URL.
-4. Click “Import to WebUI” — done!
-
-🛑 Safety Tip: Never import a Tool you don’t recognize or trust. These are Python scripts and might run unsafe code.
+在这里探索现成可用的工具：
+🧰 [工具展示](https://openwebui.com/tools)
 
 ---
 
 
-## 🔧 How to Use Tools in Open WebUI
+## 📦 如何安装工具
 
-Once you've installed Tools (we’ll show you how below), here’s how to enable and use them:
+在 Open WebUI 中安装工具有两种简单方法：
 
-You have two ways to enable a Tool for your model:
+1. 访问 [社区工具库](https://openwebui.com/tools)
+2. 选择一个工具，然后点击获取按钮。
+3. 输入你的 Open WebUI 实例的 IP 地址或 URL。
+4. 点击“导入到 WebUI”——完成！
 
-### ➕ Option 1: Enable from the Chat Window
+🛑 安全提示：切勿导入您不了解或不信任的工具。这些是 Python 脚本，可能运行不安全代码。
 
-While chatting, click the ➕ icon in the input area. You’ll see a list of available Tools — you can enable any of them on the fly for that session.
+---
 
-💡 Tip: Enabling a Tool gives the model permission to use it — but it may not use it unless it's useful for the task.
 
-### ✏️ Option 2: Enable by Default (Recommended for Frequent Use)
-1. Go to: Workspace ➡️ Models
-2. Choose the model you’re using (like GPT-4 or LLaMa2) and click the ✏️ edit icon.
-3. Scroll down to the “Tools” section.
-4. ✅ Check the Tools you want your model to have access to by default.
-5. Click Save.
+## 🔧 如何在 Open WebUI 中使用工具
 
-This ensures the model always has these Tools ready to use whenever you chat with it.
+安装工具后（下面我们会展示如何操作），你可以这样启用并使用它们：
 
-You can also let your LLM auto-select the right Tools using the AutoTool Filter:
+有两种方法可以为你的模型启用工具：
+
+### ➕ 选项 1：从聊天窗口启用
+
+聊天时，点击输入区域的 ➕ 图标。你会看到可用工具的列表——你可以随时为该会话启用任何工具。
+
+💡 提示：启用工具会使模型获得使用它的权限——但它可能不会使用该工具，除非该任务需要。
+
+### ✏️ 选项 2：默认启用（推荐用于频繁使用）
+1. 进入：工作空间 ➡️ 模型
+2. 选择你正在使用的模型（如 GPT-4 或 LLaMa2），然后点击 ✏️ 编辑图标。
+3. 下拉到“工具”部分。
+4. ✅ 勾选你希望默认访问的工具。
+5. 点击保存。
+
+这确保当你与模型交谈时，它始终可以使用这些工具。
+
+你还可以让你的 LLM 使用 AutoTool Filter 自动选择合适的工具：
 
 🔗 [AutoTool Filter](https://openwebui.com/f/hub/autotool_filter/)
 
-🎯 Note: Even when using AutoTool, you still need to enable your Tools using Option 2.
+🎯 注意：即使用 AutoTool，你仍需通过选项 2 启用工具。
 
-✅ And that’s it — your LLM is now Tool-powered! You're ready to supercharge your chats with web search, image generation, voice output, and more.
+✅ 就是这样——你的 LLM 现在已经支持工具了！准备好通过网页搜索、图像生成、语音输出等功能来增强你的聊天体验。
 
 ---
 
-## 🧠 Choosing How Tools Are Used: Default vs Native
+## 🧠 选择工具的使用方式：默认模式 vs 原生模式
 
-Once Tools are enabled for your model, Open WebUI gives you two different ways to let your LLM use them in conversations.
+为你的模型启用工具后，Open WebUI 提供了两种不同的方式，让你的 LLM 在对话中使用它们。
 
-You can decide how the model should call Tools by choosing between:
+你可以通过以下两种方式决定模型调用工具的方式：
 
-- 🟡 Default Mode (Prompt-based)
-- 🟢 Native Mode (Built-in function calling)
+- 🟡 默认模式（基于提示）
+- 🟢 原生模式（内置函数调用）
 
-Let’s break it down:
+让我们详细说明：
 
-### 🟡 Default Mode (Prompt-based Tool Triggering)
+### 🟡 默认模式（基于提示触发工具）
 
-This is the default setting in Open WebUI.
+这是 Open WebUI 的默认设置。
 
-Here, your LLM doesn’t need to natively support function calling. Instead, we guide the model using smart tool selection prompt template to select and use a Tool.
+在此模式下，你的 LLM 不需要原生支持函数调用。我们通过智能工具选择提示模板来引导模型选择和使用工具。
 
-✅ Works with almost any model  
-✅ Great way to unlock Tools with basic or local models  
-❗ Not as reliable or flexible as Native Mode when chaining tools
+✅ 几乎适用于任何模型
+✅ 解锁基本或本地模型工具的好方法
+❗ 在链接工具时，可能不如原生模式可靠或灵活
 
-### 🟢 Native Mode (Function Calling Built-In)
+### 🟢 原生模式（内置函数调用）
 
-If your model does support “native” function calling (like GPT-4o or GPT-3.5-turbo-1106), you can use this powerful mode to let the LLM decide — in real time — when and how to call multiple Tools during a single chat message.
+如果你的模型支持“原生”函数调用（如 GPT-4o 或 GPT-3.5-turbo-1106），你可以使用此强大模式，让 LLM 在实时对话中决定何时以及如何调用多个工具。
 
-✅ Fast, accurate, and can chain multiple Tools in one response  
-✅ The most natural and advanced experience  
-❗ Requires a model that actually supports native function calling
+✅ 快速、准确、可在一个响应内链接多个工具
+✅ 最自然和高级的体验
+❗ 需要实际支持原生函数调用的模型
 
-### ✳️ How to Switch Between Modes
+### ✳️ 如何切换模式
 
-Want to enable native function calling in your chats? Here's how:
+想在聊天中启用原生函数调用？操作方法如下：
 
-![Chat Controls](/images/features/plugin/tools/chat-controls.png)
+![聊天控制](/images/features/plugin/tools/chat-controls.png)
 
-1. Open the chat window with your model.
-2. Click ⚙️ Chat Controls > Advanced Params.
-3. Look for the Function Calling setting and switch it from Default → Native
+1. 打开与模型的聊天窗口。
+2. 点击 ⚙️ 聊天控制 > 高级参数。
+3. 查找函数调用设置，将其从默认切换为原生。
 
-That’s it! Your chat is now using true native Tool support (as long as the model supports it).
+就是这样！如果模型支持，你的聊天现在将启用真正的原生工具支持。
 
-➡️ We recommend using GPT-4o or another OpenAI model for the best native function-calling experience.  
-🔎 Some local models may claim support, but often struggle with accurate or complex Tool usage.
+➡️ 我们推荐使用 GPT-4o 或其他 OpenAI 模型，以获得最佳原生函数调用体验。
+🔎 一些本地模型可能声称支持，但通常在准确或复杂工具使用方面存在困难。
 
-💡 Summary:
+💡 总结：
 
-| Mode     | Who it’s for                     | Pros                                    | Cons                                 |
+| 模式     | 适用对象                     | 优点                                    | 缺点                                 |
 |----------|----------------------------------|-----------------------------------------|--------------------------------------|
-| Default  | Any model                         | Broad compatibility, safer, flexible    | May be less accurate or slower       |
-| Native   | GPT-4o, etc.                      | Fast, smart, excellent tool chaining     | Needs proper function call support   |
+| 默认模式  | 任何模型                         | 广泛兼容性，更安全，灵活               | 可能不够准确或较慢                   |
+| 原生模式  | GPT-4o 等                        | 快速、智能、出色的工具链使用            | 需要正确的函数调用支持               |
 
-Choose the one that works best for your setup — and remember, you can always switch on the fly via Chat Controls.
+选择最适合你设置的模式——请记住，你可以随时通过聊天控制即时切换。
 
-👏 And that's it — your LLM now knows how and when to use Tools, intelligently.
+👏 就这样 — 你的 LLM 现在已经学会如何智能地使用工具。
 
 ---
 
-## 🧠 Summary
+## 🧠 总结
 
-Tools are add-ons that help your AI model do much more than just chat. From answering real-time questions to generating images or speaking out loud — Tools bring your AI to life.
+工具是插件，可以帮助你的 AI 模型完成远超聊天的任务。从回答实时问题到生成图像或语音播报 — 工具让你的 AI 栩栩如生。
 
-- Visit: [https://openwebui.com/tools](https://openwebui.com/tools) to discover new Tools.
-- Install them manually or with one-click.
-- Enable them per model from Workspace ➡️ Models.
-- Use them in chat by clicking ➕
+- 访问：[https://openwebui.com/tools](https://openwebui.com/tools) 探索新的工具。
+- 手动安装或一键安装。
+- 在工作区 ➡️ 模型中为每个模型启用工具。
+- 在聊天中通过点击 ➕ 使用它们。
 
-Now go make your AI waaaaay smarter 🤖✨
+现在去让你的 AI 更加聪明吧 🤖✨

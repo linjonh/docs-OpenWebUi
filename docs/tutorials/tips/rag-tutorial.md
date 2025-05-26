@@ -1,105 +1,105 @@
 ---
 sidebar_position: 3
-title: "🔎 Open WebUI RAG Tutorial"
+title: "🔎 开放 WebUI RAG 教程"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程是社区贡献内容，不受开放 WebUI 团队支持。它仅作为如何根据您的特定使用情况自定义开放 WebUI 的示例。想要贡献？请查看贡献教程。
 :::
 
-# Tutorial: Configuring RAG with Open WebUI Documentation
+# 教程：使用开放 WebUI 文档配置 RAG
 
-In this tutorial, you will learn how to use **Retrieval-Augmented Generation (RAG)** with Open WebUI to load real-world documentation as a knowledge base. We will walk through how to use the latest **Open WebUI Documentation** as an example for this setup.
-
----
-
-## Overview
-
-### What is RAG?
-
-Retrieval-Augmented Generation (RAG) combines **LLMs** with **retrieved knowledge** from external sources. The system retrieves relevant data from uploaded documents or knowledge bases, enhancing the quality and accuracy of responses.
-
-This tutorial demonstrates how to:
-
-- Upload the latest Open WebUI Documentation as a knowledge base.
-- Connect it to a custom model.
-- Query the knowledge base for enhanced assistance.
+在本教程中，您将学习如何使用 **检索增强生成 (RAG)** 与开放 WebUI 一起加载真实世界文档作为知识库。我们将以最新的 **开放 WebUI 文档** 为例，演示此设置。
 
 ---
 
-## Setup
+## 概述
 
-### Step-by-Step Setup: Open WebUI Documentation as Knowledge Base
+### 什么是 RAG？
 
-Follow these steps to set up RAG with **Open WebUI Documentation**:
+检索增强生成 (RAG) 将 **LLMs** 与从外部来源检索到的 **知识** 相结合。系统从上传的文档或知识库中检索相关数据，提升响应的质量和准确性。
 
-1. **Download the Documentation**:
-   - Download the latest documentation:
+本教程演示如何：
+
+- 上传最新的开放 WebUI 文档作为知识库。
+- 将其连接到自定义模型。
+- 查询知识库以获得更好的帮助。
+
+---
+
+## 设置
+
+### 分步设置：将开放 WebUI 文档作为知识库
+
+按照以下步骤，将 **开放 WebUI 文档** 与 RAG 一起使用：
+
+1. **下载文档**：
+   - 下载最新版文档：
      [https://github.com/open-webui/docs/archive/refs/heads/main.zip](https://github.com/open-webui/docs/archive/refs/heads/main.zip)
 
-2. **Extract the Files**:
-   - Extract the `main.zip` file to get all documentation files.
+2. **解压文件**：
+   - 解压 `main.zip` 文件以获取所有文档文件。
 
-3. **Locate the Markdown Files**:
-   - In the extracted folder, locate all files with `.md` and `.mdx`extensions (tip: search for `*.md*`).
+3. **定位 Markdown 文件**：
+   - 在解压的文件夹中，找到所有扩展名为 `.md` 和 `.mdx` 的文件（提示：搜索 `*.md*`）。
 
-4. **Create a Knowledge Base**:
-   - Navigate to **Workspace** > **Knowledge** > **+ Create a Knowledge Base**.
-   - Name it: `Open WebUI Documentation`
-   - Purpose: **Assistance**
+4. **创建知识库**：
+   - 导航到 **工作区** > **知识** > **+ 创建知识库**。
+   - 命名为：`开放 WebUI 文档`
+   - 目标：**帮助**
 
-   > Click **Create Knowledge**.
+   > 点击 **创建知识**。
 
-5. **Upload the Files**:
-   - Drag and drop the `.md` and `.mdx` files from the extracted folder into the **Open WebUI Documentation** knowledge base.
-
----
-
-## Create and Configure the Model
-
-### Create a Custom Model with the Knowledge Base
-
-1. **Navigate to Models**:
-   - Go to **Workspace** > **Models** > **+ Add New Model**.
-
-2. **Configure the Model**:
-   - **Name**: `Open WebUI`
-   - **Base Model**: *(Select the appropriate Llama or other available model)*
-   - **Knowledge Source**: Select **Open WebUI Documentation** from the dropdown.
-
-3. **Save the Model**.
+5. **上传文件**：
+   - 将解压后的文件夹中的 `.md` 和 `.mdx` 文件拖放到 **开放 WebUI 文档** 知识库中。
 
 ---
 
-## Examples and Usage
+## 创建并配置模型
 
-### Query the Open WebUI Documentation Model
+### 使用知识库创建自定义模型
 
-1. **Start a New Chat**:
-   - Navigate to **New Chat** and select the `Open WebUI` model.
+1. **导航到模型**：
+   - 前往 **工作区** > **模型** > **+ 添加新模型**。
 
-2. **Example Queries**:
+2. **配置模型**：
+   - **名称**：`开放 WebUI`
+   - **基础模型**：*(选择适当的 Llama 或其他可用模型)*
+   - **知识来源**：从下拉菜单中选择 **开放 WebUI 文档**。
 
-   ```
-   User: "How do I configure environment variables?"
-   System: "Refer to Section 3.2: Use the `.env` file to manage configurations."
-   ```
-
-   ```
-   User: "How do I update Open WebUI using Docker?"
-   System: "Refer to `docker/updating.md`: Use `docker pull` and restart the container."
-   ```
-
-   With the RAG-enabled model, the system retrieves the most relevant sections from the documentation to answer your query.
+3. **保存模型**。
 
 ---
 
-## Next Steps
+## 示例与使用
 
-### Next Steps
+### 查询开放 WebUI 文档模型
 
-- **Add More Knowledge**: Continue expanding your knowledge base by adding more documents.
+1. **开始新聊天**：
+   - 导航到 **新聊天** 并选择 `开放 WebUI` 模型。
+
+2. **示例查询**：
+
+   ```
+   用户："如何配置环境变量？"
+   系统："参考第 3.2 节：使用 `.env` 文件来管理配置。"
+   ```
+
+   ```
+   用户："如何使用 Docker 更新开放 WebUI？"
+   系统："参考 `docker/updating.md`： 使用 `docker pull` 并重启容器。"
+   ```
+
+   使用启用了 RAG 模型，系统会从文档中检索最相关的部分来回答您的查询。
 
 ---
 
-With this setup, you can effectively use the **Open WebUI Documentation** to assist users by retrieving relevant information for their queries. Enjoy building and querying your custom knowledge-enhanced models!
+## 下一步
+
+### 下一步
+
+- **添加更多知识**：继续扩展您的知识库，添加更多文档。
+
+---
+
+通过此设置，您可以通过检索相关信息来有效使用 **开放 WebUI 文档** 为用户提供帮助。享受构建和查询定制的知识增强模型吧！

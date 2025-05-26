@@ -1,33 +1,33 @@
 ---
 sidebar_position: 1000
-title: "💾 Backups"
+title: "💾 备份"
 ---
  
  :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程是社区贡献的内容，并未经过 Open WebUI 团队的支持。它仅用作如何为您的特定用例定制 Open WebUI 的演示。想要贡献？请查看贡献教程。
 :::
 
- #  Backing Up Your Instance
+ #  备份您的实例
 
- Nobody likes losing data! 
+ 没有人喜欢丢失数据！ 
 
- If you're self-hosting Open WebUI, then you may wish to institute some kind of formal backup plan in order to ensure that you retain a second and third copy of parts of your configuration.
+ 如果您是自行托管 Open WebUI，您可能希望制定某种正式的备份计划，以确保保留配置部分的第二份和第三份副本。
 
- This guide is intended to recommend some basic recommendations for how users might go about doing that. 
+ 本指南旨在为用户推荐一些基本建议，说明用户可以如何执行此操作。 
 
- This guide assumes that the user has installed Open WebUI via Docker (or intends to do so)
+ 本指南假定用户已通过 Docker 安装了 Open WebUI（或计划这样做）。
 
- ## Ensuring data persistence
+ ## 确保数据持久化
 
-Firstly, before deploying your stack with Docker, ensure that your Docker Compose uses a persistent data store. If you're using the Docker Compose [from the Github repository](https://github.com/open-webui/open-webui/blob/main/docker-compose.yaml) that's already taken care of. But it's easy to cook up your own variations and forget to verify this.
+首先，在使用 Docker 部署您的栈之前，请确保您的 Docker Compose 使用的是持久化数据存储。如果您使用的是 [来自 Github 仓库](https://github.com/open-webui/open-webui/blob/main/docker-compose.yaml) 的 Docker Compose，那已经处理好了。但自行制作变体时很容易忘记验证这一点。
 
-Docker containers are ephemeral and data must be persisted to ensure its survival on the host filesystem.
+Docker 容器是临时性的，数据必须持久化以确保其在主机文件系统上的存活。
 
-## Using Docker volumes
+## 使用 Docker 卷
 
-If you're using the Docker Compose from the project repository, you will be deploying Open Web UI using Docker volumes. 
+如果您使用的是项目库中的 Docker Compose 文件，您将使用 Docker 卷部署 Open Web UI。
 
-For Ollama and Open WebUI the mounts are:
+对于 Ollama 和 Open WebUI，挂载路径是：
 
 ```yaml
 ollama:
@@ -41,17 +41,17 @@ open-webui:
     - open-webui:/app/backend/data
 ```
 
-To find the actual bind path on host, run:
+要在主机上找到实际的绑定路径，请运行：
 
 `docker volume inspect ollama` 
 
-and
+以及
 
 `docker volume inspect open-webui`
 
-## Using direct host binds
+## 使用直接主机绑定
 
-Some users deploy Open Web UI with direct (fixed) binds to the host filesystem, like this:
+有些用户通过直接（固定）绑定到主机文件系统的方式部署 Open Web UI，例如：
 
 ```yaml
 services:
@@ -67,11 +67,11 @@ services:
       - /opt/open-webui:/app/backend/data
 ```
 
-If this is how you've deployed your instance, you'll want to note the paths on root. 
+如果这是您部署实例的方式，您需要注意在根目录下的路径。
 
-## Scripting A Backup Job
+## 脚本化备份作业
 
-However your instance is provisioned, it's worth inspecting the app's data store on your server to understand what data you'll be backing up. You should see something like this:
+无论您的实例是如何配置的，检查服务器上应用的数据存储以了解您将备份哪些数据都是值得的。您应该会看到类似这样的内容：
 
 ```
 ├── audit.log
@@ -81,36 +81,36 @@ However your instance is provisioned, it's worth inspecting the app's data store
 └── webui.db
 ```
 
-## Files in persistent data store 
+## 持久化数据存储中的文件
 
-| File/Directory | Description |
+| 文件/目录 | 描述 |
 |---|---|
-| `audit.log` | Log file for auditing events. |
-| `cache/` | Directory for storing cached data. |
-| `uploads/` | Directory for storing user-uploaded files. |
-| `vector_db/` | Directory containing the ChromaDB vector database. |
-| `webui.db` | SQLite database for persistent storage of other instance data |
+| `audit.log` | 审计事件的日志文件。 |
+| `cache/` | 存储缓存数据的目录。 |
+| `uploads/` | 存储用户上传文件的目录。 |
+| `vector_db/` | 包含 ChromaDB 向量数据库的目录。 |
+| `webui.db` | 用于存储其他实例数据的 SQLite 数据库。 |
 
-# File Level Backup Approaches
+# 文件级备份方法
 
-The first way to back up the application data is to take a file level backup approach ensuring that the persistent Open Web UI data is properly backed up.
+第一种备份应用数据的方法是采用文件级备份方法以确保 Open Web UI 的持久化数据得到妥善备份。
 
-There's an almost infinite number of ways in which technical services can be backed up, but `rsync` remains a popular favorite for incremental jobs and so will be used as a demonstration.
+有无数种技术服务可以备份的方法，但 `rsync` 作为增量备份作业的热门选择常被采用。因此我们用它来作为演示。
 
-Users could target the entire `data` directory to back up all the instance data at once or create more selective backup jobs targeting individual components. You could add more descriptive names for the targets also. 
+用户可以目标整个 `data` 目录一次备份所有实例数据，或者创建更有选择性的备份作业，针对个别组件。您还可以为目标添加更具描述性的名称。
 
-A model rsync job could look like this:
+一个示例 rsync 作业可能看起来像这样：
 
 ```bash
 #!/bin/bash
 
-# Configuration
-SOURCE_DIR="."  # Current directory (where the file structure resides)
-B2_BUCKET="b2://OpenWebUI-backups" # Your Backblaze B2 bucket
-B2_PROFILE="your_rclone_profile" # Your rclone profile name
-# Ensure rclone is configured with your B2 credentials
+# 配置
+SOURCE_DIR="."  # 当前目录（文件结构所在的位置）
+B2_BUCKET="b2://OpenWebUI-backups" # 您的 Backblaze B2 存储桶
+B2_PROFILE="your_rclone_profile" # 您的 rclone 配置文件名称
+# 确保 rclone 已配置好您的 B2 凭据
 
-# Define source and destination directories
+# 定义源和目标目录
 SOURCE_UPLOADS="$SOURCE_DIR/uploads"
 SOURCE_VECTORDB="$SOURCE_DIR/vector_db"
 SOURCE_WEBUI_DB="$SOURCE_DIR/webui.db"
@@ -119,55 +119,55 @@ DEST_UPLOADS="$B2_BUCKET/user_uploads"
 DEST_CHROMADB="$B2_BUCKET/ChromaDB"
 DEST_MAIN_DB="$B2_BUCKET/main_database"
 
-# Exclude cache and audit.log
+# 排除缓存和 audit.log
 EXCLUDE_LIST=(
     "cache/"
     "audit.log"
 )
 
-# Construct exclude arguments for rclone
+# 构造 rclone 的排除参数
 EXCLUDE_ARGS=""
 for EXCLUDE in "${EXCLUDE_LIST[@]}"; do
-    EXCLUDE_ARGS="$EXCLUDE_ARGS --exclude '$EXCLUDE'"
+    EXCLUDE_ARGS="$EXCLUDE_ARGS --exclude &apos;$EXCLUDE&apos;"
 done
 
-# Function to perform rclone sync with error checking
+# 定义带错误检查的 rclone 同步函数
 rclone_sync() {
     SOURCE="$1"
     DEST="$2"
-    echo "Syncing '$SOURCE' to '$DEST'..."
+    echo "正在同步 &apos;$SOURCE&apos; 到 &apos;$DEST&apos;..."
     rclone sync "$SOURCE" "$DEST" $EXCLUDE_ARGS --progress --transfers=32 --checkers=16 --profile "$B2_PROFILE"
     if [ $? -ne 0 ]; then
-        echo "Error: rclone sync failed for '$SOURCE' to '$DEST'"
+        echo "错误：rclone 同步失败，源 &apos;$SOURCE&apos; 到目标 &apos;$DEST&apos;"
         exit 1
     fi
 }
 
-# Perform rclone sync for each directory/file
+# 为每个目录/文件执行 rclone 同步
 rclone_sync "$SOURCE_UPLOADS" "$DEST_UPLOADS"
 rclone_sync "$SOURCE_VECTORDB" "$DEST_CHROMADB"
 rclone_sync "$SOURCE_WEBUI_DB" "$DEST_MAIN_DB"
 
-echo "Backup completed successfully."
+echo "备份成功完成。"
 exit 0
 ```
 
-## Rsync Job With Container Interruption
+## Rsync 作业与容器中断
 
-To maintain data integrity, it's generally recommended to run database backups on cold filesystems. Our default model backup job can be modified slightly to bring down the stack before running the backup script and bring it back after. 
+为了保持数据完整性，通常建议在冷文件系统上运行数据库备份。我们默认的模型备份作业可以稍作修改以在运行备份脚本之前关闭堆栈，并在完成后重新启动。
 
-The downside of this approach, of course, is that it will entail instance downtime. Consider running the job at times you won't be using the instance or taking "software" dailies (on the running data) and more robust weeklies (on cold data). 
+这种方法的缺点是它会导致实例停机。建议在不使用实例的时间运行该作业，或者对运行中的数据进行“软件”日备份，并对冷数据进行更可靠的周备份。
 
 ```bash
 #!/bin/bash
 
-# Configuration
-COMPOSE_FILE="docker-compose.yml" # Path to your docker-compose.yml file
-B2_BUCKET="b2://OpenWebUI-backups" # Your Backblaze B2 bucket
-B2_PROFILE="your_rclone_profile" # Your rclone profile name
-SOURCE_DIR="."  # Current directory (where the file structure resides)
+# 配置
+COMPOSE_FILE="docker-compose.yml" # docker-compose.yml 文件路径
+B2_BUCKET="b2://OpenWebUI-backups" # 您的 Backblaze B2 存储桶
+B2_PROFILE="your_rclone_profile" # 您的 rclone 配置文件名称
+SOURCE_DIR="."  # 当前目录（文件结构所在的位置）
 
-# Define source and destination directories
+# 定义源和目标目录
 SOURCE_UPLOADS="$SOURCE_DIR/uploads"
 SOURCE_VECTORDB="$SOURCE_DIR/vector_db"
 SOURCE_WEBUI_DB="$SOURCE_DIR/webui.db"
@@ -176,216 +176,216 @@ DEST_UPLOADS="$B2_BUCKET/user_uploads"
 DEST_CHROMADB="$B2_BUCKET/ChromaDB"
 DEST_MAIN_DB="$B2_BUCKET/main_database"
 
-# Exclude cache and audit.log
+# 排除缓存和 audit.log
 EXCLUDE_LIST=(
     "cache/"
     "audit.log"
 )
 
-# Construct exclude arguments for rclone
+# 构建rclone的排除参数
 EXCLUDE_ARGS=""
 for EXCLUDE in "${EXCLUDE_LIST[@]}"; do
     EXCLUDE_ARGS="$EXCLUDE_ARGS --exclude '$EXCLUDE'"
 done
 
-# Function to perform rclone sync with error checking
+# 用错误检查功能执行rclone同步
 rclone_sync() {
     SOURCE="$1"
     DEST="$2"
-    echo "Syncing '$SOURCE' to '$DEST'..."
+    echo "正在将 '$SOURCE' 同步到 '$DEST'..."
     rclone sync "$SOURCE" "$DEST" $EXCLUDE_ARGS --progress --transfers=32 --checkers=16 --profile "$B2_PROFILE"
     if [ $? -ne 0 ]; then
-        echo "Error: rclone sync failed for '$SOURCE' to '$DEST'"
+        echo "错误: 对 '$SOURCE' 到 '$DEST' 的 rclone 同步失败"
         exit 1
     fi
 }
 
-# 1. Stop the Docker Compose environment
-echo "Stopping Docker Compose environment..."
+# 1. 停止Docker Compose环境
+echo "停止Docker Compose环境..."
 docker-compose -f "$COMPOSE_FILE" down
 
-# 2. Perform the backup
-echo "Starting backup..."
+# 2. 执行备份
+echo "启动备份..."
 rclone_sync "$SOURCE_UPLOADS" "$DEST_UPLOADS"
 rclone_sync "$SOURCE_VECTORDB" "$DEST_CHROMADB"
 rclone_sync "$SOURCE_WEBUI_DB" "$DEST_MAIN_DB"
 
-# 3. Start the Docker Compose environment
-echo "Starting Docker Compose environment..."
+# 3. 启动Docker Compose环境
+echo "启动Docker Compose环境..."
 docker-compose -f "$COMPOSE_FILE" up -d
 
-echo "Backup completed successfully."
+echo "备份成功完成."
 exit 0
 ```
 
-## Model Backup Script Using SQLite & ChromaDB Backup Functions To B2 Remote
+## 使用SQLite和ChromaDB备份功能到B2远程的模型备份脚本
 
 ```bash
 #!/bin/bash
 #
-# Backup script to back up ChromaDB and SQLite to Backblaze B2 bucket
-# openwebuiweeklies, maintaining 3 weekly snapshots.
-# Snapshots are independent and fully restorable.
-# Uses ChromaDB and SQLite native backup mechanisms.
-# Excludes audit.log, cache, and uploads directories.
+# 备份脚本，将ChromaDB和SQLite备份到Backblaze B2存储桶
+# openwebuiweeklies，维护3个每周快照。
+# 快照是独立的并且可以完全恢复。
+# 使用ChromaDB和SQLite的原生备份机制。
+# 排除audit.log、缓存目录和uploads目录。
 #
-# Ensure rclone is installed and configured correctly.
-# Install rclone: https://rclone.org/install/
-# Configure rclone: https://rclone.org/b2/
+# 确保rclone已正确安装和配置。
+# 安装rclone: https://rclone.org/install/
+# 配置rclone: https://rclone.org/b2/
 
-# Source directory (containing ChromaDB and SQLite data)
+# 源目录（包含ChromaDB和SQLite数据）
 SOURCE="/var/lib/open-webui/data"
 
-# B2 bucket name and remote name
+# B2存储桶名称和远程名称
 B2_REMOTE="openwebuiweeklies"
 B2_BUCKET="b2:$B2_REMOTE"
 
-# Timestamp for the backup directory
+# 用于备份目录的时间戳
 TIMESTAMP=$(date +%Y-%m-%d)
 
-# Backup directory name
+# 备份目录名称
 BACKUP_DIR="open-webui-backup-$TIMESTAMP"
 
-# Full path to the backup directory in the B2 bucket
+# B2存储桶中备份目录的完整路径
 DESTINATION="$B2_BUCKET/$BACKUP_DIR"
 
-# Number of weekly snapshots to keep
+# 每周快照的保留数量
 NUM_SNAPSHOTS=3
 
-# Exclude filters (applied *after* database backups)
+# 排除过滤器（在数据库备份之后应用）
 EXCLUDE_FILTERS="--exclude audit.log --exclude cache/** --exclude uploads/** --exclude vector_db"
 
-# ChromaDB Backup Settings (Adjust as needed)
-CHROMADB_DATA_DIR="$SOURCE/vector_db"  # Path to ChromaDB data directory
-CHROMADB_BACKUP_FILE="$SOURCE/chromadb_backup.tar.gz" # Archive file for ChromaDB backup
+# ChromaDB备份设置（根据需要调整）
+CHROMADB_DATA_DIR="$SOURCE/vector_db"  # ChromaDB数据目录路径
+CHROMADB_BACKUP_FILE="$SOURCE/chromadb_backup.tar.gz" # ChromaDB备份的存档文件
 
-# SQLite Backup Settings (Adjust as needed)
-SQLITE_DB_FILE="$SOURCE/webui.db" # Path to the SQLite database file
-SQLITE_BACKUP_FILE="$SOURCE/webui.db.backup" # Temporary file for SQLite backup
+# SQLite备份设置（根据需要调整）
+SQLITE_DB_FILE="$SOURCE/webui.db" # SQLite数据库文件路径
+SQLITE_BACKUP_FILE="$SOURCE/webui.db.backup" # SQLite备份的临时文件
 
-# Function to backup ChromaDB
+# 备份ChromaDB的函数
 backup_chromadb() {
-  echo "Backing up ChromaDB..."
+  echo "正在备份ChromaDB..."
 
-  # Create a tar archive of the vector_db directory
+  # 创建vector_db目录的tar归档
   tar -czvf "$CHROMADB_BACKUP_FILE" -C "$SOURCE" vector_db
 
-  echo "ChromaDB backup complete."
+  echo "ChromaDB备份完成."
 }
 
-# Function to backup SQLite
+# 备份SQLite的函数
 backup_sqlite() {
-  echo "Backing up SQLite database..."
-  # Backup the SQLite database using the .backup command
+  echo "正在备份SQLite数据库..."
+  # 使用.backup命令备份SQLite数据库
   sqlite3 "$SQLITE_DB_FILE" ".backup '$SQLITE_BACKUP_FILE'"
 
-  # Move the backup file to the source directory
+  # 将备份文件移动到源目录
   mv "$SQLITE_BACKUP_FILE" "$SOURCE/"
 
-  echo "SQLite backup complete."
+  echo "SQLite备份完成."
 }
 
-# Perform database backups
+# 执行数据库备份
 backup_chromadb
 backup_sqlite
 
-# Perform the backup with exclusions
+# 执行带有排除项的备份
 rclone copy "$SOURCE" "$DESTINATION" $EXCLUDE_FILTERS --progress
 
-# Remove old backups, keeping the most recent NUM_SNAPSHOTS
+# 删除旧备份，仅保留最新的NUM_SNAPSHOTS
 find "$B2_BUCKET" -type d -name "open-webui-backup-*" | sort -r | tail -n +$((NUM_SNAPSHOTS + 1)) | while read dir; do
   rclone purge "$dir"
 done
 
-echo "Backup completed to $DESTINATION"
+echo "备份已完成到 $DESTINATION"
 ```
 
 ---
 
-## Point In Time Snapshots
+## 时间点快照
 
-In addition taking backups, users may also wish to create point-in-time snapshots which could be stored locally (on the server), remotely, or both.  
+除了执行备份之外，用户可能还希望创建可以存储在本地（服务器上）、远程或两者的时间点快照。
 
 ```bash
 #!/bin/bash
 
-# Configuration
-SOURCE_DIR="."  # Directory to snapshot (current directory)
-SNAPSHOT_DIR="/snapshots" # Directory to store snapshots
-TIMESTAMP=$(date +%Y%m%d%H%M%S) # Generate timestamp
+# 配置
+SOURCE_DIR="."  # 要快照的目录（当前目录）
+SNAPSHOT_DIR="/snapshots" # 存储快照的目录
+TIMESTAMP=$(date +%Y%m%d%H%M%S) # 生成时间戳
 
-# Create the snapshot directory if it doesn't exist
+# 如果快照目录不存在，则创建
 mkdir -p "$SNAPSHOT_DIR"
 
-# Create the snapshot name
+# 创建快照名称
 SNAPSHOT_NAME="snapshot_$TIMESTAMP"
 SNAPSHOT_PATH="$SNAPSHOT_DIR/$SNAPSHOT_NAME"
 
-# Perform the rsync snapshot
-echo "Creating snapshot: $SNAPSHOT_PATH"
+# 执行 rsync 快照
+echo "创建快照: $SNAPSHOT_PATH"
 rsync -av --delete --link-dest="$SNAPSHOT_DIR/$(ls -t "$SNAPSHOT_DIR" | head -n 1)" "$SOURCE_DIR/" "$SNAPSHOT_PATH"
 
-# Check if rsync was successful
+# 检查 rsync 是否成功
 if [ $? -eq 0 ]; then
-  echo "Snapshot created successfully."
+  echo "快照创建成功."
 else
-  echo "Error: Snapshot creation failed."
+  echo "错误: 快照创建失败."
   exit 1
 fi
 
 exit 0
 ```
-## Crontab For Scheduling
+## 调度使用 Crontab
 
-Once you've added your backup script and provisioned your backup storage, you'll want to QA the scripts to make sure that they're running as expected. Logging is highly advisable.
+添加备份脚本并配置备份存储后，你需要对脚本进行质量检查（QA），以确保它们按预期运行。建议启用日志记录。
 
-Set your new script(s) up to run using crontabs according to your desired run frequency.
+根据所需的运行频率，使用 crontab 设置新脚本进行定时运行。
 
-# Commercial Utilities
+# 商业工具
 
-In addition to scripting your own backup jobs, you can find commercial offerings which generally work by installing agents on your server that will abstract the complexities of running backups. These are beyond the purview of this article but provide convenient solutions.
+除了编写自己的备份脚本，您还可以找到商业解决方案，这些通常通过在您的服务器上安装代理来简化备份任务运行的复杂性。这些超出了本文的范围，但它们提供了便利的解决方案。
 
 ---
 
-# Host Level Backups
+# 主机级备份
 
-Your Open WebUI instance might be provisioned on a host (physical or virtualised) which you control. 
+您的 Open WebUI 实例可能设置在您控制的主机（物理或虚拟化）上。
 
-Host level backups involve creating snapshots or backups but of the entire VM rather than running applications. 
+主机级备份涉及创建整个虚拟机的快照或备份，而不是单独运行应用程序。
 
-Some may wish to leverage them as their primary or only protection while others may wish to layer them in as additional data protections.
+有些人可能希望将它们作为主要或唯一的保护措施，而另一些人则可能希望将它们作为额外的数据保护层。
 
-# How Many Backups Do I Need?
+# 我需要多少备份？
 
-The amount of backups that you will wish to take depends on your personal level of risk tolerance. However, remember that it's best practice to *not* consider the application itself to be a backup copy (even if it lives in the cloud!). That means that if you've provisioned your instance on a VPS, it's still a reasonable recommendation to keep two (independent) backup copies.
+您希望进行的备份数量取决于您个人的风险承受能力。但是，请记住，*最好不要*将应用程序本身视为备份副本（即使它存在于云中！）。这意味着，如果您在 VPS 上设置了实例，合理的建议是保留两个（独立）备份副本。
 
-An example backup plan that would cover the needs of many home users:
+以下是一份能够满足许多家庭用户需求的备份计划示例：
 
-## Model backup plan 1 (primary + 2 copies)
+## 示例备份计划 1（主备 + 两个副本）
 
-| Frequency | Target | Technology | Description |
+| 频率 | 目标 | 技术 | 描述 |
 |---|---|---|---|
-| Daily Incremental | Cloud Storage (S3/B2) | rsync | Daily incremental backup pushed to a cloud storage bucket (S3 or B2). |
-| Weekly Incremental | On-site Storage (Home NAS) | rsync | Weekly incremental backup pulled from the server to on-site storage (e.g., a home NAS). |
+| 每日增量 | 云存储（S3/B2） | rsync | 通过 rsync 推送每日增量备份到云存储桶（S3 或 B2）。 |
+| 每周增量 | 本地存储（家庭 NAS） | rsync | 通过 rsync 从服务器拉取每周增量备份到本地存储（例如家庭 NAS）。 |
 
-## Model backup plan 2 (primary + 3 copies)
+## 示例备份计划 2（主备 + 三个副本）
 
-This backup plan is a little more complicated but also more comprehensive .. it involves daily pushes to two cloud storage providers for additional redundancy.
+此备份计划稍微复杂一些，但也更全面。它包括每日推送到两个云存储提供商以提高冗余。
 
-| Frequency | Target | Technology | Description |
+| 频率 | 目标 | 技术 | 描述 |
 |---|---|---|---|
-| Daily Incremental | Cloud Storage (S3) | rsync | Daily incremental backup pushed to an S3 cloud storage bucket. |
-| Daily Incremental | Cloud Storage (B2) | rsync | Daily incremental backup pushed to a Backblaze B2 cloud storage bucket. |
-| Weekly Incremental | On-site Storage (Home NAS) | rsync | Weekly incremental backup pulled from the server to on-site storage (e.g., a home NAS). |
+| 每日增量 | 云存储（S3） | rsync | 通过 rsync 推送每日增量备份到 S3 云存储桶。 |
+| 每日增量 | 云存储（B2） | rsync | 通过 rsync 推送每日增量备份到 Backblaze B2 云存储桶。 |
+| 每周增量 | 本地存储（家庭 NAS） | rsync | 通过 rsync 从服务器拉取每周增量备份到本地存储（例如家庭 NAS）。 |
 
-# Additional Topics
+# 其他主题
 
-In the interest of keeping this guide reasonably thorough these additional subjects were ommitted but may be worth your consideration depending upon how much time you have to dedicate to setting up and maintaining a data protection plan for your instance:
+为了使本指南足够全面，以下额外主题被省略，但根据您的时间投入情况，可能值得考虑这些内容以设置和维护实例的数据保护计划：
 
-| Topic | Description |
+| 主题 | 描述 |
 |---|---|
-| SQLite Built-in Backup | Consider using SQLite's `.backup` command for a consistent database backup solution. |
-| Encryption | Modify backup scripts to incorporate encryption at rest for enhanced security. |
-| Disaster Recovery and Testing | Develop a disaster recovery plan and regularly test the backup and restore process. |
-| Alternative Backup Tools | Explore other command-line backup tools like `borgbackup` or `restic` for advanced features. |
-| Email Notifications and Webhooks | Implement email notifications or webhooks to monitor backup success or failure. |
+| SQLite 内置备份 | 考虑使用 SQLite 的 `.backup` 命令作为一致的数据库备份解决方案。 |
+| 加密 | 修改备份脚本来包含静态加密以增强安全性。 |
+| 灾难恢复与测试 | 制定灾难恢复计划并定期测试备份与恢复流程。 |
+| 替代备份工具 | 探索其他命令行备份工具，例如 `borgbackup` 或 `restic`，以获得更高级的功能。 |
+| 邮件通知与 Webhooks | 实现邮件通知或 Webhooks 来监控备份的成功或失败。 |

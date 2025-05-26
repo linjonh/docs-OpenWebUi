@@ -1,181 +1,181 @@
 ---
 sidebar_position: 1
-title: "🔗 Open WebUI Integration"
+title: "🔗 开放式 WebUI 集成"
 ---
 
-## Overview
+## 概述
 
-Open WebUI v0.6+ supports seamless integration with external tools via the OpenAPI servers — meaning you can easily extend your LLM workflows using custom or community-powered tool servers 🧰.
+开放式 WebUI v0.6+ 支持通过 OpenAPI 服务器与外部工具无缝集成——这意味着您可以通过自定义或社区支持的工具服务器轻松扩展您的 LLM 工作流 🧰。
 
-In this guide, you'll learn how to launch an OpenAPI-compatible tool server and connect it to Open WebUI through the intuitive user interface. Let’s get started! 🚀
+在本指南中，您将学习如何启动一个兼容 OpenAPI 的工具服务器，并通过直观的用户界面将其连接到开放式 WebUI。让我们开始吧！ 🚀
 
 ---
 
-## Step 1: Launch an OpenAPI Tool Server
+## 第一步：启动 OpenAPI 工具服务器
 
-To begin, you'll need to start one of the reference tool servers available in the openapi-servers repo. For quick testing, we’ll use the time tool server as an example.
+首先，您需要启动 openapi-servers 仓库中可用的参考工具服务器之一。为了快速测试，我们将以时间工具服务器为例。
 
-🛠️ Example: Starting the `time` server locally
+🛠️ 示例：本地启动 `time` 工具服务器
 
 ```bash
 git clone https://github.com/open-webui/openapi-servers
 cd openapi-servers
 
-# Navigate to the time server
+# 进入时间工具服务器目录
 cd servers/time
 
-# Install required dependencies
+# 安装必要的依赖项
 pip install -r requirements.txt
 
-# Start the server
+# 启动服务器
 uvicorn main:app --host 0.0.0.0 --reload
 ```
 
-Once running, this will host a local OpenAPI server at http://localhost:8000, which you can point Open WebUI to.
+运行后，此操作将在 http://localhost:8000 上托管一个本地 OpenAPI 服务器，您可以将其指向开放式 WebUI。
 
-![Time Server](/images/openapi-servers/open-webui/time-server.png)
+![时间工具服务器](/images/openapi-servers/open-webui/time-server.png)
 
 ---
 
-## Step 2: Connect Tool Server in Open WebUI
+## 第二步：在开放式 WebUI 中连接工具服务器
 
-Next, connect your running tool server to Open WebUI:
+接下来，将运行中的工具服务器连接到开放式 WebUI：
 
-1. Open WebUI in your browser.
-2. Open ⚙️ **Settings**.
-3. Click on ➕ **Tools** to add a new tool server.
-4. Enter the URL where your OpenAPI tool server is running (e.g., http://localhost:8000).
-5. Click "Save".
+1. 在浏览器中打开开放式 WebUI。
+2. 打开 ⚙️ **设置**。
+3. 单击 ➕ **工具** 以添加新的工具服务器。
+4. 输入您的 OpenAPI 工具服务器运行的 URL（例如 http://localhost:8000）。
+5. 点击 "保存"。
 
-![Settings Page](/images/openapi-servers/open-webui/settings.png)
+![设置页面](/images/openapi-servers/open-webui/settings.png)
 
-### 🧑‍💻 User Tool Servers vs. 🛠️ Global Tool Servers
+### 🧑‍💻 用户工具服务器 vs. 🛠️ 全局工具服务器
 
-There are two ways to register tool servers in Open WebUI:
+在开放式 WebUI 中注册工具服务器的两种方式：
 
-#### 1. User Tool Servers (added via regular Settings)
+#### 1. 用户工具服务器（通过常规设置添加）
 
-- Only accessible to the user who registered the tool server.
-- The connection is made directly from the browser (client-side) by the user.
-- Perfect for personal workflows or when testing custom/local tools.
+- 仅供注册该工具服务器的用户访问。
+- 由用户通过浏览器（客户端）直接连接。
+- 非常适合个人工作流或测试自定义/本地工具。
 
-#### 2. Global Tool Servers (added via Admin Settings)
+#### 2. 全局工具服务器（通过管理员设置添加）
 
-Admins can manage shared tool servers available to all or selected users across the entire deployment:
+管理员可以管理共享工具服务器，使其在整个部署范围内对所有用户或选定用户可用：
 
-- Go to 🛠️ **Admin Settings > Tools**.
-- Add the tool server URL just as you would in user settings.
-- These tools are treated similarly to Open WebUI’s built-in tools.
+- 进入 🛠️ **管理员设置 > 工具**。
+- 像在用户设置中一样添加工具服务器 URL。
+- 这些工具与开放式 WebUI 内置工具类似。
 
-### 👉 Optional: Using a Config File with mcpo
+### 👉 可选：使用 mcpo 的配置文件
 
-If you're running multiple tools through mcpo using a config file, take note:
+如果您通过 mcpo 使用配置文件运行多个工具，请注意：
 
-🧩 Each tool is mounted under its own unique path!
+🧩 每个工具都挂载在其自己的唯一路径下！
 
-For example, if you’re using memory and time tools simultaneously through mcpo, they’ll each be available at a distinct route:
+例如，如果您同时通过 mcpo 使用内存和时间工具，它们将在不同的路由下可用：
 
 - http://localhost:8000/time
 - http://localhost:8000/memory
 
-This means:
+这意味着：
 
-- When connecting a tool in Open WebUI, you must enter the full route to that specific tool — do NOT enter just the root URL (http://localhost:8000).
-- Add each tool individually in Open WebUI Settings using their respective subpath URLs.
+- 在开放式 WebUI 中连接工具时，您必须输入特定工具的完整路径，而不能仅输入根 URL（http://localhost:8000）。
+- 在开放式 WebUI 设置中分别使用它们的子路径 URL 添加每个工具。
 
-![MCPO Config Tools Setting](/images/openapi-servers/open-webui/mcpo-config-tools.png)
+![MCPO 配置工具设置](/images/openapi-servers/open-webui/mcpo-config-tools.png)
 
-✅ Good:
+✅ 正确:
 
 http://localhost:8000/time  
 http://localhost:8000/memory
 
-🚫 Not valid:
+🚫 不有效:
 
 http://localhost:8000
 
-This ensures Open WebUI recognizes and communicates with each tool server correctly.
+这样可以确保开放式 WebUI 正确识别并与每个工具服务器通信。
 
 ---
 
-## Step 3: Confirm Your Tool Server Is Connected ✅
+## 第三步：确认您的工具服务器已连接 ✅
 
-Once your tool server is successfully connected, Open WebUI will display a 👇 tool server indicator directly in the message input area:
+成功连接工具服务器后，开放式 WebUI 会在消息输入区域直接显示一个 👇 工具服务器指示器：
 
-📍 You'll now see this icon below the input box:
+📍 您将看到输入框下方的这个图标：
 
-![Tool Server Indicator](/images/openapi-servers/open-webui/message-input.png)
+![工具服务器指示器](/images/openapi-servers/open-webui/message-input.png)
 
-Clicking this icon opens a popup where you can:
+点击此图标会打开一个弹出窗口，您可以：
 
-- View connected tool server information
-- See which tools are available and which server they're provided by
-- Debug or disconnect any tool if needed
+- 查看连接的工具服务器信息
+- 查看可用工具以及提供这些工具的服务器
+- 如果需要，可以调试或断开某工具
 
-🔍 Here’s what the tool information modal looks like:
+🔍 以下是工具信息弹窗的样式：
 
-![Tool Info Modal Expanded](/images/openapi-servers/open-webui/info-modal.png)
+![工具信息弹窗展开视图](/images/openapi-servers/open-webui/info-modal.png)
 
-### 🛠️ Global Tool Servers Look Different — And Are Hidden by Default!
+### 🛠️ 全局工具服务器显示方式不同，并且默认隐藏！
 
-If you've connected a Global Tool Server (i.e., one that’s admin-configured), it will not appear automatically in the input area like user tool servers do.
+如果您连接的是全局工具服务器（即管理员配置的工具服务器），它不会像用户工具服务器那样自动出现在输入区域。
 
-Instead:
+而是：
 
-- Global tools are hidden by default and must be explicitly activated per user.
-- To enable them, you'll need to click on the ➕ button in the message input area (bottom left of the chat box), and manually toggle on the specific global tool(s) you want to use.
+- 全局工具默认隐藏，需要用户明确激活。
+- 若要启用它们，您需要点击消息输入区左下角的 ➕ 按钮，并手动激活您想使用的特定全局工具。
 
-Here’s what that looks like:
+如下所示：
 
-![Global Tool Server Message Input](/images/openapi-servers/open-webui/global-message-input.png)
+![全局工具服务器消息输入区](/images/openapi-servers/open-webui/global-message-input.png)
 
-⚠️ Important Notes for Global Tool Servers:
+⚠️ 针对全局工具服务器的重要注意事项：
 
-- They will not show up in the tool indicator popup until enabled from the ➕ menu.
-- Each global tool must be individually toggled on to become active inside your current chat.
-- Once toggled on, they function the same way as user tools.
-- Admins can control access to global tools via role-based permissions.
+- 在启用之前，它们不会出现在工具指示器弹窗中。
+- 每个全局工具都必须单独切换才能在您当前聊天中激活。
+- 一旦激活，其功能与用户工具相同。
+- 管理员可以通过基于角色的权限控制全局工具的访问。
 
-This is ideal for team setups or shared environments, where commonly-used tools (e.g. document search, memory, or web lookup) should be centrally accessible by multiple users.
+这非常适合团队设置或共享环境，其中需多用户可以集中访问常用工具（例如文档搜索、记忆或网络查找）。
 
 ---
 
-## (Optional) Step 4: Use "Native" Function Calling (ReACT-style) Tool Use 🧠
+## （可选）步骤4：使用“原生”函数调用（ReACT风格）工具 🧠
 
 :::info
-For this to work effectively, **your selected model must support native tool calling**. Some local models claim support but often produce poor results. We strongly recommend using GPT-4o or another OpenAI model that supports function calling natively for the best experience.
+为了让此功能有效运行，**您选择的模型必须支持原生工具调用**。某些本地模型声称支持但通常效果不佳。我们强烈建议使用GPT-4o或其他支持原生函数调用的OpenAI模型以获得最佳体验。
 :::
 
-Want to enable ReACT-style (Reasoning + Acting) native function calls directly inside your conversations? You can switch Open WebUI to use native function calling.
+想在对话中直接启用ReACT风格（推理 + 行动）的原生函数调用吗？您可以切换Open WebUI以使用原生函数调用。
 
-✳️ How to enable native function calling:
+✳️ 如何启用原生函数调用：
 
-1. Open the chat window.
-2. Go to ⚙️ **Chat Controls > Advanced Params**.
-3. Change the **Function Calling** parameter from `Default` to `Native`.
+1. 打开聊天窗口。
+2. 转到 ⚙️ **Chat Controls > Advanced Params**。
+3. 将 **Function Calling** 参数从 `Default` 更改为 `Native`。
 
-![Native Tool Call](/images/openapi-servers/open-webui/native.png)
-
----
-
-## Need More Tools? Explore & Expand! 🧱
-
-The openapi-servers repo includes a variety of useful reference servers:
-
-- 📂 Filesystem access
-- 🧠 Memory & knowledge graphs
-- 🗃️ Git repo browsing
-- 🌎 Web search (WIP)
-- 🛢️ Database querying (WIP)
-
-You can run any of these in the same way and connect them to Open WebUI by repeating the steps above.
+![原生工具调用](/images/openapi-servers/open-webui/native.png)
 
 ---
 
-## Troubleshooting & Tips 🧩
+## 需要更多工具？探索与扩展！ 🧱
 
-- ❌ Not connecting? Make sure the URL is correct and accessible from the browser used to run Open WebUI.
-- 🔒 If you're using remote servers, check firewalls and HTTPS configs!
-- 📝 To make servers persist, consider deploying them in Docker or with system services.
+openapi-servers 仓库包含各种有用的参考服务器：
 
-Need help? Visit the 👉 [Discussions page](https://github.com/open-webui/openapi-servers/discussions) or [open an issue](https://github.com/open-webui/openapi-servers/issues).
+- 📂 文件系统访问
+- 🧠 记忆与知识图谱
+- 🗃️ Git仓库浏览
+- 🌎 网络搜索（开发中）
+- 🛢️ 数据库查询（开发中）
+
+您可以以相同方式运行以上任意项，并通过重复上述步骤将其连接到Open WebUI。
+
+---
+
+## 故障排除与提示 🧩
+
+- ❌ 无法连接？请确保URL正确且能从运行Open WebUI的浏览器访问。
+- 🔒 如果您使用的是远程服务器，请检查防火墙和HTTPS配置！
+- 📝 要使服务器持久化，请考虑使用Docker或系统服务部署它们。
+
+需要帮助？访问 👉 [讨论页面](https://github.com/open-webui/openapi-servers/discussions) 或 [提交问题](https://github.com/open-webui/openapi-servers/issues)。

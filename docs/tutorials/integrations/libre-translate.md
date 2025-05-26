@@ -1,25 +1,25 @@
 ---
 sidebar_position: 25
-title: "🔠 LibreTranslate Integration"
+title: "🔠 LibreTranslate 集成"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程是社区贡献内容，不受 Open WebUI 团队支持，仅用于展示如何根据特定用例定制 Open WebUI。想要贡献？查看贡献教程。
 :::
 
-Overview
+概述
 --------
 
-LibreTranslate is a free and open-source machine translation API that supports a wide range of languages. LibreTranslate is a self hosted, offline capable, and easy to setup, and unlike other APIs, it doesn't rely on proprietary providers such as Google or Azure to perform translations. Instead, its translation engine is powered by the open source [Argos Translate](https://github.com/argosopentech/argos-translate) library. You can integrate LibreTranslate with Open WebUI to leverage its machine translation capabilities. This documentation provides a step-by-step guide to setting up LibreTranslate in Docker and configuring the integration within Open WebUI.
+LibreTranslate 是免费的开源机器翻译 API，支持多种语言。LibreTranslate 是自托管的，支持离线运行，且易于设置，与其他 API 不同，它无需依赖 Google 或 Azure 等专有提供商来完成翻译任务。相反，它的翻译引擎由开源的 [Argos Translate](https://github.com/argosopentech/argos-translate) 库提供支持。你可以将 LibreTranslate 与 Open WebUI 集成，以利用其机器翻译功能。本文档提供了在 Docker 中设置 LibreTranslate 并在 Open WebUI 中进行集成配置的分步指南。
 
-Setting up LibreTranslate in Docker
+在 Docker 中设置 LibreTranslate
 -----------------------------------
 
-To set up LibreTranslate in Docker, follow these steps:
+按照以下步骤在 Docker 中设置 LibreTranslate：
 
-### Step 1: Create a Docker Compose File
+### 步骤 1：创建 Docker Compose 文件
 
-Create a new file named `docker-compose.yml` in a directory of your choice. Add the following configuration to the file:
+在任意目录中创建一个名为 `docker-compose.yml` 的新文件，并在文件中添加以下配置：
 
 ```yml
 services:
@@ -37,16 +37,16 @@ services:
     tty: true
     stdin_open: true
     healthcheck:
-      test: ['CMD-SHELL', './venv/bin/python scripts/healthcheck.py']
+      test: [&apos;CMD-SHELL&apos;, &apos;./venv/bin/python scripts/healthcheck.py&apos;]
       
 volumes:
   libretranslate_models:
   libretranslate_api_keys:
 ```
 
-### Step 2: Create a `stack.env` File
+### 步骤 2：创建 `stack.env` 文件
 
-Create a new file named `stack.env` in the same directory as your `docker-compose.yml` file. Add the following configuration to the file:
+在与 `docker-compose.yml` 文件相同的目录中创建一个名为 `stack.env` 的新文件，并添加以下配置：
 
 ```bash
 # LibreTranslate
@@ -63,51 +63,51 @@ LT_THREADS="12"
 LT_FRONTEND_TIMEOUT="2000"
 ```
 
-### Step 3: Run the Docker Compose File
+### 步骤 3：运行 Docker Compose 文件
 
-Run the following command to start the LibreTranslate service:
+运行以下命令以启动 LibreTranslate 服务：
 
 ```bash
 docker-compose up -d
 ```
 
-This will start the LibreTranslate service in detached mode.
+这将以后台模式启动 LibreTranslate 服务。
 
-Configuring the Integration in Open WebUI
+在 Open WebUI 中配置集成
 -------------------------------------------
 
-Once you have LibreTranslate up and running in Docker, you can configure the integration within Open WebUI. There are several community integrations available, including:
+在 Docker 中启动 LibreTranslate 后，可以在 Open WebUI 中配置集成。以下是一些社区集成插件可用：
 
-* [LibreTranslate Filter Function](https://openwebui.com/f/iamg30/libretranslate_filter)
-* [LibreTranslate Action Function](https://openwebui.com/f/jthesse/libretranslate_action)
-* [MultiLanguage LibreTranslate Action Function](https://openwebui.com/f/iamg30/multilanguage_libretranslate_action)
-* [LibreTranslate Filter Pipeline](https://github.com/open-webui/pipelines/blob/main/examples/filters/libretranslate_filter_pipeline.py)
+* [LibreTranslate 筛选功能](https://openwebui.com/f/iamg30/libretranslate_filter)
+* [LibreTranslate 动作功能](https://openwebui.com/f/jthesse/libretranslate_action)
+* [多语言 LibreTranslate 动作功能](https://openwebui.com/f/iamg30/multilanguage_libretranslate_action)
+* [LibreTranslate 筛选功能管道](https://github.com/open-webui/pipelines/blob/main/examples/filters/libretranslate_filter_pipeline.py)
 
-Choose the integration that best suits your needs and follow the instructions to configure it within Open WebUI.
+选择最适合您需求的集成，并按照说明在 Open WebUI 中配置。
 
-Supported languages for the LibreTranslate pipeline & function:
-Really just all the languages that can be found within LibreTranslate, but here is the list:
+LibreTranslate 管道与功能支持的语言：
+实际上支持所有 LibreTranslate 中的语言，以下是具体列表：
 ```
-Albanian, Arabic, Azerbaijani, Bengali, Bulgarian, Catalan, Valencian, Chinese, Czech, Danish, Dutch, English, Flemish, Esperanto, Estonian, Finnish, French, German, Greek, Hebrew, Hindi, Hungarian, Indonesian, Irish, Italian, Japanese, Korean, Latvian, Lithuanian, Malay, Persian, Polish, Portuguese, Romanian, Moldavian, Moldovan, Russian, Slovak, Slovenian, Spanish, Castilian, Swedish, Tagalog, Thai, Turkish, Ukrainian, Urdu
+阿尔巴尼亚语、阿拉伯语、阿塞拜疆语、孟加拉语、保加利亚语、加泰罗尼亚语、巴伦西亚语、中文、捷克语、丹麦语、荷兰语、英语、弗拉芒语、世界语、爱沙尼亚语、芬兰语、法语、德语、希腊语、希伯来语、印地语、匈牙利语、印度尼西亚语、爱尔兰语、意大利语、日语、韩语、拉脱维亚语、立陶宛语、马来语、波斯语、波兰语、葡萄牙语、罗马尼亚语、摩尔多瓦语、俄罗斯语、斯洛伐克语、斯洛文尼亚语、西班牙语、卡斯蒂利亚语、瑞典语、他加禄语、泰语、土耳其语、乌克兰语、乌尔都语
 ```
 
-Troubleshooting
+故障排除
 --------------
 
-* Make sure the LibreTranslate service is running and accessible.
-* Verify that the Docker configuration is correct.
-* Check the LibreTranslate logs for any errors.
+* 确保 LibreTranslate 服务正在运行且可访问。
+* 验证 Docker 配置是否正确。
+* 检查 LibreTranslate 日志是否有任何错误。
 
-Benefits of Integration
+集成的优势
 ----------------------
 
-Integrating LibreTranslate with Open WebUI provides several benefits, including:
+将 LibreTranslate 与 Open WebUI 集成具有以下优势：
 
-* Machine translation capabilities for a wide range of languages.
-* Improved text analysis and processing.
-* Enhanced functionality for language-related tasks.
+* 实现多种语言的机器翻译功能。
+* 提高文本分析和处理能力。
+* 增强与语言相关任务的功能。
 
-Conclusion
+结论
 ----------
 
-Integrating LibreTranslate with Open WebUI is a straightforward process that can enhance the functionality of your Open WebUI instance. By following the steps outlined in this documentation, you can set up LibreTranslate in Docker and configure the integration within Open WebUI.
+将 LibreTranslate 集成到 Open WebUI 是一个简单的过程，可以增强您的 Open WebUI 实例的功能。通过遵循本文档中的步骤，您可以在 Docker 中设置 LibreTranslate 并在 Open WebUI 中进行配置。

@@ -1,71 +1,71 @@
 ---
 sidebar_position: 3
-title: "🔒 Permissions"
+title: "🔒 权限"
 ---
 
-The `Permissions` section of the `Workspace` within Open WebUI allows administrators to configure access controls and feature availability for users. This powerful system enables fine-grained control over what users can access and modify within the application.
+`Workspace` 的 `权限` 部分在 Open WebUI 中允许管理员为用户配置访问控制和功能可用性。这个功能强大的系统可以对用户在应用程序中访问和修改的内容进行细粒度控制。
 
-Administrators can manage permissions in the following ways:
+管理员可以通过以下方式管理权限：
 
-1. **User Interface:** The Workspace's Permissions section provides a graphical interface for configuring permissions.
-2. **Environment Variables:** Permissions can be set using environment variables, which are stored as `PersistentConfig` variables.
-3. **Group Management:** Assigning users to groups with predefined permissions.
+1. **用户界面：** Workspace 的权限部分提供了图形界面供配置权限。
+2. **环境变量：** 权限可以通过存储为 `PersistentConfig` 变量的环境变量进行设置。
+3. **组管理：** 将用户分配到具有预定义权限的组中。
 
-## Workspace Permissions
+## Workspace 权限
 
-Workspace permissions control access to core components of the Open WebUI platform:
+Workspace 权限控制对 Open WebUI 平台核心组件的访问：
 
-* **Models Access**: Toggle to allow users to access and manage custom models. (Environment variable: `USER_PERMISSIONS_WORKSPACE_MODELS_ACCESS`)
-* **Knowledge Access**: Toggle to allow users to access and manage knowledge bases. (Environment variable: `USER_PERMISSIONS_WORKSPACE_KNOWLEDGE_ACCESS`)
-* **Prompts Access**: Toggle to allow users to access and manage saved prompts. (Environment variable: `USER_PERMISSIONS_WORKSPACE_PROMPTS_ACCESS`)
-* **Tools Access**: Toggle to allow users to access and manage tools. (Environment variable: `USER_PERMISSIONS_WORKSPACE_TOOLS_ACCESS`) *Note: Enabling this gives users the ability to upload arbitrary code to the server.*
+* **模型访问**：切换以允许用户访问和管理自定义模型。（环境变量：`USER_PERMISSIONS_WORKSPACE_MODELS_ACCESS`）
+* **知识访问**：切换以允许用户访问和管理知识库。（环境变量：`USER_PERMISSIONS_WORKSPACE_KNOWLEDGE_ACCESS`）
+* **提示访问**：切换以允许用户访问和管理已保存的提示。（环境变量：`USER_PERMISSIONS_WORKSPACE_PROMPTS_ACCESS`）
+* **工具访问**：切换以允许用户访问和管理工具。（环境变量：`USER_PERMISSIONS_WORKSPACE_TOOLS_ACCESS`）*注意：启用此选项会允许用户上传任意代码到服务器。*
 
-## Chat Permissions
+## 聊天权限
 
-Chat permissions determine what actions users can perform within chat conversations:
+聊天权限决定用户在聊天对话中可以执行的操作：
 
-* **Allow Chat Controls**: Toggle to enable access to chat control options.
-* **Allow File Upload**: Toggle to permit users to upload files during chat sessions. (Environment variable: `USER_PERMISSIONS_CHAT_FILE_UPLOAD`)
-* **Allow Chat Delete**: Toggle to permit users to delete chat conversations. (Environment variable: `USER_PERMISSIONS_CHAT_DELETE`)
-* **Allow Chat Edit**: Toggle to permit users to edit messages in chat conversations. (Environment variable: `USER_PERMISSIONS_CHAT_EDIT`)
-* **Allow Temporary Chat**: Toggle to permit users to create temporary chat sessions. (Environment variable: `USER_PERMISSIONS_CHAT_TEMPORARY`)
+* **允许聊天控制**：切换以启用聊天控制选项访问。
+* **允许文件上传**：切换以允许用户在聊天会话中上传文件。（环境变量：`USER_PERMISSIONS_CHAT_FILE_UPLOAD`）
+* **允许聊天删除**：切换以允许用户删除聊天对话。（环境变量：`USER_PERMISSIONS_CHAT_DELETE`）
+* **允许聊天编辑**：切换以允许用户编辑聊天对话中的消息。（环境变量：`USER_PERMISSIONS_CHAT_EDIT`）
+* **允许临时聊天**：切换以允许用户创建临时聊天会话。（环境变量：`USER_PERMISSIONS_CHAT_TEMPORARY`）
 
-## Features Permissions
+## 功能权限
 
-Features permissions control access to specialized capabilities within Open WebUI:
+功能权限控制对 Open WebUI 中特定功能的访问：
 
-* **Web Search**: Toggle to allow users to perform web searches during chat sessions. (Environment variable: `ENABLE_RAG_WEB_SEARCH`)
-* **Image Generation**: Toggle to allow users to generate images. (Environment variable: `ENABLE_IMAGE_GENERATION`)
-* **Code Interpreter**: Toggle to allow users to use the code interpreter feature. (Environment variable: `USER_PERMISSIONS_FEATURES_CODE_INTERPRETER`)
-* **Direct Tool Servers**: Toggle to allow users to connect directly to tool servers. (Environment variable: `USER_PERMISSIONS_FEATURES_DIRECT_TOOL_SERVERS`)
+* **网页搜索**：切换以允许用户在聊天会话中执行网页搜索。（环境变量：`ENABLE_RAG_WEB_SEARCH`）
+* **图像生成**：切换以允许用户生成图像。（环境变量：`ENABLE_IMAGE_GENERATION`）
+* **代码解释器**：切换以允许用户使用代码解释器功能。（环境变量：`USER_PERMISSIONS_FEATURES_CODE_INTERPRETER`）
+* **直接工具服务器**：切换以允许用户直接连接到工具服务器。（环境变量：`USER_PERMISSIONS_FEATURES_DIRECT_TOOL_SERVERS`）
 
-## Default Permission Settings
+## 默认权限设置
 
-By default, Open WebUI applies the following permission settings:
+默认情况下，Open WebUI 应用以下权限设置：
 
-**Workspace Permissions**:
-- Models Access: Disabled (`USER_PERMISSIONS_WORKSPACE_MODELS_ACCESS=False`)
-- Knowledge Access: Disabled (`USER_PERMISSIONS_WORKSPACE_KNOWLEDGE_ACCESS=False`)
-- Prompts Access: Disabled (`USER_PERMISSIONS_WORKSPACE_PROMPTS_ACCESS=False`)
-- Tools Access: Disabled (`USER_PERMISSIONS_WORKSPACE_TOOLS_ACCESS=False`)
+**Workspace 权限**：
+- 模型访问：禁用（`USER_PERMISSIONS_WORKSPACE_MODELS_ACCESS=False`）
+- 知识访问：禁用（`USER_PERMISSIONS_WORKSPACE_KNOWLEDGE_ACCESS=False`）
+- 提示访问：禁用（`USER_PERMISSIONS_WORKSPACE_PROMPTS_ACCESS=False`）
+- 工具访问：禁用（`USER_PERMISSIONS_WORKSPACE_TOOLS_ACCESS=False`）
 
-**Chat Permissions**:
-- Allow Chat Controls: Enabled
-- Allow File Upload: Enabled (`USER_PERMISSIONS_CHAT_FILE_UPLOAD=True`)
-- Allow Chat Delete: Enabled (`USER_PERMISSIONS_CHAT_DELETE=True`)
-- Allow Chat Edit: Enabled (`USER_PERMISSIONS_CHAT_EDIT=True`)
-- Allow Temporary Chat: Enabled (`USER_PERMISSIONS_CHAT_TEMPORARY=True`)
+**聊天权限**：
+- 允许聊天控制：启用
+- 允许文件上传：启用（`USER_PERMISSIONS_CHAT_FILE_UPLOAD=True`）
+- 允许聊天删除：启用（`USER_PERMISSIONS_CHAT_DELETE=True`）
+- 允许聊天编辑：启用（`USER_PERMISSIONS_CHAT_EDIT=True`）
+- 允许临时聊天：启用（`USER_PERMISSIONS_CHAT_TEMPORARY=True`）
 
-**Features Permissions**:
-- Web Search: Enabled (`ENABLE_RAG_WEB_SEARCH=True`)
-- Image Generation: Enabled (`ENABLE_IMAGE_GENERATION=True`)
-- Code Interpreter: Enabled (`USER_PERMISSIONS_FEATURES_CODE_INTERPRETER`)
-- Direct Tool Servers: Disabled (`USER_PERMISSIONS_FEATURES_DIRECT_TOOL_SERVERS=False`)
+**功能权限**：
+- 网页搜索：启用（`ENABLE_RAG_WEB_SEARCH=True`）
+- 图像生成：启用（`ENABLE_IMAGE_GENERATION=True`）
+- 代码解释器：启用（`USER_PERMISSIONS_FEATURES_CODE_INTERPRETER`）
+- 直接工具服务器：禁用（`USER_PERMISSIONS_FEATURES_DIRECT_TOOL_SERVERS=False`）
 
-Administrators can change the default permissions in the user interface under "users" in the admin panel.
+管理员可以在管理面板中“用户”部分的用户界面中更改默认权限。
 
-## Managing Permissions
+## 管理权限
 
-Administrators can adjust these permissions through the user interface or by setting the corresponding environment variables in the configuration. All permission-related environment variables are marked as `PersistentConfig` variables, meaning they are stored internally after the first launch and can be managed through the Open WebUI interface.
+管理员可以通过用户界面或在配置中设置相应的环境变量调整这些权限。所有与权限相关的环境变量均被标记为 `PersistentConfig` 变量，意味着它们在首次启动后将被内部存储，并且可以通过 Open WebUI 接口进行管理。
 
-This flexibility allows organizations to implement security policies while still providing users with the tools they need. For more detailed information about environment variables related to permissions, see the [Environment Variable Configuration](../../getting-started/env-configuration.md#workspace-permissions) documentation.
+这种灵活性允许组织在为用户提供所需工具的同时实施安全策略。有关与权限相关的环境变量的更详细信息，请参阅 [环境变量配置](../../getting-started/env-configuration.md#workspace-permissions) 文档。

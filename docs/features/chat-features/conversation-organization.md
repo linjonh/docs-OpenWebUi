@@ -1,35 +1,35 @@
 ---
 sidebar_position: 4
-title: "🗂️ Organizing Conversations"
+title: "🗂️ 组织对话"
 ---
 
-Open WebUI provides powerful organization features that help users manage their conversations. You can easily categorize and tag conversations, making it easier to find and retrieve them later. The two primary ways to organize conversations are through **Folders** and **Tags**.
+Open WebUI 提供了强大的组织功能，帮助用户管理他们的对话。您可以轻松地对对话进行分类和标记，从而更方便地查找和检索。组织对话的两种主要方式是通过 **文件夹** 和 **标签**。
 
-## Organizing Conversations with Folders
+## 使用文件夹组织对话
 
-Folders allow you to group related conversations together for quick access and better organization.
+文件夹允许您将相关的对话编组在一起，以便快速访问和更好的管理。
 
-- **Creating a Folder**: You can create a new folder to store specific conversations. This is useful if you want to keep conversations of a similar topic or purpose together.
-- **Moving Conversations into Folders**: Conversations can be moved into folders by dragging and dropping them. This allows you to structure your workspace in a way that suits your workflow.
+- **创建文件夹**：您可以创建一个新的文件夹来存储特定的对话。如果您希望将具有类似主题或目的的对话保存在一起，这将非常有用。
+- **将对话移动到文件夹**：对话可以通过拖放的方式移动到文件夹中。这使您可以按照适合自己工作流程的方式组织工作区。
 
-![Folder Demo](/images/folder-demo.gif)
+![文件夹演示](/images/folder-demo.gif)
 
-### Example Use Case
+### 示例用例
 
-:::tip **Organizing by Project**
-If you are managing multiple projects, you can create separate folders for each project and move relevant conversations into these folders. This helps keep all project-related discussions in one place.
+:::tip **按项目组织**
+如果您正在管理多个项目，可以为每个项目创建单独的文件夹，并将相关对话移至这些文件夹中。这有助于将所有与项目相关的讨论集中在一个地方。
 :::
 
-## Tagging Conversations
+## 标记对话
 
-Tags provide an additional layer of organization by allowing you to label conversations with keywords or phrases.
+标签为组织对话提供了额外的层次，允许您使用关键词或短语对对话进行标注。
 
-- **Adding Tags to Conversations**: Tags can be applied to conversations based on their content or purpose. Tags are flexible and can be added or removed as needed.
-![Tag Demo](/images/tag-demo.gif)
-- **Using Tags for Searching**: Tags make it easy to locate specific conversations by using the search feature. You can filter conversations by tags to quickly find those related to specific topics.
+- **向对话添加标签**：可以根据对话内容或目的为其应用标签。标签非常灵活，您可以根据需要添加或移除它们。
+![标签演示](/images/tag-demo.gif)
+- **使用标签进行搜索**：标签使您能够使用搜索功能轻松找到特定对话。您可以通过标签过滤对话，以快速找到与特定主题相关的内容。
 
-### Example Use Case
+### 示例用例
 
-:::tip **Tagging by Topic**
-If you frequently discuss certain topics, such as "marketing" or "development," you can tag conversations with these terms. Later, when you search for a specific tag, all relevant conversations will be quickly accessible.
+:::tip **按主题标记**
+如果您经常讨论某些主题，例如“营销”或“开发”，可以使用这些术语为对话标记。之后，当您搜索某个特定标签时，所有相关的对话将快速可得。
 :::

@@ -1,76 +1,76 @@
 ---
 
 sidebar_position: 2  
-title: "🤖 Starting With OpenAI"
+title: "🤖 入门 OpenAI"
 
 ---
 
-## Overview
+## 概述
 
-Open WebUI makes it easy to connect and use OpenAI and other OpenAI-compatible APIs. This guide will walk you through adding your API key, setting the correct endpoint, and selecting models — so you can start chatting right away.
+Open WebUI 使连接和使用 OpenAI 以及其他兼容 OpenAI 的 API 变得简单。本指南将引导您添加 API 密钥、设置正确的端点和选择模型——让您立即开始聊天。
 
 ---
 
-## Step 1: Get Your OpenAI API Key
+## 步骤 1：获取您的 OpenAI API 密钥
 
-To use OpenAI models (such as GPT-4 or o3-mini), you need an API key from a supported provider.
+要使用 OpenAI 模型（如 GPT-4 或 o3-mini），您需要一个来自支持提供商的 API 密钥。
 
-You can use:
+您可以使用：
 
-- OpenAI directly (https://platform.openai.com/account/api-keys)
+- 直接使用 OpenAI (https://platform.openai.com/account/api-keys)
 - Azure OpenAI
-- Any OpenAI-compatible service (e.g., LocalAI, FastChat, Helicone, LiteLLM, OpenRouter etc.)
+- 任何兼容 OpenAI 的服务（如 LocalAI、FastChat、Helicone、LiteLLM、OpenRouter 等）
 
-👉 Once you have the key, copy it and keep it handy.
+👉 一旦您获得了密钥，请复制并妥善保管。
 
-For most OpenAI usage, the default API base URL is:  
+对于大多数 OpenAI 用法，默认的 API 基础 URL 是：  
 https://api.openai.com/v1
 
-Other providers use different URLs — check your provider’s documentation.
+其他提供商使用不同的 URL —— 请查阅您的提供商文档。
 
 ---
 
-## Step 2: Add the API Connection in Open WebUI
+## 步骤 2：在 Open WebUI 中添加 API 连接
 
-Once Open WebUI is running:
+当 Open WebUI 正在运行时：
 
-1. Go to the ⚙️ **Admin Settings**.
-2. Navigate to **Connections > OpenAI > Manage** (look for the wrench icon).
-3. Click ➕ **Add New Connection**.
-4. Fill in the following:
-   - API URL: https://api.openai.com/v1 (or the URL of your specific provider)
-   - API Key: Paste your key here
+1. 转到 ⚙️ **管理员设置**。
+2. 导航到 **Connections > OpenAI > Manage**（寻找扳手图标）。
+3. 点击 ➕ **添加新连接**。
+4. 填写以下内容：
+   - API URL: https://api.openai.com/v1（或您特定提供商的 URL）
+   - API 密钥：在这里粘贴您的密钥
 
-5. Click Save ✅.
+5. 点击保存 ✅。
 
-This securely stores your credentials and sets up the connection.
+这将安全地存储您的凭据并设置连接。
 
-Here’s what it looks like:
+如下所示：
 
-![OpenAI Connection Screen](/images/getting-started/quick-start/manage-openai.png)
-
----
-
-## Step 3: Start Using Models
-
-Once your connection is saved, you can start using models right inside Open WebUI.
-
-🧠 You don’t need to download any models — just select one from the Model Selector and start chatting. If a model is supported by your provider, you’ll be able to use it instantly via their API.
-
-Here’s what model selection looks like:
-
-![OpenAI Model Selector](/images/getting-started/quick-start/selector-openai.png)
-
-Simply choose GPT-4, o3-mini, or any compatible model offered by your provider.
+![OpenAI 连接界面](/images/getting-started/quick-start/manage-openai.png)
 
 ---
 
-## All Set!
+## 步骤 3：开始使用模型
 
-That’s it! Your OpenAI-compatible API connection is ready to use.
+保存您的连接后，您就可以在 Open WebUI 内直接使用模型了。
 
-With Open WebUI and OpenAI, you get powerful language models, an intuitive interface, and instant access to chat capabilities — no setup headaches.
+🧠 您无需下载任何模型——只需从模型选择器中选择一个即可开始聊天。如果您的提供商支持某个模型，您可以通过其 API 即刻使用它。
 
-If you run into issues or need additional support, visit our [help section](/troubleshooting).
+如下是模型选择界面：
 
-Happy prompting! 🎉
+![OpenAI 模型选择器](/images/getting-started/quick-start/selector-openai.png)
+
+只需选择 GPT-4、o3-mini 或您的提供商提供的任何兼容模型。
+
+---
+
+## 全部完成！
+
+就是这样！您的兼容 OpenAI 的 API 连接已经可以使用了。
+
+通过 Open WebUI 和 OpenAI，您可以获得强大的语言模型、直观的界面以及即时的聊天功能——无需复杂的设置。
+
+如果您遇到问题或需要进一步支持，请访问我们的[帮助部分](/troubleshooting)。
+
+祝您使用愉快！🎉

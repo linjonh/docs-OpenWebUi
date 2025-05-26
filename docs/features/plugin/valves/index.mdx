@@ -1,77 +1,72 @@
 ---
 sidebar_position: 3
-title: "🔄 Valves"
+title: "🔄 阀门"
 ---
 
-## Valves
+## 阀门
 
-Valves and UserValves are used to allow users to provide dynamic details such as an API key or a configuration option. These will create a fillable field or a bool switch in the GUI menu for the given function. They are always optional, but HIGHLY encouraged.
+阀门（Valves）和用户阀门（UserValves）用于让用户提供动态信息，例如 API 密钥或配置选项。这些会在 GUI 菜单中为指定的功能创建一个可填写的字段或布尔开关。它们始终是可选的，但强烈建议使用。
 
-Hence, Valves and UserValves class can be defined in either a `Pipe`, `Pipeline`, `Filter` or `Tools` class.
+因此，Valves 和 UserValves 类可以定义在 `Pipe`、`Pipeline`、`Filter` 或 `Tools` 类中。
 
-Valves are configurable by admins alone via the Tools or Functions menus. On the other hand UserValves are configurable by any users directly from a chat session.
+阀门只能由管理员通过工具或功能菜单配置，而用户阀门则可以由任何用户直接从聊天会话中配置。
 
 <details>
-<summary>Commented example</summary>
+<summary>带注释的示例</summary>
 
 ```python
 
 from pydantic import BaseModel, Field
 from typing import Literal
 
-# Define and Valves
+# 定义阀门
 class Filter:
-   # Notice the current indentation: Valves and UserValves must be declared as
-   # attributes of a Tools, Filter or Pipe class. Here we take the
-   # example of a Filter.
-    class Valves(BaseModel):
-       # Valves and UserValves inherit from pydantic's BaseModel. This
-       # enables complex use cases like model validators etc.
-       test_valve: int = Field(  # Notice the type hint: it is used to
-           # choose the kind of UI element to show the user (buttons,
-           # texts, etc).
+   # 注意当前的缩进：阀门和用户阀门必须声明为
+   # Tools、Filter 或 Pipe 类的属性。这里以 Filter 为示例。
+   class Valves(BaseModel):
+       # Valves 和 UserValves 继承自 pydantic&apos;s BaseModel。
+       # 这允许复杂的用例，如模型验证等。
+       test_valve: int = Field(  # 注意类型提示：它用于
+           # 选择要向用户显示的 UI 元素类型（按钮、文本等）。
            default=4,
-           description="A valve controlling a numberical value"
-           # required=False,  # you can enforce fields using True
+           description="控制数值的阀门"
+           # required=False,  # 你可以通过将其设为 True 来强制要求字段
        )
-       # To give the user the choice between multiple strings, you can use Literal from typing:
+       # 要让用户在多个字符串之间选择，可以使用 typing 中的 Literal：
        choice_option: Literal["choiceA", "choiceB"] = Field(
            default="choiceA",
-           description="An example of a multi choice valve",
+           description="一个多选阀门的示例",
        )
        priority: int = Field(
            default=0,
-           description="Priority level for the filter operations. Lower values are passed through first"
+           description="过滤器操作的优先级。较低的值先通过"
        )
-       # The priority field is optional but if present will be used to
-       # order the Filters.
+       # priority 字段是可选的，但如果存在，将用于排序过滤器。
        pass
-       # Note that this 'pass' helps for parsing and is recommended.
+       # 注意这个 &apos;pass&apos; 有助于解析，推荐使用。
 
-   # UserValves are defined the same way.
-    class UserValves(BaseModel):
-        test_user_valve: bool = Field(
-            default=False, description="A user valve controlling a True/False (on/off) switch"
+   # 用户阀门的定义方式是相同的。
+   class UserValves(BaseModel):
+       test_user_valve: bool = Field(
+           default=False, description="一个控制 True/False (开/关)开关的用户阀门"
        )
        pass
 
    def __init__(self):
        self.valves = self.Valves()
-       # Because they are set by the admin, they are accessible directly
-       # upon code execution.
+       # 由于它们是由管理员设置的，因此可以直接在代码执行时访问。
        pass
 
-   # The inlet method is only used for Filter but the __user__ handling is the same
+   # inlet 方法仅用于 Filter，但 __user__ 的处理方式是相同的
    def inlet(self, body: dict, __user__: dict):
-       # Because UserValves are defined per user they are only available
-       # on use.
-       # Note that although __user__ is a dict, __user__["valves"] is a
-       # UserValves object. Hence you can access values like that:
+       # 由于用户阀门是为每个用户定义的，因此只有在使用时才可用。
+       # 注意，虽然 __user__ 是一个字典，但 __user__["valves"] 是一个
+       # UserValves 对象。因此，您可以像这样访问值：
        test_user_valve = __user__["valves"].test_user_valve
-       # Or:
+       # 或者：
        test_user_valve = dict(__user__["valves"])["test_user_valve"]
-       # But this will return the default value instead of the actual value:
-       # test_user_valve = __user__["valves"]["test_user_valve"]  # Do not do that!
+       # 但是这将返回默认值而不是实际值：
+       # test_user_valve = __user__["valves"]["test_user_valve"]  # 不要这样做！
 ```
 
 </details>

@@ -1,29 +1,29 @@
 ---
 sidebar_position: 7
-title: "📖 Tutorials"
+title: "📖 教程"
 ---
 
-# Tutorials
+# 教程
 
-## Tutorials Welcome
+## 教程欢迎
 
-Are you a content creator with a blog post or YouTube video about your pipeline setup? Get in touch
-with us, as we'd love to feature it here!
+您是一位拥有关于您的管道设置的博客文章或 YouTube 视频的内容创作者吗？请联系我们，
+我们很乐意将您的内容展示在这里！
 
-## Featured Tutorials
+## 精选教程
 
-[Monitoring Open WebUI with Filters](https://medium.com/@0xthresh/monitor-open-webui-with-datadog-llm-observability-620ef3a598c6) (Medium article by @0xthresh)
+[使用过滤器监控开放 WebUI](https://medium.com/@0xthresh/monitor-open-webui-with-datadog-llm-observability-620ef3a598c6) (由 @0xthresh 撰写的 Medium 文章)
 
-- A detailed guide to monitoring the Open WebUI using DataDog LLM observability.
+- 使用 DataDog LLM 可观察性监控开放 WebUI 的详细指南。
   
-[Building Customized Text-To-SQL Pipelines](https://www.youtube.com/watch?v=y7frgUWrcT4) (YouTube video by Jordan Nanos)
+[构建自定义文本到 SQL 管道](https://www.youtube.com/watch?v=y7frgUWrcT4) (由 Jordan Nanos 发布的 YouTube 视频)
 
-- Learn how to develop tailored text-to-sql pipelines, unlocking the power of data analysis and extraction.
+- 了解如何开发定制的文本到 SQL 管道，释放数据分析和提取的潜力。
 
-[Demo and Code Review for Text-To-SQL with Open-WebUI](https://www.youtube.com/watch?v=iLVyEgxGbg4) (YouTube video by Jordan Nanos)
+[针对开放 WebUI 的文本到 SQL 演示和代码审查](https://www.youtube.com/watch?v=iLVyEgxGbg4) (由 Jordan Nanos 发布的 YouTube 视频)
 
-- A hands-on demonstration and code review on utilizing text-to-sql tools powered by the Open WebUI.
+- 一个关于利用开放 WebUI 驱动的文本到 SQL 工具的实践演示和代码审查。
 
-[Deploying custom Document RAG pipeline with Open-WebUI](https://github.com/Sebulba46/document-RAG-pipeline) (GitHub guide by Sebulba46) 
+[使用开放 WebUI 部署自定义文档 RAG 管道](https://github.com/Sebulba46/document-RAG-pipeline) (由 Sebulba46 提供的 GitHub 指南)
 
-- Step by step guide to deploy Open-WebUI and pipelines containers and creating your own document RAG with local LLM API. 
+- 部署开放 WebUI 和管道容器并使用本地 LLM API 创建自定义文档 RAG 的分步指南。

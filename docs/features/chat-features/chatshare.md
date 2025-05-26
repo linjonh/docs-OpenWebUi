@@ -1,106 +1,106 @@
 ---
 sidebar_position: 4
-title: "🗨️ Chat Sharing"
+title: "🗨️ 聊天分享"
 ---
 
-### Enabling Community Sharing
+### 启用社区分享
 
-To enable community sharing, follow these steps:
+要启用社区分享，请按照以下步骤操作：
 
-1. Navigate to the **Admin Panel** page as an **Admin**.
-2. Click on the **Settings** tab.
-3. Toggle on **Enable Community Sharing** within the **General** settings tab.
-
-:::note
-**Note:** Only Admins can toggle the **Enable Community Sharing** option. If this option is toggled off, users and Admins will not see the **Share to Open WebUI Community** option for sharing their chats. Community sharing must be enabled by an Admin for users to share chats to the Open WebUI community.
-:::
-
-This will enable community sharing for all users on your Open WebUI instance.
-
-### Sharing Chats
-
-To share a chat:
-
-1. Select the chat conversation you want to share.
-2. Click on the 3-dots that appear when hovering the mouse pointer above the desired chat.
-3. Then click on the **Share** option.
-4. Select either **Share to Open WebUI Community** (if **Enable Community Sharing** is toggled on by an **Admin**) or **Copy Link**.
-
-#### Sharing to Open WebUI Community
-
-When you select `Share to Open WebUI Community`:
-
-* A new tab will open, allowing you to upload your chat as a snapshot to the Open WebUI community website (https://openwebui.com/chats/upload).
-* You can control who can view your uploaded chat by choosing from the following access settings:
-  * **Private**: Only you can access this chat.
-  * **Public**: Anyone on the internet can view the messages displayed in the chat snapshot.
-  * **Public, Full History**: Anyone on the internet can view the full regeneration history of your chat.
+1. 以**管理员**身份进入 **管理面板** 页面。
+2. 点击 **设置** 标签页。
+3. 在 **常规设置** 标签页中开启 **启用社区分享**。
 
 :::note
-Note: You can change the permission level of your shared chats on the community platform at any time from your openwebui.com account.
-
-**Currently, shared chats on the community website cannot be found through search. However, future updates are planned to allow public chats to be discoverable by the public if their permission is set to `Public` or `Public, Full History`.**
+**注意：** 只有管理员可以开启 **启用社区分享** 选项。如果此选项关闭，用户和管理员将无法看到用于分享聊天的 **分享到开放WebUI社区** 选项。社区分享必须由管理员启用，用户才能将聊天分享至开放WebUI社区。
 :::
 
-Example of a shared chat to the community platform website: https://openwebui.com/c/iamg30/5e3c569f-905e-4d68-a96d-8a99cc65c90f
+此操作将为您Open WebUI实例上的所有用户启用社区分享功能。
 
-#### Copying a Share Link
+### 分享聊天
 
-When you select `Copy Link`, a unique share link is generated that can be shared with others.
+分享聊天的步骤：
 
-**Important Considerations:**
+1. 选择您想要分享的聊天对话。
+2. 将鼠标指针悬停在目标聊天上时会出现3个点，点击它。
+3. 然后点击 **分享** 选项。
+4. 选择 **分享到开放WebUI社区**（如果**启用社区分享**已经被管理员开启）或 **复制链接**。
 
-* The shared chat will only include messages that existed at the time the link was created. Any new messages sent within the chat after the link is generated will not be included, unless the link is deleted and updated with a new link.
-* The generated share link acts as a static snapshot of the chat at the time the link was generated.
-* To view the shared chat, users must:
-  1. Have an account on the Open WebUI instance where the link was generated.
-  2. Be signed in to their account on that instance.
-* If a user tries to access the shared link without being signed in, they will be redirected to the login page to log in before they can view the shared chat.
+#### 分享到开放WebUI社区
 
-### Viewing Shared Chats
+当您选择 `分享到开放WebUI社区`：
 
-To view a shared chat:
-
-1. Ensure you are signed in to an account on the Open WebUI instance where the chat was shared.
-2. Click on the shared link provided to you.
-3. The chat will be displayed in a read-only format.
-4. If the Admin of the Open WebUI instance from which the shared link was shared has Text-to-Speech set up, there may be an audio button for messages to be read aloud to you (situational).
-
-### Updating Shared Chats
-
-To update a shared chat:
-
-1. Select the chat conversation you want to share.
-2. Click on the 3-dots that appear when hovering the mouse pointer above the desired chat.
-3. Click on the **Share** option.
-4. The **Share Chat** Modal should look different if you've shared a chat before.
-
-The **Share Chat** Modal includes the following options:
-
-* **before**: Opens a new tab to view the previously shared chat from the share link.
-* **delete this link**: Deletes the shared link of the chat and presents the initial share chat modal.
-* **Share to Open WebUI Community**: Opens a new tab for https://openwebui.com/chats/upload with the chat ready to be shared as a snapshot.
-* **Update and Copy Link**: Updates the snapshot of the chat of the previously shared chat link and copies it to your device's clipboard.
-
-### Deleting Shared Chats
-
-To delete a shared chat link:
-
-1. Select the chat conversation you want to delete the shared link for.
-2. Click on the 3-dots that appear when hovering the mouse pointer above the desired chat.
-3. Click on the **Share** option.
-4. The **Share Chat** Modal should look different if you've shared a chat before.
-5. Click on **delete this link**.
-
-Once deleted, the shared link will no longer be valid, and users will not be able to view the shared chat.
+* 一个新的标签页将打开，允许您将聊天以快照的形式上传到开放WebUI社区网站（https://openwebui.com/chats/upload）。
+* 您可以通过选择以下访问设置来控制谁可以查看您的上传聊天：
+  * **私密**：只有您可以访问此聊天。
+  * **公开**：任何互联网用户均可查看聊天快照中的消息。
+  * **公开，全历史**：任何互联网用户均可查看您聊天的完整历史记录。
 
 :::note
-**Note:** Chats shared to the community platform cannot be deleted. To change the access level of a chat shared to the community platform:
+注意：您可以随时从您的openwebui.com账户中修改共享聊天的权限级别。
+
+**目前，社区网站上的共享聊天无法通过搜索找到。然而，未来的更新计划将允许权限设置为 `公开` 或 `公开，全历史` 的聊天可被公众发现。**
 :::
 
-1. Log in to your Open WebUI account on openwebui.com.
-2. Click on your account username at the top right of the website.
-3. Click on **Chats**.
-4. Click on the chat you wish to change permission access for.
-5. Scroll to the bottom of the chat and update its permission level.
-6. Click the **Update Chat** button.
+示例：分享至社区平台网站的聊天：https://openwebui.com/c/iamg30/5e3c569f-905e-4d68-a96d-8a99cc65c90f
+
+#### 复制分享链接
+
+当您选择 `复制链接` 时，将生成一个唯一分享链接，可与他人分享。
+
+**重要事项：**
+
+* 分享的聊天仅包含在生成链接时存在的消息。链接生成后聊天中发送的任何新消息将不会被包含，除非删除该链接并更新为新链接。
+* 生成的分享链接作为聊天在生成时的静态快照。
+* 要查看共享聊天，用户必须：
+  1. 在链接生成所在的Open WebUI实例中拥有一个账户。
+  2. 登录到该实例的账户。
+* 如果用户在访问共享链接时未登录，他们将被重定向到登录页面，登录后才能查看共享聊天。
+
+### 查看共享聊天
+
+查看共享聊天的步骤：
+
+1. 确保您已登录到共享聊天所在的Open WebUI实例账户。
+2. 点击您收到的共享链接。
+3. 聊天将以只读格式显示。
+4. 如果共享链接的Open WebUI实例管理员设置了文字转语音功能，可能会有一个用于朗读消息的音频按钮（具体情况而定）。
+
+### 更新共享聊天
+
+更新共享聊天的步骤：
+
+1. 选择您想要分享的聊天对话。
+2. 将鼠标指针悬停在目标聊天上时会出现3个点，点击它。
+3. 点击 **分享** 选项。
+4. 如果您之前已经共享过聊天，**分享聊天** 模态框会有所不同。
+
+**分享聊天** 模态框包含以下选项：
+
+* **查看原始链接**：打开一个新标签页，查看之前通过分享链接共享的聊天。
+* **删除链接**：删除聊天的共享链接，并显示初始聊天分享模态框。
+* **分享到开放WebUI社区**：打开一个新标签页，并准备将聊天以快照形式分享至https://openwebui.com/chats/upload。
+* **更新并复制链接**：更新已共享聊天链接的快照，并将其复制到您的设备剪贴板。
+
+### 删除共享聊天
+
+删除共享聊天链接的步骤：
+
+1. 选择您想要删除共享链接的聊天对话。
+2. 将鼠标指针悬停在目标聊天上时会出现3个点，点击它。
+3. 点击 **分享** 选项。
+4. 如果您之前已经共享过聊天，**分享聊天** 模态框会有所不同。
+5. 点击 **删除链接**。
+
+链接删除后，该共享链接将不再有效，用户将无法查看共享聊天。
+
+:::note
+**注意：** 分享到社区平台的聊天无法删除。要修改已共享到社区平台聊天的访问级别：
+:::
+
+1. 登录您的 Open WebUI 帐户，网址为 openwebui.com。
+2. 点击网站右上角的账户用户名。
+3. 点击 **聊天**。
+4. 点击您希望更改权限访问的聊天。
+5. 滚动到聊天底部并更新其权限级别。
+6. 点击 **更新聊天** 按钮。

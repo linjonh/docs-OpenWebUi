@@ -1,25 +1,25 @@
 ## Docker Swarm
 
-This installation method requires knowledge on Docker Swarms, as it utilizes a stack file to deploy 3 seperate containers as services in a Docker Swarm.
+此安装方法需要了解 Docker Swarm，因为它使用堆栈文件在 Docker Swarm 中部署三个独立容器作为服务。
 
-It includes isolated containers of ChromaDB, Ollama, and OpenWebUI.
-Additionally, there are pre-filled [Environment Variables](/getting-started/env-configuration) to further illustrate the setup.
+它包括 ChromaDB、Ollama 和 OpenWebUI 的隔离容器。
+此外，还有预填的[环境变量](/getting-started/env-configuration)，以进一步说明设置。
 
-Choose the appropriate command based on your hardware setup:
+根据您的硬件设置选择合适的命令：
 
-- **Before Starting**:
+- **开始之前**：
 
-  Directories for your volumes need to be created on the host, or you can specify a custom location or volume.
+  您需要在主机上创建用于卷的目录，或者可以指定自定义位置或卷。
   
-  The current example utilizes an isolated dir `data`, which is within the same dir as the `docker-stack.yaml`.
+  当前示例使用了一个隔离目录 `data`，该目录位于 `docker-stack.yaml` 所在的同一目录中。
   
-      - **For example**:
+      - **例如**：
   
         ```bash
         mkdir -p data/open-webui data/chromadb data/ollama
         ```
 
-- **With GPU Support**:
+- **支持 GPU**：
 
   #### Docker-stack.yaml
 
@@ -42,7 +42,7 @@ Choose the appropriate command based on your hardware setup:
           CHROMA_TENANT: default_tenant
           VECTOR_DB: chroma
           WEBUI_NAME: Awesome ChatBot
-          CORS_ALLOW_ORIGIN: "*" # This is the current Default, will need to change before going live
+          CORS_ALLOW_ORIGIN: "*" # 当前默认设置，在上线之前需要修改
           RAG_EMBEDDING_ENGINE: ollama
           RAG_EMBEDDING_MODEL: nomic-embed-text-v1.5
           RAG_EMBEDDING_MODEL_TRUST_REMOTE_CODE: "True"
@@ -107,16 +107,16 @@ Choose the appropriate command based on your hardware setup:
 
     ```
 
-  - **Additional Requirements**:
+  - **附加要求**：
 
-      1. Ensure CUDA is Enabled, follow your OS and GPU instructions for that.
-      2. Enable Docker GPU support, see [Nvidia Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html " on Nvidia's site.")
-      3. Follow the [Guide here on configuring Docker Swarm to with with your GPU](https://gist.github.com/tomlankhorst/33da3c4b9edbde5c83fc1244f010815c#configuring-docker-to-work-with-your-gpus)
-    - Ensure _GPU Resource_ is enabled in `/etc/nvidia-container-runtime/config.toml` and enable GPU resource advertising by uncommenting the `swarm-resource = "DOCKER_RESOURCE_GPU"`. The docker daemon must be restarted after updating these files on each node.
+      1. 确保启用 CUDA，根据您的操作系统和 GPU 说明进行操作。
+      2. 启用 Docker GPU 支持，请参考[Nvidia 容器工具包](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html "Nvidia 官方网站")。
+      3. 按照[指南](https://gist.github.com/tomlankhorst/33da3c4b9edbde5c83fc1244f010815c#configuring-docker-to-work-with-your-gpus)配置 Docker Swarm 以与 GPU 一起工作。
+    - 在 `/etc/nvidia-container-runtime/config.toml` 中确保启用了 **GPU Resource**，并通过取消注释 `swarm-resource = "DOCKER_RESOURCE_GPU"` 来启用 GPU 资源广告。在更新每个节点上的这些文件后，必须重新启动 Docker 守护进程。
 
-- **With CPU Support**:
+- **支持 CPU**：
   
-    Modify the Ollama Service within `docker-stack.yaml` and remove the lines for `generic_resources:`
+    修改 `docker-stack.yaml` 中的 Ollama 服务并移除 `generic_resources:` 的相关行。
 
     ```yaml
         ollama:
@@ -136,7 +136,7 @@ Choose the appropriate command based on your hardware setup:
         - ./data/ollama:/root/.ollama
     ```
 
-- **Deploy Docker Stack**:
+- **部署 Docker 堆栈**：
   
   ```bash
   docker stack deploy -c docker-stack.yaml -d super-awesome-ai

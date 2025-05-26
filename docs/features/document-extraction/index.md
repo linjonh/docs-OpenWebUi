@@ -1,29 +1,29 @@
 ---
 sidebar_position: 6
-title: "📄 Document Extraction"
+title: "📄 文档提取"
 ---
 
-# Document Extraction in Open WebUI
+# Open WebUI中的文档提取
 
-Open WebUI provides powerful document extraction capabilities that allow you to process and analyze various types of documents within your RAG (Retrieval Augmented Generation) workflows. Document extraction is essential for transforming unstructured document content into structured data that can be effectively used by language models.
+Open WebUI提供了强大的文档提取功能，使您能够在RAG（检索增强生成）工作流中处理和分析各种类型的文档。文档提取对于将非结构化文档内容转化为结构化数据至关重要，这些数据可以被语言模型有效利用。
 
-## What is Document Extraction?
+## 什么是文档提取？
 
-Document extraction refers to the process of automatically identifying and extracting text and data from various file formats, including:
-- PDFs (both text-based and scanned)
-- Images containing text
-- Handwritten documents
-- And more
+文档提取是指自动识别和提取各种文件格式中的文本和数据的过程，包括：
+- PDF（包括基于文本的和扫描的）
+- 含有文本的图像
+- 手写文档
+- 以及其他类型
 
-With proper document extraction, Open WebUI can help you:
-- Convert image-based documents to searchable text
-- Preserve document structure and layout information
-- Extract data in structured formats for further processing
-- Support multilingual content recognition
+通过适当的文档提取，Open WebUI可以帮助您：
+- 将基于图像的文档转换为可搜索的文本
+- 保留文档结构和布局信息
+- 提取结构化格式的数据以进行进一步处理
+- 支持多语言内容识别
 
-## Available Extraction Methods
+## 可用的提取方法
 
-Open WebUI supports multiple document extraction engines to accommodate different needs and document types. Each extraction method has its own strengths and is suitable for different scenarios.
+Open WebUI支持多种文档提取引擎，以满足不同需求和文档类型的需求。每种提取方法都有其自身的优势，适合不同的场景。
 
-Explore the documentation for each available extraction method to learn how to set it up and use it effectively with your Open WebUI instance.
+探索每种可用提取方法的文档，以了解如何在您的Open WebUI实例中设置和有效使用它们。
 

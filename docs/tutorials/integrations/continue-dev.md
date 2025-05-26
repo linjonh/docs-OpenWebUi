@@ -1,68 +1,68 @@
 ---
 sidebar_position: 13
-title: "⚛️ Continue.dev VSCode Extension with Open WebUI"
+title: "⚛️ Continue.dev VSCode扩展与Open WebUI集成"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程是社区贡献内容，不受Open WebUI团队支持，仅作为定制Open WebUI以满足特定需求的示范使用。想要贡献？请查看贡献教程。
 :::
 
-# Integrating Continue.dev VSCode Extension with Open WebUI
+# Continue.dev VSCode扩展与Open WebUI的集成
 
-### Download Extension
+### 下载扩展
 
-You can download the VSCode extension here on the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Continue.continue)
+您可以在[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Continue.continue)下载VSCode扩展。
 
-Once installed you should now have a 'continue' tab in the side bar. Open this.
+安装后，侧边栏中应该会出现一个“continue”选项卡。点击打开它。
 
-Click on the Assistant selector above the main chat input. Then hover over "Local Assistant" and you should see a settings icon (looks like a cog).
+点击主聊天输入框上方的助手选择器。然后悬停在“Local Assistant”上，您应该会看到一个设置图标（看起来像齿轮）。
 
-Once you click on the settings icon, a `config.yaml` should open up in the editor.
+点击设置图标后，`config.yaml`应该会在编辑器中打开。
 
-Here you'll be able to configure continue to use Open WebUI.
-
----
-
-Currently the 'ollama' provider does not support authentication so we cannot use this provider with Open WebUI.
-
-However Ollama and Open WebUI both have compatibily with OpenAI API spec. You can see a blog post from Ollama [here](https://ollama.com/blog/openai-compatibility) on this.
-
-We can still setup Continue to use the openai provider which will allow us to use Open WebUI's authentication token.
+在这里，您就可以配置continue以使用Open WebUI。
 
 ---
 
-## Config
+目前，“ollama”提供者不支持身份验证，因此我们无法使用Open WebUI进行此提供者的配置。
 
-In `config.yaml` all you will need to do is add/change the following options.
+然而，Ollama和Open WebUI都兼容OpenAI API规范。您可以在Ollama的[博客文章](https://ollama.com/blog/openai-compatibility)中看到相关信息。
 
-### Change provider to openai
+我们仍然可以设置Continue使用openai提供者，这样我们就可以使用Open WebUI的身份验证令牌了。
+
+---
+
+## 配置
+
+在`config.yaml`中，您需要添加或更改以下选项。
+
+### 将提供者更改为openai
 
 ```yaml
 provider: openai
 ```
 
-### Add or update apiBase
+### 添加或更新apiBase
 
-Set this to your Open Web UI domain on the end.
-
-```yaml
-apiBase: http://localhost:3000/ #If you followed Getting Started Docker
-```
-
-### Add apiKey
+将此设置为您的Open WebUI域名。
 
 ```yaml
-apiKey: sk-79970662256d425eb274fc4563d4525b # Replace with your API key
+apiBase: http://localhost:3000/ #如果您按照入门Docker配置
 ```
 
-You can find and generate your api key from Open WebUI -> Settings -> Account -> API Keys
+### 添加apiKey
 
-You'll want to copy the "API Key" (this starts with sk-)
+```yaml
+apiKey: sk-79970662256d425eb274fc4563d4525b # 使用您的API密钥替换
+```
 
-## Example Config
+您可以从Open WebUI -> Settings -> Account -> API Keys找到并生成您的API密钥。
 
-Here is a base example of config.yaml using Open WebUI via an openai provider. Using Granite Code as the model.
-Make sure you pull the model into your ollama instance/s beforehand.
+您需要复制“API Key”（以sk-开头）。
+
+## 示例配置
+
+以下是一个使用openai提供者通过Open WebUI的`config.yaml`基础示例。使用Granite Code作为模型。
+请确保您事先将模型拉入您的ollama实例。
 
 ```yaml
 name: Local Assistant
@@ -103,17 +103,17 @@ models:
 
 prompts:
   - name: test
-    description: Write unit tests for highlighted code
+    description: 为突出显示的代码编写单元测试
     prompt: |
-      Write a comprehensive set of unit tests for the selected code. It should setup, run tests that check for correctness including important edge cases, and teardown. Ensure that the tests are complete and sophisticated. Give the tests just as chat output, don't edit any file.
+      为选定代码编写一套全面的单元测试。它应该包括设置、运行测试以检查正确性（包括重要的边界情况），以及清理。确保测试完整而复杂。仅以聊天输出提供测试，不需编辑任何文件。
 ```
 
-Save your `config.yaml` and thats it!
+保存您的`config.yaml`，就完成了！
 
-You should now see your model in the Continue tab model selection.
+您现在应该能在Continue选项卡的模型选择中看到您的模型。
 
-Select it and you should now be chatting via Open WebUI (and or any [pipelines](/pipelines) you have setup )
+选择它，您就可以通过Open WebUI（以及您设置的任何[pipelines](/pipelines)）进行聊天了。
 
-You can do this for as many models you would like to use, altough any model should work, you should use a model that is designed for code.
+您可以为您希望使用的多个模型执行此操作。虽然任何模型都应该可以使用，但建议使用专门为代码设计的模型。
 
-See the continue documentation for additional continue configuration, [Continue Documentation](https://docs.continue.dev/reference/Model%20Providers/openai)
+有关更多Continue配置信息，请参阅[Continue文档](https://docs.continue.dev/reference/Model%20Providers/openai)。

@@ -1,31 +1,30 @@
 ---
 sidebar_position: 3
-title: "🎬 Action Function"
+title: "🎬 动作功能"
 ---
 
-Action functions allow you to write custom buttons to the message toolbar for end users to interact
-with. This feature enables more interactive messaging, enabling users to grant permission before a
-task is performed, generate visualizations of structured data, download an audio snippet of chats,
-and many other use cases.
+动作功能允许您为消息工具栏编写自定义按钮，以供最终用户互动。
+此功能使消息更加互动化，例如用户进行任务前先授予权限，生成结构化数据的可视化，
+下载聊天的音频片段，以及许多其他使用场景。
 
-A scaffold of Action code can be found [in the community section](https://openwebui.com/f/hub/custom_action/).
+可以在[社区部分](https://openwebui.com/f/hub/custom_action/)找到动作代码的脚手架。
 
-An example of a graph visualization Action can be seen in the video below.
+以下视频展示了一个图表可视化动作的示例。
 
 <p align="center">
   <a href="#">
-    <img src="/images/pipelines/graph-viz-action.gif" alt="Graph Visualization Action" />
+    <img src="/images/pipelines/graph-viz-action.gif" alt="图表可视化动作" />
   </a>
 </p>
 
 
-### Action
-Actions are used to create a button in the Message UI (the small buttons found directly underneath individual chat messages).
+### 动作
+动作用于在消息界面中创建一个按钮（这些小按钮直接位于单个聊天消息的下方）。
 
-Actions have a single main component called an action function. This component takes an object defining the type of action and the data being processed.
+动作有一个单一的主要组件，称为动作函数。此组件接收一个对象，用于定义动作的类型和正在处理的数据。
 
 <details>
-<summary>Example</summary>
+<summary>示例</summary>
 
 ```python
 async def action(
@@ -41,9 +40,9 @@ async def action(
             {
                 "type": "input",
                 "data": {
-                    "title": "write a message",
-                    "message": "here write a message to append",
-                    "placeholder": "enter your message",
+                    "title": "写一条消息",
+                    "message": "在此处写一条要添加的消息",
+                    "placeholder": "输入您的消息",
                 },
             }
         )

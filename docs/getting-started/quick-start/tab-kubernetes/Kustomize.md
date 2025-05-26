@@ -1,29 +1,29 @@
 
-# Kustomize Setup for Kubernetes
+# Kubernetes的Kustomize设置
 
-Kustomize allows you to customize Kubernetes YAML configurations.
+Kustomize允许您自定义Kubernetes YAML配置。
 
-## Prerequisites
+## 前提条件
 
-- Kubernetes cluster is set up.
-- Kustomize is installed.
+- 已设置好Kubernetes集群。
+- 已安装Kustomize。
 
-## Steps
+## 步骤
 
-1. **Clone the Open WebUI Manifests:**
+1. **克隆Open WebUI清单：**
 
    ```bash
    git clone https://github.com/open-webui/k8s-manifests.git
    cd k8s-manifests
    ```
 
-2. **Apply the Manifests:**
+2. **应用清单：**
 
    ```bash
    kubectl apply -k .
    ```
 
-3. **Verify Installation:**
+3. **验证安装：**
 
    ```bash
    kubectl get pods
@@ -31,11 +31,11 @@ Kustomize allows you to customize Kubernetes YAML configurations.
 
 :::warning
 
-If you intend to scale Open WebUI using multiple nodes/pods/workers in a clustered environment, you need to setup a NoSQL key-value database.
-There are some [environment variables](https://docs.openwebui.com/getting-started/env-configuration/) that need to be set to the same value for all service-instances, otherwise consistency problems, faulty sessions and other issues will occur!
+如果您打算在集群环境中通过多个节点/Pod/工作线程来扩展Open WebUI，则需要设置一个NoSQL键值数据库。
+有一些[环境变量](https://docs.openwebui.com/getting-started/env-configuration/)需要在所有服务实例中设置为相同的值，否则会出现一致性问题、错误会话以及其他问题！
 
 :::
 
-## Access the WebUI
+## 访问WebUI
 
-Set up port forwarding or load balancing to access Open WebUI from outside the cluster.
+设置端口转发或负载均衡，以便从集群外访问Open WebUI。

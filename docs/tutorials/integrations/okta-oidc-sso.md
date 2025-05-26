@@ -1,126 +1,126 @@
 ---
 sidebar_position: 40
-title: "🔗 Okta OIDC SSO Integration"
+title: "🔗 Okta OIDC SSO 集成"
 ---
 
 :::warning
-This tutorial is a community contribution and is not supported by the Open WebUI team. It serves only as a demonstration on how to customize Open WebUI for your specific use case. Want to contribute? Check out the contributing tutorial.
+本教程是社区贡献，不受 Open WebUI 团队支持。它仅作为如何定制 Open WebUI 以满足您的特定使用案例的演示使用。想要贡献吗？查看贡献教程。
 :::
 
-# 🔗 Okta OIDC SSO Integration
+# 🔗 Okta OIDC SSO 集成
 
-## Overview
+## 概述
 
-This documentation page outlines the steps required to integrate Okta OIDC Single Sign-On (SSO) with Open WebUI. It also covers the **optional** features of managing Open WebUI user groups based on Okta group membership, including **Just-in-Time (JIT) group creation**. By following these steps, you will enable users to log in to Open WebUI using their Okta credentials. If you choose to enable group syncing (`ENABLE_OAUTH_GROUP_MANAGEMENT`), users will be automatically assigned to relevant groups within Open WebUI based on their Okta groups upon login. If you *also* enable JIT group creation (`ENABLE_OAUTH_GROUP_CREATION`), groups present in Okta claims but missing in Open WebUI will be created automatically during login.
+本文档页面介绍了将 Okta OIDC 单点登录 (SSO) 与 Open WebUI 集成所需的步骤。同时涵盖了基于 Okta 组成员身份管理 Open WebUI 用户组的**可选**功能，包括**及时 (JIT) 组创建**。通过遵循这些步骤，您将使用户能够使用他们的 Okta 凭据登录 Open WebUI。如果您选择启用组同步 (`ENABLE_OAUTH_GROUP_MANAGEMENT`)，用户登录时将根据他们的 Okta 组自动分配到 Open WebUI 中的相关组。如果您*还*启用了 JIT 组创建 (`ENABLE_OAUTH_GROUP_CREATION`)，在 Okta 声明中存在但 Open WebUI 中缺失的组将在登录期间自动创建。
 
-### Prerequisites
+### 前提条件
 
-*   A new or existing Open WebUI instance.
-*   An Okta account with administrative privileges to create and configure applications.
-*   Basic understanding of OIDC, Okta application configuration, and Open WebUI environment variables.
+*   一个新的或现有的 Open WebUI 实例。
+*   一个具有创建和配置应用权限的 Okta 管理账户。
+*   对 OIDC、Okta 应用配置和 Open WebUI 环境变量的基本了解。
 
-## Setting up Okta
+## 设置 Okta
 
-First, you need to configure an OIDC application within your Okta organization and set up a groups claim to pass group information to Open WebUI.
+首先，您需要在您的 Okta 组织中配置一个 OIDC 应用并设置组声明以将组信息传递到 Open WebUI。
 
-### 1. Create/Configure OIDC Application in Okta
+### 1. 在 Okta 中创建/配置 OIDC 应用
 
-1.  Log in to your Okta Admin Console.
-2.  Navigate to **Applications > Applications**.
-3.  Either create a new **OIDC - OpenID Connect** application (choose **Web Application** as the type) or select an existing one you wish to use for Open WebUI.
-4.  During setup or in the application's **General** settings tab, configure the **Sign-in redirect URIs**. Add the URI for your Open WebUI instance, followed by `/oauth/oidc/callback`. Example: `https://your-open-webui.com/oauth/oidc/callback`.
-5.  Take note of the **Client ID** and **Client secret** provided on the application's **General** tab. You will need these for the Open WebUI configuration.
-6.  Ensure the correct users or groups are assigned to this application under the **Assignments** tab.
+1.  登录到您的 Okta 管理控制台。
+2.  导航到 **应用 > 应用**。
+3.  创建一个新的 **OIDC - OpenID Connect** 应用（选择 **Web 应用** 作为类型）或选择现有应用以用于 Open WebUI。
+4.  在设置期间或在应用的**常规**设置选项卡中，配置**登录重定向 URI**。添加您的 Open WebUI 实例的 URI，后面加上 `/oauth/oidc/callback`。示例：`https://your-open-webui.com/oauth/oidc/callback`。
+5.  记录应用**常规**选项卡中提供的**客户端 ID**和**客户端密钥**。您将在 Open WebUI 配置中使用这些信息。
+6.  确保在**分配**选项卡下，将正确的用户或组分配给此应用。
 
-### 2. Add a Groups Claim to the ID Token
+### 2. 向 ID 令牌添加组声明
 
-**(Optional)** To enable automatic group management in Open WebUI based on Okta groups, you need to configure Okta to send the user's group memberships in the ID token. If you only need SSO login and prefer to manage groups manually within Open WebUI, you can skip this section.
+**(可选)** 为了在 Open WebUI 中根据 Okta 组自动管理组，您需要配置 Okta 以在 ID 令牌中发送用户的组成员信息。如果您只需要 SSO 登录并希望在 Open WebUI 中手动管理组，可以跳过此部分。
 
-1.  In the Admin Console, go to **Applications > Applications** and select your OIDC client app.
-2.  Go to the **Sign On** tab and click **Edit** in the **OpenID Connect ID Token** section.
-3.  In the **Group claim type** section, select **Filter**.
-4.  In the **Group claims filter** section:
-    *   Enter `groups` as the claim name (or use the default if present).
-    *   Select **Matches regex** from the dropdown.
-    *   Enter `.*` in the regex field. This will include all groups the user is a member of. You can use a more specific regex if needed.
-5.  Click **Save**.
-6.  Click the **Back to applications** link.
-7.  From the **More** button dropdown menu for your application, click **Refresh Application Data**.
+1.  在管理控制台，转到 **应用 > 应用**，并选择您的 OIDC 客户端应用。
+2.  转到**登录**选项卡，并在**OpenID Connect ID Token**部分点击**编辑**。
+3.  在**组声明类型**部分，选择**过滤器**。
+4.  在**组声明过滤器**部分：
+    *   输入 `groups` 作为声明名称（或使用默认值）。
+    *   在下拉菜单中选择**匹配正则**。
+    *   在正则字段中输入 `.*`。这将包括用户所属的所有组。如果需要，可以使用更具体的正则。
+5.  点击**保存**。
+6.  点击**返回到应用**链接。
+7.  在应用的**更多**按钮下拉菜单中，点击 **刷新应用数据**。
 
-*For more advanced group claim configurations, refer to the Okta documentation on [customizing tokens](https://developer.okta.com/docs/guides/customize-tokens-returned-from-okta/main/) and [group functions](https://developer.okta.com/docs/reference/okta-expression-language/#group-functions).*
+*有关更高级的组声明配置，参考 Okta 文档 [自定义返回令牌](https://developer.okta.com/docs/guides/customize-tokens-returned-from-okta/main/) 和 [组函数](https://developer.okta.com/docs/reference/okta-expression-language/#group-functions)。*
 
-## Configuring Open WebUI
+## 配置 Open WebUI
 
-To enable Okta OIDC SSO in Open WebUI, you need to set the following core environment variables. Additional variables are required if you wish to enable the optional group management feature.
+要在 Open WebUI 中启用 Okta OIDC SSO，您需要设置以下核心环境变量。如果您希望启用可选的组管理功能，还需额外设置一些变量。
 
 ```bash
-# --- OIDC Core Settings ---
-# Enable OAuth signup if you want users to be able to create accounts via Okta
+# --- OIDC 核心设置 ---
+# 如果您希望用户能够通过 Okta 创建账户，请启用 OAuth 注册
 # ENABLE_OAUTH_SIGNUP="true"
 
-# Your Okta application's Client ID
+# 您的 Okta 应用的客户端 ID
 OAUTH_CLIENT_ID="YOUR_OKTA_CLIENT_ID"
 
-# Your Okta application's Client Secret
+# 您的 Okta 应用的客户端密钥
 OAUTH_CLIENT_SECRET="YOUR_OKTA_CLIENT_SECRET"
 
-# Your Okta organization's OIDC discovery URL
-# Format: https://<your-okta-domain>/.well-known/openid-configuration
-# Or for a specific authorization server: https://<your-okta-domain>/oauth2/<auth-server-id>/.well-known/openid-configuration
+# 您的 Okta 组织的 OIDC 发现 URL
+# 格式: https://<your-okta-domain>/.well-known/openid-configuration
+# 或针对特定授权服务器: https://<your-okta-domain>/oauth2/<auth-server-id>/.well-known/openid-configuration
 OPENID_PROVIDER_URL="YOUR_OKTA_OIDC_DISCOVERY_URL"
 
-# Name displayed on the login button (e.g., "Login with Okta")
+# 显示在登录按钮上的名称（例如，“通过 Okta 登录”）
 OAUTH_PROVIDER_NAME="Okta"
 
-# Scopes to request (default is usually sufficient)
-# OAUTH_SCOPES="openid email profile groups" # Ensure 'groups' is included if not default
+# 请求的范围（默认通常足够）
+# OAUTH_SCOPES="openid email profile groups" # 如果不是默认值，请确保包含‘groups’
 
-# --- OAuth Group Management (Optional) ---
-# Set to "true" only if you configured the Groups Claim in Okta (Step 2)
-# and want Open WebUI groups to be managed based on Okta groups upon login.
-# This syncs existing groups. Users will be added/removed from Open WebUI groups
-# to match their Okta group claims.
+# --- OAuth 组管理（可选）---
+# 仅在您在 Okta 配置了组声明（步骤 2）时设置为 "true"
+# 并且希望基于登录时的 Okta 组管理 Open WebUI 的组。
+# 这会同步现有的组。用户将被添加/移除到 Open WebUI 的组中
+# 以匹配他们的 Okta 组声明。
 # ENABLE_OAUTH_GROUP_MANAGEMENT="true"
 
-# Required only if ENABLE_OAUTH_GROUP_MANAGEMENT is true.
-# The claim name in the ID token containing group information (must match Okta config)
+# 仅在 ENABLE_OAUTH_GROUP_MANAGEMENT 为 true 时必需。
+# ID 令牌中包含组信息的声明名称（必须与 Okta 配置匹配）
 # OAUTH_GROUP_CLAIM="groups"
 
-# Optional: Enable Just-in-Time (JIT) creation of groups if they exist in Okta claims but not in Open WebUI.
-# Requires ENABLE_OAUTH_GROUP_MANAGEMENT="true".
-# If set to false (default), only existing groups will be synced.
+# 可选功能：启用 Just-in-Time (JIT) 创建，如果 Okta 声明中存在但 Open WebUI 中不存在这些组。
+# 需要 ENABLE_OAUTH_GROUP_MANAGEMENT="true"。
+# 如果设置为 false（默认），则仅同步现有的组。
 # ENABLE_OAUTH_GROUP_CREATION="false"
 ```
 
-Replace `YOUR_OKTA_CLIENT_ID`, `YOUR_OKTA_CLIENT_SECRET`, and `YOUR_OKTA_OIDC_DISCOVERY_URL` with the actual values from your Okta application configuration.
+用实际值替换 `YOUR_OKTA_CLIENT_ID`、`YOUR_OKTA_CLIENT_SECRET` 和 `YOUR_OKTA_OIDC_DISCOVERY_URL`，这些值来自你的 Okta 应用配置。
 
-To enable group synchronization based on Okta claims, set `ENABLE_OAUTH_GROUP_MANAGEMENT="true"` and ensure `OAUTH_GROUP_CLAIM` matches the claim name configured in Okta (default is `groups`).
+要启用基于 Okta 声明的组同步，请设置 `ENABLE_OAUTH_GROUP_MANAGEMENT="true"`，并确保 `OAUTH_GROUP_CLAIM` 与 Okta 中配置的声明名称匹配（默认值是 `groups`）。
 
-To *also* enable automatic Just-in-Time (JIT) creation of groups that exist in Okta but not yet in Open WebUI, set `ENABLE_OAUTH_GROUP_CREATION="true"`. You can leave this as `false` if you only want to manage memberships for groups that already exist in Open WebUI.
+如果**还**要启用对存在于 Okta 但尚不存在于 Open WebUI 中组的自动 Just-in-Time (JIT) 创建，请设置 `ENABLE_OAUTH_GROUP_CREATION="true"`。如果你只希望管理 Open WebUI 中已存在组的成员，可以将此值保留为 `false`。
 
-:::warning Group Membership Management
-When `ENABLE_OAUTH_GROUP_MANAGEMENT` is set to `true`, a user's group memberships in Open WebUI will be **strictly synchronized** with the groups received in their Okta claims upon each login. This means:
-*   Users will be **added** to Open WebUI groups that match their Okta claims.
-*   Users will be **removed** from any Open WebUI groups (including those manually created or assigned within Open WebUI) if those groups are **not** present in their Okta claims for that login session.
+:::warning 组成员管理
+当 `ENABLE_OAUTH_GROUP_MANAGEMENT` 设置为 `true` 时，用户在 Open WebUI 中的组成员资格将**严格同步**于他们每次登录时 Okta 声明接收到的组信息。这意味着：
+*   用户将被**添加**到与他们 Okta 声明相匹配的 Open WebUI 组。
+*   用户将被从任何 Open WebUI 组中**移除**（包括那些在 Open WebUI 中手动创建或分配的组），如果这些组**不**在其当前登录会话的 Okta 声明中。
 
-Ensure that all necessary groups are correctly configured and assigned within Okta and included in the group claim.
+确保所有必要的组在 Okta 中正确配置和分配，并包含在组声明中。
 :::
 
-:::info Session Persistence in Multi-Node Deployments
+:::info 多节点部署中的会话持久性
 
-When deploying Open WebUI across multiple nodes (e.g., in a Kubernetes cluster or behind a load balancer), it is crucial to ensure session persistence for a seamless user experience, especially with SSO. Set the `WEBUI_SECRET_KEY` environment variable to the **same secure, unique value** on **all** Open WebUI instances.
+当在多节点环境（例如 Kubernetes 集群或负载均衡器后）中部署 Open WebUI 时，确保会话持久性对于顺畅的用户体验至关重要，尤其是在使用 SSO 的情况下。将 `WEBUI_SECRET_KEY` 环境变量设置为**所有** Open WebUI 实例中的**相同安全且唯一的值**。
 :::
 
 ```bash
-# Example: Generate a strong secret key (e.g., using openssl rand -hex 32)
+# 示例：生成一个强密码密钥（例如使用 openssl rand -hex 32）
 WEBUI_SECRET_KEY="YOUR_UNIQUE_AND_SECURE_SECRET_KEY"
 ```
 
-If this key is not consistent across all nodes, users may be forced to log in again if their session is routed to a different node, as the session token signed by one node will not be valid on another. By default, the Docker image generates a random key on first start, which is unsuitable for multi-node setups.
+如果此密钥在所有节点中不一致，当会话被路由到不同的节点时，用户可能会被迫重新登录，因为由一个节点签名的会话令牌在另一个节点上无效。默认情况下，Docker 镜像在第一次启动时会生成一个随机密钥，这不适合多节点设置。
 
-:::tip Disabling the Standard Login Form
+:::tip 禁用标准登录表单
 
-If you intend to *only* allow logins via Okta (and potentially other configured OAuth providers), you can disable the standard email/password login form by setting the following environment variable:
+如果你只允许通过 Okta（以及可能配置的其他 OAuth 提供商）登录，可以通过设置以下环境变量禁用标准电子邮件/密码登录表单：
 :::
 
 
@@ -128,24 +128,24 @@ If you intend to *only* allow logins via Okta (and potentially other configured 
 ENABLE_LOGIN_FORM="false"
 ```
 
-:::danger Important Prerequisite
-Setting `ENABLE_LOGIN_FORM="false"` **requires** `ENABLE_OAUTH_SIGNUP="true"` to be set as well. If you disable the login form without enabling OAuth signup, **users (including administrators) will be unable to log in.** Ensure at least one OAuth provider is configured and `ENABLE_OAUTH_SIGNUP` is enabled before disabling the standard login form.
+:::danger 重要前提
+设置 `ENABLE_LOGIN_FORM="false"` **需要** `ENABLE_OAUTH_SIGNUP="true"` 也设置为 true。如果在未启用 OAuth 注册的情况下禁用登录表单，**用户（包括管理员）将无法登录。**请确保至少一个 OAuth 提供商已配置并启用了 `ENABLE_OAUTH_SIGNUP`，然后再禁用标准登录表单。
 :::
 
-Restart your Open WebUI instance after setting these environment variables.
+在设置这些环境变量后，重启你的 Open WebUI 实例。
 
-## Verification
+## 验证
 
-1.  Navigate to your Open WebUI login page. You should see a button labeled "Login with Okta" (or whatever you set for `OAUTH_PROVIDER_NAME`).
-2.  Click the button and authenticate through the Okta login flow.
-3.  Upon successful authentication, you should be redirected back to Open WebUI and logged in.
-4.  If `ENABLE_OAUTH_GROUP_MANAGEMENT` is true, log in as a non-admin user. Their groups within Open WebUI should now strictly reflect their current group memberships in Okta (any memberships in groups *not* in the Okta claim will be removed). If `ENABLE_OAUTH_GROUP_CREATION` is also true, any groups present in the user's Okta claims that did not previously exist in Open WebUI should now have been created automatically. Note that admin users' groups are not automatically updated via SSO.
-5.  Check the Open WebUI server logs for any OIDC or group-related errors if you encounter issues.
+1.  转到你的 Open WebUI 登录页面。你应该能看到一个标有“使用 Okta 登录”（或你为 `OAUTH_PROVIDER_NAME` 设置的名称）的按钮。
+2.  点击按钮并通过 Okta 登录流程进行认证。
+3.  成功认证后，你应该会被重定向回 Open WebUI 并已登录。
+4.  如果 `ENABLE_OAUTH_GROUP_MANAGEMENT` 为 true，使用非管理员用户登录。该用户在 Open WebUI 中的组现在应该严格反映他们在 Okta 中的当前组成员资格（任何不在 Okta 声明中的组成员资格将被移除）。如果 `ENABLE_OAUTH_GROUP_CREATION` 也为 true，用户的 Okta 声明中存在的任何先前未在 Open WebUI 中存在的组现在应该已自动创建。请注意，管理员用户的组不会通过 SSO 自动更新。
+5.  如果遇到问题，请检查 Open WebUI 服务器日志中是否有任何与 OIDC 或组相关的错误。
 
-## Troubleshooting
+## 故障排除
 
-*   **400 Bad Request/Redirect URI Mismatch:** Double-check that the **Sign-in redirect URI** in your Okta application exactly matches `<your-open-webui-url>/oauth/oidc/callback`.
-*   **Groups Not Syncing:** Verify that the `OAUTH_GROUP_CLAIM` environment variable matches the claim name configured in the Okta ID Token settings. Ensure the user has logged out and back in after group changes - a login flow is required to update OIDC. Remember admin groups are not synced.
-*   **Configuration Errors:** Review the Open WebUI server logs for detailed error messages related to OIDC configuration.
-*   Refer to the official [Open WebUI SSO Documentation](/features/sso.md).
-*   Consult the [Okta Developer Documentation](https://developer.okta.com/docs/).
+*   **400 错误请求/重定向 URI 不匹配：** 仔细检查 Okta 应用中的**登录重定向 URI**是否精确匹配 `<your-open-webui-url>/oauth/oidc/callback`。
+*   **组未同步：** 验证 `OAUTH_GROUP_CLAIM` 环境变量是否与 Okta ID 令牌设置中配置的声明名称匹配。确保用户在组更改后已注销并重新登录 - 需要一个完整的登录流程来更新 OIDC。请记住，管理员组不会同步。
+*   **配置错误:** 查看 Open WebUI 服务器日志，以获取与 OIDC 配置相关的详细错误消息。
+*   请参考官方的[Open WebUI SSO 文档](/features/sso.md)。
+*   查询[Okta 开发者文档](https://developer.okta.com/docs/)。
