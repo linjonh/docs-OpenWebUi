@@ -99,7 +99,7 @@ Sie können die folgenden Umgebungsvariablen konfigurieren:
 1. `OAUTH_GROUP_CLAIM` - Das Attribut im ID-/Zugriffstoken, das die Gruppenmitgliedschaften des Nutzers enthält. Standardwert ist `groups`. Kann auch verschachtelt sein, z.B. `user.memberOf`. Erforderlich, wenn `ENABLE_OAUTH_GROUP_MANAGEMENT` wahr ist.
 1. `ENABLE_OAUTH_GROUP_CREATION` - Wenn auf `true` gesetzt (und `ENABLE_OAUTH_GROUP_MANAGEMENT` ebenfalls auf `true` gesetzt ist), wird Open WebUI **Just-in-Time (JIT) Gruppen-Erstellung** durchführen. Das bedeutet, dass bei der OAuth-Anmeldung automatisch Gruppen erstellt werden, wenn diese in den OAuth-Ansprüchen des Benutzers vorhanden sind, aber noch nicht im System existieren. Standardmäßig auf `false` gesetzt. Wenn `false`, werden nur Mitgliedschaften in *bereits bestehenden* Open WebUI-Gruppen verwaltet.
 
-:::warnung Strikte Gruppen-Synchronisation
+:::warning Strikte Gruppen-Synchronisation
 Wenn `ENABLE_OAUTH_GROUP_MANAGEMENT` auf `true` gesetzt ist, werden die Gruppenmitgliedschaften eines Benutzers in Open WebUI **strikt synchronisiert** mit den Gruppen, die bei jeder Anmeldung in seinen OAuth-Ansprüchen angegeben sind.
 
 *   Benutzer werden **hinzugefügt** zu Open WebUI-Gruppen, die mit ihren OAuth-Ansprüchen übereinstimmen.
@@ -108,7 +108,7 @@ Wenn `ENABLE_OAUTH_GROUP_MANAGEMENT` auf `true` gesetzt ist, werden die Gruppenm
 Stellen Sie sicher, dass alle benötigten Gruppen korrekt in Ihrem OAuth-Anbieter konfiguriert sind und im Gruppenanspruch (`OAUTH_GROUP_CLAIM`) enthalten sind.
 :::
 
-:::warnung Admin-Benutzer
+:::warning Admin-Benutzer
 Die Gruppenmitgliedschaften von Admin-Benutzern werden **nicht** automatisch über das OAuth-Gruppenmanagement aktualisiert.
 :::
 
@@ -200,7 +200,7 @@ volumes:
   tailscale: {}
 ```
 
-:::warnung
+:::warning
 
 Wenn Sie Tailscale im gleichen Netzwerk-Kontext wie Open WebUI ausführen, können Benutzer standardmäßig direkt auf Open WebUI zugreifen, ohne den Serve-Proxy zu durchlaufen.
 Sie müssen Tailscales ACLs verwenden, um den Zugriff nur auf Port 443 zu beschränken.

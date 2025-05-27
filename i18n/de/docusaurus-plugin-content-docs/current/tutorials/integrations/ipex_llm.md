@@ -3,7 +3,7 @@ sidebar_position: 11
 title: "🖥️ Lokale LLM-Konfiguration mit IPEX-LLM auf Intel-GPU"
 ---
 
-:::warnung
+:::warning
 Dieses Tutorial ist ein Beitrag aus der Community und wird nicht vom Open WebUI-Team unterstützt. Es dient lediglich als Demonstration, wie Open WebUI für Ihren spezifischen Anwendungsfall angepasst werden kann. Möchten Sie mitwirken? Schauen Sie sich das Tutorial zum Mitwirken an.
 :::
 
@@ -23,7 +23,7 @@ Dieses Tutorial zeigt, wie man Open WebUI mit **IPEX-LLM beschleunigtem Ollama-R
 
 Sehen Sie sich [diese Anleitung](https://ipex-llm.readthedocs.io/en/latest/doc/LLM/Quickstart/ollama_quickstart.html) aus der offiziellen Dokumentation von IPEX-LLM an, um zu erfahren, wie man Ollama-Dienst installiert und ausführt, beschleunigt durch IPEX-LLM auf Intel-GPU.
 
-:::tipp
+:::tip
 Wenn Sie den Ollama-Dienst von einer anderen Maschine aus erreichen möchten, stellen Sie sicher, dass Sie die Umgebungsvariable `OLLAMA_HOST=0.0.0.0` setzen oder exportieren, bevor Sie den Befehl `ollama serve` ausführen.
 :::
 
@@ -37,6 +37,6 @@ Wenn die Verbindung erfolgreich ist, wird eine Nachricht mit dem Text `Dienstver
 
 ![Open WebUI Ollama-Einstellung Erfolg](https://llm-assets.readthedocs.io/en/latest/_images/open_webui_settings.png)
 
-:::tipp
+:::tip
 Wenn Sie einen Ollama-Server verwenden möchten, der unter einer anderen URL gehostet wird, aktualisieren Sie einfach die **Ollama Basis-URL** auf die neue URL und drücken die **Aktualisieren-Schaltfläche**, um die Verbindung zu Ollama erneut zu bestätigen.
 :::

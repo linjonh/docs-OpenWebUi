@@ -3,6 +3,6 @@ sidebar_position: 11
 title: "Serper"
 ---
 
-:::advertencia
+:::warning
 Este tutorial es una contribución de la comunidad y no está respaldado por el equipo de Open WebUI. Sirve únicamente como una demostración de cómo personalizar Open WebUI según su caso de uso específico. ¿Quieres contribuir? Consulta el tutorial de contribución.
 :::

@@ -98,7 +98,7 @@ Para habilitar la sincronización de grupos basada en las reclamaciones de Okta,
 
 Para *también* habilitar la creación automática Just-in-Time (JIT) de grupos que existen en Okta pero aún no en Open WebUI, establezca `ENABLE_OAUTH_GROUP_CREATION="true"`. Puede dejar esto en `false` si solo desea gestionar la membresía de los grupos que ya existen en Open WebUI.
 
-:::advertencia Gestión de Membresía de Grupos
+:::warning Gestión de Membresía de Grupos
 Cuando `ENABLE_OAUTH_GROUP_MANAGEMENT` está configurado en `true`, la membresía de grupos de un usuario en Open WebUI será **estrictamente sincronizada** con los grupos recibidos en sus reclamaciones de Okta en cada inicio de sesión. Esto significa:
 *   Los usuarios serán **añadidos** a los grupos de Open WebUI que coincidan con sus reclamaciones de Okta.
 *   Los usuarios serán **eliminados** de cualquier grupo de Open WebUI (incluidos aquellos creados o asignados manualmente dentro de Open WebUI) si esos grupos **no** están presentes en sus reclamaciones de Okta para esa sesión de inicio.

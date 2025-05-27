@@ -788,7 +788,7 @@ Formato JSON: { "tags": ["tag1", "tag2", "tag3"] }
 - Descripción: Especifica una lista separada por comas de los endpoints API permitidos cuando están habilitadas las restricciones del endpoint de claves API.
 - Persistencia: Esta variable de entorno es una variable de `PersistentConfig`.
 
-:::nota
+:::note
 
 El valor de `API_KEY_ALLOWED_ENDPOINTS` debe ser una lista separada por comas de URLs de endpoints, como `/api/v1/messages, /api/v1/channels`.
 
@@ -834,7 +834,7 @@ con solicitudes iniciadas por sitios web de terceros, pero solo a través de HTT
 - Predeterminado: `lax`
 - Descripción: Establece el atributo `SameSite` para las cookies de sesión.
 
-:::advertencia
+:::warning
 
 Cuando `ENABLE_OAUTH_SIGNUP` está habilitado, establecer `WEBUI_SESSION_COOKIE_SAME_SITE` a `strict` puede causar fallos en el inicio de sesión. Esto se debe a que Open WebUI utiliza una cookie de sesión para validar el callback del proveedor OAuth, lo que ayuda a prevenir ataques CSRF.
 
@@ -1218,7 +1218,7 @@ Actualmente, no hay un botón en la interfaz de usuario para solo reiniciar la b
 
 :::
 
-:::peligro
+:::danger
 
 Si decide usar el patrón de multialquiler como predeterminado y no necesita migrar el conocimiento antiguo, vaya a `Configuración de administrador` > `Documentos` para reiniciar las vectores y el conocimiento, lo que eliminará todas las colecciones con el prefijo `open_webui` y todo el conocimiento almacenado.
 
@@ -1932,7 +1932,7 @@ Al utilizar `playwright`, tienes dos opciones:
 - Descripción: Especifica la URI de WebSocket de una instancia remota del navegador Playwright. Cuando se configura, Open WebUI utilizará este navegador remoto en lugar de instalar las dependencias del navegador localmente. Esto es particularmente útil en entornos de contenedores donde se desea mantener el contenedor de Open WebUI ligero y separar las preocupaciones del navegador. Ejemplo: `ws://playwright:3000`
 - Persistencia: Esta variable de entorno es una variable `PersistentConfig`.
 
-:::consejo
+:::tip
 
 Utilizar un navegador Playwright remoto mediante `PLAYWRIGHT_WS_URL` puede ser beneficioso para:
 

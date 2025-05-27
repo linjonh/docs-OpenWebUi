@@ -3,7 +3,7 @@ sidebar_position: 16
 title: "Yacy"
 ---
 
-:::warnung
+:::warning
 Dieses Tutorial ist ein Community-Beitrag und wird nicht vom Open WebUI-Team unterstützt. Es dient lediglich als Demonstration, wie Open WebUI für Ihren spezifischen Anwendungsfall angepasst werden kann. Möchten Sie beitragen? Schauen Sie sich das Tutorial für Beiträge an.
 :::
 

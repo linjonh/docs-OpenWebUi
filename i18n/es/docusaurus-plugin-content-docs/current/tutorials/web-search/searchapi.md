@@ -3,7 +3,7 @@ sidebar_position: 9
 title: "SearchApi"
 ---
 
-:::advertencia
+:::warning
 Este tutorial es una contribución de la comunidad y no cuenta con el soporte del equipo de Open WebUI. Solo sirve como una demostración sobre cómo personalizar Open WebUI para su caso de uso específico. ¿Quieres contribuir? Revisa el tutorial de contribución.
 :::
 

@@ -3,7 +3,7 @@ sidebar_position: 1
 title: "🗨️ Edge TTS Usando Docker"
 ---
 
-:::advertencia
+:::warning
 Este tutorial es una contribución de la comunidad y no está respaldado por el equipo de Open WebUI. Sirve solo como una demostración para personalizar Open WebUI según tu caso de uso específico. ¿Quieres contribuir? Consulta el tutorial para colaboradores.
 :::
 
@@ -149,7 +149,7 @@ Genera audio a partir del texto de entrada. Parámetros disponibles:
 - **response_format** (cadena): Formato de audio. Opciones: `mp3`, `opus`, `aac`, `flac`, `wav`, `pcm` (predeterminado: `mp3`).
 - **speed** (número): Velocidad de reproducción (0.25 a 4.0). El valor predeterminado es `1.0`.
 
-:::consejo
+:::tip
 Puedes explorar las voces disponibles y escuchar vistas previas en [tts.travisvn.com](https://tts.travisvn.com)
 :::
 
