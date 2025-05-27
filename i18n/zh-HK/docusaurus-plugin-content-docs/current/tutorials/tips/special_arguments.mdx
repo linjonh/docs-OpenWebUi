@@ -1,0 +1,341 @@
+---
+sidebar_position: 20
+title: "💡 特殊參數"
+---
+
+:::warning
+本教程為社群貢獻，非 Open WebUI 團隊支持。它僅作為自訂 Open WebUI 的範例說明。想要貢獻？請參閱貢獻教程。
+:::
+
+# 💡 特殊參數
+
+在開發您自己的 `工具`、`功能`(`過濾器`、`管道` 或 `動作`)、`管線`等時，您可以使用特殊參數來探索 Open-WebUI 的全部功能。
+
+本頁旨在詳細闡述每個特殊參數的類型和結構，並提供範例。
+
+### `body`
+
+`dict` 通常幾乎直接傳遞到模型。雖然它不是嚴格意義上的特殊參數，但基於便於查閱且其本身包含某些特殊參數，因此將其列入此處。
+
+<details>
+<summary>範例</summary>
+
+```json
+
+{
+  "stream": true,
+  "model": "my-cool-model",
+  # 小寫字串並用 - 分隔的詞：這是模型的 ID
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "圖片中是什麼？"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdYAAAGcCAYAAABk2YF[REDACTED]"
+            # 圖片以 base64 編碼數據傳遞
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": "該圖片似乎是 [REDACTED]"
+    },
+  ],
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "stream_options": {
+    "include_usage": true
+  },
+  "metadata": "[與 __metadata__ 完全相同的 dict]",
+  "files": "[與 __files__ 完全相同的清單]"
+}
+
+
+```
+
+</details>
+
+### `__user__`
+
+`dict` 包含用戶資訊。
+
+請注意，如果定義了 `UserValves` 類，其實例需通過 `__user__["valves"]` 訪問。否則，`valves` 鍵值完全缺失於 `__user__`。
+
+<details>
+<summary>範例</summary>
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "email": "cheesy_dude@openwebui.com",
+  "name": "Patrick",
+  "role": "user",
+  # 角色可以是 `user` 或 `admin`
+  "valves": "[UserValve 的實例]"
+}
+```
+
+</details>
+
+### `__metadata__`
+
+`dict` 包含有關聊天、模型、文件等的廣泛資訊。
+
+<details>
+<summary>範例</summary>
+
+```json
+{
+  "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "chat_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "message_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "session_id": "xxxxxxxxxxxxxxxxxxxx",
+  "tool_ids": null,
+  # tool_ids 是 str 清單。
+  "tool_servers": [],
+  "files": "[與 body['files'] 相同]",
+  # 如果未提供文件，則 __metadata__ 包含 files 鍵，其值為 []
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "variables": {
+    "{{USER_NAME}}": "cheesy_username",
+    "{{USER_LOCATION}}": "Unknown",
+    "{{CURRENT_DATETIME}}": "2025-02-02 XX:XX:XX",
+    "{{CURRENT_DATE}}": "2025-02-02",
+    "{{CURRENT_TIME}}": "XX:XX:XX",
+    "{{CURRENT_WEEKDAY}}": "Monday",
+    "{{CURRENT_TIMEZONE}}": "Europe/Berlin",
+    "{{USER_LANGUAGE}}": "en-US"
+  },
+  "model": "[與 __model__ 完全相同的 dict]",
+  "direct": false,
+  "function_calling": "native",
+  "type": "user_response",
+  "interface": "open-webui"
+}
+
+```
+
+</details>
+
+### `__model__`
+
+`dict` 包含有關模型的資訊。
+
+<details>
+<summary>範例</summary>
+
+```json
+{
+  "id": "my-cool-model",
+  "name": "My Cool Model",
+  "object": "model",
+  "created": 1746000000,
+  "owned_by": "openai",
+  # 可以是 openai 或 ollama
+  "info": {
+      "id": "my-cool-model",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "base_model_id": "gpt-4o",
+      # 即模型端點服務的模型名稱
+      "name": "My Cool Model",
+      "params": {
+      "system": "你是我最棒的助手。你回答 [REDACTED]",
+      "function_calling": "native"
+      # 自訂選項會顯示在這裡，例如 "Top K"
+      },
+      "meta": {
+      "profile_image_url": "/static/favicon.png",
+      "description": "描述 my-cool-model",
+      "capabilities": {
+          "vision": true,
+          "usage": true,
+          "citations": true
+      },
+      "position": 17,
+      "tags": [
+          {
+          "name": "for_friends"
+          },
+          {
+          "name": "vision_enabled"
+          }
+      ],
+      "suggestion_prompts": null
+      },
+      "access_control": {
+      "read": {
+          "group_ids": [],
+          "user_ids": []
+      },
+      "write": {
+          "group_ids": [],
+          "user_ids": []
+      }
+      },
+      "is_active": true,
+      "updated_at": 1740000000,
+      "created_at": 1740000000
+  },
+  "preset": true,
+  "actions": [],
+  "tags": [
+      {
+          "name": "for_friends"
+      },
+          "name": "vision_enabled"
+      }
+  ]
+}
+
+```
+
+</details>
+
+### `__messages__`
+
+先前訊息的`list`。
+
+請參考上方`body["messages"]`的值。
+
+
+### `__chat_id__`
+
+`chat_id`的`str`。
+
+請參考上方`__metadata__["chat_id"]`的值。
+
+### `__session_id__`
+
+`session_id`的`str`。
+
+請參考上方`__metadata__["session_id"]`的值。
+
+### `__message_id__`
+
+`message_id`的`str`。
+
+請參考上方`__metadata__["message_id"]`的值。
+
+### `__event_emitter__`
+
+用於向使用者顯示事件資訊的`Callable`。
+
+### `__event_call__`
+
+用於`Actions`的`Callable`。
+
+### `__files__`
+
+透過聊天傳送的`list`檔案。請注意，圖像不被視為檔案，並直接作為`body["messages"]`列表的一部分傳送至模型。
+
+出於效能理由，檔案的實際二位元資料並不包含在參數中，但檔案仍可透過其路徑被訪問（如有需要）。例如，使用`docker`的Python語法路徑可以是：
+
+```python
+from pathlib import Path
+
+the_file = Path(f"/app/backend/data/uploads/{__files__[0]["files"]["id"]}_{__files__[0]["files"]["filename"]}")
+assert the_file.exists()
+```
+
+請注意，通過`__metadata__["files"]`（其值為`[]`，如果未傳送檔案）或通過`body["files"]`也可訪問相同檔案dict（但如果未傳送檔案，`files`鍵在`body`中完全缺失）。
+
+<details>
+<summary>範例</summary>
+
+```json
+
+[
+  {
+    "type": "file",
+    "file": {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "filename": "Napoleon - Wikipedia.pdf",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "data": {
+        "content": "Napoleon - Wikipedia\n\n\nNapoleon I\n\nThe Emperor Napoleon in His Study at the\nTuileries, 1812\n\nEmperor of the French\n\n1st reign 18 May 1804 – 6 April 1814\n\nSuccessor Louis XVIII[a]\n\n2nd reign 20 March 1815 – 22 June 1815\n\nSuccessor Louis XVIII[a]\n\nFirst Consul of the French Republic\n\nIn office\n13 December 1799 – 18 May 1804\n\nBorn Napoleone Buonaparte\n15 August 1769\nAjaccio, Corsica, Kingdom of\nFrance\n\nDied 5 May 1821 (aged 51)\nLongwood, Saint Helena\n\nBurial 15 December 1840\nLes Invalides, Paris\n\nNapoleon\nNapoleon Bonaparte[b] (born Napoleone\nBuonaparte;[1][c] 15 August 1769 – 5 May 1821), later\nknown [REDACTED]",
+        # 此content值為文件解析器的輸出，上述範例使用Tika作為文件解析器
+      },
+      "meta": {
+        "name": "Napoleon - Wikipedia.pdf",
+        "content_type": "application/pdf",
+        "size": 10486578,
+        # 單位是bytes，此範例約10Mb
+        "data": {},
+        "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        # 始終以file 開頭
+      },
+      "created_at": 1740000000,
+      "updated_at": 1740000000
+    },
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "url": "/api/v1/files/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "name": "Napoleon - Wikipedia.pdf",
+    "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    "status": "uploaded",
+    "size": 10486578,
+    "error": "",
+    "itemId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    # itemId 與 file["id"] 不同
+  }
+]
+
+
+```
+
+</details>
+
+### `__request__`
+
+`fastapi.Request`實例。可以在[迁移頁面](../../features/plugin/migration/index.mdx)或[fastapis文檔](https://fastapi.tiangolo.com/reference/request/)中瞭解更多資訊。
+
+### `__task__`
+
+任務類型的`str`。其值只是`__metadata__["task"]`的簡寫（如果存在），否則為`None`。
+
+<details>
+<summary>可能的值</summary>
+
+```json
+
+[
+    "title_generation",
+    "tags_generation",
+    "emoji_generation",
+    "query_generation",
+    "image_prompt_generation",
+    "autocomplete_generation",
+    "function_calling",
+    "moa_response_generation"
+]
+```
+
+</details>
+
+### `__task_body__`
+
+包含完成給定`__task__`所需`body`的`dict`。其值只是`__metadata__["task_body"]`的簡寫（如果存在），否則為`None`。
+
+其結構與上述`body`相同，但進行了修改，例如使用適合的模型和系統訊息等。
+
+
+### `__tools__`
+
+`ToolUserModel`實例的`list`。
+
+關於`ToolUserModel`實例的詳細屬性，可以查看[tools.py](https://github.com/open-webui/open-webui/blob/main/backend/open_webui/models/tools.py)中的程式碼。
+

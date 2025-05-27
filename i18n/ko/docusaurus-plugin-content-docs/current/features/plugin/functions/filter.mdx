@@ -1,0 +1,340 @@
+---
+sidebar_position: 2
+title: "🪄 필터 기능"
+---
+
+# 🪄 필터 기능: 입력 및 출력 수정
+
+Open WebUI에서 필터 기능에 대한 종합적인 가이드에 오신 것을 환영합니다! 필터는 데이터를 **대규모 언어 모델(LLM)**에 보내기 전(입력) 또는 **LLM로부터 반환된 후(출력)**에 수정하는 유연하고 강력한 **플러그인 시스템**입니다. 입력을 더 나은 컨텍스트로 변환하거나 출력을 더 읽기 쉽게 정리하는 등 **필터 기능**으로 모든 작업을 수행할 수 있습니다.
+
+이 가이드는 **필터란 무엇인지**, 필터가 어떻게 작동하는지, 그 구조를 포함하여 강력하고 사용자 친화적인 필터를 직접 구축하는 데 필요한 모든 정보를 제공합니다. 비유, 예시 및 팁을 사용하여 모든 것을 쉽게 설명하겠습니다. 🌟
+
+---
+
+## 🌊 Open WebUI의 필터란?
+
+Open WebUI를 **파이프를 통해 흐르는 물**로 상상해보세요:
+
+- **사용자 입력**과 **LLM 출력**은 물입니다.
+- **필터**는 물이 최종 목적지에 도달하기 전에 물을 청소, 수정 및 적응시키는 **물 처리 단계**입니다.
+
+필터는 흐름 중간에 위치하여 조정해야 할 사항을 결정할 수 있는 체크포인트 역할을 합니다.
+
+다음은 필터가 수행하는 작업에 대한 요약입니다:
+
+1. **사용자 입력 수정(Inlet Function)**: AI 모델에 도달하기 전에 입력 데이터를 조정합니다. 명확성을 높이거나, 컨텍스트를 추가하거나, 텍스트를 정리하거나, 특정 요구사항에 맞게 메시지를 다시 포맷하는 기능이 여기에서 수행됩니다.
+2. **모델 출력 가로채기(Stream Function)**: 모델이 **생성하는 중**의 AI 응답을 캡처하고 조정합니다. 실시간 수정에 유용하며, 민감한 정보를 필터링하거나 출력을 더 읽기 쉽게 포맷하는 데 활용됩니다.
+3. **모델 출력 수정(Outlet Function)**: **처리된 후**의 AI 응답을 조정하여 사용자에게 보여주기 전에 수정합니다. 이를 통해 데이터를 세련되게 다듬고, 로그를 남기거나, 더 깨끗한 사용자 경험을 위해 데이터에 변화를 줄 수 있습니다.
+
+> **핵심 개념:** 필터는 독립적인 모델이 아니라 모델로 *전송되고* 모델에서 *반환되는* 데이터를 향상하거나 변환하는 도구입니다.
+
+필터는 AI 워크플로우에서 **번역기 또는 편집자**와 같으며, 흐름을 중단하지 않고 대화를 가로채고 수정할 수 있습니다.
+
+---
+
+## 🗺️ 필터 기능의 구조: 스켈레톤
+
+필터 기능의 가장 간단한 표현부터 시작해보겠습니다. 처음에는 기술적으로 느껴질 수 있지만 모든 부분을 단계별로 설명하니 걱정하지 마세요!
+
+### 🦴 필터의 기본 스켈레톤
+
+```python
+from pydantic import BaseModel
+from typing import Optional
+
+class Filter:
+    # 밸브: 필터를 위한 설정 옵션
+    class Valves(BaseModel):  
+        pass
+
+    def __init__(self):
+        # 밸브 초기화(필터를 위한 선택적 설정)
+        self.valves = self.Valves()
+
+    def inlet(self, body: dict) -> dict:
+        # 여기에서 사용자 입력을 수정합니다.
+        print(f"inlet 호출됨: {body}")
+        return body  
+
+    def stream(self, event: dict) -> dict:
+        # 여기에서 모델 출력의 스트리밍 청크를 수정합니다.
+        print(f"stream 이벤트: {event}")
+        return event
+
+    def outlet(self, body: dict) -> None:
+        # 여기에서 모델 출력을 수정합니다.
+        print(f"outlet 호출됨: {body}")
+```
+
+---
+
+### 🆕 🧲 토글 필터 예시: 인터랙티브 기능 및 아이콘 추가 (Open WebUI 0.6.10 신규 기능)
+
+필터는 텍스트 수정 이상의 기능을 수행할 수 있습니다—UI 토글을 노출하거나 커스텀 아이콘을 표시할 수 있습니다. 예를 들어, 필터를 사용자 인터페이스 버튼으로 켜거나 끌 수 있게 하고 Open WebUI의 메시지 입력 UI에 특별한 아이콘을 표시할 수 있습니다.
+
+다음은 해당 토글 필터를 만드는 방법입니다:
+
+```python
+from pydantic import BaseModel, Field
+from typing import Optional
+
+class Filter:
+    class Valves(BaseModel):
+        pass
+
+    def __init__(self):
+        self.valves = self.Valves()
+        self.toggle = True # 중요: Open WebUI에서 스위치 UI 생성
+        # 팁: SVG 데이터 URI를 사용하세요!
+        self.icon = """data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBjbGFzcz0ic2l6ZS02Ij4KICA8cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik0xMiAxOHYtNS4yNW0wIDBhNi4wMSA2LjAxIDAgMCAwIDEuNS0uMTg5bS0xLjUuMTg5YTYuMDEgNi4wMSAwIDAgMS0xLjUtLjE4OW0zLjc1IDcuNDc4YTEyLjA2IDEyLjA2IDAgMCAxLTQuNSAwbTMuNzUgMi4zODNhMTQuNDA2IDE0LjQwNiAwIDAgMS0zIDBNMTQuMjUgMTh2LS4xOTJjMC0uOTgzLjY1OC0xLjgyMyAxLjUwOC0yLjMxNmE3LjUgNy41IDAgMTAgLTcuNTE3IDBjLjg1LjQ5MyAxLjUwOSAxLjMzMyAxLjUwOSAyLjMxNlYxOCIgLz4KPC9zdmc+Cg=="""
+        pass
+
+    async def inlet(
+        self, body: dict, __event_emitter__, __user__: Optional[dict] = None
+    ) -> dict:
+        await __event_emitter__(
+            {
+                "type": "status",
+                "data": {
+                    "description": "토글됨!",
+                    "done": True
+                    "hidden": False,
+                },
+            }
+        )
+        return body
+```
+
+#### 🖼️ 무슨 일이 일어나고 있나요?
+- **toggle = True**는 Open WebUI에서 전환 UI를 생성하며, 사용자가 실시간으로 필터를 수동으로 활성화하거나 비활성화할 수 있습니다.
+- **icon**(Data URI 포함)은 필터 이름 옆에 작은 이미지로 표시됩니다. Data URI로 인코딩된 SVG를 사용할 수 있습니다!
+- **`inlet` 함수**는 `__event_emitter__` 특별 인수를 사용하여 UI에 대한 피드백/상태를 알립니다. 예를 들어 "전환됨!"이라는 작은 토스트/알림을 보여줍니다.
+
+![Toggle Filter](/images/features/plugin/functions/toggle-filter.png)
+
+이러한 메커니즘을 사용하여 필터를 동적이고, 대화형이며, Open WebUI의 플러그인 생태계 내에서 독창적으로 만들 수 있습니다.
+
+---
+
+### 🎯 주요 구성 요소 설명
+
+#### 1️⃣ **`Valves` 클래스 (옵션 설정)**
+
+**Valves**를 필터의 조정 노브와 슬라이더라고 생각하십시오. 필터 동작을 사용자가 조정 가능한 옵션으로 제공하려면 여기에 정의합니다.
+
+```python
+class Valves(BaseModel):
+    OPTION_NAME: str = "Default Value"
+```
+
+예시:  
+대문자로 변환하는 필터를 만들고 있고, 모든 출력이 완전히 대문자인지 여부를 사용자가 선택하도록 하려는 경우, `TRANSFORM_UPPERCASE: bool = True/False`와 같은 밸브를 추가할 수 있습니다.
+
+---
+
+#### 2️⃣ **`inlet` 함수 (입력 전처리)**
+
+
+`inlet` 함수는 요리에 재료를 준비하는 과정과 같습니다. 요리사라고 상상해보세요: 레시피(이 경우 LLM)에 재료를 넣기 전에 채소를 씻고, 양파를 자르고, 고기에 양념을 할 수 있습니다. 이 과정이 없다면 최종 요리가 부족한 맛이거나, 씻지 않은 재료를 사용하거나, 일관성이 없을 수 있습니다.
+
+Open WebUI의 세계에서는, `inlet` 함수가 모델에 전달되기 전에 **사용자 입력**에 대해 이런 중요한 준비 작업을 수행합니다. 입력을 AI가 처리하기에 최대한 깔끔하고, 맥락적이며, 도움이 되는 형태로 정리합니다.
+
+📥 **입력**:  
+- **`body`**: 모델에 대한 Open WebUI의 원본 입력. 채팅 완료 요청 형식(대화 메시지, 모델 설정, 기타 메타데이터 등 포함된 사전 형식)입니다. 이를 요리 재료라고 생각하십시오.
+
+🚀 **할 일**:  
+`body`를 수정하고 반환하십시오. 수정된 `body`가 LLM과 작업하게 되므로, 이 기회를 통해 입력에 명확성, 구조, 맥락을 부여하십시오.
+
+
+##### 🍳 `inlet`을 사용하는 이유?
+1. **맥락 추가**: 사용자의 입력이 모호하거나 불완전한 경우 중요한 정보를 자동으로 추가. 예를 들어 "당신은 친절한 도우미입니다" 또는 "이 사용자가 소프트웨어 문제 해결을 할 수 있도록 도와주세요"를 추가할 수 있습니다.
+   
+2. **데이터 형식 지정**: 입력이 특정 형식(JSON 또는 Markdown)을 필요로 하는 경우, 모델에 보내기 전에 변경할 수 있습니다.
+
+3. **입력 정화**: 불필요한 문자 제거, 과도한 공백 또는 이모지와 같은 혼란을 줄 수 있는 기호 제거, 민감한 정보 교체.
+
+4. **사용자 입력 간소화**: 모델 출력이 추가 지침으로 개선되는 경우, `inlet`을 사용해 명확한 지시를 자동으로 삽입할 수 있습니다!
+
+
+##### 💡 예시 사용 사례: 식품 준비 기반
+###### 🥗 예제 1: 시스템 컨텍스트 추가
+LLM이 이탈리아 요리를 준비하는 요리사이며, 사용자가 "이것은 이탈리아 요리를 위한 것"이라고 언급하지 않았다고 가정해보세요. 데이터를 모델로 보내기 전에 이 컨텍스트를 추가하여 메시지가 명확한지 확인할 수 있습니다.
+
+```python
+def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+    # 대화에서 이탈리아 컨텍스트에 대한 시스템 메시지 추가
+    context_message = {
+        "role": "system",
+        "content": "사용자가 이탈리아 요리를 준비하도록 돕고 있습니다."
+    }
+    # 대화 기록 시작 부분에 컨텍스트 삽입
+    body.setdefault("messages", []).insert(0, context_message)
+    return body
+```
+
+📖 **무슨 일이 일어나나요?**
+- 사용자의 입력 "저녁 식사 아이디어가 뭐가 좋아요?"는 이제 이탈리아 테마를 반영합니다. 시스템 컨텍스트를 설정했기 때문에 치즈 케이크는 답변에 등장하지 않을 가능성이 높지만, 파스타는 있을 것입니다.
+
+
+###### 🔪 예제 2: 입력 정화 (이상한 문자 제거)
+사용자 입력이 지저분하거나 `!!!`와 같은 불필요한 기호를 포함하여 모델이 대화를 처리하기 어렵게 만드는 경우, 핵심 내용을 보존하면서 이를 정리할 수 있습니다.
+
+```python
+def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+    # 마지막 사용자 입력 정화 (메시지 목록 끝에서 가져오기)
+    last_message = body["messages"][-1]["content"]
+    body["messages"][-1]["content"] = last_message.replace("!!!", "").strip()
+    return body
+```
+
+📖 **무슨 일이 일어나나요?**
+- 이전: `"이 문제를 어떻게 디버깅하죠!!!"` ➡️ 모델로 전송됨: `"이 문제를 어떻게 디버깅하죠"`
+
+참고: 사용자는 같은 느낌을 받지만, 모델은 더 깔끔하고 이해하기 쉬운 쿼리를 처리합니다.
+
+
+##### 📊 LLM에 입력 최적화를 돕는 `inlet`:
+- 모호한 질문을 명확히 하여 **정확도**를 향상시킵니다.
+- 불필요한 노이즈(이모지, HTML 태그, 추가 구두점 등)를 제거하여 AI의 **효율성**을 높입니다.
+- 사용자의 입력을 모델이 예상하는 패턴 또는 스키마와 일치하도록 포맷팅하여 **일관성**을 보장합니다. (예: 특정 용도에 맞춘 JSON 형식 등)
+
+
+💭 **`inlet`을 주방의 보조 셰프로 생각하세요**—모델(귀하의 AI '레시피')에 입력되는 모든 데이터가 완벽히 준비되고, 세척되고, 양념된 상태로 들어오도록 합니다. 입력이 좋으면 출력도 좋아집니다!
+
+---
+
+#### 🆕 3️⃣ **`stream` 훅 (Open WebUI 0.5.17의 새로운 기능)**
+
+##### 🔄 `stream` 훅이란?
+**`stream` 함수**는 Open WebUI **0.5.17**에서 새롭게 도입된 기능으로, 모델의 스트리밍 응답을 실시간으로 **가로채고 수정**할 수 있게 합니다.
+
+`outlet`이 완전한 응답을 처리하는 것과 달리, `stream`은 모델에서 수신된 **개별 청크**별로 작동합니다.
+
+##### 🛠️ Stream Hook을 사용해야 하는 상황
+- 사용자에게 표시되기 전, **스트리밍 응답을 수정**합니다.
+- **실시간 검열 또는 정리**를 구현합니다.
+- **스트리밍 데이터를 모니터링하며 로깅/디버깅**합니다.
+
+##### 📜 예시: 스트리밍 청크 로깅하기
+
+LLM의 스트리밍 응답을 검사하고 수정하는 방법은 다음과 같습니다:
+```python
+def stream(self, event: dict) -> dict:
+    print(event)  # 들어오는 각 청크를 검사용으로 출력
+    return event
+```
+
+> **스트리밍 이벤트 예시:**
+```jsonl
+{"id": "chatcmpl-B4l99MMaP3QLGU5uV7BaBM0eDS0jb","choices": [{"delta": {"content": "Hi"}}]}
+{"id": "chatcmpl-B4l99MMaP3QLGU5uV7BaBM0eDS0jb","choices": [{"delta": {"content": "!"}}]}
+{"id": "chatcmpl-B4l99MMaP3QLGU5uV7BaBM0eDS0jb","choices": [{"delta": {"content": " 😊"}}]}
+```
+📖 **무슨 일이 벌어지나요?**
+- 각 행은 모델의 스트리밍 응답에서 생성된 **작은 조각**을 나타냅니다.
+- **`delta.content` 필드**에 점진적으로 생성된 텍스트가 포함됩니다.
+
+##### 🔄 예시: 스트리밍 데이터에서 이모지 제거
+```python
+def stream(self, event: dict) -> dict:
+    for choice in event.get("choices", []):
+        delta = choice.get("delta", {})
+        if "content" in delta:
+            delta["content"] = delta["content"].replace("😊", "")  # 이모지 제거
+    return event
+```
+📖 **Before:** `"Hi 😊"`  
+📖 **After:** `"Hi"`
+
+---
+
+#### 4️⃣ **`outlet` 함수 (출력 후처리)**
+
+`outlet` 함수는 **교정자**와 같습니다: AI의 응답을 깔끔하게 정리하거나 *LLM에서 처리된 후 최종 변경*을 수행합니다.
+
+📤 **입력**:
+- **`body`**: 채팅에서 현재 모든 메시지(사용자 히스토리 + LLM 응답)가 포함됩니다.
+
+🚀 **당신의 작업**: 이 `body`를 수정합니다. 정리, 추가 또는 변경 사항을 기록할 수 있지만 각 조정이 사용자 경험에 미치는 영향을 염두에 두어야 합니다.
+
+💡 **최고의 관행**:
+- outlet에서 직접 편집하기보다 로깅을 선호하세요 (예: 디버깅 또는 분석용).
+- 출력 형식에 큰 수정이 필요한 경우 **pipe 함수**를 사용하는 것을 고려하세요.
+
+💡 **예시 활용 사례**: 사용자에게 보여주고 싶지 않은 민감한 API 응답 제거:
+```python
+def outlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+    for message in body["messages"]:
+        message["content"] = message["content"].replace("<API_KEY>", "[REDACTED]")
+    return body 
+```
+
+---
+
+## 🌟 필터 활용: 실용적인 예제 만들기
+
+필터를 어떻게 사용하는지 실질적인 예제를 통해 알아봅시다!
+
+### 📚 예시 #1: 사용자 입력에 항상 컨텍스트 추가
+
+LLM이 고객이 소프트웨어 버그를 해결하는 데 도움을 주고 있다는 사실을 항상 인지하도록 하고 싶으신가요? **"당신은 소프트웨어 문제 해결 어시스턴트입니다"**와 같은 지침을 각 사용자 질문에 추가할 수 있습니다.
+
+```python
+class Filter:
+    def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+        context_message = {
+            "role": "system", 
+            "content": "Youre a software troubleshooting assistant."
+        }
+        body.setdefault("messages", []).insert(0, context_message)
+        return body
+```
+
+---
+
+### 📚 예시 #2: 읽기 쉽게 출력 하이라이트하기
+
+Markdown 또는 다른 서식 스타일로 출력을 반환하고 싶으신가요? `outlet` 함수를 사용하세요!
+
+```python
+class Filter:
+    def outlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+        # 각 응답에 '하이라이트' 마크다운 추가
+        for message in body["messages"]:
+            if message["role"] == "assistant":  # 모델 응답 타겟팅
+                message["content"] = f"**{message[content]}**"  # 마크다운으로 강조
+        return body
+```
+
+---
+
+## 🚧 잠재적 혼란: FAQ 명확히 하기 🛑  
+
+### **Q: 필터가 파이프 함수와 어떻게 다른가요?**
+
+필터는 데이터가 **모델로 가거나 모델에서 오는 과정**에서 데이터를 수정하지만, 이 단계들 바깥에서 로직과 크게 상호작용하지 않습니다. 반면, 파이프는:
+- **외부 API**를 통합하거나 백엔드가 작업을 처리하는 방식을 크게 변경할 수 있습니다.
+- 완전히 새로운 "모델"로 사용자 정의 로직을 노출합니다.
+
+### **Q: `outlet` 내에서 대규모 후처리를 할 수 있나요?**
+
+할 수는 있지만, **최선의 방법은 아닙니다.**:
+- **필터**는 가벼운 변경을 가하거나 로깅에 적합하게 설계되었습니다.
+- 대규모 수정이 필요한 경우 대신 **파이프 함수**를 고려하세요.
+
+---
+
+## 🎉 요약: 왜 필터 함수를 작성해야 할까요?
+
+지금까지 여러분은 다음을 배웠습니다:
+1. **Inlet**은 **사용자 입력**을 조작합니다 (사전 처리).
+2. **Stream**은 **스트리밍 모델 출력**을 가로채고 수정합니다 (실시간).
+3. **Outlet**은 **AI 출력**을 조정합니다 (사후 처리).
+4. 필터는 데이터 흐름에 가벼운 실시간 변경을 가하는 데 가장 적합합니다.
+5. **Valves**를 사용하면 필터를 동적으로 구성하여 사용자에게 맞춤형 동작을 설정할 수 있는 기능을 제공합니다.
+
+---
+
+🚀 **이제 당신 차례입니다**: 어떤 작은 조정이나 컨텍스트 추가가 Open WebUI 경험을 향상시킬 수 있을까요? 필터는 만들기 재미있고 사용이 유연하며, 여러분의 모델을 다음 단계로 끌어올릴 수 있습니다!
+
+행복한 코딩 되세요! ✨

@@ -1,0 +1,72 @@
+---
+sidebar_position: 0
+title: "🚧 Problemas de Conectividade do Servidor"
+---
+
+Estamos aqui para ajudar você a configurar tudo e garantir que funcione perfeitamente. Abaixo, você encontrará instruções passo a passo adaptadas para diferentes cenários para resolver problemas comuns de conexão com Ollama e servidores externos como Hugging Face.
+
+## 🌟 Conexão com o Servidor Ollama
+
+### 🚀 Acessando Ollama a partir do Open WebUI
+
+Tem dificuldade para se conectar ao Ollama a partir do Open WebUI? Isso pode ocorrer porque o Ollama não está escutando em uma interface de rede que permite conexões externas. Vamos resolver isso:
+
+1. **Configure Ollama para Escutar Amplamente** 🎧:
+   Defina `OLLAMA_HOST` como `0.0.0.0` para fazer o Ollama escutar em todas as interfaces de rede.
+
+2. **Atualize as Variáveis de Ambiente**:
+   Certifique-se de que `OLLAMA_HOST` esteja definido corretamente no seu ambiente de implantação.
+
+3. **Reinicie o Ollama** 🔄:
+   É necessário reiniciar para que as alterações entrem em vigor.
+
+💡 Após a configuração, verifique se o Ollama é acessível visitando a interface do WebUI.
+
+Para mais instruções detalhadas sobre como configurar o Ollama, consulte a [Documentação Oficial do Ollama](https://github.com/ollama/ollama/blob/main/docs/faq.md#setting-environment-variables-on-linux).
+
+### 🐳 Erro de Conexão com Docker
+
+Se você estiver vendo um erro de conexão ao tentar acessar o Ollama, pode ser porque o container Docker do WebUI não consegue se comunicar com o servidor Ollama que está sendo executado no seu host. Vamos corrigir isso:
+
+1. **Ajuste as Configurações de Rede** 🛠️:
+   Use a opção `--network=host` no seu comando do Docker. Isso conecta diretamente seu container à rede do host.
+
+2. **Altere a Porta**:
+   Lembre-se de que a porta interna muda de 3000 para 8080.
+
+**Comando Exemplo do Docker**:
+```bash
+docker run -d --network=host -v open-webui:/app/backend/data -e OLLAMA_BASE_URL=http://127.0.0.1:11434 --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+🔗 Após executar o comando acima, seu WebUI deve estar disponível em `http://localhost:8080`.
+
+## 🔒 Problema de Conexão SSL com Hugging Face
+
+Encontrou um erro de SSL? Isso pode ser um problema com o servidor do Hugging Face. Veja o que fazer:
+
+1. **Verifique o Status do Servidor Hugging Face**:
+   Verifique se há alguma interrupção ou problema conhecido no servidor deles.
+
+2. **Troque o Endpoint**:
+   Se o Hugging Face estiver fora do ar, altere o endpoint no seu comando do Docker.
+
+**Comando Exemplo do Docker para Problemas de Conexão**:
+```bash
+docker run -d -p 3000:8080 -e HF_ENDPOINT=https://hf-mirror.com/ --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+
+## 🍏 Podman no MacOS
+
+Executando no MacOS com Podman? Veja como garantir a conectividade:
+
+1. **Habilite o Loopback do Host**:
+   Use `--network slirp4netns:allow_host_loopback=true` no seu comando.
+
+2. **Defina OLLAMA_BASE_URL**:
+   Certifique-se de que ele aponte para `http://host.containers.internal:11434`.
+
+**Comando Exemplo do Podman**:
+```bash
+podman run -d --network slirp4netns:allow_host_loopback=true -p 3000:8080 -e OLLAMA_BASE_URL=http://host.containers.internal:11434 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+

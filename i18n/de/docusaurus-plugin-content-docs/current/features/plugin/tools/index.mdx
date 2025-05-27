@@ -1,0 +1,139 @@
+---
+sidebar_position: 2  
+title: "⚙️ Werkzeuge"  
+---
+
+# ⚙️ Was sind Werkzeuge?
+
+Werkzeuge sind kleine Python-Skripte, die Ihrer LLM zusätzliche Fähigkeiten verleihen. Wenn sie aktiviert sind, ermöglichen sie Ihrem Chatbot erstaunliche Dinge — wie das Durchsuchen des Internets, das Extrahieren von Daten, das Erstellen von Bildern, das Antworten mit KI-Stimmen und mehr.
+
+Betrachten Sie Werkzeuge als nützliche Plugins, die Ihre KI beim Chatten mit Ihnen verwenden kann.
+
+---
+
+## 🚀 Was können Werkzeuge für mich tun?
+
+Hier sind nur einige Beispiele dafür, was Werkzeuge Ihrer KI-Assistenz ermöglichen:
+
+- 🌍 Websuche: Erhalten Sie Echtzeit-Antworten durch das Durchsuchen des Internets.
+- 🖼️ Bilderstellung: Erstellen Sie Bilder aus Ihren Eingaben.
+- 🔊 Sprachausgabe: Erzeugen Sie KI-Stimmen mit ElevenLabs.
+
+Entdecken Sie hier einsatzbereite Werkzeuge:  
+🧰 [Werkzeuge-Schaufenster](https://openwebui.com/tools)
+
+---
+
+
+## 📦 Wie installiert man Werkzeuge
+
+Es gibt zwei einfache Möglichkeiten, Werkzeuge in Open WebUI zu installieren:
+
+1. Besuchen Sie die [Community-Werkzeugbibliothek](https://openwebui.com/tools)
+2. Wählen Sie ein Werkzeug aus und klicken Sie auf die Schaltfläche "Get".
+3. Geben Sie die IP-Adresse oder URL Ihrer Open WebUI-Instanz ein.
+4. Klicken Sie auf „Importieren in WebUI“ — fertig!
+
+🛑 Sicherheitstipp: Importieren Sie niemals ein Werkzeug, das Sie nicht kennen oder dem Sie nicht vertrauen. Diese sind Python-Skripte und könnten unsicheren Code ausführen.
+
+---
+
+
+## 🔧 Wie benutzt man Werkzeuge in Open WebUI
+
+Sobald Sie Werkzeuge installiert haben (wir zeigen Ihnen unten, wie), können Sie sie aktivieren und nutzen:
+
+Es gibt zwei Möglichkeiten, ein Werkzeug für Ihr Modell zu aktivieren:
+
+### ➕ Option 1: Aktivieren über das Chat-Fenster
+
+Klicken Sie während des Chatens auf das ➕-Symbol im Eingabebereich. Sie sehen eine Liste der verfügbaren Werkzeuge — Sie können jedes für die aktuelle Sitzung aktivieren.
+
+💡 Tipp: Das Aktivieren eines Werkzeugs gibt dem Modell die Erlaubnis, es zu verwenden — aber es könnte es nur nutzen, wenn es für die Aufgabe nützlich ist.
+
+### ✏️ Option 2: Standardmäßig aktivieren (Empfohlen für häufige Nutzung)
+1. Gehen Sie zu: Arbeitsbereich ➡️ Modelle
+2. Wählen Sie das Modell aus, das Sie verwenden (wie GPT-4 oder LLaMa2), und klicken Sie auf das ✏️ Bearbeitungssymbol.
+3. Scrollen Sie nach unten zum Abschnitt „Werkzeuge“.
+4. ✅ Markieren Sie die Werkzeuge, zu denen Ihr Modell standardmäßig Zugriff haben soll.
+5. Klicken Sie auf Speichern.
+
+Dies stellt sicher, dass das Modell stets diese Werkzeuge bereit hat, wenn Sie mit ihm chatten.
+
+Sie können Ihrem LLM auch erlauben, die richtigen Werkzeuge automatisch auszuwählen, indem Sie den AutoTool-Filter verwenden:
+
+🔗 [AutoTool Filter](https://openwebui.com/f/hub/autotool_filter/)
+
+🎯 Hinweis: Auch beim Einsatz des AutoTool-Filters müssen Sie Ihre Werkzeuge mithilfe von Option 2 aktivieren.
+
+✅ Und das war's — Ihr LLM ist jetzt werkzeuggestützt! Sie sind bereit, Ihre Chats mit Websuche, Bilderstellung, Sprachausgabe und mehr zu verbessern.
+
+---
+
+## 🧠 Wie Werkzeuge verwendet werden: Standard vs. Native
+
+Sobald Werkzeuge für Ihr Modell aktiviert sind, bietet Open WebUI Ihnen zwei verschiedene Möglichkeiten, Ihrem LLM die Nutzung von Werkzeugen in Gesprächen zu erlauben.
+
+Sie können entscheiden, wie das Modell Werkzeuge aufruft, indem Sie zwischen folgenden Optionen wählen:
+
+- 🟡 Standardmodus (Prompt-basiert)
+- 🟢 Nativer Modus (Eingebaute Funktionsaufrufe)
+
+Lassen Sie uns dies aufschlüsseln:
+
+### 🟡 Standardmodus (Prompt-basierte Werkzeugauslösung)
+
+Dies ist die Standardeinstellung in Open WebUI.
+
+Hierbei benötigt Ihr LLM keine native Unterstützung von Funktionsaufrufen. Stattdessen führen wir das Modell mithilfe einer intelligenten Werkzeugauswahl-Promptvorlage, um ein Werkzeug auszuwählen und zu verwenden.
+
+✅ Funktioniert mit fast jedem Modell  
+✅ Großartige Möglichkeit, Werkzeuge mit grundlegenden oder lokalen Modellen zu nutzen  
+❗ Nicht so zuverlässig oder flexibel wie der Native Modus beim Verkettung von Werkzeugen
+
+### 🟢 Nativer Modus (Eingebaute Funktionsaufrufe)
+
+Wenn Ihr Modell „natives“ Funktionsaufrufen unterstützt (wie GPT-4o oder GPT-3.5-turbo-1106), können Sie diesen leistungsstarken Modus verwenden, damit das LLM in Echtzeit entscheidet, wann und wie mehrere Werkzeuge während einer einzigen Chat-Nachricht aufgerufen werden sollen.
+
+✅ Schnell, präzise und kann mehrere Werkzeuge in einer Antwort verketten  
+✅ Das natürlichste und fortschrittlichste Erlebnis  
+❗ Erfordert ein Modell, das tatsächlich native Funktionsaufrufe unterstützt
+
+### ✳️ Wie zwischen den Modi wechseln
+
+Möchten Sie native Funktionsaufrufe in Ihren Chats aktivieren? So funktioniert es:
+
+![Chat-Steuerung](/images/features/plugin/tools/chat-controls.png)
+
+1. Öffnen Sie das Chat-Fenster mit Ihrem Modell.
+2. Klicken Sie auf ⚙️ Chat-Steuerungen > Erweiterte Parameter.
+3. Suchen Sie die Funktionseinstellungsoption ‚Funktionsaufrufe‘ und ändern Sie sie von Standard → Native.
+
+Das war's! Ihr Chat verwendet nun echte native Werkzeugunterstützung (sofern das Modell dies unterstützt).
+
+➡️ Wir empfehlen die Nutzung von GPT-4o oder einem anderen OpenAI-Modell für die beste Erfahrung mit nativen Funktionsaufrufen.  
+🔎 Einige lokale Modelle könnten Unterstützung beanspruchen, haben jedoch oft Schwierigkeiten mit genauer oder komplizierter Werkzeugnutzung.
+
+💡 Zusammenfassung:
+
+| Modus     | Zielgruppe                       | Vorteile                                | Nachteile                             |
+|----------|----------------------------------|-----------------------------------------|--------------------------------------|
+| Standard  | Jedes Modell                     | Breite Kompatibilität, sicherer, flexibel| Könnte weniger genau oder langsamer sein|
+| Native    | GPT-4o, etc.                     | Schnell, intelligent, hervorragende Werkzeugverkettung | Benötigt echte Unterstützung für Funktionsaufrufe |
+
+Wählen Sie den Modus, der für Ihre Umgebung am besten geeignet ist – und denken Sie daran, dass Sie jederzeit über die Chat-Steuerungen wechseln können.
+
+👏 Und das war's — Ihr LLM weiß nun, wie und wann es Tools intelligent nutzen kann.
+
+---
+
+## 🧠 Zusammenfassung
+
+Tools sind Erweiterungen, die Ihrem KI-Modell viel mehr als nur Chatten ermöglichen. Von der Beantwortung von Echtzeitfragen bis hin zur Generierung von Bildern oder dem Vorlesen — Tools erwecken Ihre KI zum Leben.
+
+- Besuchen Sie: [https://openwebui.com/tools](https://openwebui.com/tools), um neue Tools zu entdecken.
+- Installieren Sie sie manuell oder mit einem Klick.
+- Aktivieren Sie sie pro Modell aus dem Arbeitsbereich ➡️ Modelle.
+- Nutzen Sie sie im Chat durch einen Klick auf ➕
+
+Jetzt machen Sie Ihre KI vieeeel schlauer 🤖✨

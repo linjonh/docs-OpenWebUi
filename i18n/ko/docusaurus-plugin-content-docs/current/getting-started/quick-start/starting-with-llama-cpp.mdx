@@ -1,0 +1,128 @@
+---
+sidebar_position: 3
+title: "🦙Llama.cpp 시작하기"
+---
+
+## 개요
+
+Open WebUI는 로컬 Llama.cpp 서버를 연결하고 관리하여 효율적이고 양자화된 언어 모델을 실행하는 과정을 간단하고 유연하게 만듭니다. Llama.cpp를 직접 컴파일했든 사전 컴파일된 바이너리를 사용하든, 이 가이드에서는 다음을 수행하는 방법을 안내합니다:
+
+- Llama.cpp 서버 설정
+- 대규모 모델을 로컬에서 로드
+- Open WebUI와 통합하여 매끄러운 인터페이스 구현
+
+시작해봅시다!
+
+---
+
+## 1단계: Llama.cpp 설치
+
+Llama.cpp를 사용해 모델을 실행하려면 먼저 로컬에 Llama.cpp 서버를 설치해야 합니다.
+
+다음 방법 중 하나로 설치 가능합니다:
+
+- 📦 [사전 빌드된 바이너리 다운로드](https://github.com/ggerganov/llama.cpp/releases)
+- 🛠️ 또는 [공식 빌드 지침](https://github.com/ggerganov/llama.cpp/blob/master/docs/build.md)을 참고하여 소스에서 빌드
+
+설치 후, `llama-server`가 로컬 시스템 경로에서 사용 가능한지 확인하거나 위치를 기록하십시오.
+
+---
+
+## 2단계: 지원되는 모델 다운로드
+
+Llama.cpp를 이용하면 다양한 GGUF 형식의 양자화 LLM을 로드하고 실행할 수 있습니다. 눈에 띄는 예로는 UnslothAI가 최적화한 DeepSeek-R1 1.58-비트 모델이 있습니다. 해당 버전을 다운로드하려면:
+
+1. [Hugging Face의 Unsloth DeepSeek-R1 저장소](https://huggingface.co/unsloth/DeepSeek-R1-GGUF) 방문
+2. 1.58-비트 양자화 버전 다운로드 – 약 131GB.
+
+또는 Python으로 프로그래밍 방식으로 다운로드:
+
+```python
+# pip install huggingface_hub hf_transfer
+
+from huggingface_hub import snapshot_download
+
+snapshot_download(
+    repo_id = "unsloth/DeepSeek-R1-GGUF",
+    local_dir = "DeepSeek-R1-GGUF",
+    allow_patterns = ["*UD-IQ1_S*"],  # 1.58-비트 버전만 다운로드
+)
+```
+
+이로써 모델 파일이 다음과 같은 디렉토리에 다운로드됩니다:
+```
+DeepSeek-R1-GGUF/
+└── DeepSeek-R1-UD-IQ1_S/
+    ├── DeepSeek-R1-UD-IQ1_S-00001-of-00003.gguf
+    ├── DeepSeek-R1-UD-IQ1_S-00002-of-00003.gguf
+    └── DeepSeek-R1-UD-IQ1_S-00003-of-00003.gguf
+```
+
+📍 첫 번째 GGUF 파일의 전체 경로를 기억하세요 — 3단계에서 필요합니다.
+
+---
+
+## 3단계: Llama.cpp로 모델 제공
+
+llama-server 바이너리를 사용하여 모델 서버를 시작합니다. llama.cpp 폴더(예: build/bin)로 이동하여 다음을 실행하세요:
+
+```bash
+./llama-server \
+  --model /your/full/path/to/DeepSeek-R1-UD-IQ1_S-00001-of-00003.gguf \
+  --port 10000 \
+  --ctx-size 1024 \
+  --n-gpu-layers 40
+```
+
+🛠️ 매개변수를 변경하여 머신에 맞게 조정하세요:
+
+- --model: .gguf 모델 파일 경로
+- --port: 10000 (또는 사용 가능한 다른 포트 선택)
+- --ctx-size: 토큰 컨텍스트 길이 (RAM이 허용하면 증가 가능)
+- --n-gpu-layers: 더 빠른 성능을 위해 GPU에 계층을 오프로드
+
+서버가 실행되면 로컬에서 OpenAI 호환 API를 노출합니다:
+
+```
+http://127.0.0.1:10000
+```
+
+---
+
+## 4단계: Llama.cpp를 Open WebUI에 연결
+
+Open WebUI에서 로컬에서 실행 중인 모델을 직접 제어하고 쿼리하려면:
+
+1. 브라우저에서 Open WebUI 열기
+2. ⚙️ 관리자 설정 → 연결 → OpenAI 연결로 이동
+3. ➕ 연결 추가를 클릭하고 다음을 입력:
+
+- URL: `http://127.0.0.1:10000/v1`  
+  (WebUI를 Docker 내부에서 실행 중인 경우 `http://host.docker.internal:10000/v1` 사용)
+- API 키: `none` (비워둡니다)
+
+💡 저장 후, Open WebUI는 로컬 Llama.cpp 서버를 백엔드로 사용하기 시작합니다!
+
+![Open WebUI 내 Llama.cpp 연결](/images/tutorials/deepseek/connection.png)
+
+---
+
+## 빠른 팁: 채팅 인터페이스로 모델 사용해보기
+
+연결이 완료되면 Open WebUI 채팅 메뉴에서 모델을 선택하고 상호작용을 시작하세요!
+
+![모델 채팅 미리보기](/images/tutorials/deepseek/response.png)
+
+---
+
+## 준비 완료!
+
+구성이 완료되면 Open WebUI를 통해 여러분은:
+
+- Llama.cpp가 제공하는 로컬 모델 관리 및 전환
+- 키 없이 OpenAI 호환 API 사용
+- DeepSeek-R1과 같은 대규모 모델을 직접 사용하여 실험
+
+---
+
+🚀 재미있게 실험하고 구축하세요!

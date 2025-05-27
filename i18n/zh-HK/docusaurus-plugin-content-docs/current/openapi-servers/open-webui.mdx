@@ -1,0 +1,181 @@
+---
+sidebar_position: 1
+title: "🔗 開放式 WebUI 整合"
+---
+
+## 概述
+
+Open WebUI v0.6+ 支援透過 OpenAPI 伺服器與外部工具無縫整合，這意味著您可以輕鬆使用自訂或社群提供的工具伺服器來擴展您的 LLM 工作流程 🧰。
+
+在本指南中，您將學習如何啟動一個符合 OpenAPI 的工具伺服器，並通過直觀的使用者介面將其連接到 Open WebUI。讓我們開始吧！🚀
+
+---
+
+## 步驟 1：啟動 OpenAPI 工具伺服器
+
+首先，您需要啟動 openapi-servers repo 中可用的其中一個參考工具伺服器。為了快速測試，我們將以 time 工具伺服器為例。
+
+🛠️ 範例：本地啟動 `time` 伺服器
+
+```bash
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+
+# 導航至 time 伺服器
+cd servers/time
+
+# 安裝所需依賴
+pip install -r requirements.txt
+
+# 啟動伺服器
+uvicorn main:app --host 0.0.0.0 --reload
+```
+
+啟動後，這將在 http://localhost:8000 啟用一個本地 OpenAPI 伺服器，您可以指向 Open WebUI。
+
+![Time Server](/images/openapi-servers/open-webui/time-server.png)
+
+---
+
+## 步驟 2：在 Open WebUI 中連接工具伺服器
+
+接下來，將您的運行中的工具伺服器連接到 Open WebUI：
+
+1. 在瀏覽器中打開 Open WebUI。
+2. 打開 ⚙️ **設定**。
+3. 點擊 ➕ **工具** 以添加新的工具伺服器。
+4. 輸入您的 OpenAPI 工具伺服器運行的 URL（例如：`http://localhost:8000`）。
+5. 點擊「儲存」。
+
+![Settings Page](/images/openapi-servers/open-webui/settings.png)
+
+### 🧑‍💻 使用者工具伺服器 vs. 🛠️ 全域工具伺服器
+
+在 Open WebUI 中有兩種方式註冊工具伺服器：
+
+#### 1. 使用者工具伺服器（通過常規設定添加）
+
+- 只有註冊工具伺服器的使用者可以存取。
+- 用戶直接從瀏覽器（客戶端）進行連接。
+- 適合個人工作流程或測試自訂/本地工具。
+
+#### 2. 全域工具伺服器（通過管理員設定添加）
+
+管理員可以管理整個部署中所有或特定使用者可用的共享工具伺服器：
+
+- 前往 🛠️ **管理員設定 > 工具**。
+- 按照使用者設定的方式添加工具伺服器 URL。
+- 這些工具被視為 Open WebUI 的內建工具。
+
+### 👉 可選：使用 mcpo 配置檔案
+
+如果您通過 mcpo 使用配置檔案運行多個工具，請注意：
+
+🧩 每個工具都會掛載在自己唯一的路徑下！
+
+例如，如果您通過 mcpo 同時使用記憶和時間工具，它們都將可用於不同的路由：
+
+- http://localhost:8000/time
+- http://localhost:8000/memory
+
+這意味著：
+
+- 在 Open WebUI 中連接工具時，您必須輸入該特定工具的完整路由，而不是僅輸入根 URL（`http://localhost:8000`）。
+- 在 Open WebUI 設定中使用各自的子路徑 URL 分別添加每個工具。
+
+![MCPO Config Tools Setting](/images/openapi-servers/open-webui/mcpo-config-tools.png)
+
+✅ 正確：
+
+http://localhost:8000/time
+http://localhost:8000/memory
+
+🚫 無效：
+
+http://localhost:8000
+
+這確保 Open WebUI 能正確辨識並與每個工具伺服器溝通。
+
+---
+
+## 步驟 3：確認工具伺服器已連接 ✅
+
+工具伺服器成功連接後，Open WebUI 將直接在訊息輸入區域顯示一個 👇 工具伺服器指示器：
+
+📍 您現在可以在輸入框下方看到此圖示：
+
+![Tool Server Indicator](/images/openapi-servers/open-webui/message-input.png)
+
+點擊此圖示，彈出窗口將顯示：
+
+- 已連接的工具伺服器資訊
+- 查看有哪些可用工具以及由哪個伺服器提供
+- 如果需要，可以調試或斷開某個工具
+
+🔍 以下是工具資訊模式的樣子：
+
+![Tool Info Modal Expanded](/images/openapi-servers/open-webui/info-modal.png)
+
+### 🛠️ 全域工具伺服器顯示不同 — 且預設隱藏！
+
+如果您連接的是全域工具伺服器（即管理員配置的伺服器），它不會像使用者工具伺服器那樣自動顯示在輸入區域中。
+
+相反：
+
+- 全域工具預設為隱藏，必須由使用者明確激活。
+- 若要啟用它們，您需要點擊訊息輸入區域底部的 ➕ 按鈕，並手動切換啟用您要使用的特定全域工具。
+
+以下是操作示例：
+
+![Global Tool Server Message Input](/images/openapi-servers/open-webui/global-message-input.png)
+
+⚠️ 全域工具伺服器重要說明：
+
+- 在工具指示器彈出窗口中，直到啟用後才會顯示它們。
+- 每個全域工具必須單獨切換啟動才能在您當前的聊天中生效。
+- 啟動後，它們的功能操作與使用者工具相同。
+- 管理員可以透過基於角色的許可控制全域工具的存取。
+
+這非常適合團隊設置或共享環境，常用工具（例如文件搜尋、記憶體或網頁查詢）可以供多個使用者集中訪問。
+
+---
+
+## （可選）步驟 4：使用「原生」函數調用（ReACT 風格）的工具 🧠
+
+:::info
+為了使其有效運作，**您選擇的模型必須支持原生工具調用**。某些本地模型聲稱支持，但經常產生效果不佳的結果。我們強烈建議使用 GPT-4o 或其他支持原生函數調用的 OpenAI 模型，以獲得最佳體驗。
+:::
+
+想在對話中直接啟用 ReACT 式（推理 + 行動）的原生函數調用嗎？您可以將 Open WebUI 切換為使用原生函數調用。
+
+✳️ 如何啟用原生函數調用：
+
+1. 打開聊天窗口。
+2. 進入 ⚙️ **Chat Controls > Advanced Params**。
+3. 將 **Function Calling** 參數從 `Default` 更改為 `Native`。
+
+![Native Tool Call](/images/openapi-servers/open-webui/native.png)
+
+---
+
+## 需要更多工具？探索與擴展！🧱
+
+openapi-servers 儲存庫包含各種有用的參考伺服器：
+
+- 📂 檔案系統訪問
+- 🧠 記憶與知識圖譜
+- 🗃️ Git 儲存庫瀏覽
+- 🌎 網頁搜尋（開發中）
+- 🛢️ 資料庫查詢（開發中）
+
+您可以以相同的方式運行這些工具，並通過重複上述步驟將它們連接到 Open WebUI。
+
+---
+
+## 疑難排解與提示 🧩
+
+- ❌ 無法連接？請確保 URL 正確且可從運行 Open WebUI 的瀏覽器訪問。
+- 🔒 如果您使用的是遠端伺服器，請檢查防火牆和 HTTPS 配置！
+- 📝 若想讓伺服器持續運行，可以考慮用 Docker 或系統服務部署它們。
+
+需要幫助嗎？訪問 👉 [討論頁面](https://github.com/open-webui/openapi-servers/discussions) 或 [提交問題](https://github.com/open-webui/openapi-servers/issues)。

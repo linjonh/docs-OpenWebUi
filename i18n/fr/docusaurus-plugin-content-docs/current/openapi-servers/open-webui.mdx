@@ -1,0 +1,181 @@
+---
+sidebar_position: 1
+title: "🔗 Intégration Open WebUI"
+---
+
+## Aperçu
+
+Open WebUI v0.6+ prend en charge une intégration transparente avec des outils externes via les serveurs OpenAPI — ce qui signifie que vous pouvez facilement étendre vos flux de travail LLM en utilisant des serveurs d'outils personnalisés ou alimentés par la communauté 🧰.
+
+Dans ce guide, vous apprendrez comment lancer un serveur d'outils compatible OpenAPI et le connecter à Open WebUI via l'interface utilisateur intuitive. Allons-y ! 🚀
+
+---
+
+## Étape 1 : Lancer un serveur d'outils OpenAPI
+
+Pour commencer, vous devez démarrer l'un des serveurs d'outils de référence disponibles dans le dépôt openapi-servers. Pour un test rapide, nous utiliserons le serveur d'outils time comme exemple.
+
+🛠️ Exemple : Démarrer le serveur `time` localement
+
+```bash
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+
+# Naviguer vers le serveur time
+cd servers/time
+
+# Installer les dépendances requises
+pip install -r requirements.txt
+
+# Lancer le serveur
+uvicorn main:app --host 0.0.0.0 --reload
+```
+
+Une fois en fonctionnement, cela hébergera un serveur OpenAPI local à l'adresse http://localhost:8000, auquel vous pouvez pointer Open WebUI.
+
+![Serveur Time](/images/openapi-servers/open-webui/time-server.png)
+
+---
+
+## Étape 2 : Connecter un serveur d'outils dans Open WebUI
+
+Ensuite, connectez votre serveur d'outils en cours d'exécution à Open WebUI :
+
+1. Ouvrez Open WebUI dans votre navigateur.
+2. Ouvrez ⚙️ **Paramètres**.
+3. Cliquez sur ➕ **Outils** pour ajouter un nouveau serveur d'outils.
+4. Saisissez l'URL où votre serveur d'outils OpenAPI est en cours d'exécution (par ex., http://localhost:8000).
+5. Cliquez sur "Enregistrer".
+
+![Page des Paramètres](/images/openapi-servers/open-webui/settings.png)
+
+### 🧑‍💻 Serveurs d'outils utilisateur vs. 🛠️ Serveurs d'outils globaux
+
+Il existe deux façons d'enregistrer des serveurs d'outils dans Open WebUI :
+
+#### 1. Serveurs d'outils utilisateur (ajoutés via les Paramètres réguliers)
+
+- Accessibles uniquement à l'utilisateur qui a enregistré le serveur d'outils.
+- La connexion est effectuée directement depuis le navigateur (côté client) par l'utilisateur.
+- Parfait pour des flux de travail personnels ou lors des tests d'outils personnalisés/locaux.
+
+#### 2. Serveurs d'outils globaux (ajoutés via les Paramètres d'administration)
+
+Les administrateurs peuvent gérer des serveurs d'outils partagés disponibles pour tous ou pour des utilisateurs spécifiques dans l'intégralité du déploiement :
+
+- Rendez-vous dans 🛠️ **Paramètres d'administration > Outils**.
+- Ajoutez l'URL du serveur d'outils comme vous le feriez dans les paramètres utilisateur.
+- Ces outils sont traités de la même manière que les outils intégrés d'Open WebUI.
+
+### 👉 Optionnel : Utiliser un fichier de configuration avec mcpo
+
+Si vous exécutez plusieurs outils via mcpo à l'aide d'un fichier de configuration, notez :
+
+🧩 Chaque outil est monté sous son propre chemin unique !
+
+Par exemple, si vous utilisez les outils memory et time simultanément via mcpo, chacun sera disponible sur une route distincte :
+
+- http://localhost:8000/time
+- http://localhost:8000/memory
+
+Cela signifie :
+
+- Lors de la connexion d'un outil dans Open WebUI, vous devez entrer la route complète de cet outil spécifique — ne saisissez PAS simplement l'URL racine (http://localhost:8000).
+- Ajoutez chaque outil individuellement dans les Paramètres Open WebUI en utilisant leurs URL de sous-chemin respectives.
+
+![Paramètres des outils de configuration MCPO](/images/openapi-servers/open-webui/mcpo-config-tools.png)
+
+✅ Correct :
+
+http://localhost:8000/time  
+http://localhost:8000/memory
+
+🚫 Non valide :
+
+http://localhost:8000
+
+Cela garantit qu'Open WebUI reconnaît et communique correctement avec chaque serveur d'outils.
+
+---
+
+## Étape 3 : Confirmer que votre serveur d'outils est connecté ✅
+
+Une fois que votre serveur d'outils est connecté avec succès, Open WebUI affichera un indicateur de serveur d'outils 👇 directement dans la zone de saisie des messages :
+
+📍 Vous verrez désormais cette icône sous la boîte de saisie :
+
+![Indicateur du Serveur d'Outils](/images/openapi-servers/open-webui/message-input.png)
+
+En cliquant sur cette icône, une fenêtre contextuelle s'ouvrira où vous pourrez :
+
+- Consulter les informations du serveur d'outils connecté
+- Voir quels outils sont disponibles et par quel serveur ils sont fournis
+- Déboguer ou déconnecter un outil si nécessaire
+
+🔍 Voici à quoi ressemble la fenêtre d'information sur les outils :
+
+![Fenêtre d'info des Outils Développée](/images/openapi-servers/open-webui/info-modal.png)
+
+### 🛠️ Les serveurs d'outils globaux sont différents — Et sont masqués par défaut !
+
+Si vous avez connecté un serveur d'outils global (c'est-à-dire un serveur configuré par l'administrateur), il n'apparaîtra pas automatiquement dans la zone de saisie comme le font les serveurs d'outils utilisateur.
+
+Au lieu de cela :
+
+- Les outils globaux sont masqués par défaut et doivent être activés explicitement par utilisateur.
+- Pour les activer, vous devez cliquer sur le bouton ➕ dans la zone de saisie de messages (en bas à gauche de la boîte de chat), et activer manuellement l'(les) outil(s) global(aux) spécifique(s) que vous souhaitez utiliser.
+
+Voici à quoi cela ressemble :
+
+![Saisie des Messages pour le Serveur d'Outils Global](/images/openapi-servers/open-webui/global-message-input.png)
+
+⚠️ Remarques importantes pour les serveurs d'outils globaux :
+
+- Ils n'apparaîtront pas dans la fenêtre contextuelle de l'indicateur d'outils tant qu'ils n'ont pas été activés à partir du menu ➕.
+- Chaque outil global doit être activé individuellement pour devenir actif dans votre chat actuel.
+- Une fois activés, ils fonctionnent de la même manière que les outils utilisateur.
+- Les administrateurs peuvent contrôler l'accès aux outils globaux via des autorisations basées sur les rôles.
+
+Ceci est idéal pour les configurations d'équipe ou les environnements partagés, où les outils couramment utilisés (par exemple la recherche de documents, la mémoire, ou la recherche sur le web) doivent être accessibles centralement par plusieurs utilisateurs.
+
+---
+
+## (Optionnel) Étape 4 : Utilisez l'outil d'appel de fonction "Native" de style ReACT 🧠
+
+:::info
+Pour que cela fonctionne efficacement, **votre modèle sélectionné doit prendre en charge l'appel d'outil natif**. Certains modèles locaux revendiquent ce support mais produisent souvent de mauvais résultats. Nous recommandons fortement d'utiliser GPT-4o ou un autre modèle OpenAI prenant en charge l'appel de fonction natif pour une expérience optimale.
+:::
+
+Vous souhaitez activer les appels de fonction natifs de style ReACT (Raisonnement + Action) directement dans vos conversations ? Vous pouvez basculer Open WebUI pour utiliser l'appel de fonction natif.
+
+✳️ Comment activer les appels de fonction natifs :
+
+1. Ouvrez la fenêtre de chat.
+2. Accédez à ⚙️ **Contrôles de Chat > Paramètres Avancés**.
+3. Changez le paramètre **Appel de Fonction** de `Défaut` à `Natif`.
+
+![Appel d'Outil Natif](/images/openapi-servers/open-webui/native.png)
+
+---
+
+## Besoin de Plus d'Outils ? Explorez et Élargissez ! 🧱
+
+Le dépôt openapi-servers inclut une variété de serveurs de référence utiles :
+
+- 📂 Accès au système de fichiers
+- 🧠 Graphes de mémoire et de connaissance
+- 🗃️ Navigation de dépôts Git
+- 🌎 Recherche sur le web (en cours)
+- 🛢️ Interrogation de bases de données (en cours)
+
+Vous pouvez exécuter l'un de ces serveurs de la même manière et les connecter à Open WebUI en répétant les étapes ci-dessus.
+
+---
+
+## Dépannage & Conseils 🧩
+
+- ❌ Ne se connecte pas ? Assurez-vous que l'URL est correcte et accessible depuis le navigateur utilisé pour exécuter Open WebUI.
+- 🔒 Si vous utilisez des serveurs distants, vérifiez les pare-feu et les configurations HTTPS !
+- 📝 Pour que les serveurs restent persistants, envisagez de les déployer dans Docker ou avec des services système.
+
+Besoin d'aide ? Consultez la 👉 [page de Discussions](https://github.com/open-webui/openapi-servers/discussions) ou [ouvrez une issue](https://github.com/open-webui/openapi-servers/issues).

@@ -1,0 +1,52 @@
+---
+sidebar_position: 3
+title: "🎬 Fonction Action"
+---
+
+Les fonctions d'action vous permettent d'ajouter des boutons personnalisés à la barre d'outils des messages pour que les utilisateurs finaux puissent interagir.
+Cette fonctionnalité rend la messagerie plus interactive, permettant aux utilisateurs d'accorder une autorisation avant qu'une
+tâche ne soit exécutée, de générer des visualisations de données structurées, de télécharger un extrait audio des discussions,
+et bien d'autres cas d'utilisation.
+
+Un modèle de code Action peut être trouvé [dans la section communauté](https://openwebui.com/f/hub/custom_action/).
+
+Un exemple d'une action de visualisation de graphe peut être vu dans la vidéo ci-dessous.
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/graph-viz-action.gif" alt="Action de Visualisation de Graphe" />
+  </a>
+</p>
+
+
+### Action
+Les actions sont utilisées pour créer un bouton dans l'interface utilisateur des messages (les petits boutons situés juste en dessous des messages de chat individuels).
+
+Les actions ont un seul composant principal appelé fonction d'action. Ce composant prend un objet définissant le type d'action et les données à traiter.
+
+<details>
+<summary>Exemple</summary>
+
+```python
+async def action(
+        self,
+        body: dict,
+        __user__=None,
+        __event_emitter__=None,
+        __event_call__=None,
+    ) -> Optional[dict]:
+        print(f"action:{__name__}")
+
+        response = await __event_call__(
+            {
+                "type": "input",
+                "data": {
+                    "title": "écrire un message",
+                    "message": "ici, écrivez un message à ajouter",
+                    "placeholder": "entrez votre message",
+                },
+            }
+        )
+        print(response)
+```
+</details>

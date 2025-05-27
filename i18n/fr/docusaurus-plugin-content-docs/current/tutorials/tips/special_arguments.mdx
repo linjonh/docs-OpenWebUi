@@ -1,0 +1,342 @@
+---
+sidebar_position: 20
+title: "💡 Arguments Spéciaux"
+---
+
+:::warning
+Ce tutoriel est une contribution de la communauté et n'est pas pris en charge par l'équipe Open WebUI. Il sert uniquement de démonstration sur la façon de personnaliser Open WebUI pour votre cas d'utilisation spécifique. Vous voulez contribuer ? Consultez le tutoriel de contribution.
+:::
+
+# 💡 Arguments Spéciaux
+
+Lors du développement de vos propres `Outils`, `Fonctions` (`Filtres`, `Pipes` ou `Actions`), `Pipelines`, etc., vous pouvez utiliser des arguments spéciaux pour explorer tout ce qu'Open-WebUI a à offrir.
+
+Cette page vise à détailler le type et la structure de chaque argument spécial ainsi qu'à fournir un exemple.
+
+### `body`
+
+Un `dictionnaire` généralement destiné à être transmis presque directement au modèle. Bien qu'il ne s'agisse pas strictement d'un argument spécial, il est inclus ici pour une référence plus facile et parce qu'il contient lui-même des arguments spéciaux.
+
+<details>
+<summary>Exemple</summary>
+
+```json
+
+{
+  "stream": true,
+  "model": "mon-modèle-génial",
+  # chaîne en minuscules avec des mots séparés par des tirets : ceci est l'identifiant du modèle
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Que contient cette image ?"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdYAAAGcCAYAAABk2YF[REDACTED]"
+            # Les images sont transmises sous forme de données encodées en base64
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": "L'image semble être [REDACTED]"
+    },
+  ],
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "stream_options": {
+    "include_usage": true
+  },
+  "metadata": "[Le même dictionnaire que __metadata__]",
+  "files": "[La même liste que __files__]"
+}
+
+
+```
+
+</details>
+
+### `__user__`
+
+Un `dictionnaire` contenant des informations sur l'utilisateur.
+
+Notez que si la classe `UserValves` est définie, son instance doit être accessible via `__user__["valves"]`. Sinon, la clé `valves` est entièrement absente de `__user__`.
+
+<details>
+<summary>Exemple</summary>
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "email": "cheesy_dude@openwebui.com",
+  "name": "Patrick",
+  "role": "user",
+  # le rôle peut être soit `user` soit `admin`
+  "valves": "[l'instance de UserValve]"
+}
+```
+
+</details>
+
+### `__metadata__`
+
+Un `dictionnaire` contenant des informations diverses sur le chat, le modèle, les fichiers, etc.
+
+<details>
+<summary>Exemple</summary>
+
+```json
+{
+  "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "chat_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "message_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "session_id": "xxxxxxxxxxxxxxxxxxxx",
+  "tool_ids": null,
+  # tool_ids est une liste de chaînes.
+  "tool_servers": [],
+  "files": "[Identique à body['files']]",
+  # Si aucun fichier n'est fourni, la clé files existe dans __metadata__ et sa valeur est []
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "variables": {
+    "{{USER_NAME}}": "cheesy_username",
+    "{{USER_LOCATION}}": "Inconnu",
+    "{{CURRENT_DATETIME}}": "2025-02-02 XX:XX:XX",
+    "{{CURRENT_DATE}}": "2025-02-02",
+    "{{CURRENT_TIME}}": "XX:XX:XX",
+    "{{CURRENT_WEEKDAY}}": "Lundi",
+    "{{CURRENT_TIMEZONE}}": "Europe/Berlin",
+    "{{USER_LANGUAGE}}": "fr-FR"
+  },
+  "model": "[Identique à __model__]",
+  "direct": false,
+  "function_calling": "natif",
+  "type": "réponse_utilisateur",
+  "interface": "open-webui"
+}
+
+```
+
+</details>
+
+### `__model__`
+
+Un `dictionnaire` contenant des informations sur le modèle.
+
+<details>
+<summary>Exemple</summary>
+
+```json
+{
+  "id": "mon-modèle-génial",
+  "name": "Mon Modèle Génial",
+  "object": "modèle",
+  "created": 1746000000,
+  "owned_by": "openai",
+  # soit openai soit ollama
+  "info": {
+      "id": "mon-modèle-génial",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "base_model_id": "gpt-4o",
+      # c'est le nom du modèle desservi par le point d'accès du modèle
+      "name": "Mon Modèle Génial",
+      "params": {
+      "system": "Vous êtes mon meilleur assistant. Vous répondez [REDACTED]",
+      "function_calling": "natif"
+      # les options personnalisées apparaissent ici, par exemple "Top K"
+      },
+      "meta": {
+      "profile_image_url": "/static/favicon.png",
+      "description": "Description de mon-modèle-génial",
+      "capabilities": {
+          "vision": true,
+          "usage": true,
+          "citations": true
+      },
+      "position": 17,
+      "tags": [
+          {
+          "name": "pour_amis"
+          },
+          {
+          "name": "vision_activée"
+          }
+      ],
+      "suggestion_prompts": null
+      },
+      "access_control": {
+      "read": {
+          "group_ids": [],
+          "user_ids": []
+      },
+      "write": {
+          "group_ids": [],
+          "user_ids": []
+      }
+      },
+      "is_active": true,
+      "updated_at": 1740000000,
+      "created_at": 1740000000
+  },
+  "preset": true,
+  "actions": [],
+  "tags": [
+      {
+          "name": "pour_amis"
+      },
+      {
+          "name": "vision_enabled"
+      }
+  ]
+}
+
+```
+
+</details>
+
+### `__messages__`
+
+Une `liste` des messages précédents.
+
+Voir la valeur `body["messages"]` ci-dessus.
+
+
+### `__chat_id__`
+
+La `str` de l’`chat_id`.
+
+Voir la valeur `__metadata__["chat_id"]` ci-dessus.
+
+### `__session_id__`
+
+La `str` de l’`session_id`.
+
+Voir la valeur `__metadata__["session_id"]` ci-dessus.
+
+### `__message_id__`
+
+La `str` de l’`message_id`.
+
+Voir la valeur `__metadata__["message_id"]` ci-dessus.
+
+### `__event_emitter__`
+
+Un `Callable` utilisé pour afficher les informations d’événement à l’utilisateur.
+
+### `__event_call__`
+
+Un `Callable` utilisé pour des `Actions`.
+
+### `__files__`
+
+Une `liste` de fichiers envoyés via le chat. Notez que les images ne sont pas considérées comme des fichiers et sont envoyées directement au modèle dans la liste `body["messages"]`.
+
+Le binaire réel du fichier ne fait pas partie des arguments pour des raisons de performance, mais le fichier reste accessible via son chemin si nécessaire. Par exemple, en utilisant `docker`, la syntaxe Python pour le chemin pourrait être :
+
+```python
+from pathlib import Path
+
+the_file = Path(f"/app/backend/data/uploads/{__files__[0]["files"]["id"]}_{__files__[0]["files"]["filename"]}")
+assert the_file.exists()
+```
+
+Notez que le même dictionnaire de fichiers peut également être accédé via `__metadata__["files"]` (et sa valeur est `[]` si aucun fichier n'est envoyé) ou via `body["files"]` (mais la clé `files` est totalement absente de `body` si aucun fichier n'est envoyé).
+
+<details>
+<resume>Exemple</resume>
+
+```json
+
+[
+  {
+    "type": "file",
+    "file": {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "filename": "Napoléon - Wikipédia.pdf",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "data": {
+        "content": "Napoléon - Wikipédia\n\n\nNapoléon Ier\n\nL'Empereur Napoléon dans son bureau aux\nTuileries, 1812\n\nEmpereur des Français\n\n1er règne 18 mai 1804 – 6 avril 1814\n\nSuccesseur Louis XVIII[a]\n\n2ème règne 20 mars 1815 – 22 juin 1815\n\nSuccesseur Louis XVIII[a]\n\nPremier Consul de la République française\n\nEn fonction\n13 décembre 1799 – 18 mai 1804\n\nNé Napoleone Buonaparte\n15 août 1769\nAjaccio, Corse, Royaume de\nFrance\n\nDécédé 5 mai 1821 (51 ans)\nLongwood, Sainte-Hélène\n\nInhumation 15 décembre 1840\nLes Invalides, Paris\n\nNapoléon\nNapoléon Bonaparte[b] (né Napoleone\nBuonaparte;[1][c] 15 août 1769 – 5 mai 1821), plus tard\ndit [REDACTED]",
+        # La valeur de contenu est la sortie du parseur de document, l’exemple ci-dessus est avec Tika comme parseur de document
+      },
+      "meta": {
+        "name": "Napoléon - Wikipédia.pdf",
+        "content_type": "application/pdf",
+        "size": 10486578,
+        # en bytes, ici environ 10Mo
+        "data": {},
+        "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        # commence toujours par file
+      },
+      "created_at": 1740000000,
+      "updated_at": 1740000000
+    },
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "url": "/api/v1/files/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "name": "Napoléon - Wikipédia.pdf",
+    "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    "status": "uploadé",
+    "size": 10486578,
+    "error": "",
+    "itemId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    # itemId est différent de file["id"]
+  }
+]
+
+
+```
+
+</details>
+
+### `__request__`
+
+Une instance de `fastapi.Request`. Vous pouvez en lire davantage sur la [page de migration](../../features/plugin/migration/index.mdx) ou dans [la documentation de fastapi](https://fastapi.tiangolo.com/reference/request/).
+
+### `__task__`
+
+Un `str` pour le type de tâche. Sa valeur est juste un raccourci pour `__metadata__["task"]` si présent, sinon `None`.
+
+<details>
+<resume>Valeurs possibles</resume>
+
+```json
+
+[
+    "title_generation",
+    "tags_generation",
+    "emoji_generation",
+    "query_generation",
+    "image_prompt_generation",
+    "autocomplete_generation",
+    "function_calling",
+    "moa_response_generation"
+]
+```
+
+</details>
+
+### `__task_body__`
+
+Un `dictionnaire` contenant le `body` nécessaire pour accomplir une donnée `__task__`. Sa valeur est juste un raccourci pour `__metadata__["task_body"]` si présent, sinon `None`.
+
+Sa structure est la même que `body` ci-dessus, avec des modifications comme l’utilisation du modèle approprié et le message système, etc.
+
+
+### `__tools__`
+
+Une `liste` d’instances `ToolUserModel`.
+
+Pour plus de détails sur les attributs des instances de `ToolUserModel`, le code peut être trouvé dans [tools.py](https://github.com/open-webui/open-webui/blob/main/backend/open_webui/models/tools.py).
+

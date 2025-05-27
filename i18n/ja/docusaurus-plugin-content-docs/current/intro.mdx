@@ -1,0 +1,213 @@
+---
+sidebar_position: 0
+slug: /
+title: 🏡 ホーム
+hide_title: true
+---
+
+import { TopBanners } from "@site/src/components/TopBanners";
+import { SponsorList } from "@site/src/components/SponsorList";
+
+# Open WebUI
+
+
+**Open WebUI は完全オフラインで動作可能な、[拡張可能](https://docs.openwebui.com/features/plugin/)で多機能かつユーザーフレンドリーなセルフホスティング型 AI プラットフォームです**。**Ollama** や **OpenAI互換API** などのさまざまな LLM ランナーをサポートし、**組み込み推論エンジン**でRAGを提供することで、**強力なAIデプロイメントソリューション**を実現します。
+
+![GitHub stars](https://img.shields.io/github/stars/open-webui/open-webui?style=social)
+![GitHub forks](https://img.shields.io/github/forks/open-webui/open-webui?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/open-webui/open-webui?style=social)
+![GitHub repo size](https://img.shields.io/github/repo-size/open-webui/open-webui)
+![GitHub language count](https://img.shields.io/github/languages/count/open-webui/open-webui)
+![GitHub top language](https://img.shields.io/github/languages/top/open-webui/open-webui)
+![GitHub last commit](https://img.shields.io/github/last-commit/open-webui/open-webui?color=red)
+![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Follama-webui%2Follama-wbui&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)
+[![Discord](https://img.shields.io/badge/Discord-Open_WebUI-blue?logo=discord&logoColor=white)](https://discord.gg/5rJgQTnV4s)
+[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/tjbck)
+
+![Open WebUI Demo](/images/demo.gif)
+
+:::tip
+**[エンタープライズプラン](https://docs.openwebui.com/enterprise)をご希望ですか？** – **[営業チームと今すぐご相談ください！](mailto:sales@openwebui.com)**
+
+**カスタムテーマやブランディング**, **サービスレベルアグリーメント（SLA）サポート**, **長期サポート（LTS）バージョン**などを含む**拡張された機能**を利用できます。
+:::
+
+<TopBanners />
+
+## Docker を使ったクイックスタート 🐳
+
+:::info
+
+**WebSocket** サポートは、Open WebUI が正しく動作するために必要です。ネットワーク設定がWebSocket接続を許可していることを確認してください。
+
+:::
+
+Ollamaがあなたのコンピュータにある場合、このコマンドを使用してください:
+
+```bash
+docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+
+Nvidia GPUサポートでOpen WebUIを実行するには、このコマンドを使用してください:
+
+```bash
+docker run -d -p 3000:8080 --gpus all --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:cuda
+```
+
+### OllamaとバンドルされたOpen WebUI
+
+このインストール方法では、OllamaとOpen WebUIを1つのコンテナイメージにバンドルし、1つのコマンドで効率的にセットアップを行うことができます。ハードウェア設定に応じて適切なコマンドを選択してください:
+
+- **GPUサポートあり**:
+  GPUリソースを利用するには、以下のコマンドを実行してください:
+
+  ```bash
+  docker run -d -p 3000:8080 --gpus=all -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
+  ```
+
+- **CPUのみの場合**:
+  GPUを使用しない場合、以下のコマンドを使用してください:
+
+  ```bash
+  docker run -d -p 3000:8080 -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
+  ```
+
+これらのコマンドは、Open WebUIとOllamaの内蔵型インストールを容易にし、迅速に起動できるようにします。
+
+インストール後は、[http://localhost:3000](http://localhost:3000)でOpen WebUIにアクセスできます。お楽しみください！ 😄
+
+### 開発ブランチを利用する 🌙
+
+:::warning
+`:dev` ブランチには最新の不安定な機能と変更が含まれています。バグや未完成の機能が含まれる可能性があるため、自己責任で使用してください。
+:::
+
+最新の最先端機能を試してみたい場合で、多少の不安定さを気にしない場合は、以下のように `:dev` タグを使用できます:
+
+```bash
+docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:dev
+```
+
+### Open WebUIの更新
+
+Open WebUIコンテナを簡単に更新するには、以下の手順を実行してください:
+
+#### 手動更新
+[Watchtower](https://containrrr.dev/watchtower)を使用してドッカーコンテナを手動で更新します:
+```bash
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once open-webui
+```
+
+#### 自動更新
+コンテナを自動的に5分ごとに更新します:
+```bash
+docker run -d --name watchtower --restart unless-stopped -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --interval 300 open-webui
+```
+
+🔧 **注意**: コンテナ名が異なる場合は、`open-webui` を適切な名前に置き換えてください。
+
+## 手動インストール
+
+Open WebUIをインストールして実行する主な方法は2つあります: `uv` ランタイムマネージャーを使用する方法とPythonの `pip` を使用する方法です。どちらの方法も有効ですが、環境管理を簡略化し潜在的な競合を最小限に抑えるために、**`uv` を使用することを強く推奨します**。
+
+### `uv` を使用したインストール（推奨）
+
+`uv` ランタイムマネージャーは、Open WebUIのようなアプリケーションのためのPython環境管理をシームレスにします。以下の手順に従ってください:
+
+#### 1. `uv` をインストール
+
+お使いのオペレーティングシステムに適したインストールコマンドを選択してください:
+
+- **macOS/Linux**:  
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+
+- **Windows**:  
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+
+#### 2. Open WebUIを実行
+
+`uv` をインストールした後は、Open WebUIの実行が簡単になります。以下のコマンドを使用してください。データの損失を防ぐために、必ず`DATA_DIR`環境変数を設定してください。各プラットフォームの例を以下に示します:
+
+- **macOS/Linux**:  
+  ```bash
+  DATA_DIR=~/.open-webui uvx --python 3.11 open-webui@latest serve
+  ```
+
+- **Windows**:  
+  ```powershell
+  $env:DATA_DIR="C:\open-webui\data"; uvx --python 3.11 open-webui@latest serve
+  ```
+
+
+
+### `pip` を使用したインストール
+
+Pythonのパッケージマネージャー`pip`を使用してOpen WebUIをインストールする場合、**`uv` や`conda`などのPythonランタイムマネージャーを使用することを強く推奨します**。これらのツールはPython環境を効果的に管理し、競合を回避します。
+
+Python 3.11が開発環境です。Python 3.12は動作するようですが、十分にテストされていません。Python 3.13は完全に未テストであり、**自己責任で使用してください**。
+
+1. **Open WebUIをインストール**:  
+
+   ターミナルを開き、以下のコマンドを実行してください:  
+   ```bash
+   pip install open-webui
+   ```
+
+2. **Open WebUIを開始**:  
+
+   インストール後、以下のコマンドでサーバーを起動してください:  
+   ```bash
+   open-webui serve
+   ```
+
+### Open WebUIの更新
+
+最新バージョンに更新するには、次のコマンドを実行してください:  
+
+```bash
+pip install --upgrade open-webui
+```
+
+この方法は必要なすべての依存関係をインストールし、Open WebUIを開始します。これにより、シンプルかつ効率的なセットアップが可能です。インストール後、[http://localhost:8080](http://localhost:8080) でOpen WebUIにアクセスできます。お楽しみください！ 😄
+
+## その他のインストール方法
+
+非Dockerネイティブインストール方法、Docker Compose、Kustomize、Helmなど、さまざまなインストール方法を提供しています。詳しいガイダンスについては、[Open WebUI Documentation](https://docs.openwebui.com/getting-started/) をご覧いただくか、[Discordコミュニティ](https://discord.gg/5rJgQTnV4s) に参加してください。
+
+完全な [はじめにガイド](/getting-started) を続行してください。
+
+## スポンサー 🙌
+
+
+<SponsorList />
+
+
+スポンサーの皆様の寛大なサポートに心から感謝いたします。彼らの貢献により、私たちのプロジェクトを維持し改善し続けることが可能となり、コミュニティに質の高い成果を提供することができます。ありがとうございます！
+
+
+## 感謝 🙏
+
+以下の方々からの寛大な助成支援に心から感謝いたします:
+
+<p>
+
+
+  <a href="https://builders.mozilla.org/" title="Mozilla Builders 2024" target="_blank" rel="noopener">
+    <img src="/images/grants/mozilla.png" alt="Mozilla" width={"300px"} style={{verticalAlign:'middle',marginRight:'12px'}} />
+    <span style={{verticalAlign:'middle', fontWeight:600, fontSize:'1.05em'}}>Mozilla Builders 2024</span>
+  </a>
+
+  <br/>
+  <br/>
+
+  <a href="https://github.com/accelerator" title="GitHub Accelerator 2024" target="_blank" rel="noopener">
+    <img src="/images/grants/github.png" alt="GitHub" width={"300px"} style={{verticalAlign:'middle',marginRight:'16px'}} />
+    <span style={{verticalAlign:'middle', fontWeight:600, fontSize:'1.05em'}}>GitHub Accelerator 2024</span>
+  </a>
+
+  
+</p>

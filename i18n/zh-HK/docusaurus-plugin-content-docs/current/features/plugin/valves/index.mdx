@@ -1,0 +1,75 @@
+---
+sidebar_position: 3
+title: "🔄 閥門"
+---
+
+## 閥門
+
+閥門（Valves）和用戶閥門（UserValves）用於允許用戶提供動態的詳細信息，例如 API 金鑰或配置選項。這些將會在 GUI 菜單中為給定的功能創建一個可填充的欄位或布爾切換開關。這些設置始終是可選的，但強烈建議使用。
+
+因此，Valves 和 UserValves 類可在 `Pipe`、`Pipeline`、`Filter` 或 `Tools` 類中定義。
+
+Valves 僅由管理員通過 Tools 或 Functions 菜單進行配置。而 UserValves 可由任何用戶直接從聊天會話中進行配置。
+
+<details>
+<summary>註解示例</summary>
+
+```python
+
+from pydantic import BaseModel, Field
+from typing import Literal
+
+# 定義和閥門
+class Filter:
+   # 注意當前的縮進：Valves 和 UserValves 必須作為
+   # Tools、Filter 或 Pipe 類的屬性聲明。這裡我們以
+   # Filter 為例。
+    class Valves(BaseModel):
+       # Valves 和 UserValves 繼承自 pydantics BaseModel。這
+       # 使得可以處理複雜的使用案例，例如模型校驗等。
+       test_valve: int = Field(  # 注意類型提示：它用於
+           # 選擇向用戶顯示的 UI 元素類型（按鈕、
+           # 文本等）。
+           default=4,
+           description="一個控制數值的閥門"
+           # required=False,  # 你可以通過 True 來強制要求輸入字段
+       )
+       # 如果要為用戶提供多個字符串選擇，可以使用 Literal：
+       choice_option: Literal["choiceA", "choiceB"] = Field(
+           default="choiceA",
+           description="一個多選閥門的示例",
+       )
+       priority: int = Field(
+           default=0,
+           description="過濾操作的優先級。值越低的優先通過"
+       )
+       # 優先級字段是可選的，但如果存在，將用於
+       # 對過濾器排序。
+       pass
+       # 注意，此處的pass有助於解析並且推薦使用。
+
+   # 用戶閥門的定義方式與此相同。
+    class UserValves(BaseModel):
+        test_user_valve: bool = Field(
+            default=False, description="一個控制真/假（開/關）開關的用戶閥門"
+       )
+       pass
+
+   def __init__(self):
+       self.valves = self.Valves()
+       # 因為它是由管理員設置的，執行代碼時可以直接訪問。
+       pass
+
+   # 入口方法僅用於 Filter，但 __user__ 的處理方式是相同的
+   def inlet(self, body: dict, __user__: dict):
+       # 由於 UserValves 是每個用戶定義的，它僅在使用時可用。
+       # 注意，雖然 __user__ 是一個字典，但 __user__["valves"] 是一個
+       # UserValves 對象。因此，你可以像這樣訪問其值：
+       test_user_valve = __user__["valves"].test_user_valve
+       # 或者：
+       test_user_valve = dict(__user__["valves"])["test_user_valve"]
+       # 但這將返回默認值而不是實際值：
+       # test_user_valve = __user__["valves"]["test_user_valve"]  # 不要這樣做！
+```
+
+</details>

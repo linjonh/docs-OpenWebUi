@@ -1,0 +1,38 @@
+---
+sidebar_position: 2
+title: "🎙️ Fehlerbehebung bei Mikrofonzugriff"
+---
+
+Es ist entscheidend, sicherzustellen, dass Ihre Anwendung ordnungsgemäßen Zugriff auf das Mikrofon hat, insbesondere für Funktionen, die von Audioeingaben abhängen. Diese Anleitung erklärt, wie Mikrofonberechtigungen verwaltet und Probleme behoben werden können, insbesondere in sicheren Kontexten.
+
+## Verständnis sicherer Kontexte 🔒
+
+Aus Gründen der Sicherheit ist der Zugriff auf das Mikrofon auf Seiten beschränkt, die über HTTPS oder lokal von `localhost` bereitgestellt werden. Diese Anforderung soll Ihre Daten schützen, indem sichergestellt wird, dass sie über sichere Kanäle übertragen werden.
+
+## Häufige Berechtigungsprobleme 🚫
+
+Browser wie Chrome, Brave, Microsoft Edge, Opera und Vivaldi sowie Firefox beschränken den Mikrofonzugriff auf URLs ohne HTTPS. Dies wird häufig ein Problem, wenn auf eine Webseite von einem anderen Gerät im selben Netzwerk zugegriffen wird (z. B. mit einem Mobiltelefon auf einen Desktop-Server). Hier ist, wie Sie diese Probleme verwalten können:
+
+### Lösungen für nicht-HTTPS-Verbindungen
+
+1. **HTTPS einrichten:**
+   - Es wird dringend empfohlen, Ihren Server so zu konfigurieren, dass er HTTPS unterstützt. Dadurch werden nicht nur Berechtigungsprobleme gelöst, sondern auch die Sicherheit Ihrer Datenübertragungen verbessert.
+
+2. **Temporäre Browser-Flags (mit Vorsicht verwenden):**
+   - Diese Einstellungen zwingen Ihren Browser dazu, bestimmte unsichere URLs als sicher zu behandeln. Dies ist hilfreich für Entwicklungszwecke, birgt jedoch erhebliche Sicherheitsrisiken. So können Sie diese Einstellungen für die wichtigsten Browser anpassen:
+
+   #### Auf Chromium-basierte Browser (z. B. Chrome, Brave)
+   - Öffnen Sie `chrome://flags/#unsafely-treat-insecure-origin-as-secure`.
+   - Geben Sie Ihre nicht-HTTPS-Adresse ein (z. B. `http://192.168.1.35:3000`).
+   - Starten Sie den Browser neu, damit die Änderungen übernommen werden.
+
+   #### Auf Firefox-basierte Browser
+   - Öffnen Sie `about:config`.
+   - Suchen und ändern (oder erstellen) Sie den Zeichenfolgenwert `dom.securecontext.allowlist`.
+   - Fügen Sie Ihre IP-Adressen durch Kommas getrennt hinzu (z. B. `http://127.0.0.1:8080`).
+
+### Überlegungen und Risiken 🚨
+
+Während Browser-Flags eine schnelle Lösung bieten, umgehen sie wichtige Sicherheitsprüfungen, die Ihr Gerät und Ihre Daten anfällig für Schwachstellen machen können. Priorisieren Sie immer ordnungsgemäße Sicherheitsmaßnahmen, insbesondere bei der Planung einer Produktionsumgebung.
+
+Indem Sie diese bewährten Verfahren befolgen, können Sie sicherstellen, dass Ihre Anwendung ordnungsgemäß auf das Mikrofon zugreift, während die Sicherheit und Integrität Ihrer Daten gewahrt bleibt.

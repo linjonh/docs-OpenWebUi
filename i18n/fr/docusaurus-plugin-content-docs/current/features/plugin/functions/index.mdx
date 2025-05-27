@@ -1,0 +1,133 @@
+---
+sidebar_position: 1
+title: "🧰 Fonctions"
+---
+
+## 🚀 Que sont les fonctions ?
+
+Les fonctions sont comme des **plugins** pour Open WebUI. Elles vous aident à **étendre ses capacités**—qu'il s'agisse d'ajouter le support de nouveaux fournisseurs de modèles d'IA comme Anthropic ou Vertex AI, de modifier la manière dont les messages sont traités, ou d'introduire des boutons personnalisés dans l'interface pour une meilleure convivialité.
+
+Contrairement aux outils externes qui peuvent nécessiter des intégrations complexes, **les fonctions sont intégrées et s'exécutent dans l'environnement Open WebUI.** Cela signifie qu'elles sont rapides, modulaires et ne dépendent pas de dépendances externes.
+
+Considérez les fonctions comme des **blocs de construction modulaires** qui vous permettent d'améliorer le fonctionnement du WebUI, adapté exactement à vos besoins. Elles sont légères, hautement personnalisables et écrites en **Python pur**, vous offrant la liberté de créer tout ce que vous voulez — des flux de travail basés sur l'IA à des intégrations avec des outils comme Google Search ou Home Assistant.
+
+---
+
+## 🏗️ Types de fonctions
+
+Il existe **trois types de fonctions** dans Open WebUI, chacune ayant un objectif spécifique. Voyons-les en détail et expliquons ce qu'elles font :
+
+---
+
+### 1. [**Pipe Function** – Créer des "agents/modèles" personnalisés ](./pipe.mdx)
+
+Une **Pipe Function** vous permet de créer des **agents/modèles personnalisés** ou des intégrations qui apparaissent ensuite dans l'interface comme s'il s'agissait de modèles autonomes.
+
+**À quoi ça sert ?**
+- Les Pipes vous permettent de définir des flux de travail complexes. Par exemple, vous pourriez créer un Pipe qui envoie des données à **Modèle A** et **Modèle B**, traite leurs résultats et combine ces derniers en une réponse finale.
+- Les Pipes ne doivent même pas nécessairement utiliser l'IA ! Ils peuvent être configurés pour des **API de recherche**, des **données météorologiques** ou même des systèmes comme **Home Assistant**. En gros, tout outil avec lequel vous voulez interagir peut devenir une partie d'Open WebUI.
+
+**Exemple d'utilisation :**
+Imaginez que vous voulez interroger Google Search directement depuis Open WebUI. Vous pouvez créer une Pipe Function qui :
+1. Prend votre message comme requête de recherche.
+2. Envoie la requête à l'API de Google Search.
+3. Traite la réponse et vous la renvoie dans WebUI comme une réponse "modèle" normale.
+
+Une fois activées, **les Pipe Functions apparaissent comme un modèle sélectionnable**. Utilisez les Pipes lorsque vous avez besoin de fonctionnalités personnalisées qui fonctionnent comme un modèle dans l'interface.
+
+Pour un guide détaillé, consultez [**Pipe Functions**](./pipe.mdx).
+
+---
+
+### 2. [**Filter Function** – Modifier les Entrées et Sorties](./filter.mdx)
+
+Une **Filter Function** est comme un outil pour ajuster les données avant qu'elles soient envoyées à l'IA **ou** après qu'elles reviennent.
+
+**À quoi ça sert ?**
+Les filtres agissent comme des "points d'ancrage" dans le flux de travail et comportent deux éléments principaux :
+- **Inlet** : Ajuste l'entrée qui est envoyée au modèle. Par exemple, ajouter des instructions supplémentaires, des mots-clés ou des ajustements de mise en forme.
+- **Outlet** : Modifie la sortie que vous recevez du modèle. Par exemple, nettoyer la réponse, ajuster le ton ou mettre en forme les données dans un style précis.
+
+**Exemple d'utilisation :**
+Supposons que vous travaillez sur un projet nécessitant un formatage précis. Vous pouvez utiliser un filtre pour garantir que :
+1. Votre entrée est toujours transformée dans le format requis.
+2. La sortie du modèle est nettoyée avant d'être affichée.
+
+Les filtres sont **liés à des modèles spécifiques** ou peuvent être activés pour tous les modèles **globalement**, selon vos besoins.
+
+Consultez le guide complet pour plus d'exemples et d'instructions : [**Filter Functions**](./filter.mdx).
+
+---
+
+### 3. [**Action Function** – Ajouter des Boutons Personnalisés](./action.mdx)
+
+Une **Action Function** est utilisée pour ajouter des **boutons personnalisés** à l'interface de discussion.
+
+**À quoi ça sert ?**
+Les actions vous permettent de définir des **raccourcis interactifs** qui déclenchent des fonctionnalités spécifiques directement depuis la discussion. Ces boutons apparaissent sous les messages individuels du chat, vous offrant un accès pratique en un clic aux actions que vous définissez.
+
+**Exemple d'utilisation :**
+Disons que vous avez souvent besoin de résumer de longs messages ou de générer des sorties spécifiques comme des traductions. Vous pouvez créer une Action Function pour :
+1. Ajouter un bouton "Résumer" sous chaque message entrant.
+2. Lorsque vous cliquez dessus, cela déclenche votre fonction personnalisée pour traiter ce message et renvoyer le résumé.
+
+Les boutons fournissent un moyen **propre et convivial** d'interagir avec les fonctionnalités étendues que vous définissez.
+
+Apprenez à les configurer dans le [**Guide des Action Functions**](./action.mdx).
+
+---
+
+## 🛠️ Comment utiliser les fonctions
+
+Voici comment mettre les fonctions en œuvre dans Open WebUI :
+
+### 1. **Installer les fonctions**
+Vous pouvez installer des fonctions via l'interface Open WebUI ou en les important manuellement. Vous pouvez trouver des fonctions créées par la communauté sur le [site Communautaire Open WebUI](https://openwebui.com/functions).
+
+⚠️ **Soyez prudent.** N'installez des fonctions que depuis des sources fiables. Exécuter du code inconnu comporte des risques de sécurité.
+
+---
+
+### 2. **Activer les fonctions**
+Les fonctions doivent être activées explicitement après installation :
+- Lorsque vous activez une **fonction Pipe**, elle devient disponible comme un **modèle** à part entière dans l’interface.  
+- Pour les **fonctions Filtre** et **Action**, les activer ne suffit pas—vous devez également les assigner à des modèles spécifiques ou les activer globalement pour tous les modèles.   
+
+---
+
+### 3. **Assigner des Filtres ou Actions aux Modèles**  
+- Allez dans `Espace de travail => Modèles` et assignez votre Filtre ou Action au modèle correspondant.  
+- Alternativement, activez les Fonctions pour **tous les modèles globalement** en allant dans `Espace de travail => Fonctions`, en sélectionnant le menu "..." et en activant le commutateur **Global**.
+
+---
+
+### Résumé Rapide  
+- Les **Pipes** apparaissent comme des modèles autonomes avec lesquels vous pouvez interagir.  
+- Les **Filtres** modifient les entrées/sorties pour faciliter les interactions avec l’IA.  
+- Les **Actions** ajoutent des boutons cliquables aux messages de chat individuels.  
+
+Une fois le processus de configuration suivi, les Fonctions amélioreront vos flux de travail de manière fluide.
+
+---
+
+## ✅ Pourquoi Utiliser les Fonctions ?  
+
+Les Fonctions sont conçues pour toute personne souhaitant **débloquer de nouvelles possibilités** avec Open WebUI :  
+
+- **Étendre** : Ajoutez de nouveaux modèles ou intégrez des outils non liés à l'IA comme des API, bases de données ou dispositifs intelligents.  
+- **Optimiser** : Ajustez les entrées et sorties pour adapter parfaitement à votre cas d’utilisation.  
+- **Simplifier** : Ajoutez des boutons ou raccourcis pour rendre l’interface intuitive et efficace.  
+
+Que vous personnalisiez des flux de travail pour des projets spécifiques, intégriez des données externes, ou simplifiez simplement l'utilisation d'Open WebUI, les Fonctions sont la clé pour prendre le contrôle de votre instance.
+
+---
+
+### 📝 Notes Finales :  
+1. Installez toujours des Fonctions uniquement à partir de **sources fiables**.  
+2. Assurez-vous de comprendre la différence entre les fonctions Pipe, Filtre et Action pour les utiliser efficacement.  
+3. Explorez les guides officiels :  
+   - [Guide des Fonctions Pipe](./pipe.mdx)  
+   - [Guide des Fonctions Filtre](./filter.mdx)  
+   - [Guide des Fonctions Action](./action.mdx)  
+
+En exploitant les Fonctions, vous apporterez de nouvelles capacités à votre configuration Open WebUI. Commencez à expérimenter dès aujourd’hui ! 🚀

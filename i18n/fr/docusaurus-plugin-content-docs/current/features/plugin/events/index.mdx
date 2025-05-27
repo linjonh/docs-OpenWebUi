@@ -1,0 +1,421 @@
+---
+sidebar_position: 3
+title: "⛑️ Événements"
+---
+
+# ⛑️ Événements : Utilisation de `__event_emitter__` et `__event_call__` dans Open WebUI
+
+L'architecture des plugins d'Open WebUI ne se limite pas à traiter des entrées et produire des sorties—**elle concerne la communication interactive en temps réel avec l'interface utilisateur et les utilisateurs**. Pour rendre vos outils, fonctions et pipelines plus dynamiques, Open WebUI fournit un système d'événements intégré via les aides `__event_emitter__` et `__event_call__`.
+
+Ce guide explique **ce que sont les événements**, **comment vous pouvez les déclencher** depuis votre code, et **le catalogue complet des types d'événements** que vous pouvez utiliser (y compris bien plus que juste `"input"`).
+
+---
+
+## 🌊 Que sont les Événements ?
+
+**Les Événements** sont des notifications en temps réel ou des demandes interactives envoyées depuis votre code backend (outil ou fonction) vers l'interface web. Ils vous permettent de mettre à jour le chat, d'afficher des notifications, de demander une confirmation, de lancer des processus UI, et bien plus.
+
+- Les événements sont envoyés en utilisant l'aide `__event_emitter__` pour des mises à jour unidirectionnelles, ou `__event_call__` lorsque vous avez besoin de l'entrée ou de la réponse utilisateur (par exemple, confirmation, entrée, etc.).
+
+**Métaphore :**
+Pensez aux événements comme des notifications push et des boîtes de dialogue modales que votre plugin peut déclencher, rendant l'expérience de chat plus riche et interactive.
+
+---
+
+## 🧰 Utilisation de Base
+
+### Envoyer un Événement
+
+Vous pouvez déclencher un événement n'importe où dans votre outil ou fonction en appelant :
+
+```python
+await __event_emitter__(
+    {
+        "type": "status",  # Voir la liste des types d'événements ci-dessous
+        "data": {
+            "description": "Traitement commencé !",
+            "done": False,
+            "hidden": False,
+        },
+    }
+)
+```
+
+Vous **n'avez pas besoin** d'ajouter manuellement des champs comme `chat_id` ou `message_id`—ceux-ci sont automatiquement gérés par Open WebUI.
+
+### Événements Interactifs
+
+Lorsque vous devez suspendre l'exécution jusqu'à ce que l'utilisateur réponde (par exemple, dialogues de confirmation/annulation, exécution de code ou entrée), utilisez `__event_call__` :
+
+```python
+result = await __event_call__(
+    {
+        "type": "input",  # Ou "confirmation", "execute"
+        "data": {
+            "title": "Veuillez entrer votre mot de passe",
+            "message": "Un mot de passe est requis pour cette action",
+            "placeholder": "Votre mot de passe ici",
+        },
+    }
+)
+# result contiendra la valeur saisie par l'utilisateur
+```
+
+---
+
+## 📜 Structure des Données des Événements
+
+Lorsque vous émettez ou appelez un événement, la structure de base est :
+
+```json
+{
+  "type": "event_type",   // Voir liste complète ci-dessous
+  "data": { ... }         // Charges utiles spécifiques à l'événement
+}
+```
+
+La plupart du temps, vous ne définissez que `"type"` et `"data"`. Open WebUI remplit automatiquement le routage.
+
+---
+
+## 🗂 Liste Complète des Types d'Événements
+
+Ci-dessous figure une table complète de **toutes les valeurs `type` prises en charge** pour les événements, avec leur effet prévu et leur structure de données. (Basé sur une analyse à jour de la logique de gestion des événements dans Open WebUI.)
+
+| type                        | Quand l'utiliser                              | Structure des charges utiles de données (exemples)                 |
+|-----------------------------|-----------------------------------------------|--------------------------------------------------------------------|
+| `status`                    | Afficher une mise à jour de statut/historique pour un message | `{description: ..., done: bool, hidden: bool}`                     |
+| `chat:completion`           | Fournir un résultat de complétion de discussion | (Personnalisé, voir les internes d'Open WebUI)                      |
+| `chat:message:delta`,<br/>`message` | Ajouter du contenu au message actuel               | `{content: "texte à ajouter"}`                                     |
+| `chat:message`,<br/>`replace`        | Remplacer complètement le contenu du message actuel      | `{content: "texte de remplacement"}`                               |
+| `chat:message:files`,<br/>`files`   | Définir ou remplacer les fichiers de message (pour les téléchargements, le rendu) | `{files: [...]}`                                                   |
+| `chat:title`                | Définir (ou mettre à jour) le titre de la conversation de chat | Chaîne de sujet OU `{title: ...}`                                   |
+| `chat:tags`                 | Mettre à jour l'ensemble des tags pour un chat              | Tableau de tags ou objet                                            |
+| `source`,<br/>`citation`              | Ajouter une source/citation, ou un résultat d'exécution de code         | Pour le code : voir [ci-dessous.](#code-execution-event)            |
+| `notification`              | Afficher une notification ("toast") dans l'interface utilisateur | `{type: "info" ou "success" ou "error" ou "warning", content: "..."}`      |
+| `confirmation` <br/>(requiert `__event_call__`) | Demander une confirmation (dialogue OK/Annuler)             | `{title: "...", message: "..."}`                                   |
+| `input` <br/>(requiert `__event_call__`)    | Demander une simple entrée utilisateur (boîte de dialogue "input box")      | `{title: "...", message: "...", placeholder: "...", value: ...}`   |
+| `exécuter` <br/>(nécessite `__event_call__`)  | Demander l'exécution de code côté utilisateur et retourner le résultat  | `{code: "...code javascript..."}` |
+
+**Autres types/Avancés :**
+
+- Vous pouvez définir vos propres types et les gérer au niveau de l'interface utilisateur (ou utiliser les mécanismes d'extension événementiels à venir).
+
+### ❗ Détails sur les types d'événements spécifiques
+### `status`
+
+Afficher une mise à jour de statut/avancement dans l'interface utilisateur :
+
+```python
+await __event_emitter__(
+    {
+        "type": "status",
+        "data": {
+            "description": "Étape 1/3 : Récupération des données...",
+            "done": False,
+            "hidden": False,
+        },
+    }
+)
+```
+
+---
+
+### `chat:message:delta` ou `message`
+
+**Sortie en flux** (ajouter du texte) :
+
+```python
+await __event_emitter__(
+    {
+        "type": "chat:message:delta",  # ou simplement "message"
+        "data": {
+            "content": "Texte partiel, "
+        },
+    }
+)
+
+# Plus tard, au fur et à mesure que vous générez davantage :
+await __event_emitter__(
+    {
+        "type": "chat:message:delta",
+        "data": {
+            "content": "prochaine partie de la réponse."
+        },
+    }
+)
+```
+
+---
+
+### `chat:message` ou `replace`
+
+**Définir (ou remplacer) le contenu entier du message :**
+
+```python
+await __event_emitter__(
+    {
+        "type": "chat:message",  # ou "replace"
+        "data": {
+            "content": "Réponse finale et complète."
+        },
+    }
+)
+```
+
+---
+
+### `files` ou `chat:message:files`
+
+**Joindre ou mettre à jour des fichiers :**
+
+```python
+await __event_emitter__(
+    {
+        "type": "files",  # ou "chat:message:files"
+        "data": {
+            "files": [
+               # Objets de fichiers Open WebUI
+            ]
+        },
+    }
+)
+```
+
+---
+
+### `chat:title`
+
+**Mettre à jour le titre du chat :**
+
+```python
+await __event_emitter__(
+    {
+        "type": "chat:title",
+        "data": {
+            "title": "Session de bot d'analyse de marché"
+        },
+    }
+)
+```
+
+---
+
+### `chat:tags`
+
+**Mettre à jour les tags du chat :**
+
+```python
+await __event_emitter__(
+    {
+        "type": "chat:tags",
+        "data": {
+            "tags": ["finance", "IA", "rapport quotidien"]
+        },
+    }
+)
+```
+
+---
+
+### `source` ou `citation` (et exécution de code)
+
+**Ajouter une référence/citation :**
+
+```python
+await __event_emitter__(
+    {
+        "type": "source",  # ou "citation"
+        "data": {
+            # Objet Source (Citation) Open WebUI
+        }
+    }
+)
+```
+
+**Pour l'exécution de code (suivre l'état d'exécution) :**
+
+```python
+await __event_emitter__(
+    {
+        "type": "source",
+        "data": {
+            # Objet Source de Code Open WebUI
+        }
+    }
+)
+```
+
+---
+
+### `notification`
+
+**Afficher une notification toast :**
+
+```python
+await __event_emitter__(
+    {
+        "type": "notification",
+        "data": {
+            "type": "info",  # "success", "warning", "error"
+            "content": "L'opération s'est terminée avec succès !"
+        }
+    }
+)
+```
+
+---
+
+### `confirmation` (**nécessite** `__event_call__`)
+
+**Afficher une boîte de dialogue de confirmation et obtenir la réponse de l'utilisateur :**
+
+```python
+result = await __event_call__(
+    {
+        "type": "confirmation",
+        "data": {
+            "title": "Êtes-vous sûr ?",
+            "message": "Voulez-vous vraiment continuer ?"
+        }
+    }
+)
+
+if result:  # ou vérifier le contenu du résultat
+    await __event_emitter__({
+        "type": "notification",
+        "data": {"type": "success", "content": "L'utilisateur a confirmé l'opération."}
+    })
+else:
+    await __event_emitter__({
+        "type": "notification",
+        "data": {"type": "warning", "content": "L'utilisateur a annulé."}
+    })
+```
+
+---
+
+### `input` (**nécessite** `__event_call__`)
+
+**Demander à l'utilisateur une saisie de texte :**
+
+```python
+result = await __event_call__(
+    {
+        "type": "input",
+        "data": {
+            "title": "Entrez votre nom",
+            "message": "Nous avons besoin de votre nom pour continuer.",
+            "placeholder": "Votre nom complet"
+        }
+    }
+)
+
+user_input = result
+await __event_emitter__(
+    {
+        "type": "notification",
+        "data": {"type": "info", "content": f"Vous avez entré : {user_input}"}
+    }
+)
+```
+
+---
+
+### `exécuter` (**nécessite** `__event_call__`)
+
+**Exécuter du code dynamiquement côté utilisateur :**
+
+```python
+result = await __event_call__(
+    {
+        "type": "execute",
+        "data": {
+            "code": "print(40 + 2);",
+        }
+    }
+)
+
+await __event_emitter__(
+    {
+        "type": "notification",
+        "data": {
+            "type": "info",
+            "content": f"Code exécuté, résultat : {result}"
+        }
+    }
+)
+```
+
+---
+
+## 🏗️ Quand & Où utiliser les événements
+
+- **À partir de n'importe quel outil ou fonction** dans Open WebUI.
+- Pour **diffuser des réponses**, afficher une progression, demander des données utilisateur, mettre à jour l'interface utilisateur ou afficher des informations/fichiers supplémentaires.
+- `await __event_emitter__` est pour les messages unidirectionnels (émission et oubli).
+- `await __event_call__` est pour lorsque vous avez besoin d'une réponse de l'utilisateur (saisie, exécution, confirmation).
+
+---
+
+## 💡 Conseils & Notes Avancées
+
+- **Types multiples par message :** Vous pouvez émettre plusieurs événements de types différents pour un seul message — par exemple, afficher des mises à jour `status`, puis diffuser avec `chat:message:delta`, puis terminer avec un `chat:message`.
+- **Types d'événements personnalisés :** Bien que la liste ci-dessus soit la norme, vous pouvez utiliser vos propres types et les détecter/gérer dans du code UI personnalisé.
+- **Extensibilité :** Le système d'événements est conçu pour évoluer—consultez toujours la [documentation Open WebUI](https://github.com/open-webui/open-webui) pour la liste la plus récente et une utilisation avancée.
+
+---
+
+## 🧐 FAQ
+
+### Q : Comment déclencher une notification pour l'utilisateur ?
+Utilisez le type `notification` :
+```python
+await __event_emitter__({
+    "type": "notification",
+    "data": {"type": "success", "content": "Tâche terminée"}
+})
+```
+
+### Q : Comment demander une entrée à l'utilisateur et obtenir sa réponse ?
+Utilisez :
+```python
+response = await __event_call__({
+    "type": "input",
+    "data": {
+        "title": "Quel est votre nom ?",
+        "message": "Veuillez entrer votre nom préféré :",
+        "placeholder": "Nom"
+    }
+})
+# la réponse sera : {"value": "réponse de l'utilisateur"}
+```
+
+### Q : Quels types d'événements sont disponibles pour `__event_call__` ?
+- `"input"` : Boîte de dialogue d'entrée
+- `"confirmation"` : Dialogue Oui/Non, OK/Annuler
+- `"execute"` : Exécutez le code fourni sur le client et retournez le résultat
+
+### Q : Puis-je mettre à jour les fichiers joints à un message ?
+Oui—utilisez le type d'événement `"files"` ou `"chat:message:files"` avec une charge utile `{files: [...]}`.
+
+### Q : Puis-je mettre à jour le titre ou les tags de la conversation ?
+Absolument : utilisez `"chat:title"` ou `"chat:tags"` en conséquence.
+
+### Q : Puis-je transmettre des réponses (tokens partiels) à l'utilisateur ?
+Oui—émettez des événements `"chat:message:delta"` en boucle, puis terminez avec `"chat:message"`.
+
+---
+
+## 📝 Conclusion
+
+**Les événements** vous donnent des super-pouvoirs interactifs en temps réel dans Open WebUI. Ils permettent à votre code de mettre à jour du contenu, déclencher des notifications, demander des entrées utilisateur, diffuser des résultats, gérer le code et bien plus encore—intégrant harmonieusement votre intelligence backend dans l'interface utilisateur de chat.
+
+- Utilisez `__event_emitter__` pour des mises à jour de statut/contenu unidirectionnelles.
+- Utilisez `__event_call__` pour des interactions nécessitant un suivi utilisateur (entrée, confirmation, exécution).
+
+Référez-vous à ce document pour les types d'événements et structures courants, et explorez le code source ou les docs Open WebUI pour des mises à jour majeures ou des événements personnalisés !
+
+---
+
+**Bon codage événementiel dans Open WebUI ! 🚀**

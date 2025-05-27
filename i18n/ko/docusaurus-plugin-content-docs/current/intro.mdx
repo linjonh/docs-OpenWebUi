@@ -1,0 +1,213 @@
+---
+sidebar_position: 0
+slug: /
+title: 🏡 홈
+hide_title: true
+---
+
+import { TopBanners } from "@site/src/components/TopBanners";
+import { SponsorList } from "@site/src/components/SponsorList";
+
+# Open WebUI
+
+
+**Open WebUI는 [확장성](https://docs.openwebui.com/features/plugin/)이 뛰어나고, 다양한 기능을 갖추었으며, 사용자 친화적인 자가 호스팅 AI 플랫폼으로, 완전히 오프라인에서 작동하도록 설계되었습니다.** **Ollama** 및 **OpenAI 호환 API**와 같은 여러 LLM 실행기를 지원하며, RAG를 위한 **내장 추론 엔진**을 포함하여 **강력한 AI 배포 솔루션**입니다.
+
+![GitHub stars](https://img.shields.io/github/stars/open-webui/open-webui?style=social)
+![GitHub forks](https://img.shields.io/github/forks/open-webui/open-webui?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/open-webui/open-webui?style=social)
+![GitHub repo size](https://img.shields.io/github/repo-size/open-webui/open-webui)
+![GitHub language count](https://img.shields.io/github/languages/count/open-webui/open-webui)
+![GitHub top language](https://img.shields.io/github/languages/top/open-webui/open-webui)
+![GitHub last commit](https://img.shields.io/github/last-commit/open-webui/open-webui?color=red)
+![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Follama-webui%2Follama-wbui&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)
+[![Discord](https://img.shields.io/badge/Discord-Open_WebUI-blue?logo=discord&logoColor=white)](https://discord.gg/5rJgQTnV4s)
+[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/tjbck)
+
+![Open WebUI Demo](/images/demo.gif)
+
+:::tip
+**[엔터프라이즈 플랜](https://docs.openwebui.com/enterprise)을 찾고 계십니까?** – **[오늘 영업팀과 상담해보세요!](mailto:sales@openwebui.com)**
+
+**맞춤 테마 및 브랜딩**, **서비스 수준 협약(SLA) 지원**, **장기 지원(LTS) 버전** 등의 **향상된 기능**을 이용하실 수 있습니다!
+:::
+
+<TopBanners />
+
+## Docker로 빠르게 시작하기 🐳
+
+:::info
+
+**WebSocket** 지원은 Open WebUI가 올바르게 작동하기 위한 필수 조건입니다. 네트워크 설정에서 WebSocket 연결을 허용해야 합니다.
+
+:::
+
+**Ollama가 컴퓨터에 설치되어 있는 경우**, 다음 명령을 사용하세요:
+
+```bash
+docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+
+**Nvidia GPU 지원과 함께 Open WebUI를 실행하려면**, 다음 명령을 사용하세요:
+
+```bash
+docker run -d -p 3000:8080 --gpus all --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:cuda
+```
+
+### Ollama와 함께 번들된 Open WebUI
+
+이 설치 방법은 Ollama와 Open WebUI를 함께 번들한 단일 컨테이너 이미지를 사용하여 단일 커맨드를 통해 간단하게 설정할 수 있도록 해줍니다. 하드웨어 설정에 따라 적절한 명령을 선택하세요:
+
+- **GPU 지원 포함**:
+  GPU 리소스를 활용하려면 다음 명령을 실행하세요:
+
+  ```bash
+  docker run -d -p 3000:8080 --gpus=all -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
+  ```
+
+- **CPU 전용**:
+  GPU를 사용하지 않는 경우, 대신 이 명령을 사용하세요:
+
+  ```bash
+  docker run -d -p 3000:8080 -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
+  ```
+
+두 명령 모두 Open WebUI와 Ollama를 간단하고 번거롭지 않은 설치 과정으로 설정하여 신속하게 모든 것을 실행할 수 있습니다.
+
+설치 후 [http://localhost:3000](http://localhost:3000)에서 Open WebUI를 사용할 수 있습니다. 즐기세요! 😄
+
+### Dev 브랜치를 사용하기 🌙
+
+:::warning
+`:dev` 브랜치는 최신 불안정한 기능과 변경 사항이 포함되어 있습니다. 오류가 있거나 기능이 완성되지 않은 상태일 수 있으므로 사용에 주의하세요.
+:::
+
+최신 첨단 기능을 시도해보고 싶으며, 가끔 불안정함을 감수할 수 있다면, `:dev` 태그를 다음과 같이 사용할 수 있습니다:
+
+```bash
+docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:dev
+```
+
+### Open WebUI 업데이트하기
+
+Open WebUI 컨테이너를 쉽게 업데이트하려면 다음 단계를 따르세요:
+
+#### 수동 업데이트
+[Watchtower](https://containrrr.dev/watchtower)를 사용하여 Docker 컨테이너를 수동으로 업데이트하세요:
+```bash
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once open-webui
+```
+
+#### 자동 업데이트
+컨테이너를 5분마다 자동으로 업데이트하세요:
+```bash
+docker run -d --name watchtower --restart unless-stopped -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --interval 300 open-webui
+```
+
+🔧 **참고**: 컨테이너 이름이 다를 경우 `open-webui`를 해당 이름으로 바꾸세요.
+
+## 수동 설치
+
+Open WebUI를 설치하고 실행하는 방법은 `uv` 런타임 관리자를 사용하는 방법과 Python의 `pip`을 사용하는 방법 두 가지가 있습니다. 두 방법 모두 효과적이지만, **`uv` 사용을 강력히 권장합니다**. 이는 환경 관리를 간소화하고 잠재적 충돌을 최소화하기 때문입니다.
+
+### `uv`를 사용한 설치 (권장)
+
+`uv` 런타임 관리자는 Open WebUI와 같은 애플리케이션을 위한 Python 환경 관리가 원활하게 이루어지도록 합니다. 다음 단계를 통해 시작하십시오:
+
+#### 1. `uv` 설치
+
+운영 체제에 적합한 설치 명령을 선택하십시오:
+
+- **macOS/Linux**:  
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+
+- **Windows**:  
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+
+#### 2. Open WebUI 실행
+
+`uv`가 설치되면 Open WebUI 실행이 간편합니다. 아래 명령을 사용하며, 데이터 손실을 방지하기 위해 `DATA_DIR` 환경변수를 설정해야 합니다. 각 플랫폼에 대한 예제 경로가 제공됩니다:
+
+- **macOS/Linux**:  
+  ```bash
+  DATA_DIR=~/.open-webui uvx --python 3.11 open-webui@latest serve
+  ```
+
+- **Windows**:  
+  ```powershell
+  $env:DATA_DIR="C:\open-webui\data"; uvx --python 3.11 open-webui@latest serve
+  ```
+
+
+
+### `pip`를 사용한 설치
+
+Python의 패키지 관리자 `pip`을 사용하여 Open WebUI를 설치하는 사용자에게는 **`uv`나 `conda`와 같은 Python 런타임 관리자를 사용하는 것을 강력히 권장합니다**. 이러한 도구는 Python 환경을 효과적으로 관리하고 충돌을 방지합니다.
+
+Python 3.11은 개발 환경입니다. Python 3.12는 작동하는 것으로 보이지만 철저히 테스트되지 않았습니다. Python 3.13은 전혀 테스트되지 않았으니 **사용자 책임 하에 사용하십시오**.
+
+1. **Open WebUI 설치**:  
+
+   터미널을 열고 다음 명령을 실행하십시오:  
+   ```bash
+   pip install open-webui
+   ```
+
+2. **Open WebUI 시작**:  
+
+   설치 완료 후 서버를 시작하려면 다음을 실행하십시오:  
+   ```bash
+   open-webui serve
+   ```
+
+### Open WebUI 업데이트
+
+최신 버전으로 업데이트하려면 간단히 다음을 실행하십시오:  
+
+```bash
+pip install --upgrade open-webui
+```
+
+이 방법은 필수 종속성을 모두 설치하고 Open WebUI를 시작하여 간단하고 효율적인 설정을 제공합니다. 설치 후, [http://localhost:8080](http://localhost:8080)에서 Open WebUI에 액세스할 수 있습니다. 즐기세요! 😄
+
+## 기타 설치 방법
+
+Docker를 사용하지 않는 기본 설치 방법, Docker Compose, Kustomize 및 Helm을 포함한 다양한 설치 옵션을 제공합니다. 자세한 가이드는 [Open WebUI Documentation](https://docs.openwebui.com/getting-started/) 또는 [Discord 커뮤니티](https://discord.gg/5rJgQTnV4s)를 방문하십시오.
+
+전체 [시작 가이드](/getting-started)를 계속 진행하십시오.
+
+## 후원자 🙌
+
+
+<SponsorList />
+
+
+우리는 후원자들의 관대한 지원에 대해 대단히 감사드립니다. 그들의 기여는 우리의 프로젝트를 유지하고 개선할 수 있게 도와주며, 커뮤니티를 위한 양질의 작업을 지속적으로 제공할 수 있도록 보장합니다. 감사합니다!
+
+
+## 감사 인사 🙏
+
+다음 기관으로부터 받은 관대한 지원에 대해 깊이 감사드립니다:
+
+<p>
+
+
+  <a href="https://builders.mozilla.org/" title="Mozilla Builders 2024" target="_blank" rel="noopener">
+    <img src="/images/grants/mozilla.png" alt="Mozilla" width={"300px"} style={{verticalAlign:'middle',marginRight:'12px'}} />
+    <span style={{verticalAlign:'middle', fontWeight:600, fontSize:'1.05em'}}>Mozilla Builders 2024</span>
+  </a>
+
+  <br/>
+  <br/>
+
+  <a href="https://github.com/accelerator" title="GitHub Accelerator 2024" target="_blank" rel="noopener">
+    <img src="/images/grants/github.png" alt="GitHub" width={"300px"} style={{verticalAlign:'middle',marginRight:'16px'}} />
+    <span style={{verticalAlign:'middle', fontWeight:600, fontSize:'1.05em'}}>GitHub Accelerator 2024</span>
+  </a>
+
+  
+</p>

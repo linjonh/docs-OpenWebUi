@@ -1,0 +1,80 @@
+---
+sidebar_position: 1600
+title: "🤝 Contribuer"
+---
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+<TopBanners />
+
+🚀 **Bienvenue, Contributeurs !** 🚀
+
+Votre intérêt à contribuer à Open WebUI est grandement apprécié. Ce document est là pour vous guider dans le processus, afin de garantir que vos contributions améliorent efficacement le projet. Faisons d'Open WebUI ensemble quelque chose de meilleur !
+
+## 💡 Contribuer
+
+Vous souhaitez contribuer ? Super ! Voici comment vous pouvez aider :
+
+### 🌟 Guide de Contributions de Code
+
+Nous acceptons les pull requests. Avant d'en soumettre une, veuillez :
+
+1. Ouvrir une discussion concernant vos idées [ici](https://github.com/open-webui/open-webui/discussions/new/choose).
+2. Suivre les normes de codage du projet et inclure des tests pour les nouvelles fonctionnalités.
+3. Mettre à jour la documentation si nécessaire.
+4. Rédiger des messages de commit clairs et descriptifs.
+
+### 🛠 Meilleures pratiques pour les PR de code :
+
+1. **PR Atomic:** Assurez-vous que vos PR sont petites, ciblées et répondent à un seul objectif ou tâche. Cela facilite la révision du code et limite les risques d'introduction de problèmes non liés. Si l'étendue des modifications devient trop importante, envisagez de les diviser en PR plus petites et indépendantes.
+2. **Respecter la Convention de Code Existante:** Veillez à ce que votre code s'aligne avec les normes et pratiques de codage existantes du projet.
+3. **Éviter les Dépendances Externes Supplémentaires:** N'incluez pas de dépendances externes supplémentaires sans discussion préalable.
+4. **Approche Indépendante du Framework:** Nous visons à rester indépendants des frameworks. Implémentez les fonctionnalités par nous-mêmes autant que possible plutôt que de dépendre de frameworks ou bibliothèques externes. Si vous avez des doutes ou des suggestions à ce sujet, n'hésitez pas à en discuter.
+
+Merci pour votre contribution ! 🚀
+
+### 📚 Documentation & Tutoriels
+
+Aidez-nous à rendre Open WebUI plus accessible en améliorant la documentation, en rédigeant des tutoriels ou en créant des guides sur la configuration et l'optimisation de l'interface web.
+
+### 🌐 Traductions et Internationalisation
+
+Aidez-nous à rendre Open WebUI accessible à un plus grand public. Dans cette section, nous vous guiderons sur la manière d'ajouter de nouvelles traductions au projet.
+
+Nous utilisons des fichiers JSON pour stocker les traductions. Vous pouvez trouver les fichiers de traduction existants dans le répertoire `src/lib/i18n/locales`. Chaque répertoire correspond à une langue spécifique, par exemple, `en-US` pour l'anglais (États-Unis), `fr-FR` pour le français (France), et ainsi de suite. Vous pouvez vous référer aux [codes de langue ISO 639](http://www.lingoes.net/en/translator/langcode.htm) pour trouver le code approprié pour une langue spécifique.
+
+Pour ajouter une nouvelle langue :
+
+- Créez un nouveau répertoire dans le chemin `src/lib/i18n/locales` avec le code de langue approprié comme nom. Par exemple, si vous ajoutez des traductions pour l'espagnol (Espagne), créez un nouveau répertoire nommé `es-ES`.
+- Copiez le(s) fichier(s) de traduction en anglais américain (du répertoire `en-US` dans `src/lib/i18n/locale`) dans ce nouveau répertoire et mettez à jour les valeurs des chaînes en format JSON selon votre langue. Assurez-vous de conserver la structure de l'objet JSON.
+- Ajoutez le code de langue et son titre respectif au fichier des langues à `src/lib/i18n/locales/languages.json`.
+
+### 🤔 Questions & Feedback
+
+Vous avez des questions ou des retours ? Rejoignez notre [communauté Discord](https://discord.gg/5rJgQTnV4s) ou ouvrez une issue. Nous sommes là pour vous aider !
+
+### 🚨 Signalement des Problèmes
+
+Vous avez remarqué quelque chose qui ne va pas ? Une idée ? Consultez notre [onglet Issues](https://github.com/open-webui/open-webui/issues) pour voir si cela a déjà été signalé ou suggéré. Sinon, n'hésitez pas à ouvrir une nouvelle issue. Lors du signalement d'un problème, veuillez suivre nos modèles d'issues. Ces modèles sont conçus pour garantir que tous les détails nécessaires sont fournis dès le départ, ce qui nous permet de répondre à vos préoccupations plus efficacement.
+
+:::important
+
+- **Respect des Modèles :** Veuillez noter que le non-respect du modèle fourni pour les issues, ou l'absence totale des informations demandées, entraînera probablement la fermeture de votre issue sans considération supplémentaire. Cette approche est essentielle pour maintenir la gestion et l'intégrité du suivi des issues.
+
+- **Les Détails sont Cruciaux :** Pour garantir que votre problème soit compris et puisse être efficacement traité, il est impératif d'inclure des détails complets. Les descriptions doivent être claires, incluant les étapes pour reproduire, les résultats attendus, et les résultats réels. L'absence de détails suffisants pourrait nuire à notre capacité à résoudre votre problème.
+
+:::
+
+### 🧭 Portée du Support
+
+Nous avons remarqué une augmentation des issues n'étant pas directement liées à Open WebUI, mais plutôt à l'environnement dans lequel il est exécuté, en particulier les configurations Docker. Bien que nous nous efforcions de soutenir le déploiement Docker, comprendre les fondamentaux de Docker est crucial pour une expérience sans problème.
+
+- **Support de Déploiement Docker** : Open WebUI prend en charge le déploiement Docker. Une familiarité avec Docker est supposée. Pour les bases de Docker, veuillez vous référer à la [documentation officielle de Docker](https://docs.docker.com/get-started/overview/).
+
+- **Configurations avancées**: La mise en place de proxies inverses pour HTTPS et la gestion des déploiements Docker nécessitent des connaissances fondamentales. De nombreuses ressources en ligne sont disponibles pour apprendre ces compétences. Assurez-vous de posséder ces connaissances pour enrichir votre expérience avec Open WebUI et des projets similaires.
+
+## 🙏 Merci !
+
+Vos contributions, grandes ou petites, ont un impact significatif sur Open WebUI. Nous sommes impatients de voir ce que vous apporterez au projet !
+
+Ensemble, créons un outil encore plus puissant pour la communauté. 🌟

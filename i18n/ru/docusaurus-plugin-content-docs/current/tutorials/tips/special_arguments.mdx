@@ -1,0 +1,320 @@
+---
+sidebar_position: 20
+title: "💡 Специальные аргументы"
+---
+
+:::предупреждение
+Этот учебник является вкладом сообщества и не поддерживается командой Open WebUI. Он служит только в качестве демонстрации того, как настроить Open WebUI для вашего конкретного использования. Хотите внести свой вклад? Ознакомьтесь с руководством для участников.
+:::
+
+# 💡 Специальные аргументы
+
+При разработке ваших собственных `Tools`, `Functions` (`Filters`, `Pipes` или `Actions`), `Pipelines` и так далее, вы можете использовать специальные аргументы, чтобы изучить весь спектр возможностей, которые предлагает Open-WebUI.
+
+Эта страница предназначена для описания типа и структуры каждого специального аргумента, а также примеров их использования.
+
+### `body`
+
+`dict`, обычно предназначенный для почти прямой передачи модели. Хотя это по сути не является специальным аргументом, он включен здесь для удобства ссылки и потому, что содержит свои собственные специальные аргументы.
+
+<details>
+<summary>Пример</summary>
+
+```json
+
+{
+  "stream": true,
+  "model": "my-cool-model",
+  # строка в нижнем регистре с разделенными словами через дефис: это ID модели
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Что изображено на этой картинке?"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdYAAAGcCAYAAABk2YF[REDACTED]"
+            # Изображения передаются в виде данных, закодированных в base64
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": "На изображении, похоже, [REDACTED]"
+    },
+  ],
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "stream_options": {
+    "include_usage": true
+  },
+  "metadata": "[Тот же dict, что и __metadata__]",
+  "files": "[Тот же список, что и __files__]"
+}
+
+
+```
+
+</details>
+
+### `__user__`
+
+`dict` с информацией о пользователе.
+
+Обратите внимание, что если класс `UserValves` определен, его экземпляр должен быть доступен через `__user__["valves"]`. В противном случае ключ `valves` отсутствует полностью в `__user__`.
+
+<details>
+<summary>Пример</summary>
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "email": "cheesy_dude@openwebui.com",
+  "name": "Патрик",
+  "role": "user",
+  # роль может быть либо `user`, либо `admin`
+  "valves": "[экземпляр UserValve]"
+}
+```
+
+</details>
+
+### `__metadata__`
+
+`dict` с широкой информацией о чате, модели, файлах и т.д.
+
+<details>
+<summary>Пример</summary>
+
+```json
+{
+  "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "chat_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "message_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "session_id": "xxxxxxxxxxxxxxxxxxxx",
+  "tool_ids": null,
+  # tool_ids - это список строк.
+  "tool_servers": [],
+  "files": "[То же, что и body[files]]",
+  # Если файлы не указаны, ключ files существует в __metadata__, и его значение равно []
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "variables": {
+    "{{USER_NAME}}": "cheesy_username",
+    "{{USER_LOCATION}}": "Неизвестно",
+    "{{CURRENT_DATETIME}}": "2025-02-02 XX:XX:XX",
+    "{{CURRENT_DATE}}": "2025-02-02",
+    "{{CURRENT_TIME}}": "XX:XX:XX",
+    "{{CURRENT_WEEKDAY}}": "Понедельник",
+    "{{CURRENT_TIMEZONE}}": "Europe/Berlin",
+    "{{USER_LANGUAGE}}": "en-US"
+  },
+  "model": "[Тот же dict, что и __model__]",
+  "direct": false,
+  "function_calling": "native",
+  "type": "user_response",
+  "interface": "open-webui"
+}
+
+```
+
+</details>
+
+### `__model__`
+
+`dict` с информацией о модели.
+
+<details>
+<summary>Пример</summary>
+
+```json
+{
+  "id": "my-cool-model",
+  "name": "My Cool Model",
+  "object": "model",
+  "created": 1746000000,
+  "owned_by": "openai",
+  # либо openai, либо ollama
+  "info": {
+      "id": "my-cool-model",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "base_model_id": "gpt-4o",
+      # это название модели, которую обслуживает endpoint
+      "name": "My Cool Model",
+      "params": {
+      "system": "Вы мой лучший помощник. Вы отвечаете [REDACTED]",
+      "function_calling": "native"
+      # настраиваемые опции появляются здесь, например, "Top K"
+      },
+      "meta": {
+      "profile_image_url": "/static/favicon.png",
+      "description": "Описание my-cool-model",
+      "capabilities": {
+          "vision": true,
+          "usage": true,
+          "citations": true
+      },
+      "position": 17,
+      "tags": [
+          {
+          "name": "for_friends"
+          },
+          {
+          "name": "vision_enabled"
+          }
+      ],
+      "suggestion_prompts": null
+          "name": "vision_enabled"
+      }
+  ]
+}
+
+```
+
+</details>
+
+### `__messages__`
+
+Список предыдущих сообщений.
+
+См. значение `body["messages"]` выше.
+
+
+### `__chat_id__`
+
+Строка `chat_id`.
+
+См. значение `__metadata__["chat_id"]` выше.
+
+### `__session_id__`
+
+Строка `session_id`.
+
+См. значение `__metadata__["session_id"]` выше.
+
+### `__message_id__`
+
+Строка `message_id`.
+
+См. значение `__metadata__["message_id"]` выше.
+
+### `__event_emitter__`
+
+Callable, используемый для отображения информации о событиях пользователю.
+
+### `__event_call__`
+
+Callable, используемый для `Действий`.
+
+### `__files__`
+
+Список файлов, отправленных через чат. Обратите внимание, что изображения не считаются файлами и отправляются непосредственно в модель как часть списка `body["messages"]`.
+
+Фактический бинарный файл не является частью аргументов по соображениям производительности, но файл остается доступным по его пути в случае необходимости. Например, используя `docker`, синтаксис Python для пути может быть следующим:
+
+```python
+from pathlib import Path
+
+the_file = Path(f"/app/backend/data/uploads/{__files__[0]["files"]["id"]}_{__files__[0]["files"]["filename"]}")
+assert the_file.exists()
+```
+
+Обратите внимание, что тот же словарь файлов также можно получить через `__metadata__["files"]` (и его значение будет `[]`, если файлы не отправлены) или через `body["files"]` (но ключ `files` полностью отсутствует в `body`, если файлы не отправлены).
+
+<details>
+<summary>Пример</summary>
+
+```json
+
+[
+  {
+    "type": "file",
+    "file": {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "filename": "Napoleon - Wikipedia.pdf",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "data": {
+        "content": "Napoleon - Wikipedia\n\n\nNapoleon I\n\nThe Emperor Napoleon in His Study at the\nTuileries, 1812\n\nEmperor of the French\n\n1st reign 18 May 1804 – 6 April 1814\n\nSuccessor Louis XVIII[a]\n\n2nd reign 20 March 1815 – 22 June 1815\n\nSuccessor Louis XVIII[a]\n\nFirst Consul of the French Republic\n\nIn office\n13 December 1799 – 18 May 1804\n\nBorn Napoleone Buonaparte\n15 August 1769\nAjaccio, Corsica, Kingdom of\nFrance\n\nDied 5 May 1821 (aged 51)\nLongwood, Saint Helena\n\nBurial 15 December 1840\nLes Invalides, Paris\n\nNapoleon\nNapoleon Bonaparte[b] (born Napoleone\nBuonaparte;[1][c] 15 August 1769 – 5 May 1821), later\nknown [REDACTED]",
+        # Значение content — это результат парсера документов, приведенный пример — с использованием Tika как парсера документов
+      },
+      "meta": {
+        "name": "Napoleon - Wikipedia.pdf",
+        "content_type": "application/pdf",
+        "size": 10486578,
+        # в байтах, здесь около 10Mb
+        "data": {},
+        "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        # всегда начинается с file
+      },
+      "created_at": 1740000000,
+      "updated_at": 1740000000
+    },
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "url": "/api/v1/files/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "name": "Napoleon - Wikipedia.pdf",
+    "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    "status": "uploaded",
+    "size": 10486578,
+    "error": "",
+    "itemId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    # itemId не совпадает с file["id"]
+  }
+]
+
+
+```
+
+</details>
+
+### `__request__`
+
+Экземпляр `fastapi.Request`. Подробнее можно прочитать на [странице миграции](../../features/plugin/migration/index.mdx) или в [документации fastapi](https://fastapi.tiangolo.com/reference/request/).
+
+### `__task__`
+
+Строка, указывающая тип задачи. Ее значение является сокращением для `__metadata__["task"]`, если она присутствует, в противном случае `None`.
+
+<details>
+<summary>Возможные значения</summary>
+
+```json
+
+[
+    "title_generation",
+    "tags_generation",
+    "emoji_generation",
+    "query_generation",
+    "image_prompt_generation",
+    "autocomplete_generation",
+    "function_calling",
+    "moa_response_generation"
+]
+```
+
+</details>
+
+### `__task_body__`
+
+Словарь, содержащий `body`, необходимый для выполнения заданной `__task__`. Его значение является сокращением для `__metadata__["task_body"]`, если она присутствует, в противном случае `None`.
+
+Его структура такая же, как у `body` выше, с изменениями, такими как использование подходящей модели и системного сообщения и т. д.
+
+
+### `__tools__`
+
+Список экземпляров `ToolUserModel`.
+
+Для получения подробной информации об атрибутах экземпляров `ToolUserModel` код можно найти в [tools.py](https://github.com/open-webui/open-webui/blob/main/backend/open_webui/models/tools.py).
+

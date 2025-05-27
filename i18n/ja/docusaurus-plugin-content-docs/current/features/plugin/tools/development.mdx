@@ -1,0 +1,274 @@
+---
+sidebar_position: 2
+title: "🛠️ 開発"
+---
+
+
+
+## カスタムツールキットの作成
+
+ツールキットは1つのPythonファイルで定義され、トップレベルのドックストリングにメタデータと`Tools`クラスが含まれています。
+
+### トップレベルドックストリングの例
+
+```python
+"""
+title: 文字列反転
+author: あなたの名前
+author_url: https://website.com
+git_url: https://github.com/username/string-reverse.git
+description: このツールは文字列の逆転を計算します
+required_open_webui_version: 0.4.0
+requirements: langchain-openai, langgraph, ollama, langchain_ollama
+version: 0.4.0
+licence: MIT
+"""
+```
+
+### Toolsクラス
+
+`Tools`という名前のクラス内にメソッドとしてツールを定義する必要があります。例えば、オプションのサブクラスである`Valves`や`UserValves`が含まれる場合があります。
+
+```python
+class Tools:
+    def __init__(self):
+        """ツールの初期化"""
+        self.valves = self.Valves()
+
+    class Valves(BaseModel):
+        api_key: str = Field("", description="ここにAPIキーを入力")
+
+    def reverse_string(self, string: str) -> str:
+        """
+        入力された文字列を逆にします。
+        :param string: 逆転する文字列
+        """
+        # valvesの使用例
+        if self.valves.api_key != "42":
+            return "APIキーが間違っています"
+        return string[::-1] 
+```
+
+### 型ヒント
+各ツールには引数の型ヒントが必須です。型は`queries_and_docs: list[tuple[str, int]]`のようにネストされる場合もあります。これらの型ヒントはモデルに送信されるJSONスキーマを生成するために使用されます。型ヒントなしのツールは一貫性が大幅に低下します。
+
+### ValvesおよびUserValves - (オプションですが、強く推奨されます)
+
+ValvesおよびUserValvesはツールのカスタマイズ可能な設定を指定するために使用されます。詳細は専用の[Valves & UserValves](../valves/index.mdx)ページを参照してください。
+
+### オプション引数
+以下はツールで依存可能なオプション引数の一覧です：
+- `__event_emitter__`: イベントを発生させる (以下のセクションを参照)
+- `__event_call__`: イベントエミッターと同じですがユーザーとのやり取りにも使用可能
+- `__user__`: ユーザー情報を含む辞書。`__user__["valves"]`には`UserValves`オブジェクトも含まれます。
+- `__metadata__`: チャットメタデータを含む辞書
+- `__messages__`: 過去のメッセージのリスト
+- `__files__`: 添付ファイル
+- `__model__`: モデル情報を含む辞書
+
+上記のように、`__user__`を任意のToolクラスのメソッドに引数として追加するだけで使用できます。
+
+### イベントエミッター
+イベントエミッターはチャットインターフェースに追加情報を提供するために使用されます。Filter Outletsと似ていますが、イベントエミッターはチャットにコンテンツを追加することができます。Filter Outletsとは異なり、情報を削除することはできません。さらに、エミッターはツールの任意の段階でアクティブ化可能です。
+
+イベントエミッターには2種類あります：
+
+モデルがツールを呼び出せない場合は、それが有効であることを確認してください（モデルページまたはチャット入力フィールドの横にある`+`記号から）。また、モデルページの`Advanced Params`セクションの`Function Calling`引数を`Default`から`Native`に変更することも可能です。
+
+#### ステータス
+メッセージが手順を実行している間にステータスを追加するために使用されます。これらはツールの任意の段階で実行可能です。これらのステータスはメッセージコンテンツの直上に表示されます。LLMの応答が遅延するツールや大量の情報を処理するツールに非常に役立ちます。これにより、処理中のリアルタイム情報をユーザーに伝えることができます。
+
+```python
+await __event_emitter__(
+            {
+                "type": "status", # 型をここで設定
+                "data": {"description": "チャットに表示されるメッセージ", "done": False, "hidden": False}, 
+                # doneがFalseであることがここで示され、ステータスを引き続き送信している
+            }
+        )
+```
+
+<details>
+<summary>例</summary>
+
+```python
+async def test_function(
+        self, prompt: str, __user__: dict, __event_emitter__=None
+    ) -> str:
+        """
+        デモです
+
+        :param test: テスト用のパラメータ
+        """
+
+        await __event_emitter__(
+            {
+                "type": "status", # 型をここで設定
+                "data": {"description": "チャットに表示されるメッセージ", "done": False}, 
+                # doneがFalseであることがここで示され、ステータスを引き続き送信している
+            }
+        )
+
+        # 他のロジックを実行します
+        await __event_emitter__(
+            {
+                "type": "status",
+                "data": {"description": "タスク完了のメッセージ", "done": True, "hidden": False},
+                # doneがTrueであることがここで示され、ステータスの送信が完了している
+                # メッセージが返された後にステータスを削除したい場合は"hidden": Trueを設定可能
+            }
+        )
+
+        except Exception as e:
+            await __event_emitter__(
+                {
+                    "type": "status",
+                    "data": {"description": f"エラーが発生しました: {e}", "done": True},
+                }
+            )
+
+            return f"ユーザーに伝える: {e}"
+```
+</details>
+
+#### メッセージ
+このタイプは、ツールの任意の段階でLLMにメッセージを追加するために使用されます。これにより、メッセージを追加したり、画像を埋め込んだり、さらにはWebページをレンダリングすることができます。それは、LLMの応答の前、後、または応答中のどの段階でも可能です。
+
+```python
+await __event_emitter__(
+                    {
+                        "type": "message", # ここでタイプを設定します
+                        "data": {"content": "このメッセージはチャットに追加されます。"},
+                        # メッセージタイプでは完了条件を設定する必要はありません
+                    }
+                )
+```
+
+<details>
+<summary>例</summary>
+
+```python
+async def test_function(
+        self, prompt: str, __user__: dict, __event_emitter__=None
+    ) -> str:
+        """
+        これはデモです
+
+        :param test: これはテストパラメータです
+        """
+
+        await __event_emitter__(
+                    {
+                        "type": "message", # ここでタイプを設定します
+                        "data": {"content": "このメッセージはチャットに追加されます。"},
+                        # メッセージタイプでは完了条件を設定する必要はありません
+                    }
+                )
+
+        except Exception as e:
+            await __event_emitter__(
+                {
+                    "type": "status",
+                    "data": {"description": f"エラーが発生しました: {e}", "done": True},
+                }
+            )
+
+            return f"ユーザーに伝える: {e}"
+```
+</details>
+
+#### 引用
+このタイプは、チャット内で引用や参照を提供するために使用されます。コンテンツ、ソース、および関連するメタデータを指定する際に利用できます。以下は引用イベントを発生させる例です:
+
+```python
+await __event_emitter__(
+    {
+        "type": "citation",
+        "data": {
+            "document": [content],
+            "metadata": [
+                {
+                    "date_accessed": datetime.now().isoformat(),
+                    "source": title,
+                }
+            ],
+            "source": {"name": title, "url": url},
+        },
+    }
+)
+```
+複数の引用を送信する場合は、引用を反復してエミッタを複数回呼び出すことができます。カスタム引用を実装する際には、`Tools`クラスの`__init__`メソッドで`self.citation = False`を設定してください。そうしないと、組み込みの引用が送信したものを上書きしてしまいます。例えば:
+
+```python
+def __init__(self):
+    self.citation = False
+```
+
+警告: `self.citation = True`を設定すると、送信したカスタム引用が自動生成された引用に置き換えられます。それを無効にすることで、独自の引用参照を完全に管理することができます。
+
+<details>
+<summary>例</summary>
+
+```python
+class Tools:
+    class UserValves(BaseModel):
+        test: bool = Field(
+            default=True, description="テスト"
+        )
+
+    def __init__(self):
+        self.citation = False
+
+async def test_function(
+        self, prompt: str, __user__: dict, __event_emitter__=None
+    ) -> str:
+        """
+        これは単に引用を作成するデモです
+
+        :param test: これはテストパラメータです
+        """
+
+        await __event_emitter__(
+            {
+                "type": "citation",
+                "data": {
+                    "document": ["このメッセージはクリックすると引用としてチャットに追加されます"],
+                    "metadata": [
+                        {
+                            "date_accessed": datetime.now().isoformat(),
+                            "source": title,
+                        }
+                    ],
+                    "source": {"name": "コンテンツのタイトル", "url": "http://link-to-citation"},
+                },
+            }
+        )
+```
+</details>
+
+## 外部パッケージ
+
+ツール定義のメタデータでカスタムパッケージを指定することができます。「保存」をクリックすると、行が解析され、`pip install`がすべての要件に対して一度に実行されます。
+
+pipがOpen WebUIと同じプロセスで使用されるため、インストール中にUIが完全に応答しないことに注意してください。
+
+Open WebUIの要件とのパッケージ競合を処理する措置は取られていません。したがって、要件を指定すると、注意しないとOpen WebUIが壊れる可能性があります。この問題を回避するには、`open-webui`自体を要件として指定することができるかもしれません。
+
+
+<details>
+<summary>例</summary>
+
+```python
+"""
+title: myToolName
+author: myName
+funding_url: [ユーザーがあなたを支援するために使用できるリンク]
+version: 1.0.0
+# バージョンはUIに表示され、ユーザーが更新を追跡しやすくします。
+license: GPLv3
+description: [推奨]
+requirements: package1>=2.7.0,package2,package3
+"""
+```
+
+</details>

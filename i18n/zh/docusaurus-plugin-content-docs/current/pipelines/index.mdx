@@ -1,0 +1,142 @@
+---
+sidebar_position: 1000
+title: "⚡ 工作流"
+---
+
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+
+<TopBanners />
+
+
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/header.png" alt="工作流标志" />
+  </a>
+</p>
+
+# 工作流: 无界面的 OpenAI API 插件框架
+
+:::warning
+**在以下情况下请勿使用工作流！**
+
+如果你的目标只是支持额外的提供商（如 Anthropic）或基本的过滤器，你可能并不需要工作流。在这种情况下，Open WebUI 函数更合适——它是内置的，更方便且更易于配置。然而，当你需要处理计算密集型任务（例如运行大型模型或复杂逻辑）并希望将这些任务从主要的 Open WebUI 实例中卸载以提高性能和可扩展性时，工作流将派上用场。
+:::
+
+欢迎来到 **工作流**，这是一个 [Open WebUI](https://github.com/open-webui) 项目。工作流为任何支持 OpenAI API 规范的用户界面客户提供了模块化、可定制的工作流程——以及更多功能！只需几行代码即可轻松扩展功能、集成独特逻辑并创建动态工作流程。
+
+## 🚀 为什么选择工作流？
+
+- **无限可能:** 轻松添加自定义逻辑并集成 Python 库，从 AI 代理到家庭自动化 API。
+- **无缝集成:** 与任何支持 OpenAI API 规范的用户界面或客户兼容。（仅支持管道类型的工作流；过滤器类型需要支持工作流的客户端。）
+- **自定义钩子:** 构建和集成自定义工作流。
+
+### 你可以实现的示例：
+
+- [**函数调用工作流**](https://github.com/open-webui/pipelines/blob/main/examples/filters/function_calling_filter_pipeline.py): 轻松处理函数调用，使用自定义逻辑增强你的应用程序。
+- [**自定义 RAG 工作流**](https://github.com/open-webui/pipelines/blob/main/examples/pipelines/rag/llamaindex_pipeline.py): 实现适合你需求的复杂检索增强生成 (RAG) 工作流。
+- [**使用 Langfuse 监控消息**](https://github.com/open-webui/pipelines/blob/main/examples/filters/langfuse_filter_pipeline.py): 使用 Langfuse 实时监控和分析消息交互。
+- [**速率限制过滤器**](https://github.com/open-webui/pipelines/blob/main/examples/filters/rate_limit_filter_pipeline.py): 控制请求流量以防止超出速率限制。
+- [**使用 LibreTranslate 的实时翻译过滤器**](https://github.com/open-webui/pipelines/blob/main/examples/filters/libretranslate_filter_pipeline.py): 无缝集成实时翻译到你的 LLM 交互中。
+- [**有害消息过滤器**](https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py): 实现过滤器，以有效检测和处理有害消息。
+- **更多功能！**: 使用工作流和 Python，你可以实现任何想法。[查看我们的脚手架](https://github.com/open-webui/pipelines/blob/main/examples/scaffolds)，为你的项目取得快速进展，并优化开发流程！
+
+## 🔧 工作原理
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/workflow.png" alt="工作流工作原理" />
+  </a>
+</p>
+
+将工作流与任何兼容 OpenAI API 的用户界面客户端集成非常简单。启动你的工作流实例，并将客户端中的 OpenAI URL 设置为工作流 URL。仅此而已！你可以根据需要利用任何 Python 库。
+
+## ⚡ 使用 Docker 快速启动
+
+:::warning
+工作流是一种具有任意代码执行的插件系统——**不要从不可信来源获取随机工作流**。
+:::
+
+使用 Docker 进行简化设置：
+
+1. **运行工作流容器：**
+
+   ```sh
+   docker run -d -p 9099:9099 --add-host=host.docker.internal:host-gateway -v pipelines:/app/pipelines --name pipelines --restart always ghcr.io/open-webui/pipelines:main
+   ```
+
+2. **连接到 Open WebUI：**
+
+   - 转到 Open WebUI 的 **管理面板 > 设置 > 连接** 部分。
+   - 在此页面中，可以按下 `+` 按钮以添加另一个连接。
+   - 将 API URL 设置为 `http://localhost:9099`，将 API 密钥设置为 `0p3n-w3bu!`。
+   - 添加工作流连接并验证后，你会看到一个图标出现在添加连接的 API 基础 URL 字段中。鼠标悬停时，该图标会被标记为 `Pipelines`。现在你的工作流应该已激活。
+
+:::info
+如果你的 Open WebUI 运行在 Docker 容器中，请将 API URL 中的 `localhost` 替换为 `host.docker.internal`。
+:::
+
+3. **管理配置：**
+
+   - 在管理面板中，转到 **管理面板 > 设置 > 工作流** 选项卡。
+   - 选择你想要的工作流，并可以直接从 WebUI 修改阀门的值。
+
+:::tip
+如果您无法连接，很可能是Docker网络问题。我们鼓励您自行排查问题，并在讨论论坛中分享您的方法和解决方案。
+:::
+
+如果您需要安装具有额外依赖项的自定义pipeline：
+
+- **运行以下命令：**
+
+  ```sh
+  docker run -d -p 9099:9099 --add-host=host.docker.internal:host-gateway -e PIPELINES_URLS="https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py" -v pipelines:/app/pipelines --name pipelines --restart always ghcr.io/open-webui/pipelines:main
+  ```
+
+或者，您可以通过复制粘贴pipeline URL直接从管理员设置中安装pipeline，只要它没有额外的依赖项。
+
+就这样！现在您可以轻松使用Pipelines构建可定制的AI集成了。享受吧！
+
+## 📦 安装和设置
+
+只需几个简单步骤即可开始使用Pipelines：
+
+1. **确保已安装Python 3.11。** 它是唯一官方支持的Python版本。
+2. **克隆Pipelines仓库：**
+
+   ```sh
+   git clone https://github.com/open-webui/pipelines.git
+   cd pipelines
+   ```
+
+3. **安装所需依赖项：**
+
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+4. **启动Pipelines服务器：**
+
+   ```sh
+   sh ./start.sh
+   ```
+
+一旦服务器运行起来，在您的客户端上将OpenAI URL设置为Pipelines URL。这将解锁Pipelines的全部功能，集成任何Python库并根据您的需求创建自定义工作流程。
+
+## 📂 目录结构和示例
+
+`/pipelines`目录是您的核心设置。您可以在此添加新模块，定制现有模块，并管理您的工作流程。在服务器启动时，`/pipelines`目录中的所有pipeline将被**自动加载**。
+
+您可以通过`PIPELINES_DIR`环境变量将此目录从`/pipelines`更改为其他位置。
+
+### 集成示例
+
+在`https://github.com/open-webui/pipelines/blob/main/examples`目录中找到各种集成示例。这些示例展示了如何集成不同的功能，为构建您自己的自定义pipeline提供基础。
+
+## 🎉 正在进行的工作
+
+我们正不断发展！我们很想听到您的反馈，并了解哪些hooks和功能最适合您的使用场景。随时联系我们，并成为我们的Open WebUI社区的一员！
+
+我们的愿景是推动**Pipelines**成为我们AI界面**Open WebUI**的终极插件框架。想象一下，**Open WebUI**是AI界面的WordPress，而**Pipelines**则是其多样化的插件系列。加入我们这段激动人心的旅程吧！🌍

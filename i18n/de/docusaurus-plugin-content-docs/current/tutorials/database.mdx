@@ -1,0 +1,88 @@
+---
+sidebar_position: 310 
+title: "📦 Exportieren und Importieren der Datenbank"
+---
+
+
+Wenn Sie Ihre **Open WebUI**-Daten (z. B. Chatverläufe, Konfigurationen usw.) von einem Server auf einen anderen migrieren oder für die spätere Verwendung sichern möchten, können Sie die Datenbank exportieren und importieren. Diese Anleitung geht davon aus, dass Sie Open WebUI mit der internen SQLite-Datenbank (nicht PostgreSQL) betreiben.
+
+Folgen Sie den unten stehenden Schritten, um die `webui.db`-Datei, die Ihre Datenbank enthält, zu exportieren und zu importieren.
+
+---
+
+### Exportieren der Datenbank
+
+Um die Datenbank von Ihrer aktuellen Open WebUI-Instanz zu exportieren:
+
+1. **Verwenden Sie `docker cp`, um die Datenbankdatei zu kopieren**:  
+   Die Datei `webui.db` befindet sich im Container im Verzeichnis `/app/backend/data`. Führen Sie den folgenden Befehl aus, um sie auf Ihren lokalen Rechner zu kopieren:  
+   ```bash
+   docker cp open-webui:/app/backend/data/webui.db ./webui.db
+   ```
+
+2. **Übertragen Sie die exportierte Datei auf den neuen Server**:  
+   Sie können **FileZilla** oder ein anderes Werkzeug Ihrer Wahl verwenden, um die `webui.db`-Datei auf den neuen Server zu übertragen.
+
+   :::info
+   FileZilla wird aufgrund seiner Benutzerfreundlichkeit für die Übertragung von Dateien auf den neuen Server empfohlen.
+   :::
+
+---
+
+### Importieren der Datenbank
+
+Nachdem Sie die Datei `webui.db` auf den neuen Server übertragen haben, folgen Sie diesen Schritten:
+
+1. **Installieren und starten Sie Open WebUI auf dem neuen Server**:  
+   Richten Sie Open WebUI mit einem Docker-Container ein und starten Sie es. Befolgen Sie die Anweisungen im Abschnitt [🚀 Erste Schritte](/getting-started), um den Open WebUI-Container zu installieren und zu starten. Stoppen Sie diesen, bevor Sie den Import durchführen.
+   ```bash
+   docker stop open-webui
+   ```
+
+2. **Verwenden Sie `docker cp`, um die Datenbankdatei in den Container zu kopieren**:  
+   Wenn sich die exportierte `webui.db`-Datei in Ihrem aktuellen Arbeitsverzeichnis befindet, kopieren Sie diese in den Container:
+   ```bash
+   docker cp ./webui.db open-webui:/app/backend/data/webui.db
+   ```
+
+3. **Starten Sie den Open WebUI-Container**:  
+   Starten Sie den Container erneut, um die importierte Datenbank zu verwenden.
+   ```bash
+   docker start open-webui
+   ```
+
+   Der neue Server sollte jetzt Open WebUI mit Ihrer importierten Datenbank ausführen.
+
+---
+
+### Hinweise
+
+- Dieser Export-/Importprozess **funktioniert nur, wenn Sie die interne SQLite-Datenbank (`webui.db`) verwenden**.
+- Wenn Sie eine externe PostgreSQL-Datenbank verwenden, ist diese Methode nicht anwendbar, da die Datenbank außerhalb des Containers verwaltet wird. Für PostgreSQL müssen Sie PostgreSQL-spezifische Tools und Verfahren verwenden, um Ihre Datenbank zu sichern und wiederherzustellen.
+
+---
+
+### Warum das wichtig ist
+
+Dieser Ansatz ist besonders nützlich, wenn:
+
+- Sie Ihre Open WebUI-Daten auf einen neuen Server oder Rechner migrieren.
+- Sie vor einem Update oder einer Änderung Sicherungen Ihrer Daten erstellen.
+- Sie Open WebUI auf mehreren Servern mit der gleichen Konfiguration testen.
+
+```bash
+# Kurze Befehlsübersicht für Export und Import
+# Export:
+docker cp open-webui:/app/backend/data/webui.db ./webui.db
+
+# Container auf dem neuen Server stoppen:
+docker stop open-webui
+
+# Import:
+docker cp ./webui.db open-webui:/app/backend/data/webui.db
+
+# Container starten:
+docker start open-webui
+```
+
+Mit diesen Schritten können Sie den Migrations- oder Sicherungsprozess für Open WebUI problemlos verwalten. Beachten Sie das von Ihnen verwendete Datenbankformat, um die Kompatibilität sicherzustellen.

@@ -1,0 +1,142 @@
+---
+sidebar_position: 1000
+title: "⚡ Pipelines"
+---
+
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+
+<TopBanners />
+
+
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/header.png" alt="Logotipo do Pipelines" />
+  </a>
+</p>
+
+# Pipelines: Framework de Plugin da API OpenAI Agnóstico de UI
+
+:::warning
+**NÃO USE O PIPELINES SE!**
+
+Se o seu objetivo é simplesmente adicionar suporte para provedores adicionais como Anthropic ou filtros básicos, você provavelmente não precisa do Pipelines. Nesses casos, as Funções Open WebUI são mais adequadas – está embutido, é muito mais conveniente e fácil de configurar. O Pipelines, no entanto, entra em jogo quando você está lidando com tarefas computacionalmente pesadas (por exemplo, execução de modelos grandes ou lógica complexa) que você deseja descarregar da sua instância principal do Open WebUI para melhorar o desempenho e a escalabilidade.
+:::
+
+Bem-vindo ao **Pipelines**, uma iniciativa do [Open WebUI](https://github.com/open-webui). O Pipelines traz fluxos de trabalho modulares e personalizáveis para qualquer cliente de interface compatível com especificações OpenAI API – e muito mais! Amplie funcionalidades, integre lógica exclusiva e crie fluxos de trabalho dinâmicos com apenas algumas linhas de código.
+
+## 🚀 Por que Escolher o Pipelines?
+
+- **Possibilidades Ilimitadas:** Adicione facilmente lógica personalizada e integre bibliotecas Python, desde agentes de IA até APIs de automação residencial.
+- **Integração Sem Limites:** Compatível com qualquer cliente/interface que suporte especificações OpenAI API. (Apenas pipelines do tipo pipe são suportados; tipos de filtro exigem clientes com suporte a Pipelines.)
+- **Hooks Personalizados:** Construa e integre pipelines personalizados.
+
+### Exemplos do que Você Pode Realizar:
+
+- [**Pipeline de Chamada de Função**](https://github.com/open-webui/pipelines/blob/main/examples/filters/function_calling_filter_pipeline.py): Lide facilmente com chamadas de função e melhore seus aplicativos com lógica personalizada.
+- [**Pipeline Personalizado de RAG**](https://github.com/open-webui/pipelines/blob/main/examples/pipelines/rag/llamaindex_pipeline.py): Implemente sofisticados pipelines para Geração Aumentada por Recuperação ajustados às suas necessidades.
+- [**Monitoramento de Mensagens Usando Langfuse**](https://github.com/open-webui/pipelines/blob/main/examples/filters/langfuse_filter_pipeline.py): Monitore e analise interações de mensagens em tempo real usando o Langfuse.
+- [**Filtro de Limitação de Taxa**](https://github.com/open-webui/pipelines/blob/main/examples/filters/rate_limit_filter_pipeline.py): Controle o fluxo de solicitações para evitar ultrapassar os limites de taxa.
+- [**Filtro de Tradução em Tempo Real com LibreTranslate**](https://github.com/open-webui/pipelines/blob/main/examples/filters/libretranslate_filter_pipeline.py): Integre traduções em tempo real nas interações do seu LLM.
+- [**Filtro de Mensagens Tóxicas**](https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py): Implemente filtros para detectar e lidar efetivamente com mensagens tóxicas.
+- **E Muito Mais!**: O céu é o limite para o que você pode realizar com o Pipelines e Python. [Confira nossos modelos](https://github.com/open-webui/pipelines/blob/main/examples/scaffolds) para começar seus projetos e veja como você pode otimizar seu processo de desenvolvimento!
+
+## 🔧 Como Funciona
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/workflow.png" alt="Fluxo de Trabalho do Pipelines" />
+  </a>
+</p>
+
+Integrar o Pipelines com qualquer cliente de interface compatível com OpenAI API é simples. Inicie sua instância do Pipelines e defina a URL OpenAI no seu cliente para a URL do Pipelines. É isso! Você está pronto para aproveitar qualquer biblioteca Python para suas necessidades.
+
+## ⚡ Início Rápido com Docker
+
+:::warning
+O Pipelines é um sistema de plugin com execução arbitrária de código — **não busque pipelines aleatórios de fontes nas quais você não confia**.
+:::
+
+Para uma configuração simplificada usando Docker:
+
+1. **Execute o contêiner Pipelines:**
+
+   ```sh
+   docker run -d -p 9099:9099 --add-host=host.docker.internal:host-gateway -v pipelines:/app/pipelines --name pipelines --restart always ghcr.io/open-webui/pipelines:main
+   ```
+
+2. **Conecte-se ao Open WebUI:**
+
+   - Navegue até a seção **Admin Panel > Settings > Connections** no Open WebUI.
+   - Quando estiver nesta página, você pode pressionar o botão `+` para adicionar outra conexão.
+   - Defina a URL da API como `http://localhost:9099` e a chave da API como `0p3n-w3bu!`.
+   - Depois de adicionar sua conexão Pipelines e verificá-la, você verá um ícone aparecer no campo URL Base da API para a conexão adicionada. Ao passar o mouse sobre o ícone, ele será rotulado como `Pipelines`. Seus pipelines agora devem estar ativos.
+
+:::info
+Se o seu Open WebUI estiver rodando em um contêiner Docker, substitua `localhost` por `host.docker.internal` na URL da API.
+:::
+
+3. **Gerencie Configurações:**
+
+   - No painel de administração, vá para a guia **Admin Panel > Settings > Pipelines**.
+   - Selecione o pipeline desejado e modifique os valores da válvula diretamente no WebUI.
+
+:::tip
+Se você não conseguir se conectar, provavelmente é um problema de rede do Docker. Recomendamos que você resolva o problema sozinho e compartilhe seus métodos e soluções no fórum de discussões.
+:::
+
+Se você precisar instalar um pipeline personalizado com dependências adicionais:
+
+- **Execute o seguinte comando:**
+
+  ```sh
+  docker run -d -p 9099:9099 --add-host=host.docker.internal:host-gateway -e PIPELINES_URLS="https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py" -v pipelines:/app/pipelines --name pipelines --restart always ghcr.io/open-webui/pipelines:main
+  ```
+
+Alternativamente, você pode instalar diretamente pipelines nas configurações do administrador, copiando e colando a URL do pipeline, desde que ele não tenha dependências adicionais.
+
+Pronto! Agora você está preparado para construir integrações de IA personalizáveis facilmente com Pipelines. Aproveite!
+
+## 📦 Instalação e Configuração
+
+Comece com Pipelines em alguns passos simples:
+
+1. **Certifique-se de que o Python 3.11 está instalado.** Esta é a única versão oficialmente suportada do Python.
+2. **Clone o repositório de Pipelines:**
+
+   ```sh
+   git clone https://github.com/open-webui/pipelines.git
+   cd pipelines
+   ```
+
+3. **Instale as dependências necessárias:**
+
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+4. **Inicie o servidor de Pipelines:**
+
+   ```sh
+   sh ./start.sh
+   ```
+
+Uma vez que o servidor está em execução, configure a URL OpenAI no seu cliente para a URL de Pipelines. Isso desbloqueia todas as capacidades de Pipelines, integrando qualquer biblioteca Python e criando fluxos de trabalho personalizados adaptados às suas necessidades.
+
+## 📂 Estrutura de Diretórios e Exemplos
+
+O diretório `/pipelines` é o núcleo da sua configuração. Adicione novos módulos, personalize os existentes e gerencie seus fluxos de trabalho aqui. Todos os pipelines no diretório `/pipelines` serão **carregados automaticamente** quando o servidor for iniciado.
+
+Você pode alterar este diretório de `/pipelines` para outro local usando a variável de ambiente `PIPELINES_DIR`.
+
+### Exemplos de Integração
+
+Encontre vários exemplos de integração no diretório `https://github.com/open-webui/pipelines/blob/main/examples`. Esses exemplos mostram como integrar diferentes funcionalidades, fornecendo uma base para construir seus próprios pipelines personalizados.
+
+## 🎉 Trabalho em Progresso
+
+Estamos evoluindo continuamente! Adoraríamos ouvir seu feedback e entender quais hooks e recursos melhor atenderiam ao seu caso de uso. Sinta-se à vontade para entrar em contato e se tornar parte da nossa comunidade Open WebUI!
+
+Nossa visão é empurrar **Pipelines** para se tornar o framework definitivo de plugins para nossa interface de IA, **Open WebUI**. Imagine **Open WebUI** como o WordPress das interfaces de IA, com **Pipelines** sendo sua gama diversa de plugins. Junte-se a nós nesta jornada emocionante! 🌍

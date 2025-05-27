@@ -1,0 +1,274 @@
+---
+sidebar_position: 2
+title: "🛠️ 開發"
+---
+
+
+
+## 撰寫自定義工具包
+
+工具包定義於單一 Python 文件中，包含頂層的具備元數據的文檔字符串以及 `Tools` 類。
+
+### 範例頂層文檔字符串
+
+```python
+"""
+title: 字串反轉
+author: 您的姓名
+author_url: https://website.com
+git_url: https://github.com/username/string-reverse.git
+description: 此工具計算字串的反轉
+required_open_webui_version: 0.4.0
+requirements: langchain-openai, langgraph, ollama, langchain_ollama
+version: 0.4.0
+licence: MIT
+"""
+```
+
+### Tools 類
+
+工具需要在名為 `Tools` 的類內定義為方法，並可以選擇性地包含名為 `Valves` 和 `UserValves` 的子類，例如：
+
+```python
+class Tools:
+    def __init__(self):
+        """初始化工具。"""
+        self.valves = self.Valves()
+
+    class Valves(BaseModel):
+        api_key: str = Field("", description="在此輸入您的 API 金鑰")
+
+    def reverse_string(self, string: str) -> str:
+        """
+        反轉輸入字串。
+        :param string: 要反轉的字串
+        """
+        # 使用 valves 示例
+        if self.valves.api_key != "42":
+            return "錯誤的 API 金鑰"
+        return string[::-1] 
+```
+
+### 類型提示
+每個工具必須提供參數的類型提示。類型可以是嵌套的，例如 `queries_and_docs: list[tuple[str, int]]`。這些類型提示將被用於生成傳遞給模型的 JSON schema。沒有類型提示的工具將會顯得不太一致。
+
+### Valves 和 UserValves - （可選，但強烈建議）
+
+Valves 和 UserValves 用於指定工具可自定義的設定，您可以在專屬頁面 [Valves & UserValves](../valves/index.mdx) 閱讀更多內容。
+
+### 可選參數
+以下是您的工具可能會依賴的一些可選參數：
+- `__event_emitter__`: 發送事件（請參見以下章節）
+- `__event_call__`: 與事件發送器相同，但可用於用戶交互
+- `__user__`: 包含用戶信息的字典。它還包含 `UserValves` 對象，位於 `__user__["valves"]`。
+- `__metadata__`: 包含聊天元數據的字典
+- `__messages__`: 串列形式的先前消息
+- `__files__`: 附加文件
+- `__model__`: 包含模型信息的字典
+
+只需將它們作為任意方法的參數添加到您的 Tool 類，例如上面的 `__user__` 示例。
+
+### 事件發送器
+事件發送器用於向聊天介面添加額外信息。與過濾出口相似，事件發送器能夠附加內容到聊天。但不同於過濾出口，它們無法去除信息。此外，發送器可以在工具的任何階段啟用。
+
+事件發送器有兩種類型：
+
+如果模型似乎無法調用工具，請確保工具已啟用（通過模型頁面或聊天輸入欄旁的`+`符號）。您也可以將模型頁面「進階參數」部分中的「函數調用」參數從「默認」更改為「原生」。
+
+#### 狀態
+用於在執行步驟時向消息添加狀態。這些可以在工具的任何階段完成。這些狀態顯示在消息內容的正上方。對於延遲 LLM 響應或處理大量信息的工具來說，這非常有用。這使您可以即時通知用戶正在處理的內容。
+
+```python
+await __event_emitter__(
+            {
+                "type": "status", # 在此設置類型
+                "data": {"description": "聊天中顯示的消息", "done": False, "hidden": False}, 
+                # 注意 done 此處是 False，表示我們仍在發送狀態
+            }
+        )
+```
+
+<details>
+<summary>範例</summary>
+
+```python
+async def test_function(
+        self, prompt: str, __user__: dict, __event_emitter__=None
+    ) -> str:
+        """
+        這是一個演示
+
+        :param test: 這是一個測試參數
+        """
+
+        await __event_emitter__(
+            {
+                "type": "status", # 在此設置類型
+                "data": {"description": "聊天中顯示的消息", "done": False}, 
+                # 注意 done 此處是 False，表示我們仍在發送狀態
+            }
+        )
+
+        # 此處進行其他邏輯
+        await __event_emitter__(
+            {
+                "type": "status",
+                "data": {"description": "完成任務消息", "done": True, "hidden": False},
+                # 注意 done 是 True，表示我們已完成狀態發送
+                # 如果希望在消息返回後移除狀態，可以設置 "hidden": True
+            }
+        )
+
+        except Exception as e:
+            await __event_emitter__(
+                {
+                    "type": "status",
+                    "data": {"description": f"發生錯誤: {e}", "done": True},
+                }
+            )
+
+            return f"告訴使用者: {e}"
+```
+</details>
+
+#### 訊息
+此類型用於在工具中的任何階段向 LLM 添加訊息。這意味著您可以在 LLM 回應的之前、之後或期間附加訊息、嵌入圖片甚至渲染網頁。
+
+```python
+await __event_emitter__(
+                    {
+                        "type": "message", # 我們在此設置類型
+                        "data": {"content": "這條訊息將被附加到聊天中。"},
+                        # 注意，對於訊息類型我們不需要設置完成條件
+                    }
+                )
+```
+
+<details>
+<summary>範例</summary>
+
+```python
+async def test_function(
+        self, prompt: str, __user__: dict, __event_emitter__=None
+    ) -> str:
+        """
+        這是一個演示
+
+        :param test: 這是一個測試參數
+        """
+
+        await __event_emitter__(
+                    {
+                        "type": "message", # 我們在此設置類型
+                        "data": {"content": "這條訊息將被附加到聊天中。"},
+                        # 注意，對於訊息類型我們不需要設置完成條件
+                    }
+                )
+
+        except Exception as e:
+            await __event_emitter__(
+                {
+                    "type": "status",
+                    "data": {"description": f"發生錯誤: {e}", "done": True},
+                }
+            )
+
+            return f"告訴使用者: {e}"
+```
+</details>
+
+#### 引用
+此類型用於在聊天中提供引用或參考。您可以利用它來指定內容、來源以及任何相關的元數據。以以下範例展示如何觸發引用事件：
+
+```python
+await __event_emitter__(
+    {
+        "type": "citation",
+        "data": {
+            "document": [content],
+            "metadata": [
+                {
+                    "date_accessed": datetime.now().isoformat(),
+                    "source": title,
+                }
+            ],
+            "source": {"name": title, "url": url},
+        },
+    }
+)
+```
+如果您要發送多個引用，可以迭代引用並多次調用發射器。在實現自定義引用時，請確保在您的 `Tools` 類的 `__init__` 方法中設置 `self.citation = False`。否則，內建引用會覆蓋您推送的自定義引用。例如：
+
+```python
+def __init__(self):
+    self.citation = False
+```
+
+警告：如果設置 `self.citation = True`，這將取代您發送的任何自定義引用，並使用自動生成的返回引用。通過禁用它，您可以完全管理自己的引用。
+
+<details>
+<summary>範例</summary>
+
+```python
+class Tools:
+    class UserValves(BaseModel):
+        test: bool = Field(
+            default=True, description="測試"
+        )
+
+    def __init__(self):
+        self.citation = False
+
+async def test_function(
+        self, prompt: str, __user__: dict, __event_emitter__=None
+    ) -> str:
+        """
+        這是一個僅創建引用的演示
+
+        :param test: 這是一個測試參數
+        """
+
+        await __event_emitter__(
+            {
+                "type": "citation",
+                "data": {
+                    "document": ["這條訊息將作為引用被附加到聊天中，點擊進入時"],
+                    "metadata": [
+                        {
+                            "date_accessed": datetime.now().isoformat(),
+                            "source": title,
+                        }
+                    ],
+                    "source": {"name": "內容的標題", "url": "http://link-to-citation"},
+                },
+            }
+        )
+```
+</details>
+
+## 外部套件
+
+在工具定義的元數據中，您可以指定自定義套件。當您點擊 `保存` 時，該行將被解析並且會同時對所有需求運行 `pip install`。
+
+請注意，由於 `pip` 與 Open WebUI 在相同進程內使用，因此 UI 在安裝期間將完全無法回應。
+
+未採取任何措施處理 Open WebUI 的需求與套件衝突。這意味著如果您不小心指定需求，可能會破壞 Open WebUI。您可能能通過指定 `open-webui` 本身為需求來解決此問題。
+
+
+<details>
+<summary>範例</summary>
+
+```python
+"""
+title: 我的工具名稱
+author: 我的名字
+funding_url: [此處的任何鏈接將顯示在 `Heart` 按鈕背後，用於讓使用者支持您]
+version: 1.0.0
+# 版本會顯示在 UI 中，幫助使用者追蹤更新。
+license: GPLv3
+description: [推薦]
+requirements: package1>=2.7.0,package2,package3
+"""
+```
+
+</details>

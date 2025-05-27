@@ -1,0 +1,342 @@
+---
+sidebar_position: 20
+title: "💡 特殊な引数"
+---
+
+:::warning
+このチュートリアルはコミュニティによる寄稿であり、Open WebUIチームによるサポートは提供されません。特定の用途に向けてOpen WebUIをカスタマイズする方法を示すデモンストレーションとして提供されています。寄稿をご希望ですか？寄稿チュートリアルをご覧ください。
+:::
+
+# 💡 特殊な引数
+
+独自の`Tools`、`Functions`（`Filters`、`Pipes`または`Actions`）、`Pipelines`などを開発する際に、特殊な引数を使用してOpen-WebUIが提供する多様な機能を活用できます。
+
+このページでは、各特殊な引数の型と構造を詳述し、例を提供することを目的としています。
+
+### `body`
+
+`dict`形式で、通常はほぼ直接モデルに送られます。厳密には特殊な引数ではありませんが、参照を容易にするためにここに含められています。また、内部にはいくつかの特殊な引数が含まれています。
+
+<details>
+<summary>例</summary>
+
+```json
+
+{
+  "stream": true,
+  "model": "my-cool-model",
+  # 小文字の文字列で単語をハイフンで区切った形式：これはモデルのIDです
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "この画像には何がありますか？"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdYAAAGcCAYAAABk2YF[REDACTED]"
+            # 画像はbase64エンコードデータとして渡されます
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": "画像には[REDACTED]のようです"
+    },
+  ],
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "stream_options": {
+    "include_usage": true
+  },
+  "metadata": "[__metadata__と完全に同じdict]",
+  "files": "[__files__と完全に同じリスト]"
+}
+
+
+```
+
+</details>
+
+### `__user__`
+
+`dict`形式のユーザー情報を含む。
+
+`UserValves`クラスが定義されている場合、そのインスタンスには`__user__["valves"]`を介してアクセスする必要があります。それ以外では、`valves`のキー値は`__user__`内に完全に欠落します。
+
+<details>
+<summary>例</summary>
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "email": "cheesy_dude@openwebui.com",
+  "name": "パトリック",
+  "role": "user",
+  # roleは`user`、`admin`のいずれかになります
+  "valves": "[UserValveインスタンス]"
+}
+```
+
+</details>
+
+### `__metadata__`
+
+チャット、モデル、ファイルなどに関する広範な情報を含む`dict`。
+
+<details>
+<summary>例</summary>
+
+```json
+{
+  "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "chat_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "message_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "session_id": "xxxxxxxxxxxxxxxxxxxx",
+  "tool_ids": null,
+  # tool_idsは文字列のリストです。
+  "tool_servers": [],
+  "files": "[body[files]と同じ内容]",
+  # ファイルが指定されていない場合、filesキーは__metadata__に存在しその値は[]になります
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "variables": {
+    "{{USER_NAME}}": "cheesy_username",
+    "{{USER_LOCATION}}": "不明",
+    "{{CURRENT_DATETIME}}": "2025-02-02 XX:XX:XX",
+    "{{CURRENT_DATE}}": "2025-02-02",
+    "{{CURRENT_TIME}}": "XX:XX:XX",
+    "{{CURRENT_WEEKDAY}}": "月曜日",
+    "{{CURRENT_TIMEZONE}}": "ヨーロッパ/ベルリン",
+    "{{USER_LANGUAGE}}": "en-US"
+  },
+  "model": "[__model__と同じ内容]",
+  "direct": false,
+  "function_calling": "ネイティブ",
+  "type": "user_response",
+  "interface": "open-webui"
+}
+
+```
+
+</details>
+
+### `__model__`
+
+モデルに関する情報を含む`dict`。
+
+<details>
+<summary>例</summary>
+
+```json
+{
+  "id": "my-cool-model",
+  "name": "マイ・クール・モデル",
+  "object": "model",
+  "created": 1746000000,
+  "owned_by": "openai",
+  # openaiまたはollamaのいずれか
+  "info": {
+      "id": "my-cool-model",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "base_model_id": "gpt-4o",
+      # モデルエンドポイントが提供するモデルの名前
+      "name": "マイ・クール・モデル",
+      "params": {
+      "system": "あなたは私の最高のアシスタントです。質問に対して[REDACTED]を回答します",
+      "function_calling": "ネイティブ"
+      # カスタムオプションはここに表示されます。例："Top K"
+      },
+      "meta": {
+      "profile_image_url": "/static/favicon.png",
+      "description": "my-cool-modelの説明",
+      "capabilities": {
+          "vision": true,
+          "usage": true,
+          "citations": true
+      },
+      "position": 17,
+      "tags": [
+          {
+          "name": "for_friends"
+          },
+          {
+          "name": "vision_enabled"
+          }
+      ],
+      "suggestion_prompts": null
+      },
+      "access_control": {
+      "read": {
+          "group_ids": [],
+          "user_ids": []
+      },
+      "write": {
+          "group_ids": [],
+          "user_ids": []
+      }
+      },
+      "is_active": true,
+      "updated_at": 1740000000,
+      "created_at": 1740000000
+  },
+  "preset": true,
+  "actions": [],
+  "tags": [
+      {
+          "name": "for_friends"
+      },
+{
+          "name": "vision_enabled"
+      }
+  ]
+}
+
+```
+
+</details>
+
+### `__messages__`
+
+以前のメッセージの`list`。
+
+上記の`body["messages"]`の値を参照。
+
+
+### `__chat_id__`
+
+`chat_id`の文字列。
+
+上記の`__metadata__["chat_id"]`の値を参照。
+
+### `__session_id__`
+
+`session_id`の文字列。
+
+上記の`__metadata__["session_id"]`の値を参照。
+
+### `__message_id__`
+
+`message_id`の文字列。
+
+上記の`__metadata__["message_id"]`の値を参照。
+
+### `__event_emitter__`
+
+ユーザーにイベント情報を表示するために使用される`Callable`。
+
+### `__event_call__`
+
+`Actions`に使用される`Callable`。
+
+### `__files__`
+
+チャットで送信されたファイルの`list`。画像はファイルと見なされず、`body["messages"]`リストの一部として直接モデルに送信されます。
+
+パフォーマンス上の理由から、実際のファイルのバイナリは引数の一部ではありませんが、必要に応じてそのパスを使用してファイルにアクセスできます。例えば`docker`を使用する場合、Pythonの構文は次の通りです:
+
+```python
+from pathlib import Path
+
+the_file = Path(f"/app/backend/data/uploads/{__files__[0]["files"]["id"]}_{__files__[0]["files"]["filename"]}")
+assert the_file.exists()
+```
+
+同じ`files` dictは、`__metadata__["files"]` (ファイルが送信されていない場合、その値は`[]`) または`body["files"]` (ファイルが送信されていない場合、`body`に`files`キーがまったく存在しない) を介してアクセスできます。
+
+<details>
+<summary>例</summary>
+
+```json
+
+[
+  {
+    "type": "file",
+    "file": {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "filename": "Napoleon - Wikipedia.pdf",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "data": {
+        "content": "Napoleon - Wikipedia\n\n\nNapoleon I\n\nThe Emperor Napoleon in His Study at the\nTuileries, 1812\n\nEmperor of the French\n\n1st reign 18 May 1804 – 6 April 1814\n\nSuccessor Louis XVIII[a]\n\n2nd reign 20 March 1815 – 22 June 1815\n\nSuccessor Louis XVIII[a]\n\nFirst Consul of the French Republic\n\nIn office\n13 December 1799 – 18 May 1804\n\nBorn Napoleone Buonaparte\n15 August 1769\nAjaccio, Corsica, Kingdom of\nFrance\n\nDied 5 May 1821 (aged 51)\nLongwood, Saint Helena\n\nBurial 15 December 1840\nLes Invalides, Paris\n\nNapoleon\nNapoleon Bonaparte[b] (born Napoleone\nBuonaparte;[1][c] 15 August 1769 – 5 May 1821), later\nknown [REDACTED]",
+        # コンテンツ値は文書パーサーの出力であり、上記の例ではTikaを文書パーサーとして使用しています
+      },
+      "meta": {
+        "name": "Napoleon - Wikipedia.pdf",
+        "content_type": "application/pdf",
+        "size": 10486578,
+        # バイト数。ここでは約10MB
+        "data": {},
+        "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        # 常にfileで始まります
+      },
+      "created_at": 1740000000,
+      "updated_at": 1740000000
+    },
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "url": "/api/v1/files/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "name": "Napoleon - Wikipedia.pdf",
+    "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    "status": "uploaded",
+    "size": 10486578,
+    "error": "",
+    "itemId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    # itemIdはfile["id"]とは異なります
+  }
+]
+
+
+```
+
+</details>
+
+### `__request__`
+
+`fastapi.Request`のインスタンス。詳しくは[移行ページ](../../features/plugin/migration/index.mdx)または[fastapiのドキュメント](https://fastapi.tiangolo.com/reference/request/)を参照。
+
+### `__task__`
+
+タスクの種類を示す`str`。その値は、`__metadata__["task"]`が存在する場合はそのショートハンド、それ以外の場合は`None`。
+
+<details>
+<summary>可能な値</summary>
+
+```json
+
+[
+    "title_generation",
+    "tags_generation",
+    "emoji_generation",
+    "query_generation",
+    "image_prompt_generation",
+    "autocomplete_generation",
+    "function_calling",
+    "moa_response_generation"
+]
+```
+
+</details>
+
+### `__task_body__`
+
+指定された`__task__`を達成するために必要な`body`を含む`dict`。その値は、存在する場合は`__metadata__["task_body"]`のショートハンド、それ以外の場合は`None`。
+
+その構造は上記の`body`と同じで、適切なモデルやシステムメッセージ等を使用するなどの修正が加えられています。
+
+
+### `__tools__`
+
+`ToolUserModel`インスタンスの`list`。
+
+`ToolUserModel`インスタンスの属性の詳細については、コードは [tools.py](https://github.com/open-webui/open-webui/blob/main/backend/open_webui/models/tools.py) にあります。
+

@@ -1,0 +1,139 @@
+---
+sidebar_position: 2  
+title: "⚙️ Herramientas"  
+---
+
+# ⚙️ ¿Qué son las Herramientas?
+
+Las herramientas son pequeños scripts de Python que otorgan súper poderes a tu LLM. Cuando están habilitadas, permiten que tu chatbot haga cosas increíbles, como buscar en la web, extraer datos, generar imágenes, responder con voces de IA, y más.
+
+Piensa en las herramientas como complementos útiles que tu IA puede usar al conversar contigo.
+
+---
+
+## 🚀 ¿Qué me pueden ayudar a hacer las Herramientas?
+
+Aquí tienes algunos ejemplos de lo que las herramientas permiten que tu asistente de IA haga:
+
+- 🌍 Búsqueda en la web: Obtén respuestas en tiempo real al buscar en Internet.
+- 🖼️ Generación de imágenes: Crea imágenes a partir de tus indicaciones.
+- 🔊 Salida de voz: Genera voces de IA usando ElevenLabs.
+
+Explora herramientas listas para usar aquí:  
+🧰 [Demostración de Herramientas](https://openwebui.com/tools)
+
+---
+
+
+## 📦 Cómo instalar Herramientas
+
+Hay dos formas fáciles de instalar herramientas en Open WebUI:
+
+1. Ve a la [Biblioteca de Herramientas de la Comunidad](https://openwebui.com/tools)
+2. Elige una herramienta y haz clic en el botón Obtener.
+3. Ingresa la dirección IP o URL de tu instancia de Open WebUI.
+4. Haz clic en “Importar a WebUI” — ¡listo!
+
+🛑 Consejo de Seguridad: Nunca importes una herramienta que no reconozcas o en la que no confíes. Estas son scripts de Python y podrían ejecutar código no seguro.
+
+---
+
+
+## 🔧 Cómo usar Herramientas en Open WebUI
+
+Una vez que hayas instalado herramientas (te mostramos cómo más abajo), así es como puedes habilitarlas y usarlas:
+
+Tienes dos formas de habilitar una herramienta para tu modelo:
+
+### ➕ Opción 1: Habilitar desde la Ventana de Chat
+
+Mientras chateas, haz clic en el icono ➕ en el área de entrada. Verás una lista de herramientas disponibles; puedes habilitar cualquiera de ellas sobre la marcha para esa sesión.
+
+💡 Consejo: Habilitar una herramienta le da al modelo permiso para usarla, pero puede que no la use a menos que sea útil para la tarea.
+
+### ✏️ Opción 2: Habilitar por Defecto (Recomendado para Uso Frecuente)
+1. Ve a: Espacio de Trabajo ➡️ Modelos
+2. Elige el modelo que estás utilizando (como GPT-4 o LLaMa2) y haz clic en el icono ✏️ editar.
+3. Desplázate hacia abajo hasta la sección “Herramientas”.
+4. ✅ Marca las herramientas a las que deseas que tu modelo tenga acceso por defecto.
+5. Haz clic en Guardar.
+
+Esto asegura que el modelo siempre tenga estas herramientas listas para usar cada vez que chatees con él.
+
+También puedes permitir que tu LLM seleccione automáticamente las herramientas adecuadas usando el Filtro AutoTool:
+
+🔗 [Filtro AutoTool](https://openwebui.com/f/hub/autotool_filter/)
+
+🎯 Nota: Incluso al usar AutoTool, todavía necesitas habilitar tus herramientas usando la Opción 2.
+
+✅ ¡Y eso es todo! Tu LLM ahora está potenciado con herramientas. Estás listo para potenciar tus chats con búsqueda en la web, generación de imágenes, salida de voz, y más.
+
+---
+
+## 🧠 Elegir cómo se usan las Herramientas: Por Defecto vs Nativo
+
+Una vez que las herramientas están habilitadas para tu modelo, Open WebUI te da dos formas diferentes de que tu LLM las use en conversaciones.
+
+Puedes decidir cómo debería el modelo utilizar herramientas eligiendo entre:
+
+- 🟡 Modo por Defecto (Basado en Prompts)
+- 🟢 Modo Nativo (Llamadas de función integradas)
+
+Vamos a desglosarlo:
+
+### 🟡 Modo por Defecto (Activación de herramientas basada en prompts)
+
+Este es el ajuste predeterminado en Open WebUI.
+
+Aquí, tu LLM no necesita soportar nativamente llamadas de función. En su lugar, guiamos al modelo usando una plantilla de selección inteligente de herramientas que elige y utiliza una herramienta.
+
+✅ Funciona con casi cualquier modelo  
+✅ Una gran forma de desbloquear herramientas con modelos básicos o locales  
+❗ No es tan confiable o flexible como el Modo Nativo al encadenar herramientas
+
+### 🟢 Modo Nativo (Llamadas de función integradas)
+
+Si tu modelo soporta “llamadas de función nativas” (como GPT-4o o GPT-3.5-turbo-1106), puedes usar este modo potente para dejar que el LLM decida, en tiempo real, cuándo y cómo llamar a múltiples herramientas durante un solo mensaje de chat.
+
+✅ Rápido, preciso y puede encadenar múltiples herramientas en una respuesta  
+✅ La experiencia más natural y avanzada  
+❗ Requiere un modelo que realmente soporte llamadas de función nativas
+
+### ✳️ Cómo cambiar entre Modos
+
+¿Quieres habilitar llamadas de función nativas en tus chats? Aquí te mostramos cómo:
+
+![Controles de Chat](/images/features/plugin/tools/chat-controls.png)
+
+1. Abre la ventana de chat con tu modelo.
+2. Haz clic en ⚙️ Controles del Chat > Parámetros Avanzados.
+3. Busca la configuración de Llamadas de Función y cámbiala de Predeterminado → Nativo
+
+¡Eso es todo! Tu chat ahora está utilizando soporte real nativo para herramientas (siempre y cuando el modelo lo soporte).
+
+➡️ Recomendamos usar GPT-4o u otro modelo de OpenAI para la mejor experiencia con llamadas de función nativas.  
+🔎 Algunos modelos locales pueden afirmar soporte, pero a menudo tienen dificultades con el uso preciso o complejo de herramientas.
+
+💡 Resumen:
+
+| Modo     | Para quién es                   | Pros                                    | Contras                              |
+|----------|--------------------------------|-----------------------------------------|--------------------------------------|
+| Por Defecto| Cualquier modelo                | Amplia compatibilidad, más seguro, flexible | Puede ser menos preciso o más lento  |
+| Nativo   | GPT-4o, etc.                    | Rápido, inteligente, excelente encadenamiento de herramientas | Necesita soporte adecuado de llamadas de función |
+
+Elige el que mejor funcione para tu configuración, y recuerda, siempre puedes cambiar en tiempo real a través de los Controles del Chat.
+
+👏 Y eso es todo: tu LLM ahora sabe cómo y cuándo usar las herramientas, de manera inteligente.
+
+---
+
+## 🧠 Resumen
+
+Las herramientas son complementos que ayudan a tu modelo de IA a hacer mucho más que solo conversar. Desde responder preguntas en tiempo real hasta generar imágenes o hablar en voz alta — las herramientas dan vida a tu IA.
+
+- Visita: [https://openwebui.com/tools](https://openwebui.com/tools) para descubrir nuevas herramientas.
+- Instálalas manualmente o con un solo clic.
+- Actívalas por modelo desde Workspace ➡️ Models.
+- Úsalas en el chat haciendo clic en ➕
+
+Ahora haz que tu IA sea mucho más inteligente 🤖✨

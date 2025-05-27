@@ -1,0 +1,72 @@
+---
+sidebar_position: 0
+title: "🚧 服务器连接问题"
+---
+
+我们随时为您提供帮助，使一切顺利设置和运行。以下是针对不同场景的逐步说明，旨在解决与 Ollama 和外部服务器（如 Hugging Face）常见的连接问题。
+
+## 🌟 连接到 Ollama 服务器
+
+### 🚀 从 Open WebUI 访问 Ollama
+
+无法从 Open WebUI 连接到 Ollama？可能是因为 Ollama 没有监听允许外部连接的网络接口。让我们解决这个问题：
+
+1. **配置 Ollama 广泛监听** 🎧：
+   将 `OLLAMA_HOST` 设置为 `0.0.0.0`，以使 Ollama 监听所有网络接口。
+
+2. **更新环境变量**：
+   确保在部署环境中准确设置了 `OLLAMA_HOST`。
+
+3. **重启 Ollama**🔄：
+   需要重启才能使更改生效。
+
+💡 设置完成后，通过访问 WebUI 界面验证 Ollama 是否可用。
+
+有关配置 Ollama 的详细说明，请参阅 [Ollama 官方文档](https://github.com/ollama/ollama/blob/main/docs/faq.md#setting-environment-variables-on-linux)。
+
+### 🐳 Docker 连接错误
+
+如果尝试访问 Ollama 时出现连接错误，可能是 WebUI 的容器无法与运行在主机上的 Ollama 服务器通信。让我们解决这个问题：
+
+1. **调整网络设置** 🛠️：
+   在 Docker 命令中使用 `--network=host` 标志。这会将您的容器直接连接到主机的网络。
+
+2. **修改端口**：
+   请注意，内部端口会从 3000 更改为 8080。
+
+**示例 Docker 命令**：
+```bash
+docker run -d --network=host -v open-webui:/app/backend/data -e OLLAMA_BASE_URL=http://127.0.0.1:11434 --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+🔗 运行上述命令后，您的 WebUI 应该可以通过 `http://localhost:8080` 访问。
+
+## 🔒 与 Hugging Face 的 SSL 连接问题
+
+遇到 SSL 错误？这可能是 Hugging Face 服务器的问题。以下是解决方法：
+
+1. **检查 Hugging Face 服务器状态**：
+   验证他们是否有已知的停机或问题。
+
+2. **切换端点**：
+   如果 Hugging Face 宕机，请在 Docker 命令中切换端点。
+
+**连接问题的示例 Docker 命令**：
+```bash
+docker run -d -p 3000:8080 -e HF_ENDPOINT=https://hf-mirror.com/ --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+
+## 🍏 MacOS 上的 Podman
+
+在 MacOS 上运行 Podman？以下是确保连接的方法：
+
+1. **启用主机环回**：
+   在命令中使用 `--network slirp4netns:allow_host_loopback=true`。
+
+2. **设置 OLLAMA_BASE_URL**：
+   确保其指向 `http://host.containers.internal:11434`。
+
+**示例 Podman 命令**：
+```bash
+podman run -d --network slirp4netns:allow_host_loopback=true -p 3000:8080 -e OLLAMA_BASE_URL=http://host.containers.internal:11434 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+

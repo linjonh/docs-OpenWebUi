@@ -1,0 +1,77 @@
+---
+sidebar_position: 3
+title: "🔄 Válvulas"
+---
+
+## Válvulas
+
+Las Válvulas y las UserValves se utilizan para permitir que los usuarios proporcionen detalles dinámicos, como una clave API o una opción de configuración. Estas crearán un campo rellenable o un interruptor booleano en el menú de la GUI para la función dada. Siempre son opcionales, pero MUY recomendadas.
+
+Por lo tanto, la clase Valves y UserValves se pueden definir en una clase `Pipe`, `Pipeline`, `Filter` o `Tools`.
+
+Las Válvulas son configurables solo por los administradores a través de los menús de Herramientas o Funciones. Por otro lado, las UserValves son configurables por cualquier usuario directamente desde una sesión de chat.
+
+<details>
+<summary>Ejemplo comentado</summary>
+
+```python
+
+from pydantic import BaseModel, Field
+from typing import Literal
+
+# Definir y Válvulas
+class Filter:
+   # Note la indentación actual: Las Válvulas y UserValves deben ser declaradas como
+   # atributos de una clase Tools, Filter o Pipe. Aquí tomamos el
+   # ejemplo de un Filter.
+    class Valves(BaseModel):
+       # Las Válvulas y UserValves heredan de BaseModel de pydantic. Esto
+       # permite casos de uso complejos como validadores de modelo, etc.
+       test_valve: int = Field(  # Note la pista de tipo: se utiliza para
+           # elegir el tipo de elemento de UI que se mostrará al usuario (botones,
+           # textos, etc).
+           default=4,
+           description="Una válvula que controla un valor numérico"
+           # required=False,  # puede aplicar campos usando True
+       )
+       # Para dar al usuario la opción entre múltiples cadenas de texto, puede usar Literal de typing:
+       choice_option: Literal["choiceA", "choiceB"] = Field(
+           default="choiceA",
+           description="Un ejemplo de una válvula de opciones múltiples",
+       )
+       priority: int = Field(
+           default=0,
+           description="Nivel de prioridad para las operaciones de filtro. Los valores más bajos se procesan primero"
+       )
+       # El campo de prioridad es opcional pero, si está presente, se utilizará para
+       # ordenar los filtros.
+       pass
+       # Note que este 'pass' ayuda con el análisis y se recomienda.
+
+   # UserValves se definen de la misma manera.
+    class UserValves(BaseModel):
+        test_user_valve: bool = Field(
+            default=False, description="Una válvula de usuario que controla un interruptor de True/False (encendido/apagado)"
+       )
+       pass
+
+   def __init__(self):
+       self.valves = self.Valves()
+       # Como son configuradas por el administrador, son accesibles directamente
+       # al ejecutar el código.
+       pass
+
+   # El método inlet solo se utiliza para Filter, pero la gestión de __user__ es la misma
+   def inlet(self, body: dict, __user__: dict):
+       # Como las UserValves se definen por usuario, solo están disponibles
+       # durante el uso.
+       # Note que, aunque __user__ es un diccionario, __user__["valves"] es un
+       # objeto UserValves. Por lo tanto, puede acceder a los valores de esta manera:
+       test_user_valve = __user__["valves"].test_user_valve
+       # O:
+       test_user_valve = dict(__user__["valves"])["test_user_valve"]
+       # Pero esto devolverá el valor predeterminado en lugar del valor real:
+       # test_user_valve = __user__["valves"]["test_user_valve"]  # ¡No haga esto!
+```
+
+</details>

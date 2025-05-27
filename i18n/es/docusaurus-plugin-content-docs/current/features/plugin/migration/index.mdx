@@ -1,0 +1,252 @@
+---
+sidebar_position: 4
+title: "🚚 Migrando Herramientas y Funciones: 0.4 a 0.5"
+---
+
+# 🚚 Guía de Migración: Open WebUI 0.4 a 0.5
+
+¡Bienvenido a la guía de migración a Open WebUI 0.5! Si estás trabajando en proyectos existentes o construyendo nuevos, esta guía te explicará los cambios clave de la **versión 0.4 a la 0.5** y te proporcionará una hoja de ruta fácil de seguir para actualizar tus funciones. ¡Hagamos esta transición lo más fluida posible! 😊
+
+---
+
+## 🧐 ¿Qué ha cambiado y por qué?
+
+Con Open WebUI 0.5, hemos rediseñado la arquitectura para hacer el proyecto **más simple, unificado y escalable**. Aquí tienes la visión general:
+
+- **Arquitectura anterior:** 🎯 Anteriormente, Open WebUI estaba construido sobre una **arquitectura de subaplicaciones** donde cada aplicación (por ejemplo, `ollama`, `openai`) era una aplicación FastAPI separada. Esto causaba fragmentación y complejidad adicional al gestionar aplicaciones.
+- **Nueva Arquitectura:** 🚀 Con la versión 0.5, hemos pasado a una **única aplicación FastAPI** con múltiples **routers**. Esto significa mejor organización, flujo centralizado y menor redundancia.
+
+### Cambios Clave:
+Aquí tienes un resumen de lo que ha cambiado:
+1. **Las aplicaciones se han convertido en Routers.**
+   - Anteriormente: `open_webui.apps`
+   - Ahora: `open_webui.routers`
+
+2. **Estructura principal simplificada.**
+   - La antigua `open_webui.apps.webui` se ha transformado en `open_webui.main`, convirtiéndose en el punto de entrada central del proyecto.
+
+3. **Endpoint de API Unificado**
+   - Open WebUI 0.5 introduce una **función unificada**, `chat_completion`, en `open_webui.main`, reemplazando funciones separadas para modelos como `ollama` y `openai`. Esto ofrece una experiencia de API consistente y optimizada. Sin embargo, el **sucesor directo** de estas funciones individuales es `generate_chat_completion` de `open_webui.utils.chat`. Si prefieres una solicitud POST ligera sin manejar análisis adicionales (por ejemplo, archivos, herramientas o extras), esta función utilitaria es probablemente lo que necesitas.
+
+#### Ejemplo:
+```python
+# Flujo completo de API con análisis (nueva función):
+from open_webui.main import chat_completion
+
+# Solicitud POST ligera y directa (sucesor directo):
+from open_webui.utils.chat import generate_chat_completion
+```
+
+¡Elige el enfoque que mejor se adapte a tu caso de uso!
+
+4. **Firmas de funciones actualizadas.**
+   - Las firmas de funciones ahora se adhieren a un nuevo formato, requiriendo un objeto `request`.
+   - El objeto `request` se puede obtener usando el parámetro `__request__` en la firma de la función. A continuación, un ejemplo:
+
+```python
+class Pipe:
+    def __init__(self):
+        pass
+
+    async def pipe(
+        self,
+        body: dict,
+        __user__: dict,
+        __request__: Request, # Nuevo parámetro
+    ) -> str:
+        # Escribe tu función aquí
+```
+
+📌 **¿Por qué hicimos estos cambios?**
+- Para simplificar la base de código, haciéndola más fácil de extender y mantener.
+- Para unificar las API y ofrecer una experiencia más optimizada para desarrolladores.
+- Para mejorar el rendimiento consolidando elementos redundantes.
+
+---
+
+## ✅ Guía de Migración Paso a Paso
+
+Sigue esta guía para actualizar tu proyecto sin problemas.
+
+---
+
+### 🔄 1. Cambiando de `apps` a `routers` 
+
+Todas las aplicaciones han sido renombradas y reubicadas bajo `open_webui.routers`. Esto afecta las importaciones en tu base de código.
+
+Cambios rápidos para las rutas de importación:
+
+| **Ruta Antigua**                       | **Nueva Ruta**                      |
+|---------------------------------------|-------------------------------------|
+| `open_webui.apps.ollama`              | `open_webui.routers.ollama`         |
+| `open_webui.apps.openai`              | `open_webui.routers.openai`         |
+| `open_webui.apps.audio`               | `open_webui.routers.audio`          |
+| `open_webui.apps.retrieval`           | `open_webui.routers.retrieval`      |
+| `open_webui.apps.webui`               | `open_webui.main`                   |
+
+
+### 📜 Un Ejemplo Importante  
+
+Para clarificar el caso especial de la aplicación principal (`webui`), aquí hay una regla simple:
+
+- **¿Estaba en `webui`?** Ahora está en la raíz del proyecto o en `open_webui.main`.  
+- Por ejemplo:  
+    - **Antes (0.4):**  
+      ```python  
+      from open_webui.apps.webui.models import SomeModel  
+      ```  
+    - **Después (0.5):**  
+      ```python  
+      from open_webui.models import SomeModel  
+      ```  
+
+En general, **solo reemplaza `open_webui.apps` por `open_webui.routers`, ¡excepto `webui`, que ahora es `open_webui.main`!**
+
+
+---
+
+### 👩‍💻 2. Actualizando Declaraciones de Importación
+
+Veamos cómo se verá esta actualización en tu código:
+
+#### Antes:
+```python
+from open_webui.apps.ollama import main as ollama
+from open_webui.apps.openai import main as openai
+```
+
+#### Después:
+```python
+# Importaciones de routers separadas
+from open_webui.routers.ollama import generate_chat_completion
+from open_webui.routers.openai import generate_chat_completion
+
+# O usa el endpoint unificado
+from open_webui.main import chat_completion
+```
+
+**💡 Consejo Pro:** Prioriza el endpoint unificado (`chat_completion`) por simplicidad y compatibilidad futura.
+
+### 📝 **Nota adicional: Elegir entre `main.chat_completion` y `utils.chat.generate_chat_completion`**
+
+Dependiendo de su caso de uso, puede elegir entre:
+
+1. **`open_webui.main.chat_completion`:**
+    - Simula realizar una solicitud POST a `/api/chat/completions`.
+    - Procesa archivos, herramientas y otras tareas diversas.
+    - Lo mejor cuando desea que el flujo completo de API se maneje automáticamente.
+
+2. **`open_webui.utils.chat.generate_chat_completion`:**
+    - Realiza directamente una solicitud POST sin manejar análisis adicionales o tareas.
+    - Este es el **sucesor directo** de las funciones anteriores `main.generate_chat_completions`, `ollama.generate_chat_completion` y `openai.generate_chat_completion` en Open WebUI 0.4.
+    - Ideal para escenarios simplificados y más livianos.
+
+#### Ejemplo:
+```python
+# Úselo para el flujo completo de API con análisis:
+from open_webui.main import chat_completion
+
+# Úselo para una solicitud POST simplificada y directa:
+from open_webui.utils.chat import generate_chat_completion
+```
+
+---
+
+### 📋 3. Adaptarse a Firmas de Función Actualizadas  
+
+Hemos actualizado las **firmas de función** para adaptarse mejor a la nueva arquitectura. Si busca un reemplazo directo, comience con la función utilitaria liviana `generate_chat_completion` de `open_webui.utils.chat`. Para el flujo completo de API, use la nueva función unificada `chat_completion` en `open_webui.main`.
+
+#### Cambios en la Firma de Función:  
+
+| **Anterior**                                 | **Sucesor Directo (Nuevo)**             | **Opción Unificada (Nueva)**               |
+|---------------------------------------------|------------------------------------------|-------------------------------------------|
+| `openai.generate_chat_completion(form_data: dict, user: UserModel)` | `generate_chat_completion(request: Request, form_data: dict, user: UserModel)` | `chat_completion(request: Request, form_data: dict, user: UserModel)` |
+
+- **Sucesor Directo (`generate_chat_completion`)**: Un reemplazo ligero y directo 1:1 para los métodos anteriores de `ollama`/`openai`.  
+- **Opción Unificada (`chat_completion`)**: Úselo para el flujo completo de API, incluyendo análisis de archivos y funcionalidad adicional.  
+
+#### Ejemplo:
+
+Si utiliza `chat_completion`, así debería verse ahora su función:
+
+### 🛠️ Cómo Refactorizar Su Función Personalizada
+Reescribamos una función de ejemplo para que coincida con la nueva estructura:
+
+#### Antes (0.4):
+```python
+from pydantic import BaseModel
+from open_webui.apps.ollama import generate_chat_completion
+
+class User(BaseModel):
+    id: str
+    email: str
+    name: str
+    role: str
+
+class Pipe:
+    def __init__(self):
+        pass
+
+    async def pipe(self, body: dict, __user__: dict) -> str:
+        # Llama al endpoint de OpenAI
+        user = User(**__user__)
+        body["model"] = "llama3.2:latest"
+        return await ollama.generate_chat_completion(body, user)
+```
+
+#### Después (0.5):
+```python
+from pydantic import BaseModel
+from fastapi import Request
+
+from open_webui.utils.chat import generate_chat_completion
+
+
+class User(BaseModel):
+    id: str
+    email: str
+    name: str
+    role: str
+
+
+class Pipe:
+    def __init__(self):
+        pass
+
+    async def pipe(
+        self,
+        body: dict,
+        __user__: dict,
+        __request__: Request,
+    ) -> str:
+        # Usa el endpoint unificado con firma actualizada
+        user = User(**__user__)
+        body["model"] = "llama3.2:latest"
+        return await generate_chat_completion(__request__, body, user)
+```
+
+### Notas Importantes:
+- Debe pasar un objeto `Request` (`__request__`) en la nueva firma de función.
+- Otros parámetros opcionales (como `__user__` y `__event_emitter__`) aseguran flexibilidad para casos de uso más complejos.
+
+---
+
+### 🌟 4. Resumen: Conceptos Clave en Términos Simples
+
+Aquí tiene un resumen rápido para recordar:
+- **Apps ahora son Routers:** Actualice todas las importaciones de `open_webui.apps` ➡️ `open_webui.routers`.
+- **Endpoint Unificado:** Use `open_webui.main.chat_completion` para mayor simplicidad si involucra tanto `ollama` como `openai`.
+- **Adapte las Firmas de Función:** Asegúrese de que sus funciones pasen el objeto `request` requerido.
+
+---
+
+## 🎉 ¡Hurra! ¡Está Listo!
+
+¡Eso es todo! Ha migrado exitosamente de **Open WebUI 0.4 a 0.5**. Al refactorizar sus importaciones, usar el endpoint unificado y actualizar las firmas de función, estará completamente equipado para aprovechar las últimas características y mejoras en la versión 0.5.
+
+---
+
+💬 **¿Preguntas o Comentarios?**
+Si encuentra algún problema o tiene sugerencias, no dude en abrir un [issue de GitHub](https://github.com/open-webui/open-webui) o preguntar en los foros de la comunidad.
+
+¡Feliz programación! ✨

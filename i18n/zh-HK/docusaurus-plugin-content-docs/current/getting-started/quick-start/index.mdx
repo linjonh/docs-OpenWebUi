@@ -1,0 +1,158 @@
+---
+sidebar_position: 2
+title: "⏱️ 快速開始"
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { TopBanners } from "@site/src/components/TopBanners";
+
+import DockerCompose from './tab-docker/DockerCompose.md';
+import Podman from './tab-docker/Podman.md';
+import ManualDocker from './tab-docker/ManualDocker.md';
+import DockerSwarm from './tab-docker/DockerSwarm.md';
+import DockerUpdating from './tab-docker/DockerUpdating.md';
+import Helm from './tab-kubernetes/Helm.md';
+import Kustomize from './tab-kubernetes/Kustomize.md';
+import Venv from './tab-python/Venv.md';
+import Uv from './tab-python/Uv.md';
+import Conda from './tab-python/Conda.md';
+import PythonUpdating from './tab-python/PythonUpdating.md';
+
+<TopBanners />
+
+:::info **關於用戶角色和隱私的重要提示：**
+
+- **管理員建立：** 在 Open WebUI 上創建的第一個帳戶將獲得**管理員權限**，可以控制用戶管理和系統設置。
+- **用戶註冊：** 之後的註冊用戶默認處於**待定**狀態，需要管理員批准才能訪問。
+- **隱私與數據安全：** **所有數據**（包括登錄資料）都將**本地存儲**在您的設備上。Open WebUI 確保**嚴格保密**並**無外部請求**，以增強隱私和安全性。
+  - **所有模型默認為私有。** 模型必須通過群組顯式共享或設為公開。如果將模型分配給群組，只有該群組的成員可以看到它。如果將模型設置為公開，則實例中的任何人都可以看到。
+
+:::
+
+請在下面選擇您偏好的安裝方法：
+
+- **Docker：** **官方支持，並建議大多數用戶使用**
+- **Python：** 適合資源有限的環境或需要手動設置的用戶
+- **Kubernetes：** 適合需要擴展和編排的企業部署
+
+
+<Tabs>
+  <TabItem value="docker" label="Docker">
+    <Tabs>
+      <TabItem value="docker" label="Docker">
+        <div className='mt-5'>
+          <ManualDocker />
+          <DockerUpdating />
+        </div>
+      </TabItem>
+
+      <TabItem value="compose" label="Docker Compose">
+        <div className='mt-5'>
+          <DockerCompose />
+        </div>
+      </TabItem>
+
+      <TabItem value="podman" label="Podman">
+        <div className='mt-5'>
+          <Podman />
+        </div>
+      </TabItem>
+
+      <TabItem value="swarm" label="Docker Swarm">
+        <div className='mt-5'>
+          <DockerSwarm />
+        </div>
+      </TabItem>
+    </Tabs>
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+    <Tabs>
+      <TabItem value="uv" label="uv">
+        <div className='mt-5'>
+          <Uv />
+        </div>
+        <PythonUpdating />
+      </TabItem>
+
+
+      <TabItem value="conda" label="Conda">
+        <div className='mt-5'>
+          <Conda />
+        </div>
+        <PythonUpdating />
+      </TabItem>
+
+      <TabItem value="venv" label="Venv">
+        <div className='mt-5'>
+          <Venv />
+        </div>
+        <PythonUpdating />
+
+      </TabItem>
+
+
+      <TabItem value="development" label="Development">
+        <div className='mt-5'>
+          <h3>開發環境設置</h3>
+          <p>
+            想要貢獻的開發者，請參考《<a href="/getting-started/advanced-topics">高級主題</a>》中的開發指南。
+          </p>
+        </div>
+      </TabItem>
+
+
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="kubernetes" label="Kubernetes">
+    <Tabs>
+      <TabItem value="helm" label="Helm">
+        <Helm />
+      </TabItem>
+
+      <TabItem value="kustomize" label="Kustomize">
+        <Kustomize />
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+
+  <TabItem value="third-party" label="第三方">
+    <Tabs>
+      <TabItem value="pinokio-computer" label="Pinokio.computer">
+        ### Pinokio.computer 安裝
+
+        通過 Pinokio.computer 安裝，請訪問其網站：
+
+        [https://pinokio.computer/](https://pinokio.computer/)
+
+        此安裝方式的支持可通過其網站獲取。
+      </TabItem>
+    </Tabs>
+
+    ### 額外的第三方集成
+
+    *(隨著更多第三方集成的新增，將提供相關資訊。)*
+  </TabItem>
+</Tabs>
+
+## 下一步
+
+安裝完成後，訪問：
+
+- [http://localhost:3000](http://localhost:3000) 獲取 Open WebUI 的訪問地址。
+- 或 [http://localhost:8080/](http://localhost:8080/) 當使用 Python 部署時。
+
+您現在可以開始使用 Open WebUI！
+
+## 配合 Ollama 使用 Open WebUI
+如果您與 Ollama 一起使用 Open WebUI，請務必查看我們的 [Ollama 開始指引](/getting-started/quick-start/starting-with-ollama)，了解如何通過 Open WebUI 管理 Ollama 實例。
+
+## 加入社區
+
+需要幫助？有疑問？加入我們的社區：
+
+- [Open WebUI Discord](https://discord.gg/5rJgQTnV4s)
+- [GitHub Issues](https://github.com/open-webui/open-webui/issues)

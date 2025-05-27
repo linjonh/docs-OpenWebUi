@@ -1,0 +1,77 @@
+---
+sidebar_position: 3
+title: "🔄 Ventile"
+---
+
+## Ventile
+
+Ventile und BenutzerVentile werden verwendet, um Benutzern zu ermöglichen, dynamische Angaben wie einen API-Schlüssel oder eine Konfigurationsoption bereitzustellen. Diese erstellen ein ausfüllbares Feld oder einen Bool-Schalter im GUI-Menü für die jeweilige Funktion. Sie sind immer optional, aber DRINGEND empfohlen.
+
+Daher können Ventile und BenutzerVentile Klassen entweder in einer `Pipe`, `Pipeline`, `Filter` oder `Tools` Klasse definiert werden.
+
+Ventile können ausschließlich von Administratoren über die Tools- oder Funktionsmenüs konfiguriert werden. BenutzerVentile hingegen können direkt von jedem Benutzer aus einer Chat-Sitzung konfiguriert werden.
+
+<details>
+<summary>Kommentiertes Beispiel</summary>
+
+```python
+
+from pydantic import BaseModel, Field
+from typing import Literal
+
+# Definieren und Ventile
+class Filter:
+   # Beachten Sie die aktuelle Einrückung: Ventile und BenutzerVentile müssen als
+   # Attribute einer Tools-, Filter- oder Pipe-Klasse deklariert werden. Hier nehmen wir
+   # das Beispiel eines Filters.
+    class Ventile(BaseModel):
+       # Ventile und BenutzerVentile erben von pydantics BaseModel. Dies
+       # ermöglicht komplexe Anwendungsfälle wie Modellvalidierungen usw.
+       test_ventil: int = Field(  # Beachten Sie den Typ-Hinweis: Dieser wird verwendet,
+           # um die Art des UI-Elements auszuwählen, das dem Benutzer angezeigt wird (Schaltflächen,
+           # Texte usw.).
+           default=4,
+           description="Ein Ventil, das einen numerischen Wert steuert"
+           # required=False,  # Sie können Felder mit True erzwingen
+       )
+       # Um dem Benutzer die Wahl zwischen mehreren Zeichenketten zu geben, können Sie Literal von typing verwenden:
+       wahl_option: Literal["wahlA", "wahlB"] = Field(
+           default="wahlA",
+           description="Ein Beispiel für ein Ventil mit mehreren Optionen",
+       )
+       priorität: int = Field(
+           default=0,
+           description="Prioritätsstufe für die Filteroperationen. Niedrigere Werte werden zuerst verarbeitet"
+       )
+       # Das Prioritätsfeld ist optional, wird jedoch verwendet, wenn es vorhanden ist,
+       # um die Filter zu ordnen.
+       pass
+       # Beachten Sie, dass dieses pass bei der Analyse hilft und empfohlen wird.
+
+   # BenutzerVentile werden auf dieselbe Weise definiert.
+    class BenutzerVentile(BaseModel):
+        test_benutzer_ventil: bool = Field(
+            default=False, description="Ein BenutzerVentil, das einen Schalter für Wahr/Falsch (ein/aus) steuert"
+        )
+        pass
+
+   def __init__(self):
+       self.ventile = self.Ventile()
+       # Da sie vom Administrator eingestellt werden, sind sie direkt verfügbar
+       # bei der Codeausführung.
+       pass
+
+   # Die inlet-Methode wird nur für Filter verwendet, aber die __user__-Behandlung ist dieselbe
+   def inlet(self, body: dict, __user__: dict):
+       # Da BenutzerVentile pro Benutzer definiert werden, sind sie nur verfügbar
+       # im Gebrauch.
+       # Beachten Sie, dass obwohl __user__ ein dict ist, __user__["ventile"] ein
+       # BenutzerVentile-Objekt ist. Daher können Sie Werte wie folgt zugreifen:
+       test_benutzer_ventil = __user__["ventile"].test_benutzer_ventil
+       # Oder:
+       test_benutzer_ventil = dict(__user__["ventile"])["test_benutzer_ventil"]
+       # Aber dies wird den Standardwert anstelle des tatsächlichen Wertes zurückgeben:
+       # test_benutzer_ventil = __user__["ventile"]["test_benutzer_ventil"]  # Tun Sie das nicht!
+```
+
+</details>

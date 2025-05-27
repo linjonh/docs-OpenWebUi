@@ -1,0 +1,200 @@
+---
+sidebar_position: 3
+title: "🛰️ Soporte MCP"
+---
+
+Esta documentación explica cómo configurar y desplegar fácilmente el [**servidor proxy MCP (Model Context Protocol)-to-OpenAPI** (mcpo)](https://github.com/open-webui/mcpo) proporcionado por Open WebUI. Aprende cómo puedes exponer sin esfuerzo servidores de herramientas basados en MCP utilizando endpoints estándar y familiares de OpenAPI, adecuados para usuarios finales y desarrolladores.
+
+### 📌 ¿Qué es el servidor proxy MCP?
+
+El servidor proxy MCP-to-OpenAPI te permite usar servidores de herramientas implementados con MCP (Model Context Protocol) directamente a través de APIs estándar REST/OpenAPI, sin necesidad de gestionar protocolos personalizados complejos o desconocidos. Si eres un usuario final o desarrollador de aplicaciones, esto significa que puedes interactuar fácilmente con herramientas poderosas basadas en MCP directamente a través de endpoints familiares similares a REST.
+
+### 💡 ¿Por qué usar mcpo?
+
+Aunque los servidores de herramientas MCP son poderosos y flexibles, comúnmente se comunican a través de entrada/salida estándar (stdio), a menudo ejecutándose en tu máquina local donde pueden acceder fácilmente a tu sistema de archivos, entorno y otras capacidades nativas del sistema.
+
+Eso es una fortaleza, pero también una limitación.
+
+Si deseas desplegar tu interfaz principal (como Open WebUI) en la nube, rápidamente te encontrarás con un problema: tu instancia en la nube no puede comunicarse directamente con un servidor MCP ejecutándose localmente en tu máquina a través de stdio.
+
+[Ahí es donde mcpo entra con una solución revolucionaria.](https://github.com/open-webui/mcpo)
+
+Los servidores MCP normalmente dependen de la comunicación stdio pura, que es:
+
+- 🔓 Inherentemente insegura en distintos entornos
+- ❌ Incompatible con la mayoría de herramientas modernas, interfaces de usuario o plataformas
+- 🧩 Carece de características críticas como autenticación, documentación y manejo de errores
+
+El proxy mcpo elimina esos problemas automáticamente:
+
+- ✅ Compatible inmediatamente con herramientas, SDKs y clientes existentes de OpenAPI
+- 🛡 Envuelve tus herramientas con endpoints HTTP seguros, escalables y basados en estándares
+- 🧠 Genera automáticamente documentación interactiva de OpenAPI para cada herramienta, sin necesidad de configuración
+- 🔌 Usa HTTP simple: sin configuración de sockets, manejo de demonios ni código especializado para plataformas específicas
+
+Entonces, aunque añadir mcpo pueda parecer inicialmente "una capa más", en realidad simplifica todo mientras te brinda:
+
+- Mejor integración ✅
+- Mejor seguridad ✅
+- Mejor escalabilidad ✅
+- Desarrolladores y usuarios más felices ✅
+
+✨ Con mcpo, tus herramientas de IA que solo funcionaban localmente se vuelven aptas para la nube, fáciles de usar en interfaces y automáticamente interoperables, sin cambiar una sola línea de código del servidor de herramientas.
+
+### ✅ Inicio rápido: Ejecutando el Proxy Localmente
+
+Así de simple es lanzar el servidor proxy MCP-to-OpenAPI usando la herramienta ligera y fácil de usar **mcpo** ([Repositorio en GitHub](https://github.com/open-webui/mcpo)):
+
+1. **Requisitos previos**
+   - **Python 3.8+** con `pip` instalado.
+   - Aplicación compatible con MCP (por ejemplo: `mcp-server-time`)
+   - (Opcional pero recomendado) `uv` instalado para un inicio más rápido y conveniencia sin configuración.
+
+2. **Instalar mcpo**
+
+Usando **uv** (recomendado):
+
+```bash
+uvx mcpo --port 8000 -- your_mcp_server_command
+```
+
+O usando `pip`:
+
+```bash
+pip install mcpo
+mcpo --port 8000 -- your_mcp_server_command
+```
+
+3. 🚀 **Ejecuta el Servidor Proxy**
+
+Para iniciar tu servidor proxy MCP-to-OpenAPI, necesitas un servidor de herramientas compatible con MCP. Si aún no tienes uno, la comunidad MCP proporciona varias implementaciones de servidores MCP listas para usar.
+
+✨ **¿Dónde encontrar servidores MCP?**
+
+Puedes descubrir servidores MCP oficialmente compatibles en el siguiente ejemplo de repositorio:
+
+- [modelcontextprotocol/servers en GitHub](https://github.com/modelcontextprotocol/servers)
+
+Por ejemplo, el popular **Time MCP Server** está documentado [aquí](https://github.com/modelcontextprotocol/servers/blob/main/src/time/README.md), y generalmente se referencia claramente en el README, dentro de la configuración MCP proporcionada. Específicamente, el README señala:
+
+> Añade a tu configuración de Claude:
+>
+> ```json
+> "mcpServers": {   
+>   "time": {     
+>     "command": "uvx",     
+>     "args": ["mcp-server-time", "--local-timezone=America/New_York"]   
+>   } 
+> }
+> ```
+
+🔑 **Traduciendo esta configuración MCP a un comando rápido local para el proxy**:
+
+Puedes ejecutar fácilmente el servidor MCP recomendado (`mcp-server-time`) directamente a través del **proxy MCP-to-OpenAPI** (`mcpo`) de la siguiente manera:
+
+```bash
+uvx mcpo --port 8000 -- uvx mcp-server-time --local-timezone=America/New_York
+```
+
+¡Eso es todo! Ahora estás ejecutando el Proxy MCP-to-OpenAPI localmente y exponiendo el poderoso **Servidor MCP de Tiempo** a través de endpoints estándar de OpenAPI accesibles en:
+
+- 📖 **Documentación interactiva de OpenAPI:** [`http://localhost:8000/docs`](http://localhost:8000/docs)
+
+Siéntete libre de reemplazar `uvx mcp-server-time --local-timezone=America/New_York` con tu comando preferido de servidor MCP de otras implementaciones disponibles en el repositorio oficial.
+
+🤝 **Para integrarte con Open WebUI después de lanzar el servidor, consulta nuestra [documentación](https://docs.openwebui.com/openapi-servers/open-webui/).**
+
+### 🚀 Accediendo a las APIs generadas
+
+Tan pronto como comienza, el Proxy MCP (`mcpo`) automáticamente:
+
+- Descubre herramientas MCP dinámicamente y genera endpoints REST.
+- Crea documentación interactiva en formato OpenAPI legible por humanos que es accesible en:
+  - `http://localhost:8000/docs`
+
+Simplemente accede a los endpoints API generados automáticamente directamente a través de clientes HTTP, agentes de IA u otras herramientas OpenAPI de tu preferencia.
+
+### 📖 Ejemplo de flujo de trabajo para usuarios finales
+
+Asumiendo que iniciaste el comando del servidor mencionado anteriormente (`uvx mcp-server-time`):
+
+- Visita la documentación local de tu API en `http://localhost:8000/docs`.
+- Selecciona un endpoint generado (por ejemplo, `/get_current_time`) y usa el formulario interactivo proporcionado.
+- Haz clic en "**Execute**" y recibe tu respuesta al instante.
+
+Sin complejidad de configuración—solo APIs REST instantáneas.
+
+
+## 🚀 Implementación en Producción (Ejemplo)
+
+La implementación de tu proxy MCP a OpenAPI (impulsado por mcpo) es sencilla. Aquí se explica cómo Dockerizar y desplegar fácilmente en soluciones en la nube o VPS:
+
+### 🐳 Dockeriza tu Servidor Proxy usando mcpo
+
+1. **Ejemplo de Dockerfile**
+
+Crea el siguiente `Dockerfile` dentro de tu directorio de implementación:
+
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+RUN pip install mcpo uv
+# Reemplazar con tu comando del servidor MCP; ejemplo: uvx mcp-server-time
+CMD ["uvx", "mcpo", "--host", "0.0.0.0", "--port", "8000", "--", "uvx", "mcp-server-time", "--local-timezone=America/New_York"]
+```
+
+2. **Construye y ejecuta el contenedor localmente**
+
+```bash
+docker build -t mcp-proxy-server .
+docker run -d -p 8000:8000 mcp-proxy-server
+```
+
+3. **Despliegue de tu contenedor**
+
+Sube a DockerHub u otro registro:
+
+```bash
+docker tag mcp-proxy-server yourdockerusername/mcp-proxy-server:latest
+docker push yourdockerusername/mcp-proxy-server:latest
+```
+
+Despliega usando Docker Compose, manifiestos YAML de Kubernetes, o tus servicios de contenedores en la nube favoritos (AWS ECS, Azure Container Instances, Render.com o Heroku).
+
+✔️ ¡Tus servidores MCP de producción ahora están disponibles sin complicaciones a través de APIs REST!
+
+## 🧑‍💻 Detalles técnicos y antecedentes
+
+### 🍃 Cómo funciona (Resumen técnico)
+
+- **Descubrimiento de esquemas dinámicos y endpoints:** Al iniciar el servidor, el proxy se conecta al servidor MCP para consultar las herramientas disponibles. Construye automáticamente endpoints de FastAPI basados en los esquemas de herramientas MCP, creando endpoints REST concisos y claros.
+
+- **Documentación automática OpenAPI:** Los endpoints generados se documentan de manera fluida y están disponibles a través de la interfaz Swagger UI integrada de FastAPI (`/docs`). No se necesita escribir documentación adicional.
+
+- **Asíncrono y eficiente:** Construido sobre bibliotecas asíncronas robustas, garantizando velocidad y confiabilidad para múltiples usuarios concurrentes.
+
+### 📚 Bajo el capó:
+
+- FastAPI (Ruteo automático y generación de documentación)
+- Cliente MCP (Integración estándar de MCP y descubrimiento de esquemas)
+- JSON estándar sobre HTTP (Integración sencilla)
+
+## ⚡️ ¿Por qué es superior el Proxy MCP a OpenAPI?
+
+Esto es por qué aprovechar los servidores MCP a través de OpenAPI utilizando el enfoque de proxy es significativamente mejor y por qué Open WebUI lo apoya entusiastamente:
+
+- **Interfaz amigable y conocida para el usuario:** Sin clientes personalizados; solo endpoints REST HTTP que ya conoces.
+- **Integración instantánea:** Inmediatamente compatible con miles de herramientas, SDKs y servicios REST/OpenAPI existentes.
+- **Documentación poderosa y automática:** La documentación integrada en Swagger UI se genera automáticamente, siempre es precisa y se mantiene al día.
+- **Sin sobrecarga de nuevos protocolos:** Elimina la necesidad de manejar directamente las complejidades específicas del protocolo MCP y los problemas de comunicación de sockets.
+- **Seguridad y estabilidad probadas:** Hereda transporte HTTPS bien establecido, métodos de autenticación estándar (JWT, claves API), bibliotecas asíncronas sólidas y la reconocida robustez de FastAPI.
+- **Preparado para el futuro:** El proxy MCP utiliza formatos REST/OpenAPI estándar y estables que garantizan soporte comunitario a largo plazo y evolución.
+
+🌟 **En resumen:** MCP-to-OpenAPI hace que tus herramientas de IA basadas en MCP sean ampliamente accesibles a través de endpoints REST intuitivos, confiables y escalables. Open WebUI apoya y recomienda orgullosamente este enfoque de primera categoría.
+
+
+## 📢 Comunidad y soporte
+
+- Para preguntas, sugerencias o solicitudes de funciones, utiliza nuestro [rastreador de problemas en GitHub](https://github.com/open-webui/openapi-servers/issues) o únete a nuestras [discusiones comunitarias](https://github.com/open-webui/openapi-servers/discussions).
+
+¡Felices integraciones! 🌟🚀

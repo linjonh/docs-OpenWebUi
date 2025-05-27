@@ -1,0 +1,146 @@
+---
+sidebar_position: 300 
+title: "🔄 Atualizando Open WebUI"
+---
+
+
+
+## Por que meu Open WebUI não está atualizando?
+
+Para atualizar sua instalação local do Docker do Open WebUI para a versão mais recente disponível, você pode usar o **Watchtower** ou atualizar manualmente o contêiner. Siga um dos passos abaixo para ser guiado na atualização da sua imagem existente do Open WebUI.
+
+### Atualização Manual
+
+1. **Pare e remova o contêiner atual**:
+
+   Isso irá parar o contêiner em execução e removê-lo, mas não excluirá os dados armazenados no volume do Docker. (Substitua `open-webui` pelo nome do seu contêiner durante o processo de atualização se ele for diferente.)
+
+```bash
+docker rm -f open-webui
+```
+
+2. **Puxe a imagem mais recente do Docker**:
+
+   Isso atualizará a imagem do Docker, mas não atualizará o contêiner em execução ou seus dados.
+
+```bash
+docker pull ghcr.io/open-webui/open-webui:main
+```
+
+
+:::info
+**Remova quaisquer dados existentes no volume do Docker (NÃO RECOMENDADO, A MENOS QUE SEJA ABSOLUTAMENTE NECESSÁRIO!)**. Pule esta etapa completamente, se não for necessária, e vá para a última etapa:
+
+   Se você quiser começar do zero, pode remover os dados existentes no volume do Docker. Tenha cuidado, pois isso excluirá todas as suas histórias de chat e outros dados.
+
+   Os dados estão armazenados em um volume do Docker chamado `open-webui`. Você pode removê-lo com o seguinte comando:
+
+```bash
+docker volume rm open-webui
+```
+:::
+
+3. **Inicie o contêiner novamente com a imagem atualizada e o volume existente anexado**:
+
+   Se você não removeu os dados existentes, isso iniciará o contêiner com a imagem atualizada e os dados existentes. Se você removeu os dados existentes, isso iniciará o contêiner com a imagem atualizada e um novo volume vazio. **Para suporte a GPU Nvidia, adicione `--gpus all` ao comando docker run**
+
+```bash
+docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:main
+```
+
+## Continuo sendo desconectado após cada atualização?
+Se você se encontrar sendo desconectado após cada atualização, certifique-se de que `WEBUI_SECRET_KEY` esteja definido em suas variáveis de ambiente. Sem esta chave definida consistentemente, suas sessões de autenticação podem ser invalidadas após as atualizações.
+
+Para definir `WEBUI_SECRET_KEY` de forma persistente, inclua-o ao executar o seu contêiner Docker:
+
+```bash
+docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui -e WEBUI_SECRET_KEY=seu_secret_key ghcr.io/open-webui/open-webui:main
+```
+
+Ou, se estiver usando **docker-compose**, adicione-o na seção `environment`:
+
+```yml
+version: 3
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3000:8080"
+    volumes:
+      - open-webui:/app/backend/data
+    environment:
+      - WEBUI_SECRET_KEY=seu_secret_key
+```
+
+Para mais detalhes sobre configurações de variáveis de ambiente, consulte a [documentação do Open WebUI sobre variáveis de segurança](https://docs.openwebui.com/getting-started/env-configuration#security-variables).
+
+## Atualizando Open WebUI automaticamente com Watchtower
+
+Você pode usar o [Watchtower](https://containrrr.dev/watchtower/) para automatizar o processo de atualização do Open WebUI. Aqui estão três opções:
+
+### Opção 1: Atualização única
+
+Você pode executar o Watchtower como uma atualização única para parar o contêiner atual, puxar a imagem mais recente e iniciar um novo contêiner com a imagem atualizada e o volume existente anexado (**Para suporte a GPU Nvidia, adicione `--gpus all` ao comando docker run**):
+
+```bash
+docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once open-webui
+```
+
+### Opção 2: Executando Watchtower como um contêiner separado
+
+Você pode executar o Watchtower como um contêiner separado que monitora e atualiza seu contêiner Open WebUI:
+
+```bash
+docker run -d --name watchtower \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
+  containrrr/watchtower -i 300 open-webui
+```
+
+Isso iniciará o Watchtower em modo desacoplado, monitorando seu contêiner Open WebUI para atualizações a cada 5 minutos.
+
+### Opção 3: Integrando o Watchtower com um arquivo `docker-compose.yml`
+
+Você também pode integrar o Watchtower com seu arquivo `docker-compose.yml` para automatizar atualizações do Open WebUI (**Para suporte a GPU Nvidia, adicione `--gpus all` ao comando docker run**):
+
+```yml
+version: 3
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3000:8080"
+    volumes:
+      - open-webui:/app/backend/data
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 300 open-webui
+    depends_on:
+      - open-webui
+
+volumes:
+  open-webui:
+```
+
+Neste exemplo, o Watchtower é integrado ao arquivo `docker-compose.yml` e monitora o contêiner Open WebUI para atualizações a cada 5 minutos.
+
+## Dados persistentes em volumes do Docker
+
+Os dados estão armazenados em um volume do Docker chamado `open-webui`. O caminho para o volume não é diretamente acessível, mas você pode inspecionar o volume com o seguinte comando:
+
+```bash
+docker volume inspect open-webui
+```
+
+Isso mostrará os detalhes do volume, incluindo o ponto de montagem, que geralmente está localizado em `/var/lib/docker/volumes/open-webui/_data`.  
+
+No Windows 10 + WSL 2, volumes do Docker estão localizados aqui (digite no explorador de arquivos do Windows): 
+- \\\wsl$\docker-desktop\mnt\docker-desktop-disk\data\docker\volumes
+
+Para versões mais antigas do Docker (anteriores ao Docker v26.1.4):
+- \\\wsl$\docker-desktop-data\data\docker\volumes
+- \\\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
+
+_(Crédito da resposta para Windows ao usuário do StackOverflow sarye-haddadi; [link para o post original no SO](https://stackoverflow.com/questions/43181654/locating-data-volumes-in-docker-desktop-windows))_

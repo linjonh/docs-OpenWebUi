@@ -1,0 +1,142 @@
+---
+sidebar_position: 1000
+title: "⚡ パイプライン"
+---
+
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+
+<TopBanners />
+
+
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/header.png" alt="パイプラインロゴ" />
+  </a>
+</p>
+
+# パイプライン: UI非依存のOpenAI APIプラグインフレームワーク
+
+:::warning
+**以下の場合はパイプラインを使用しないでください！**
+
+追加のプロバイダー（Anthropicなど）のサポートを追加したり、基本的なフィルターを使用したりすることが目的である場合、パイプラインは必要ない可能性があります。その場合、Open WebUI Functionsの方が適しており、組み込みで非常に便利で、簡単に設定できます。しかし、パイプラインは、大規模なモデルや複雑なロジックを実行するなどの計算負荷の高いタスクを扱う場合に登場し、主要なOpen WebUIインスタンスの性能とスケーラビリティを向上させるためにオフロードする必要があります。
+:::
+
+**パイプライン**へようこそ！これは[Open WebUI](https://github.com/open-webui) の取り組みであり、OpenAI API仕様をサポートする任意のUIクライアントにモジュール型のカスタマイズ可能なワークフローを提供します – さらに多くのことができます！少しのコードを追加するだけで、機能を簡単に拡張し、独自のロジックを統合し、動的なワークフローを作成できます。
+
+## 🚀 パイプラインを選ぶ理由
+
+- **可能性は無限:** AIエージェントから家庭の自動化APIまで、Pythonライブラリを簡単に統合し、独自のロジックを追加できます。
+- **シームレスな統合:** OpenAI API仕様をサポートする任意のUI/クライアントと互換性があります。（パイプタイプのパイプラインのみサポートされ、フィルタータイプはパイプラインをサポートするクライアントが必要です。）
+- **カスタムフック:** カスタムパイプラインを作成して統合。
+
+### 達成できる例:
+
+- [**関数呼び出しパイプライン**](https://github.com/open-webui/pipelines/blob/main/examples/filters/function_calling_filter_pipeline.py): 関数呼び出しを容易にし、独自のロジックを使用してアプリケーションを強化。
+- [**カスタムRAGパイプライン**](https://github.com/open-webui/pipelines/blob/main/examples/pipelines/rag/llamaindex_pipeline.py): 必要に合わせた洗練された情報検索生成（RAG）パイプラインを実装。
+- [**Langfuseを使用したメッセージ監視**](https://github.com/open-webui/pipelines/blob/main/examples/filters/langfuse_filter_pipeline.py): Langfuseを使用してリアルタイムでメッセージのやり取りを監視・分析。
+- [**レート制限フィルター**](https://github.com/open-webui/pipelines/blob/main/examples/filters/rate_limit_filter_pipeline.py): リクエストの流れを制御し、レート制限を超えるのを防止。
+- [**LibreTranslateによるリアルタイム翻訳フィルター**](https://github.com/open-webui/pipelines/blob/main/examples/filters/libretranslate_filter_pipeline.py): LLMインタラクションにリアルタイム翻訳をシームレスに統合。
+- [**有害メッセージフィルター**](https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py): 有害メッセージを効果的に検出し対処するフィルターを実装。
+- **さらに多く！**: パイプラインとPythonで可能性は無限。あなたのプロジェクトを迅速に開始し、開発プロセスを簡素化する方法を見るために [スキャフォールドをチェック](https://github.com/open-webui/pipelines/blob/main/examples/scaffolds) してください！
+
+## 🔧 仕組み
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/workflow.png" alt="パイプラインのワークフロー" />
+  </a>
+</p>
+
+OpenAI API互換の任意のUIクライアントとパイプラインを統合するのは簡単です。パイプラインインスタンスを起動し、クライアントのOpenAI URLをパイプラインのURLに設定するだけです。それで完了です！任意のPythonライブラリをニーズに合わせて活用できます。
+
+## ⚡ Dockerを使ったクイックスタート
+
+:::warning
+パイプラインは任意のコードを実行できるプラグインシステムです — **信頼できないソースからランダムなパイプラインを取得しないでください**。
+:::
+
+Dockerを使った簡便なセットアップの場合:
+
+1. **パイプラインコンテナを実行:**
+
+   ```sh
+   docker run -d -p 9099:9099 --add-host=host.docker.internal:host-gateway -v pipelines:/app/pipelines --name pipelines --restart always ghcr.io/open-webui/pipelines:main
+   ```
+
+2. **Open WebUIに接続:**
+
+   - Open WebUIの **管理パネル > 設定 > 接続** セクションに移動します。
+   - このページで、`+` ボタンを押して別の接続を追加できます。
+   - API URLを `http://localhost:9099` に設定し、APIキーを `0p3n-w3bu!` に設定します。
+   - パイプライン接続を追加し、検証が完了すると、追加された接続のAPIベースURLフィールド内にアイコンが表示されます。アイコンにマウスを乗せると、ラベルに `Pipelines` と表示されます。これでパイプラインが有効になります。
+
+:::info
+Open WebUIがDockerコンテナ内で実行されている場合、API URL内の`localhost`を`host.docker.internal`に置き換えてください。
+:::
+
+3. **設定を管理:**
+
+   - 管理パネル内で **管理パネル > 設定 > パイプライン** タブに移動します。
+   - WebUIからバルブ値を直接変更して、希望のパイプラインを選択します。
+
+:::tip
+接続できない場合、ほとんどの場合Dockerネットワークの問題です。自分でトラブルシューティングを行い、フォーラムで方法や解決策を共有することをお勧めします。
+:::
+
+追加の依存関係を含むカスタムパイプラインをインストールする必要がある場合:
+
+- **以下のコマンドを実行してください:**
+
+  ```sh
+  docker run -d -p 9099:9099 --add-host=host.docker.internal:host-gateway -e PIPELINES_URLS="https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py" -v pipelines:/app/pipelines --name pipelines --restart always ghcr.io/open-webui/pipelines:main
+  ```
+
+あるいは、追加の依存関係がない場合、管理設定からパイプラインURLをコピー&ペーストして直接インストールすることもできます。
+
+それでは以上です！これで簡単にカスタマイズ可能なAI統合をPipelinesで構築できます。お楽しみください！
+
+## 📦 インストールとセットアップ
+
+Pipelinesを簡単な手順で始めましょう:
+
+1. **Python 3.11がインストールされていることを確認してください。** 公式にサポートされている唯一のPythonバージョンです。
+2. **Pipelinesリポジトリをクローンしてください:**
+
+   ```sh
+   git clone https://github.com/open-webui/pipelines.git
+   cd pipelines
+   ```
+
+3. **必要な依存関係をインストールしてください:**
+
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+4. **Pipelinesサーバーを起動してください:**
+
+   ```sh
+   sh ./start.sh
+   ```
+
+サーバーが起動したら、クライアントのOpenAI URLをPipelines URLに設定してください。これにより、Pythonライブラリを統合し、必要に応じてカスタムワークフローを作成するPipelinesのフル機能が解放されます。
+
+## 📂 ディレクトリ構造と例
+
+`/pipelines`ディレクトリは設定のコアです。新しいモジュールを追加したり、既存のものをカスタマイズしたりして、ここでワークフローを管理できます。サーバーが起動するときに、`/pipelines`ディレクトリ内のすべてのパイプラインが**自動的にロードされます**。
+
+`PIPELINES_DIR`環境変数を使用して、このディレクトリを`/pipelines`以外の場所に変更することができます。
+
+### 統合例
+
+`https://github.com/open-webui/pipelines/blob/main/examples`ディレクトリにさまざまな統合例があります。これらの例は、さまざまな機能を統合する方法を示しており、独自のカスタムパイプラインを構築するための基盤を提供します。
+
+## 🎉 作業中の進展
+
+私たちは継続的に進化しています！ぜひあなたのフィードバックをお聞かせください。どのフックや機能があなたのユースケースに適しているかを理解したいと思っています。お気軽に連絡を取り、Open WebUIコミュニティの一員になりましょう！
+
+私たちのビジョンは、**Pipelines**をAIインターフェースの究極のプラグインフレームワークに進化させることです。**Open WebUI**をAIインターフェースのWordPressと見立てて、**Pipelines**をその多様なプラグイン群と考えています。このエキサイティングな旅にぜひご参加ください！ 🌍

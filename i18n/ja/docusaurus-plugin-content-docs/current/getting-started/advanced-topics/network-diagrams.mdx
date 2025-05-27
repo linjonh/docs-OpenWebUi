@@ -1,0 +1,163 @@
+---
+sidebar_position: 3
+title: "🕸️ ネットワーク図"
+---
+
+ここでは、ネットワークのさまざまな構成内でコンポーネントがどのように相互作用するかを理解するための、明確で体系的な図を提供します。このドキュメントは、macOS/WindowsとLinuxの両方のユーザーを対象に設計されています。各シナリオは、Mermaidダイアグラムを使用して、システム構成や展開戦略によって設定された相互作用を示しています。
+
+## Mac OS/Windowsのセットアップオプション 🖥️
+
+### ホスト上のOllama、コンテナ内のOpen WebUI
+
+このシナリオでは、`Ollama`がホストマシン上で直接実行され、`Open WebUI`がDockerコンテナ内で操作されます。
+
+```mermaid
+C4Context
+Boundary(b0, "ホスティングマシン - Mac OS/Windows") {
+   Person(user, "ユーザー")
+   Boundary(b1, "Docker Desktops Linux VM") {
+      Component(openwebui, "Open WebUI", "ポート8080で待機")
+   }
+   Component(ollama, "Ollama", "ポート11434で待機")
+}
+Rel(openwebui, ollama, "Dockerプロキシ経由でAPIコールを実行", "http://host.docker.internal:11434")
+Rel(user, openwebui, "公開ポート-p 3000:8080経由でリクエストを送信", "http://localhost:3000")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+### Compose Stack内でのOllamaとOpen WebUI
+
+`Ollama`と`Open WebUI`の両方が同じDocker Composeスタック内に構成され、ネットワーク通信が簡素化されます。
+
+```mermaid
+C4Context
+Boundary(b0, "ホスティングマシン - Mac OS/Windows") {
+   Person(user, "ユーザー")
+   Boundary(b1, "Docker Desktops Linux VM") {
+      Boundary(b2, "Compose Stack") {
+         Component(openwebui, "Open WebUI", "ポート8080で待機")
+         Component(ollama, "Ollama", "ポート11434で待機")
+      }
+   }
+}
+Rel(openwebui, ollama, "コンテナ間ネットワーキング経由でAPIコールを実行", "http://ollama:11434")
+Rel(user, openwebui, "公開ポート-p 3000:8080経由でリクエストを送信", "http://localhost:3000")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+### 別々のネットワークでのOllamaとOpen WebUI
+
+この場合、`Ollama`と`Open WebUI`が別々のDockerネットワークに展開され、それにより接続の問題が生じる可能性があります。
+
+```mermaid
+C4Context
+Boundary(b0, "ホスティングマシン - Mac OS/Windows") {
+   Person(user, "ユーザー")
+   Boundary(b1, "Docker Desktops Linux VM") {
+      Boundary(b2, "ネットワークA") {
+         Component(openwebui, "Open WebUI", "ポート8080で待機")
+      }
+      Boundary(b3, "ネットワークB") {
+         Component(ollama, "Ollama", "ポート11434で待機")
+      }
+   }
+}
+Rel(openwebui, ollama, "接続不能")
+Rel(user, openwebui, "公開ポート-p 3000:8080経由でリクエストを送信", "http://localhost:3000")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+### ホストネットワーク内のOpen WebUI
+
+この構成では、`Open WebUI`がホストネットワークを利用し、特定の環境で接続に影響が生じます。
+
+```mermaid
+C4Context
+Boundary(b0, "ホスティングマシン - Mac OS/Windows") {
+   Person(user, "ユーザー")
+   Boundary(b1, "Docker Desktops Linux VM") {
+      Component(openwebui, "Open WebUI", "ポート8080で待機")
+   }
+}
+Rel(user, openwebui, "接続不能、ホストネットワークはVMのネットワーク")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+
+## Linuxのセットアップオプション 🐧
+
+### ホスト上のOllama、コンテナ内のOpen WebUI (Linux)
+
+この図はLinuxプラットフォーム専用で、`Ollama`がホスト上で動作し、`Open WebUI`がDockerコンテナ内にデプロイされています。
+
+```mermaid
+C4Context
+Boundary(b0, "ホスティングマシン - Linux") {
+   Person(user, "ユーザー")
+   Boundary(b1, "コンテナネットワーク") {
+      Component(openwebui, "Open WebUI", "ポート8080で待機")
+   }
+   Component(ollama, "Ollama", "ポート11434で待機")
+}
+Rel(openwebui, ollama, "Dockerプロキシ経由でAPIコールを実行", "http://host.docker.internal:11434")
+Rel(user, openwebui, "公開ポート-p 3000:8080経由でリクエストを送信", "http://localhost:3000")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+### Compose Stack内でのOllamaとOpen WebUI (Linux)
+
+Linux環境で`Ollama`と`Open WebUI`が同じDocker Composeスタック内に配置され、簡単なネットワーキングを可能にします。
+
+```mermaid
+C4Context
+Boundary(b0, "ホスティングマシン - Linux") {
+   Person(user, "ユーザー")
+   Boundary(b1, "コンテナネットワーク") {
+      Boundary(b2, "Compose Stack") {
+         Component(openwebui, "Open WebUI", "ポート8080で待機")
+         Component(ollama, "Ollama", "ポート11434で待機")
+      }
+   }
+}
+Rel(openwebui, ollama, "コンテナ間ネットワーキング経由でAPIコールを実行", "http://ollama:11434")
+Rel(user, openwebui, "公開ポート-p 3000:8080経由でリクエストを送信", "http://localhost:3000")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+### 別々のネットワークでのOllamaとOpen WebUI (Linux)
+
+Linux環境で`Ollama`と`Open WebUI`が異なるDockerネットワークに配置され、接続の障害を引き起こす可能性があります。
+
+```mermaid
+C4Context
+Boundary(b0, "ホスティングマシン - Linux") {
+   Person(user, "ユーザー")
+   Boundary(b2, "コンテナネットワーク A") {
+      Component(openwebui, "オープンWebUI", "ポート8080で待機中")
+   }
+   Boundary(b3, "コンテナネットワーク B") {
+      Component(ollama, "オラマ", "ポート11434で待機中")
+   }
+}
+Rel(openwebui, ollama, "接続できません")
+Rel(user, openwebui, "公開されたポート -p 3000:8080 経由でリクエスト", "http://localhost:3000")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+### ホストネットワークのオープンWebUI、ホスト上のオラマ (Linux)
+
+Linuxシステムでの円滑な対話を可能にする、`Open WebUI` と `Ollama` がホストネットワークを共有する最適な構成。
+
+```mermaid
+C4Context
+Boundary(b0, "ホスティングマシン - Linux") {
+   Person(user, "ユーザー")
+   Component(openwebui, "オープンWebUI", "ポート8080で待機中")
+   Component(ollama, "オラマ", "ポート11434で待機中")
+}
+Rel(openwebui, ollama, "localhost経由でAPI呼び出し実行", "http://localhost:11434")
+Rel(user, openwebui, "待機ポート経由でリクエスト送信", "http://localhost:8080")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+各セットアップは異なるデプロイメント戦略とネットワーク構成に対応し、要件に応じた最適な配置を選択できるように設計されています。

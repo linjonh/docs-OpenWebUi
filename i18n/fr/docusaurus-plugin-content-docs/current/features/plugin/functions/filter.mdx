@@ -1,0 +1,340 @@
+---
+sidebar_position: 2
+title: "🪄 Fonction de Filtre"
+---
+
+# 🪄 Fonction de Filtre : Modifier les Entrées et Sorties
+
+Bienvenue dans le guide complet sur les Fonctions de Filtre dans Open WebUI ! Les filtres sont un système de **plugin** flexible et puissant pour modifier les données *avant qu'elles ne soient envoyées au Modèle de Langage de Grande Taille (LLM)* (entrée) ou *après leur retour du LLM* (sortie). Que vous transformiez les entrées pour un meilleur contexte ou nettoyiez les sorties pour une lisibilité améliorée, les **Fonctions de Filtre** vous permettent de tout faire.
+
+Ce guide décomposera **ce que sont les Filtres**, comment ils fonctionnent, leur structure, et tout ce que vous devez savoir pour créer vos propres filtres puissants et conviviaux. Allons-y, et ne vous inquiétez pas—j'utiliserai des métaphores, des exemples et des astuces pour rendre tout cela limpide ! 🌟
+
+---
+
+## 🌊 Que sont les Filtres dans Open WebUI ?
+
+Imaginez Open WebUI comme un **flux d'eau** s'écoulant à travers des tuyaux :
+
+- Les **entrées utilisateur** et les **sorties du LLM** sont l'eau.
+- Les **Filtres** sont les **étapes de traitement de l'eau** qui nettoient, modifient et adaptent l'eau avant qu'elle n'atteigne sa destination finale.
+
+Les filtres se positionnent au milieu du flux—comme des points de contrôle—où vous décidez de ce qui doit être ajusté.
+
+Voici un résumé rapide de ce que font les Filtres :
+
+1. **Modifier les Entrées Utilisateur (Fonction d'Entrée)** : Ajustez les données d'entrée avant qu'elles n'atteignent le modèle IA. C'est là où vous améliorez la clarté, ajoutez du contexte, assainissez le texte ou reformatez les messages pour répondre à des exigences spécifiques.
+2. **Intercepter les Sorties du Modèle (Fonction de Flux)** : Capturez et ajustez les réponses de l'IA **pendant leur génération** par le modèle. Cela est utile pour les modifications en temps réel, comme le filtrage des informations sensibles ou le formatage des sorties pour une meilleure lisibilité.
+3. **Modifier les Sorties du Modèle (Fonction de Sortie)** : Ajustez les réponses de l'IA **après leur traitement**, avant de les montrer à l'utilisateur. Cela peut aider à affiner, journaliser ou adapter les données pour une expérience utilisateur plus nette.
+
+> **Concept Clé :** Les Filtres ne sont pas des modèles autonomes mais des outils qui améliorent ou transforment les données circulant *vers* et *depuis* les modèles.
+
+Les filtres sont comme des **traducteurs ou éditeurs** dans le flux de travail IA : vous pouvez intercepter et modifier la conversation sans interrompre le flux.
+
+---
+
+## 🗺️ Structure d'une Fonction de Filtre : Le Squelette
+
+Commençons par la représentation la plus simple d'une Fonction de Filtre. Ne vous inquiétez pas si certaines parties vous semblent techniques au début—nous allons tout décortiquer étape par étape !
+
+### 🦴 Squelette de Base d'un Filtre
+
+```python
+from pydantic import BaseModel
+from typing import Optional
+
+class Filter:
+    # Vannes : Options de configuration pour le filtre
+    class Valves(BaseModel):  
+        pass
+
+    def __init__(self):
+        # Initialiser les vannes (configuration optionnelle pour le Filtre)
+        self.valves = self.Valves()
+
+    def inlet(self, body: dict) -> dict:
+        # C'est ici que vous manipulez les entrées utilisateur.
+        print(f"inlet appelé : {body}")
+        return body  
+
+    def stream(self, event: dict) -> dict:
+        # C'est ici que vous modifiez les blocs de sortie générés par le modèle.
+        print(f"événement de flux : {event}")
+        return event
+
+    def outlet(self, body: dict) -> None:
+        # C'est ici que vous manipulez les sorties du modèle.
+        print(f"outlet appelé : {body}")
+```
+
+---
+
+### 🆕 🧲 Exemple de Filtre à Interrupteur : Ajouter de l'Interactivité et des Icônes (Nouveau dans Open WebUI 0.6.10)
+
+Les filtres peuvent faire plus que simplement modifier du texte—ils peuvent exposer des interrupteurs dans l'interface utilisateur et afficher des icônes personnalisées. Par exemple, vous pourriez vouloir un filtre activable/désactivable avec un bouton d'interface utilisateur, et affichant une icône spéciale dans l'interface utilisateur d'entrée de message d'Open WebUI.
+
+Voici comment vous pourriez créer un tel filtre à interrupteur :
+
+```python
+from pydantic import BaseModel, Field
+from typing import Optional
+
+class Filter:
+    class Valves(BaseModel):
+        pass
+
+    def __init__(self):
+        self.valves = self.Valves()
+        self.toggle = True # IMPORTANT : Cela crée un interrupteur dans Open WebUI
+        # ASTUCE : Utilisez les URI Data SVG !
+        self.icon = """data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBjbGFzcz0ic2l6ZS02Ij4KICA8cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik0xMiAxOHYtNS4yNW0wIDBhNi4wMSA2LjAxIDAgMCAwIDEuNS0uMTg5bS0xLjUuMTg5YTYuMDEgNi4wMSAwIDAgMS0xLjUtLjE4OW0zLjc1IDcuNDc4YTEyLjA2IDEyLjA2IDAgMCAxLTQuNSAwbTMuNzUgMi4zODNhMTQuNDA2IDE0LjQwNiAwIDAgMS0zIDBNMTQuMjUgMTh2LS4xOTJjMC0uOTgzLjY1OC0xLjgyMyAxLjUwOC0yLjMxNmE3LjUgNy41IDAgMSAwLTcuNTE3IDBjLjg1LjQ5MyAxLjUwOSAxLjMzMyAxLjUwOSAyLjMxNlYxOCIgLz4KPC9zdmc+Cg=="""
+        pass
+
+    async def inlet(
+        self, body: dict, __event_emitter__, __user__: Optional[dict] = None
+    ) -> dict:
+        await __event_emitter__(
+            {
+                "type": "status",
+                "data": {
+                    "description": "Activé !",
+                    "done": True,
+                    "hidden": False,
+                },
+            }
+        )
+        return body
+```
+
+#### 🖼️ Que se passe-t-il ?
+- **toggle = True** crée une interface utilisateur à interrupteur dans Open WebUI — les utilisateurs peuvent activer ou désactiver le filtre manuellement en temps réel.
+- **icon** (avec une URI de données) apparaîtra comme une petite image à côté du nom du filtre. Vous pouvez utiliser n'importe quel SVG tant qu'il est encodé en URI de données !
+- **La fonction `inlet`** utilise l'argument spécial `__event_emitter__` pour diffuser des retours d'information ou un statut à l'interface, comme une petite notification indiquant "Basculé !"
+
+![Filtre à bascule](/images/features/plugin/functions/toggle-filter.png)
+
+Vous pouvez utiliser ces mécanismes pour rendre vos filtres dynamiques, interactifs et visuellement uniques au sein de l'écosystème des plugins d'Open WebUI.
+
+---
+
+### 🎯 Explication des composants clés
+
+#### 1️⃣ **Classe `Valves` (Paramètres optionnels)**
+
+Considérez **Valves** comme les boutons et curseurs pour votre filtre. Si vous souhaitez offrir aux utilisateurs des options configurables pour ajuster le comportement de votre filtre, vous les définissez ici.
+
+```python
+class Valves(BaseModel):
+    OPTION_NAME: str = "Valeur par défaut"
+```
+
+Par exemple :
+Si vous créez un filtre qui convertit les réponses en majuscules, vous pourriez permettre aux utilisateurs de configurer si chaque sortie doit être totalement mise en majuscule via une valve comme `TRANSFORM_UPPERCASE: bool = True/False`.
+
+---
+
+#### 2️⃣ **Fonction `inlet` (Prétraitement de l'entrée)**
+
+
+La fonction `inlet` est comme **préparer les aliments avant la cuisson**. Imaginez que vous êtes un chef : avant que les ingrédients n'entrent dans la recette (le LLM dans ce cas), vous pourriez laver les légumes, couper les oignons ou assaisonner la viande. Sans cette étape, votre plat final pourrait manquer de saveur, avoir des produits non lavés ou simplement être incohérent.
+
+Dans le monde d'Open WebUI, la fonction `inlet` fait ce travail de préparation important sur **l'entrée utilisateur** avant qu'elle ne soit envoyée au modèle. Elle garantit que l'entrée est aussi propre, contextuelle et utile que possible pour que l'IA puisse la traiter.
+
+📥 **Entrée** :
+- **`body`** : L'entrée brute d'Open WebUI vers le modèle. Elle se présente sous la forme d'une requête de chat (généralement un dictionnaire qui inclut des champs comme les messages de la conversation, les paramètres du modèle et d'autres métadonnées). Considérez cela comme vos ingrédients de recette.
+
+🚀 **Votre tâche** :
+Modifiez et renvoyez le `body`. La version modifiée du `body` est celle avec laquelle le LLM travaille, donc c'est votre chance d'apporter de la clarté, de la structure et du contexte à l'entrée.
+
+
+##### 🍳 Pourquoi utiliser le `inlet` ?
+1. **Ajouter du contexte** : Ajoutez automatiquement des informations cruciales à l'entrée de l'utilisateur, surtout si son texte est vague ou incomplet. Par exemple, vous pourriez ajouter "Vous êtes un assistant amical" ou "Aidez cet utilisateur à résoudre un problème logiciel."
+   
+2. **Formater les données** : Si l'entrée nécessite un format spécifique, comme JSON ou Markdown, vous pouvez la transformer avant de l'envoyer au modèle.
+
+3. **Nettoyer l'entrée** : Supprimez les caractères indésirables, enlevez les symboles potentiellement nuisibles ou déroutants (comme des espaces excessifs ou des emojis), ou remplacez les informations sensibles.
+
+4. **Rationaliser l'entrée utilisateur** : Si la sortie de votre modèle s'améliore grâce à des indications supplémentaires, vous pouvez utiliser le `inlet` pour injecter automatiquement des instructions clarificatrices !
+
+
+##### 💡 Cas d'utilisation : Construisez sur la préparation des aliments
+###### 🥗 Exemple 1 : Ajouter du contexte systémique
+Disons que le LLM est un chef préparant un plat pour une cuisine italienne, mais l'utilisateur n'a pas mentionné "Ceci est pour la cuisine italienne." Vous pouvez vous assurer que le message est clair en ajoutant ce contexte avant d'envoyer les données au modèle.
+
+```python
+def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+    # Ajouter un message système pour un contexte italien dans la conversation
+    context_message = {
+        "role": "system",
+        "content": "Vous aidez l'utilisateur à préparer un repas italien."
+    }
+    # Insérer le contexte au début de l'historique de chat
+    body.setdefault("messages", []).insert(0, context_message)
+    return body
+```
+
+📖 **Que se passe-t-il ?**
+- Toute entrée utilisateur comme "Quelles sont de bonnes idées de dîner ?" porte maintenant le thème italien parce que nous avons défini le contexte système ! Le cheesecake pourrait ne pas apparaître comme une réponse, mais les pâtes certainement.
+
+
+###### 🔪 Exemple 2 : Nettoyer l'entrée (Enlever les caractères étranges)
+Supposons que l'entrée de l'utilisateur semble désordonnée ou inclut des symboles indésirables comme `!!!`, rendant la conversation inefficace ou plus difficile à analyser pour le modèle. Vous pouvez la nettoyer tout en conservant le contenu principal.
+
+```python
+def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+    # Nettoyer la dernière entrée utilisateur (à partir de la fin de la liste 'messages')
+    last_message = body["messages"][-1]["content"]
+    body["messages"][-1]["content"] = last_message.replace("!!!", "").strip()
+    return body
+```
+
+📖 **Que se passe-t-il ?**
+- Avant : `"Comment puis-je dépanner ce problème !!!"` ➡️ Envoyé au modèle comme `"Comment puis-je dépanner ce problème"`
+
+Note : L'utilisateur ressent la même chose, mais le modèle traite une requête plus propre et plus facile à comprendre.
+
+
+##### 📊 Comment `inlet` contribue à optimiser l'entrée pour le LLM :
+- Améliore **la précision** en clarifiant les requêtes ambiguës.
+- Rend l'IA **plus efficace** en éliminant les bruits inutiles comme les emojis, les balises HTML ou les ponctuations supplémentaires.
+- Garantit **la cohérence** en formatant les entrées utilisateur pour correspondre aux schémas ou modèles attendus (comme, disons, le JSON pour un cas d'utilisation spécifique).
+
+
+💭 **Pensez à `inlet` comme un sous-chef dans votre cuisine**—assurant que tout ce qui entre dans le modèle (votre "recette" d'IA) a été préparé, nettoyé et assaisonné à la perfection. Meilleure est l'entrée, meilleur est le résultat !
+
+---
+
+#### 🆕 3️⃣ **Hook `stream` (Nouveau dans Open WebUI 0.5.17)**
+
+##### 🔄 Qu'est-ce que le hook `stream` ?
+La **fonction `stream`** est une nouvelle fonctionnalité introduite dans Open WebUI **0.5.17** qui vous permet d'**intercepter et modifier les réponses du modèle en streaming** en temps réel.
+
+Contrairement à `outlet`, qui traite une réponse complète, `stream` fonctionne sur des **fragments individuels** au fur et à mesure qu'ils sont reçus du modèle.
+
+##### 🛠️ Quand utiliser le hook Stream ?
+- Modifier les **réponses en streaming** avant qu'elles ne soient affichées aux utilisateurs.
+- Implémenter une **censure ou un nettoyage en temps réel**.
+- **Superviser les données streamées** pour le journal ou le débogage.
+
+##### 📜 Exemple : Journaliser les fragments en streaming
+
+Voici comment inspecter et modifier les réponses LLM diffusées :
+```python
+def stream(self, event: dict) -> dict:
+    print(event)  # Affiche chaque fragment entrant pour inspection
+    return event
+```
+
+> **Exemple d'événements streamés :**
+```jsonl
+{"id": "chatcmpl-B4l99MMaP3QLGU5uV7BaBM0eDS0jb","choices": [{"delta": {"content": "Salut"}}]}
+{"id": "chatcmpl-B4l99MMaP3QLGU5uV7BaBM0eDS0jb","choices": [{"delta": {"content": "!"}}]}
+{"id": "chatcmpl-B4l99MMaP3QLGU5uV7BaBM0eDS0jb","choices": [{"delta": {"content": " 😊"}}]}
+```
+📖 **Que se passe-t-il ?**
+- Chaque ligne représente un **petit fragment** de la réponse en streaming du modèle.
+- Le champ **`delta.content`** contient le texte généré progressivement.
+
+##### 🔄 Exemple : Filtrer les emojis des données en streaming
+```python
+def stream(self, event: dict) -> dict:
+    for choice in event.get("choices", []):
+        delta = choice.get("delta", {})
+        if "content" in delta:
+            delta["content"] = delta["content"].replace("😊", "")  # Retirer les emojis
+    return event
+```
+📖 **Avant :** `"Salut 😊"`  
+📖 **Après :** `"Salut"`
+
+---
+
+#### 4️⃣ **Fonction `outlet` (Post-traitement de la sortie)**
+
+La fonction `outlet` agit comme un **correcteur** : elle nettoie la réponse de l'IA (ou y apporte des modifications finales) *après son traitement par le LLM.*
+
+📤 **Entrée :**
+- **`body`** : Cela contient **tous les messages actuels** dans la discussion (historique de l'utilisateur + réponses de LLM).
+
+🚀 **Votre tâche :** Modifier ce `body`. Vous pouvez le nettoyer, le compléter ou enregistrer les changements, mais soyez attentif à l'impact de chaque ajustement sur l'expérience utilisateur.
+
+💡 **Bonnes pratiques :**
+- Préférez la journalisation aux modifications directes dans `outlet` (par exemple, pour le débogage ou l'analyse).
+- Si des modifications importantes sont nécessaires (comme le formatage des sorties), envisagez d'utiliser plutôt la **fonction pipe**.
+
+💡 **Utilisation :** Supprimez les informations sensibles d'API que vous ne voulez pas montrer à l'utilisateur :
+```python
+def outlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+    for message in body["messages"]:
+        message["content"] = message["content"].replace("<API_KEY>", "[REDACTED]")
+    return body
+```
+
+---
+
+## 🌟 Filtres en action : Créer des exemples pratiques
+
+Construisons quelques exemples concrets pour voir comment utiliser les filtres !
+
+### 📚 Exemple #1 : Ajouter un contexte à chaque entrée utilisateur
+
+Vous voulez que le LLM sache toujours qu'il aide un client à résoudre des bogues logiciels ? Vous pouvez ajouter des instructions comme **"Vous êtes un assistant de dépannage logiciel"** à chaque requête utilisateur.
+
+```python
+class Filter:
+    def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+        context_message = {
+            "role": "system", 
+            "content": "Vous êtes un assistant de dépannage logiciel."
+        }
+        body.setdefault("messages", []).insert(0, context_message)
+        return body
+```
+
+---
+
+### 📚 Exemple #2 : Mettre en évidence les sorties pour une lecture facile
+
+Retourner une sortie en Markdown ou dans un autre style formaté ? Utilisez la fonction `outlet` !
+
+```python
+class Filter:
+    def outlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+        # Ajouter le markdown "highlight" pour chaque réponse
+        for message in body["messages"]:
+            if message["role"] == "assistant":  # Cibler la réponse du modèle
+                message["content"] = f"**{message[content]}**"  # Mettre en surbrillance avec Markdown
+        return body
+```
+
+---
+
+## 🚧 Confusions potentielles : FAQ claires 🛑
+
+### **Q : En quoi les filtres diffèrent-ils des fonctions pipe ?**
+
+Les filtres modifient les données **allant vers** et **revenant des modèles** mais n'interagissent pas de manière significative avec la logique en dehors de ces phases. Les pipes, en revanche :
+- Peuvent intégrer des **API externes** ou transformer significativement les opérations du backend.
+- Exposent une logique personnalisée comme de véritables "modèles".
+
+### **Q : Puis-je faire un post-traitement lourd dans `outlet` ?**
+
+Vous pouvez, mais **ce n’est pas la meilleure pratique.**:
+- **Les filtres** sont conçus pour effectuer des modifications légères ou appliquer une journalisation.
+- Si des modifications importantes sont nécessaires, envisagez plutôt une **fonction Pipe**.
+
+---
+
+## 🎉 Récapitulatif : Pourquoi créer des fonctions de filtre ?
+
+À ce stade, vous avez appris :
+1. **Inlet** manipule les **entrées utilisateur** (prétraitement).
+2. **Stream** intercepte et modifie les **sorties de modèles en streaming** (en temps réel).
+3. **Outlet** ajuste les **sorties de l'IA** (post-traitement).
+4. Les filtres sont idéaux pour les modifications légères et en temps réel du flux de données.
+5. Avec **Valves**, vous permettez aux utilisateurs de configurer dynamiquement les filtres pour un comportement sur mesure.
+
+---
+
+🚀 **À vous de jouer** : Commencez à expérimenter ! Quelle petite modification ou ajout contextuel pourrait améliorer votre expérience avec Open WebUI ? Les filtres sont amusants à créer, flexibles à utiliser et peuvent faire passer vos modèles au niveau supérieur !
+
+Bon codage ! ✨

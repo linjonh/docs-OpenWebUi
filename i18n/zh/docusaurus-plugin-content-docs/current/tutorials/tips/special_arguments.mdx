@@ -1,0 +1,342 @@
+---
+sidebar_position: 20
+title: "💡 特殊参数"
+---
+
+:::警告
+本教程为社区贡献内容，不受 Open WebUI 团队支持，仅用于演示如何根据特定使用场景定制 Open WebUI。想要贡献？请查看贡献教程。
+:::
+
+# 💡 特殊参数
+
+当开发您自己的`工具`、`功能`（包括`过滤器`、`管道`或`动作`）、`管道`等时，可以使用特殊参数来探索 Open-WebUI 提供的完整功能范围。
+
+本页面旨在详细说明每个特殊参数的类型和结构，并提供一个示例。
+
+### `body`
+
+`dict` 通常直接传递给模型。虽然它不完全是一个特殊参数，但由于其本身含有特殊参数，故在此处包含以便于参考。
+
+<details>
+<summary>示例</summary>
+
+```json
+
+{
+  "stream": true,
+  "model": "my-cool-model",
+  # 小写带短横线的字符串：这是模型的 ID
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "这张图片里有什么？"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdYAAAGcCAYAAABk2YF[REDACTED]"
+            # 图像以 base64 编码数据传递
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": "图片似乎是 [REDACTED]"
+    },
+  ],
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "stream_options": {
+    "include_usage": true
+  },
+  "metadata": "[与 __metadata__ 完全相同的 dict]",
+  "files": "[与 __files__ 完全相同的列表]"
+}
+
+
+```
+
+</details>
+
+### `__user__`
+
+包含用户信息的 `dict`。
+
+注意：如果定义了 `UserValves` 类，则必须通过 `__user__["valves"]` 访问其实例；否则，`valves` 键值在 `__user__` 中完全缺失。
+
+<details>
+<summary>示例</summary>
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "email": "cheesy_dude@openwebui.com",
+  "name": "Patrick",
+  "role": "user",
+  # 角色可以是 `user` 或 `admin`
+  "valves": "[UserValve 实例]"
+}
+```
+
+</details>
+
+### `__metadata__`
+
+包含有关聊天、模型、文件等的广泛信息的 `dict`。
+
+<details>
+<summary>示例</summary>
+
+```json
+{
+  "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "chat_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "message_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "session_id": "xxxxxxxxxxxxxxxxxxxx",
+  "tool_ids": null,
+  # tool_ids 是字符串列表。
+  "tool_servers": [],
+  "files": "[与 body[files] 一样]",
+  # 如果未提供文件，`files` 键仍存在于 __metadata__ 中，其值为 []
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "variables": {
+    "{{USER_NAME}}": "cheesy_username",
+    "{{USER_LOCATION}}": "未知",
+    "{{CURRENT_DATETIME}}": "2025-02-02 XX:XX:XX",
+    "{{CURRENT_DATE}}": "2025-02-02",
+    "{{CURRENT_TIME}}": "XX:XX:XX",
+    "{{CURRENT_WEEKDAY}}": "星期一",
+    "{{CURRENT_TIMEZONE}}": "欧洲/柏林",
+    "{{USER_LANGUAGE}}": "en-US"
+  },
+  "model": "[与 __model__ 完全相同的 dict]",
+  "direct": false,
+  "function_calling": "native",
+  "type": "用户响应",
+  "interface": "open-webui"
+}
+
+```
+
+</details>
+
+### `__model__`
+
+包含有关模型信息的 `dict`。
+
+<details>
+<summary>示例</summary>
+
+```json
+{
+  "id": "my-cool-model",
+  "name": "我的酷模型",
+  "object": "模型",
+  "created": 1746000000,
+  "owned_by": "openai",
+  # 值为 openai 或 ollama
+  "info": {
+      "id": "my-cool-model",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "base_model_id": "gpt-4o",
+      # 这是模型端点提供的模型名称
+      "name": "我的酷模型",
+      "params": {
+      "system": "你是我最好的助手。你的回答是 [REDACTED]",
+      "function_calling": "native"
+      # 自定义选项，例如“Top K”，在此处显示
+      },
+      "meta": {
+      "profile_image_url": "/static/favicon.png",
+      "description": "my-cool-model 的描述",
+      "capabilities": {
+          "vision": true,
+          "usage": true,
+          "citations": true
+      },
+      "position": 17,
+      "tags": [
+          {
+          "name": "为_朋友"
+          },
+          {
+          "name": "开启视觉功能"
+          }
+      ],
+      "suggestion_prompts": null
+      },
+      "access_control": {
+      "read": {
+          "group_ids": [],
+          "user_ids": []
+      },
+      "write": {
+          "group_ids": [],
+          "user_ids": []
+      }
+      },
+      "is_active": true,
+      "updated_at": 1740000000,
+      "created_at": 1740000000
+  },
+  "preset": true,
+  "actions": [],
+  "tags": [
+      {
+          "name": "为_朋友"
+      },
+{
+          "name": "视觉启用"
+      }
+  ]
+}
+
+```
+
+</details>
+
+### `__消息__`
+
+之前消息的`列表`。
+
+请参阅上面`body["messages"]`的值。
+
+
+### `__聊天ID__`
+
+聊天ID的`字符串`。
+
+请参阅上面`__metadata__["chat_id"]`的值。
+
+### `__会话ID__`
+
+会话ID的`字符串`。
+
+请参阅上面`__metadata__["session_id"]`的值。
+
+### `__消息ID__`
+
+消息ID的`字符串`。
+
+请参阅上面`__metadata__["message_id"]`的值。
+
+### `__事件发射器__`
+
+一个`可调用项`用于向用户显示事件信息。
+
+### `__事件调用__`
+
+一个`可调用项`用于`行动`。
+
+### `__文件__`
+
+通过聊天发送的文件的`列表`。注意图像不被视为文件，并直接作为`body["messages"]`列表的一部分发送到模型。
+
+出于性能原因，文件的实际二进制内容不包含在参数中，但文件可以通过其路径访问（如果需要）。例如，使用`docker`的Python语法路径可能是：
+
+```python
+from pathlib import Path
+
+the_file = Path(f"/app/backend/data/uploads/{__files__[0]["files"]["id"]}_{__files__[0]["files"]["filename"]}")
+assert the_file.exists()
+```
+
+注意，`files`字典也可以通过`__metadata__["files"]`访问（如果没有发送文件，其值为`[]`），或者通过`body["files"]`访问（但如果没有发送文件，`body`中没有`files`键）。
+
+<details>
+<summary>示例</summary>
+
+```json
+
+[
+  {
+    "type": "文件",
+    "file": {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "filename": "拿破仑 - 维基百科.pdf",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "data": {
+        "content": "拿破仑 - 维基百科\n\n\n拿破仑一世\n\n《皇帝拿破仑在巴黎杜伊勒里宫书房里》，1812\n\n法兰西的皇帝\n\n第一个统治时期 1804年5月18日 – 1814年4月6日\n\n继任者 路易十八[a]\n\n第二个统治时期 1815年3月20日 – 1815年6月22日\n\n继任者 路易十八[a]\n\n法兰西共和国的第一执政\n\n在位\n1799年12月13日 – 1804年5月18日\n\n出生拿破仑·波拿巴\n1769年8月15日\n阿雅乔，科西嘉，法兰西王国\n\n去世 1821年5月5日 (享年 51岁)\n圣赫勒拿岛的龙伍德\n\n葬礼 1840年12月15日\n巴黎荣军院\n\n拿破仑\n拿破仑·波拿巴[b]（出生时为拿破仑·布奥纳巴尔；[1][c] 1769年8月15日 – 1821年5月5日），后改为 [REDACTED]",
+        # 内容值是文档解析器的输出，上述示例使用Tika作为文档解析器
+      },
+      "meta": {
+        "name": "拿破仑 - 维基百科.pdf",
+        "content_type": "application/pdf",
+        "size": 10486578,
+        # 以字节为单位，这里大约10MB
+        "data": {},
+        "collection_name": "文件-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        # 始终以文件开头
+      },
+      "created_at": 1740000000,
+      "updated_at": 1740000000
+    },
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "url": "/api/v1/files/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "name": "拿破仑 - 维基百科.pdf",
+    "collection_name": "文件-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    "status": "已上传",
+    "size": 10486578,
+    "error": "",
+    "itemId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    # itemId与file["id"]不同
+  }
+]
+
+
+```
+
+</details>
+
+### `__请求__`
+
+一个`fastapi.Request`实例。可以在[迁移页面](../../features/plugin/migration/index.mdx)或[fastapi的文档](https://fastapi.tiangolo.com/reference/request/)中了解更多。
+
+### `__任务__`
+
+`任务类型`的`字符串`。如果存在，则其值只是`__metadata__["task"]`的简写，否则为`None`。
+
+<details>
+<summary>可能的值</summary>
+
+```json
+
+[
+    "标题生成",
+    "标签生成",
+    "表情生成",
+    "查询生成",
+    "图像提示生成",
+    "自动补全生成",
+    "函数调用",
+    "MOA响应生成"
+]
+```
+
+</details>
+
+### `__任务内容__`
+
+一个`字典`，包含完成给定`__任务__`所需的`内容`。如果存在，则其值只是`__metadata__["task_body"]`的简写，否则为`None`。
+
+其结构与上面的`内容`相同，具有类似使用合适模型和系统消息的修改。
+
+
+### `__工具__`
+
+`ToolUserModel`实例的`列表`。
+
+有关`ToolUserModel`实例属性的详细信息，可以在[tools.py](https://github.com/open-webui/open-webui/blob/main/backend/open_webui/models/tools.py)找到代码。
+

@@ -1,0 +1,38 @@
+---
+sidebar_position: 2
+title: "🎙️ Resolução de Problemas de Acesso ao Microfone"
+---
+
+Garantir que sua aplicação tenha o acesso adequado ao microfone é crucial para funcionalidades que dependem de entrada de áudio. Este guia cobre como gerenciar e solucionar problemas de permissões do microfone, especialmente em contextos seguros.
+
+## Entendendo Contextos Seguros 🔒
+
+Por razões de segurança, o acesso ao microfone é restrito a páginas servidas via HTTPS ou localmente a partir de `localhost`. Esse requisito visa proteger seus dados garantindo que sejam transmitidos por canais seguros.
+
+## Problemas Comuns de Permissão 🚫
+
+Navegadores como Chrome, Brave, Microsoft Edge, Opera e Vivaldi, além do Firefox, restringem o acesso ao microfone em URLs não HTTPS. Isso geralmente se torna um problema ao acessar um site de outro dispositivo dentro da mesma rede (por exemplo, usar um celular para acessar um servidor de desktop). Aqui está como você pode gerenciar esses problemas:
+
+### Soluções para Conexões Não HTTPS
+
+1. **Configurar HTTPS:**
+   - Recomenda-se altamente configurar seu servidor para suportar HTTPS. Isso não apenas resolve problemas de permissão, mas também aumenta a segurança das suas transmissões de dados.
+
+2. **Flags Temporárias do Navegador (Usar com Cuidado):**
+   - Essas configurações forçam o navegador a tratar certas URLs inseguras como seguras. Isso é útil para fins de desenvolvimento, mas representa riscos significativos de segurança. Aqui está como ajustar essas configurações nos principais navegadores:
+
+   #### Navegadores Baseados em Chromium (por exemplo, Chrome, Brave)
+   - Abra `chrome://flags/#unsafely-treat-insecure-origin-as-secure`.
+   - Insira seu endereço não HTTPS (por exemplo, `http://192.168.1.35:3000`).
+   - Reinicie o navegador para aplicar as mudanças.
+
+   #### Navegadores Baseados em Firefox
+   - Abra `about:config`.
+   - Pesquise e modifique (ou crie) o valor do tipo string `dom.securecontext.allowlist`.
+   - Adicione seus endereços IP separados por vírgulas (por exemplo, `http://127.0.0.1:8080`).
+
+### Considerações e Riscos 🚨
+
+Embora as flags do navegador ofereçam uma solução rápida, elas contornam verificações importantes de segurança, o que pode expor seu dispositivo e dados a vulnerabilidades. Sempre priorize medidas de segurança corretas, especialmente ao planejar para um ambiente de produção.
+
+Seguindo essas melhores práticas, você pode garantir que sua aplicação acesse o microfone corretamente enquanto mantém a segurança e integridade dos seus dados.

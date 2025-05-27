@@ -1,0 +1,178 @@
+---
+sidebar_position: 10
+title: "❓ FAQ"
+---
+
+#### 🌐 F: Warum ist mein lokaler OpenAPI-Toolserver nicht über die WebUI-Oberfläche zugänglich?
+
+**A:** Wenn Ihr Toolserver lokal läuft (z. B. http://localhost:8000), können browserbasierte Clients möglicherweise aufgrund von CORS (Cross-Origin Resource Sharing)-Richtlinien daran gehindert werden, darauf zuzugreifen.
+
+Stellen Sie sicher, dass Sie CORS-Header explizit in Ihrem OpenAPI-Server aktivieren. Wenn Sie beispielsweise FastAPI verwenden, können Sie Folgendes hinzufügen:
+
+```python
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # oder geben Sie Ihren Client-Ursprung an
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
+
+Außerdem muss Ihr lokaler Server, wenn Open WebUI über HTTPS bereitgestellt wird (z. B. https://yourdomain.com), eine der folgenden Bedingungen erfüllen:
+
+- Über dieselbe Domain mit HTTPS zugänglich sein (z. B. https://localhost:8000).
+- ODER auf localhost (127.0.0.1) laufen, damit Browser die Sicherheit für lokale Entwicklungen lockern.
+- Andernfalls können Browser unsichere Anfragen von HTTPS-Seiten an HTTP-APIs aufgrund von Regeln für gemischte Inhalte blockieren.
+
+Um in der Produktion sicher über HTTPS zu arbeiten, müssen Ihre OpenAPI-Server ebenfalls über HTTPS bereitgestellt werden.
+
+---
+
+#### 🚀 F: Muss ich FastAPI für meine Server-Implementierung verwenden?
+
+**A:** Nein! Während unsere Referenzimplementierungen aus Gründen der Klarheit und Benutzerfreundlichkeit mit FastAPI geschrieben sind, können Sie jedes Framework oder jede Sprache verwenden, die eine gültige OpenAPI (Swagger)-Spezifikation erstellt. Zu den gängigen Optionen gehören:
+
+- FastAPI (Python)
+- Flask + Flask-RESTX (Python)
+- Express + Swagger UI (JavaScript/Node)
+- Spring Boot (Java)
+- Go mit Swag oder Echo
+
+Der Schlüssel ist sicherzustellen, dass Ihr Server ein gültiges OpenAPI-Schema bereitstellt und dass er über HTTP(S) kommuniziert.
+Es ist wichtig, eine benutzerdefinierte operationId für alle Endpunkte festzulegen.
+
+---
+
+
+#### 🚀 F: Warum OpenAPI anstelle von MCP verwenden?
+
+**A:** OpenAPI hat in den meisten realen Szenarien gegenüber MCP die Nase vorn, dank seiner Einfachheit, des Tooling-Ökosystems, der Stabilität und der Benutzerfreundlichkeit für Entwickler. Hier ist der Grund:
+
+- ✅ **Wiederverwendung Ihres bestehenden Codes**: Wenn Sie bereits REST-APIs entwickelt haben, sind Sie fast fertig – Sie müssen Ihre Logik nicht neu schreiben. Definieren Sie einfach eine konforme OpenAPI-Spezifikation und stellen Sie Ihren aktuellen Code als Toolserver bereit.
+  
+  Mit MCP mussten Sie Ihre Tool-Logik in einer benutzerdefinierten Protokollebene neu implementieren, wodurch Arbeit dupliziert und der Wartungsaufwand erhöht wurde.
+
+- 💼 **Weniger Wartung und Debugging**: OpenAPI fügt sich natürlich in moderne Entwicklungsabläufe ein. Sie können Endpunkte mit Postman testen, Protokolle mit integrierten APIs inspizieren, Probleme mit ausgereiften Ecosystem-Tools einfach beheben – und oft, ohne Ihre Kern-App zu ändern.
+
+  MCP führte neue Ebenen des Transportes, des Schema-Parsings und der Laufzeit-Eigenheiten ein, die alle manuell debuggt werden mussten.
+
+- 🌍 **Standardbasiert**: OpenAPI ist in der Tech-Branche weit verbreitet. Seine gut definierte Struktur bedeutet, dass Tools, Agenten und Server sofort interoperieren können, ohne spezielle Brücken oder Übersetzungen zu benötigen.
+
+- 🧰 **Besseres Tooling**: Es gibt ein ganzes Universum von Tools, die OpenAPI unterstützen – automatische Erstellung von Clients/Servern, Dokumentation, Validierung, Mocking, Testing und sogar Sicherheitsprüf-Tools.
+
+- 🔐 **Erstklassige Sicherheitsunterstützung**: OpenAPI umfasst native Unterstützung für Dinge wie OAuth2, JWTs, API-Keys und HTTPS – was es einfacher macht, sichere Endpunkte mit gängigen Bibliotheken und Standards zu erstellen.
+
+- 🧠 **Mehr Entwickler kennen es bereits**: Die Verwendung von OpenAPI bedeutet, dass Sie eine Sprache sprechen, die Backend-Teams, Frontend-Entwicklern, DevOps und Produktingenieuren bereits vertraut ist. Es gibt keine Lernkurve oder kostspielige Einarbeitung.
+
+- 🔄 **Zukunftssicher und erweiterbar**: OpenAPI entwickelt sich mit API-Standards weiter und bleibt zukunftskompatibel. MCP hingegen war maßgeschneidert und experimentell – was oft Änderungen erforderte, wenn sich das umgebende Ökosystem änderte.
+
+🧵 Fazit: OpenAPI ermöglicht es Ihnen, mit weniger Aufwand, weniger doppeltem Code und weniger Überraschungen mehr zu erreichen. Es ist ein produktionsbereiter, entwicklerfreundlicher Weg, um LLM-Tools zu betreiben – ohne alles von Grund auf neu zu erstellen.
+
+
+---
+
+#### 🔐 F: Wie sichere ich meinen OpenAPI-Toolserver?
+
+**A:** OpenAPI unterstützt branchenübliche Sicherheitsmechanismen wie:
+
+- OAuth 2.0
+- API-Key-Header
+- JWT (JSON Web Token)
+- Basic Auth
+
+Verwenden Sie in der Produktion HTTPS, um Daten während der Übertragung zu verschlüsseln, und beschränken Sie Endpunkte mit geeigneten Authentifizierungs-/Autorisierungsmethoden. Sie können diese direkt in Ihr OpenAPI-Schema mit dem Feld securitySchemes einbinden.
+
+---
+
+#### ❓ F: Welche Art von Tools kann ich mit OpenAPI-Toolservern erstellen?
+
+**A:** Wenn es über eine REST-API bereitgestellt werden kann, können Sie es erstellen. Häufige Tool-Typen sind:
+
+- Dateisystem-Operationen (Dateien lesen/schreiben, Verzeichnisse auflisten)
+- Zugriff auf Git- und Dokumenten-Repositorys
+- Abfragen von Datenbanken oder Erkundung von Schemata
+- Web-Scraping oder -Zusammenfassungen
+- Integration externer SaaS-Dienste (z. B. Salesforce, Jira, Slack)
+- LLM-angehängte Speicherlösungen / RAG-Komponenten
+- Sicher interne Microservices, die Ihrem Agenten zugänglich sind
+
+---
+
+#### 🔌 F: Kann ich mehr als einen Tool-Server gleichzeitig betreiben?
+
+**A:** Absolut. Jeder Tool-Server arbeitet unabhängig und stellt sein eigenes OpenAPI-Schema bereit. Ihre Agent-Konfiguration kann auf mehrere Tool-Server verweisen, sodass Sie basierend auf Ihren Bedürfnissen kombinieren und anpassen können.
+
+Es gibt keine Einschränkungen – stellen Sie einfach sicher, dass jeder Server auf seinem eigenen Port oder Adresse läuft und vom Host-Agenten erreichbar ist.
+
+---
+
+#### 🧪 F: Wie teste ich einen Tool-Server, bevor ich ihn mit einem LLM-Agenten verbinde?
+
+**A:** Sie können Ihre OpenAPI-Tool-Server testen mit:
+
+- Swagger UI oder ReDoc (standardmäßig in FastAPI integriert)
+- Postman oder Insomnia
+- curl oder httpie in der Kommandozeile
+- Das Python Requests-Modul
+- OpenAPI-Validatoren und -Mocking-Tools
+
+Nachdem der Server validiert wurde, können Sie ihn mit einem LLM-Agenten oder über Open WebUI registrieren.
+
+---
+
+#### 🛠️ F: Kann ich die Referenzserver erweitern oder anpassen?
+
+**A:** Ja! Alle Server im servers/-Verzeichnis sind einfache Vorlagen. Sie können sie forken und nach Bedarf ändern:
+
+- Neue Endpunkte und Geschäftslogik hinzufügen
+- Authentifizierung integrieren
+- Antwortformate ändern
+- Verbindung zu neuen Diensten oder internen APIs herstellen
+- Bereitstellung über Docker, Kubernetes oder einen beliebigen Cloud-Host
+
+---
+
+#### 🌍 F: Kann ich OpenAPI-Tool-Server auf Cloud-Plattformen wie AWS oder GCP betreiben?
+
+**A:** Ja. Diese Server sind einfache HTTP-Dienste. Sie können sie wie folgt bereitstellen:
+
+- AWS Lambda mit API Gateway (serverlos)
+- EC2- oder GCP Compute Engine-Instanzen
+- Kubernetes-Dienste in GKE/EKS/AKS
+- Cloud Run oder App Engine
+- Render, Railway, Heroku usw.
+
+Stellen Sie sicher, dass sie sicher konfiguriert und öffentlich zugänglich sind (oder über ein VPN), falls dies vom Agenten oder Benutzer erforderlich ist.
+
+---
+
+#### 🧪 F: Was ist, wenn ich bereits einen bestehenden MCP-Server habe?
+
+**A:** Gute Nachrichten! Sie können unsere MCP-to-OpenAPI-Bridge verwenden: [mcpo](https://github.com/open-webui/mcpo). Damit wird das Bereitstellen Ihrer vorhandenen MCP-basierten Tools als OpenAPI-kompatible APIs einfacher denn je. Keine Neucodierung, kein Aufwand – einfach anschließen und loslegen! 🚀
+
+Wenn Sie bereits Tools basierend auf dem MCP-Protokoll entwickelt haben, hilft Ihnen `mcpo`, sofort mit Open WebUI und jedem OpenAPI-basierten Agenten kompatibel zu werden — und stellt sicher, dass Ihre harte Arbeit vollständig zugänglich und zukunftsbereit bleibt.
+
+[Sehen Sie sich den optionalen Bridge-to-MCP-Abschnitt in der Dokumentation für Setup-Anleitungen an.](https://github.com/open-webui/openapi-servers?tab=readme-ov-file#-bridge-to-mcp-optional)
+
+**Schnellstart:**
+```bash
+uvx mcpo --port 8000 -- uvx mcp-server-time --local-timezone=America/New_York
+```
+
+✨ Das war's — Ihr MCP-Server ist jetzt OpenAPI-bereit!
+
+---
+
+#### 🗂️ F: Kann ein OpenAPI-Server mehrere Tools implementieren?
+
+**A:** Ja. Ein einzelner OpenAPI-Server kann mehrere zusammenhängende Funktionen unter verschiedenen Endpunkten anbieten. Beispielsweise kann ein Dokumentserver Suche, Hochladen, OCR und Zusammenfassung bereitstellen – alles innerhalb eines Schemas.
+
+Sie können auch vollständig modularisieren, indem Sie pro Tool einen eigenen OpenAPI-Server erstellen, falls Sie Isolation und Flexibilität bevorzugen.
+
+---
+
+🙋 Haben Sie weitere Fragen? Besuchen Sie die GitHub-Diskussionen für Hilfe und Feedback aus der Community:  
+👉 [Community Discussions](https://github.com/open-webui/openapi-servers/discussions)

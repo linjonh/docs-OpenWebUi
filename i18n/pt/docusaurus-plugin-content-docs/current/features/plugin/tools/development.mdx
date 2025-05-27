@@ -1,0 +1,274 @@
+---
+sidebar_position: 2
+title: "🛠️ Desenvolvimento"
+---
+
+
+
+## Escrevendo Um Toolkit Customizado
+
+Toolkits são definidos em um único arquivo Python, com uma string de documentação no nível superior contendo metadados e uma classe `Tools`.
+
+### Exemplo de String de Documentação de Nível Superior
+
+```python
+"""
+title: Inverso de String
+author: Seu Nome
+author_url: https://website.com
+git_url: https://github.com/username/string-reverse.git
+description: Esta ferramenta calcula o inverso de uma string
+required_open_webui_version: 0.4.0
+requirements: langchain-openai, langgraph, ollama, langchain_ollama
+version: 0.4.0
+licence: MIT
+"""
+```
+
+### Classe de Ferramentas
+
+Ferramentas devem ser definidas como métodos dentro de uma classe chamada `Tools`, com subclasses opcionais chamadas `Valves` e `UserValves`, por exemplo:
+
+```python
+class Tools:
+    def __init__(self):
+        """Inicializa a Ferramenta."""
+        self.valves = self.Valves()
+
+    class Valves(BaseModel):
+        api_key: str = Field("", description="Sua chave API aqui")
+
+    def reverse_string(self, string: str) -> str:
+        """
+        Reverte a string de entrada.
+        :param string: A string a ser revertida
+        """
+        # exemplo de uso de válvulas
+        if self.valves.api_key != "42":
+            return "Chave API incorreta"
+        return string[::-1] 
+```
+
+### Anotações de Tipos
+Cada ferramenta deve ter anotações de tipo para os argumentos. Os tipos também podem ser aninhados, como `queries_and_docs: list[tuple[str, int]]`. Essas anotações de tipos são usadas para gerar o esquema JSON que é enviado ao modelo. Ferramentas sem anotações de tipo funcionarão com muito menos consistência.
+
+### Valves e UserValves - (opcional, mas ALTAMENTE recomendados)
+
+Valves e UserValves são usados para especificar configurações personalizáveis da Ferramenta, você pode ler mais na página dedicada [Valves & UserValves](../valves/index.mdx).
+
+### Argumentos Opcionais
+Abaixo está uma lista de argumentos opcionais dos quais suas ferramentas podem depender:
+- `__event_emitter__`: Emite eventos (veja a seção seguinte)
+- `__event_call__`: O mesmo que o emissor de eventos, mas pode ser usado para interações do usuário
+- `__user__`: Um dicionário com informações do usuário. Ele também contém o objeto `UserValves` em `__user__["valves"]`.
+- `__metadata__`: Dicionário com metadados do chat
+- `__messages__`: Lista de mensagens anteriores
+- `__files__`: Arquivos anexados
+- `__model__`: Um dicionário com informações do modelo
+
+Basta adicioná-los como argumentos a qualquer método da sua classe Tool como `__user__` no exemplo acima.
+
+### Emissores de Eventos
+Emissores de Eventos são usados para adicionar informações adicionais à interface de chat. Similar aos Filter Outlets, Emissores de Eventos são capazes de anexar conteúdo ao chat. Diferentemente dos Filter Outlets, eles não são capazes de remover informações. Além disso, emissores podem ser ativados em qualquer estágio durante o uso da Ferramenta.
+
+Existem dois tipos diferentes de Emissores de Eventos:
+
+Se o modelo parecer incapaz de chamar a ferramenta, certifique-se de que ela está habilitada (via a página do Modelo ou via o sinal `+` ao lado do campo de entrada do chat). Você também pode alterar o argumento `Function Calling` da seção `Advanced Params` da página do Modelo de `Default` para `Native`.
+
+#### Status
+Isso é usado para adicionar status a uma mensagem enquanto ela realiza etapas. Isso pode ser feito em qualquer estágio ao longo do uso da Ferramenta. Esses status aparecem logo acima do conteúdo da mensagem. Eles são muito úteis para Ferramentas que atrasam a resposta do LLM ou processam grandes quantidades de informações. Isso permite informar usuários sobre o que está sendo processado em tempo real.
+
+```python
+await __event_emitter__(
+            {
+                "type": "status", # Configuramos o tipo aqui
+                "data": {"description": "Mensagem que aparece no chat", "done": False, "hidden": False}, 
+                # Note que done é False aqui, indicando que ainda estamos emitindo status
+            }
+        )
+```
+
+<details>
+<summary>Exemplo</summary>
+
+```python
+async def test_function(
+        self, prompt: str, __user__: dict, __event_emitter__=None
+    ) -> str:
+        """
+        Isso é um demo
+
+        :param test: isto é um parâmetro de teste
+        """
+
+        await __event_emitter__(
+            {
+                "type": "status", # Configuramos o tipo aqui
+                "data": {"description": "Mensagem que aparece no chat", "done": False}, 
+                # Note que done é False aqui, indicando que ainda estamos emitindo status
+            }
+        )
+
+        # Realize algum outro processamento aqui
+        await __event_emitter__(
+            {
+                "type": "status",
+                "data": {"description": "Mensagem de tarefa concluída", "done": True, "hidden": False},
+                # Note que done é True aqui, indicando que concluímos a emissão de status
+                # Você também pode definir "hidden": True se quiser remover o status assim que a mensagem for retornada
+            }
+        )
+
+        except Exception as e:
+            await __event_emitter__(
+                {
+                    "type": "status",
+                    "data": {"description": f"Ocorreu um erro: {e}", "done": True},
+                }
+            )
+
+            return f"Informe ao usuário: {e}"
+```
+</details>
+
+#### Mensagem
+Este tipo é usado para anexar uma mensagem ao LLM em qualquer estágio da Ferramenta. Isso significa que você pode anexar mensagens, incorporar imagens e até mesmo renderizar páginas da web antes, durante ou após a resposta do LLM.
+
+```python
+await __event_emitter__(
+                    {
+                        "type": "message", # Definimos o tipo aqui
+                        "data": {"content": "Esta mensagem será anexada ao chat."},
+                        # Observe que com os tipos de mensagem NÃO precisamos definir uma condição de conclusão
+                    }
+                )
+```
+
+<details>
+<summary>Exemplo</summary>
+
+```python
+async def test_function(
+        self, prompt: str, __user__: dict, __event_emitter__=None
+    ) -> str:
+        """
+        Este é um exemplo
+
+        :param test: este é um parâmetro de teste
+        """
+
+        await __event_emitter__(
+                    {
+                        "type": "message", # Definimos o tipo aqui
+                        "data": {"content": "Esta mensagem será anexada ao chat."},
+                        # Observe que com os tipos de mensagem NÃO precisamos definir uma condição de conclusão
+                    }
+                )
+
+        except Exception as e:
+            await __event_emitter__(
+                {
+                    "type": "status",
+                    "data": {"description": f"Ocorreu um erro: {e}", "done": True},
+                }
+            )
+
+            return f"Informe ao usuário: {e}"
+```
+</details>
+
+#### Citações
+Este tipo é usado para fornecer citações ou referências no chat. Você pode utilizá-lo para especificar o conteúdo, a fonte e qualquer metadado relevante. Abaixo está um exemplo de como emitir um evento de citação:
+
+```python
+await __event_emitter__(
+    {
+        "type": "citation",
+        "data": {
+            "document": [content],
+            "metadata": [
+                {
+                    "date_accessed": datetime.now().isoformat(),
+                    "source": title,
+                }
+            ],
+            "source": {"name": title, "url": url},
+        },
+    }
+)
+```
+Se você estiver enviando múltiplas citações, pode iterar sobre elas e chamar o emissor várias vezes. Ao implementar citações personalizadas, certifique-se de definir `self.citation = False` no método `__init__` da sua classe `Tools`. Caso contrário, as citações incorporadas substituirão as que você incorporou. Por exemplo:
+
+```python
+def __init__(self):
+    self.citation = False
+```
+
+Aviso: se você definir `self.citation = True`, isso substituirá quaisquer citações personalizadas que você enviar pela citação gerada automaticamente. Desativando-a, você poderá gerenciar completamente suas próprias referências de citação.
+
+<details>
+<summary>Exemplo</summary>
+
+```python
+class Tools:
+    class UserValves(BaseModel):
+        test: bool = Field(
+            default=True, description="teste"
+        )
+
+    def __init__(self):
+        self.citation = False
+
+async def test_function(
+        self, prompt: str, __user__: dict, __event_emitter__=None
+    ) -> str:
+        """
+        Este é um exemplo que apenas cria uma citação
+
+        :param test: este é um parâmetro de teste
+        """
+
+        await __event_emitter__(
+            {
+                "type": "citation",
+                "data": {
+                    "document": ["Esta mensagem será anexada ao chat como uma citação quando clicada"],
+                    "metadata": [
+                        {
+                            "date_accessed": datetime.now().isoformat(),
+                            "source": title,
+                        }
+                    ],
+                    "source": {"name": "Título do conteúdo", "url": "http://link-para-citacao"},
+                },
+            }
+        )
+```
+</details>
+
+## Pacotes externos
+
+Na definição de metadados das Ferramentas, você pode especificar pacotes personalizados. Quando você clicar em `Salvar`, a linha será analisada e `pip install` será executado em todos os requisitos de uma vez.
+
+Lembre-se de que, como o pip é usado no mesmo processo do Open WebUI, a interface ficará completamente sem resposta durante a instalação.
+
+Nenhuma medida é tomada para lidar com conflitos de pacotes com os requisitos do Open WebUI. Isso significa que especificar requisitos pode quebrar o Open WebUI se você não tiver cuidado. Você pode contornar isso especificando o próprio `open-webui` como um requisito.
+
+
+<details>
+<summary>Exemplo</summary>
+
+```python
+"""
+título: meuNomeDaFerramenta
+autor: meuNome
+url_financiamento: [qualquer link aqui será mostrado atrás de um botão `Coração` para que os usuários possam mostrar seu suporte a você]
+versão: 1.0.0
+# a versão é exibida na interface para ajudar os usuários a acompanhar as atualizações.
+licença: GPLv3
+descrição: [recomendado]
+requisitos: pacote1>=2.7.0,pacote2,pacote3
+"""
+```
+
+</details>

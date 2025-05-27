@@ -1,0 +1,48 @@
+---
+sidebar_position: 900
+title: "🔨 OpenAPIツールサーバー"
+---
+
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+<TopBanners />
+
+# 🌟 OpenAPIツールサーバー
+
+このリポジトリは、開発者が外部ツールやデータソースをLLMエージェントやワークフローに簡単かつ安全に統合できるようにするための参照用のOpenAPIツールサーバー実装を提供します。最大限の使いやすさと学習曲線の最小化を目指し、広く採用され実績のある[OpenAPI仕様](https://www.openapis.org/)を標準プロトコルとして利用しています。
+
+OpenAPIを活用することで、独自の通信プロトコルや馴染みの薄いプロトコルを必要とせず、迅速かつ安心してサーバーを構築または統合できます。それにより、カスタムインターフェイスの作成に時間を費やすことなく、AIアプリケーションを強化する強力なツールを構築するために時間を割けます。
+
+## ☝️ なぜOpenAPIなのか？
+
+- **確立された標準**: OpenAPIは数千のツール、企業、コミュニティに支えられた広く使用され、生産実績のあるAPI標準です。
+
+- **再発明の必要なし**: 追加ドキュメントや独自仕様に混乱することはありません。REST APIを構築したりOpenAPIを使用している場合、すでに準備は整っています。
+
+- **簡単な統合とホスティング**: ツールサーバーを外部またはローカルにデプロイでき、ベンダーロックインや複雑な設定は不要です。
+
+- **強力なセキュリティ重視**: HTTP/REST APIを基盤とするOpenAPIは、HTTPSや実績のある認証標準（OAuth、JWT、APIキー）を含む広く使用されている安全な通信方法を本質的にサポートします。
+
+- **将来を見据えた安定性**: 未成熟または実験的プロトコルとは異なり、OpenAPIは信頼性、安定性、長期的なコミュニティサポートを約束します。
+
+## 🚀 クイックスタート
+
+`servers/`ディレクトリに提供されているFastAPIベースの参照実装から簡単に始められます。（これらの例を必要に応じてお好みのスタックに適応させることができます。例えば、[FastAPI](https://fastapi.tiangolo.com/)や[FastOpenAPI](https://github.com/mr-fatalyst/fastopenapi)などのOpenAPI互換ライブラリを使用）:
+
+```bash
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+
+# 例: 特定のサーバーfilesystemの依存関係をインストール
+cd servers/filesystem
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --reload
+```
+
+これで、OpenAPI互換のクライアントやAIエージェントをローカルまたは公開デプロイされたURLに指すだけです。設定に悩む必要はなく、複雑な転送方法も不要です。
+
+## 🌱 Open WebUIコミュニティ  
+
+- 一般的な議論、技術交換、発表については、[コミュニティディスカッション](https://github.com/open-webui/openapi-servers/discussions)ページをご覧ください。
+- アイデアやフィードバックがありますか？ぜひIssueを起票してください！

@@ -1,0 +1,118 @@
+---
+sidebar_position: 1200
+title: "📋 FAQ"
+---
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+<TopBanners />
+
+### 💡 Por que Docker?
+Entendemos que o Docker pode não ser a preferência de todos; no entanto, essa abordagem é central para o design e a eficiência operacional do nosso projeto. Consideramos o compromisso do projeto com o Docker como um aspecto fundamental e incentivamos aqueles que procuram métodos de implantação diferentes a explorar alternativas criadas pela comunidade.
+
+
+#### **P: Como personalizo o logotipo e a marca?**
+
+**R:** Você pode personalizar o tema, o logotipo e a marca com nossa **[Licença Empresarial](https://docs.openwebui.com/enterprise)**, que desbloqueia recursos empresariais exclusivos.
+
+Para mais detalhes sobre soluções empresariais e personalizações de marca, entre em contato com nossa equipe de vendas pelo e-mail: 📧 **sales@openwebui.com**
+
+#### **P: Por que sou solicitado a me inscrever? Para onde meus dados estão sendo enviados?**
+
+**R:** Exigimos que você se inscreva para se tornar o usuário administrador visando maior segurança. Isso garante que, se o Open WebUI estiver exposto a acesso externo, seus dados permanecerão seguros. É importante observar que tudo é mantido localmente. Não coletamos seus dados. Quando você se inscreve, todas as informações permanecem no seu servidor e nunca deixam seu dispositivo. Sua privacidade e segurança são nossas prioridades, garantindo que seus dados permaneçam sob seu controle o tempo todo.
+
+#### **P: Por que meu contêiner Docker não consegue se conectar aos serviços do host usando `localhost`?**
+
+**R:** Dentro de um contêiner Docker, `localhost` se refere ao próprio contêiner, não à máquina host. Essa distinção é crucial para redes. Para estabelecer uma conexão do seu contêiner com os serviços executados no host, você deve usar o nome DNS `host.docker.internal` em vez de `localhost`. Esse nome DNS é especialmente reconhecido pelo Docker para facilitar tais conexões, tratando efetivamente o host como uma entidade alcançável de dentro do contêiner, contornando assim a limitação usual do escopo do `localhost`.
+
+#### **P: Como faço para tornar os serviços do meu host acessíveis aos contêineres Docker?**
+
+**R:** Para tornar os serviços executados no host acessíveis aos contêineres Docker, configure esses serviços para escutar em todas as interfaces de rede, usando o endereço IP `0.0.0.0` em vez de `127.0.0.1`, que é limitado apenas ao `localhost`. Essa configuração permite que os serviços aceitem conexões de qualquer endereço IP, incluindo contêineres Docker. É importante estar ciente das implicações de segurança dessa configuração, especialmente ao operar em ambientes com potencial acesso externo. Implementar medidas de segurança apropriadas, como firewalls e autenticação, pode ajudar a mitigar riscos.
+
+#### **P: Por que meu Open WebUI não está atualizando? Já re-puxei/reiniciei o contêiner e nada mudou.**
+
+**R:** Atualizar o Open WebUI requer mais do que apenas puxar a nova imagem Docker. Veja por que suas atualizações podem não estar aparecendo e como garantir que apareçam:
+
+1. **Atualização da imagem Docker**: O comando `docker pull ghcr.io/open-webui/open-webui:main` atualiza a imagem Docker, mas não o contêiner em execução ou seus dados.
+2. **Dados persistentes em volumes Docker**: Volumes Docker armazenam dados independentemente do ciclo de vida dos contêineres, preservando seus dados (como históricos de chat) através das atualizações.
+3. **Aplicando a atualização**: Garanta que sua atualização entre em vigor removendo o contêiner existente (o que não exclui o volume) e criando um novo com a imagem atualizada e o volume existente conectado.
+
+Esse processo atualiza o aplicativo enquanto mantém seus dados seguros.
+
+#### **P: Espera aí, por que eu deletaria meu contêiner? Não vou perder meus dados?**
+
+**R:** É uma preocupação comum, mas deletar um contêiner não significa que você perderá seus dados, desde que esteja utilizando volumes Docker corretamente. Aqui está o porquê:
+
+- **Volumes preservam dados**: Volumes Docker são projetados para persistir dados fora do ciclo de vida do contêiner. Enquanto seus dados estiverem armazenados em um volume, eles permanecem intactos, independentemente do que acontecer com o contêiner.
+- **Processo de atualização seguro**: Ao atualizar o Open WebUI, remover o contêiner antigo e criar um novo com a imagem atualizada não afeta os dados armazenados em volumes. A chave é não excluir explicitamente o volume com comandos como `docker volume rm`.
+
+Seguindo os passos corretos de atualização — puxar a nova imagem, remover o contêiner antigo sem deletar o volume e criar um novo contêiner com a imagem atualizada e o volume existente — o código do seu aplicativo é atualizado enquanto seus dados permanecem inalterados e seguros.
+
+#### **P: Devo usar o Docker empacotado pela distribuição ou o pacote oficial do Docker?**
+
+**R:** Recomendamos usar o pacote oficial do Docker em vez das versões empacotadas pelas distribuições para executar o Open WebUI. O pacote oficial do Docker é atualizado frequentemente com os últimos recursos, correções de bugs e patches de segurança, garantindo desempenho e segurança ideais. Além disso, ele suporta funcionalidades importantes como `host.docker.internal`, que podem não estar disponíveis nas versões empacotadas pelas distribuições. Este recurso é essencial para configurações de rede adequadas e conectividade dentro dos contêineres Docker.
+
+Ao escolher o pacote oficial do Docker, você se beneficia de comportamentos consistentes em diferentes ambientes, suporte mais confiável para resolver problemas e acesso aos avanços mais recentes do Docker. A comunidade mais ampla do Docker e seus recursos também estão mais alinhados com o pacote oficial, oferecendo uma riqueza de informações e suporte para quaisquer problemas que você possa encontrar.
+
+Tudo o que você precisa para executar o Open WebUI, incluindo seus dados, permanece sob seu controle e ambiente de servidor, enfatizando nosso compromisso com sua privacidade e segurança. Para instruções sobre como instalar o pacote oficial do Docker, consulte o guia [Install Docker Engine](https://docs.docker.com/engine/install/) no site oficial de documentação do Docker.
+
+#### **P: O suporte a GPU está disponível no Docker?**
+
+**R:** O suporte a GPU no Docker está disponível, mas varia dependendo da plataforma. Oficialmente, o suporte a GPU é fornecido no Docker para Windows e Docker Engine para Linux. Outras plataformas, como Docker Desktop para Linux e MacOS, não oferecem atualmente suporte a GPU. Essa limitação é importante considerar para aplicações que necessitam de aceleração de GPU. Para uma melhor experiência e para utilizar as capacidades de GPU, recomendamos usar o Docker em plataformas que oficialmente suportem integração com GPU.
+
+#### **P: Por que o Open WebUI enfatiza o uso do Docker?**
+
+**R:** A decisão de usar o Docker se baseia em sua capacidade de garantir consistência, isolar dependências e simplificar o deployment em diferentes ambientes. O Docker minimiza problemas de compatibilidade e agiliza o processo de executar o WebUI, independentemente do sistema subjacente. É uma escolha estratégica dos mantenedores do projeto para aproveitar esses benefícios, reconhecendo que, embora o Docker tenha uma curva de aprendizado, as vantagens para deployment e manutenção são significativas. Entendemos que o Docker pode não ser a preferência de todos; entretanto, essa abordagem é central para o design e eficiência operacional do nosso projeto. Consideramos o compromisso do projeto com o Docker como um aspecto fundamental e incentivamos aqueles que procuram métodos de deployment diferentes a explorar alternativas impulsionadas pela comunidade.
+
+#### **P: Por que os recursos de Reconhecimento de Fala (STT) e Síntese de Fala (TTS) não funcionam na minha implementação?**
+
+**R:** A funcionalidade dos serviços de Reconhecimento de Fala (STT) e Síntese de Fala (TTS) em sua implementação pode exigir HTTPS para operar corretamente. Os navegadores modernos aplicam medidas de segurança que restringem certos recursos, incluindo STT e TTS, para funcionar apenas sob conexões HTTPS seguras. Se sua implementação não estiver configurada para usar HTTPS, esses serviços podem não funcionar como esperado. Garantir que sua implementação seja acessível via HTTPS pode resolver esses problemas, habilitando a funcionalidade completa dos recursos STT/TTS.
+
+#### **P: Por que o Open WebUI não inclui suporte integrado a HTTPS?**
+
+**R:** Embora entendamos o desejo de uma solução tudo-em-um que inclua suporte a HTTPS, acreditamos que essa abordagem não atenderia adequadamente às diversas necessidades de nossa base de usuários. Implementar HTTPS diretamente no projeto poderia limitar a flexibilidade e talvez não alinhar-se aos requisitos ou preferências específicos de todos os usuários. Para garantir que todos possam adaptar sua configuração ao seu ambiente único, deixamos a implementação de HTTPS para os usuários em suas implementações de produção. Essa decisão permite maior adaptabilidade e personalização. Embora não ofereçamos documentação oficial sobre a configuração de HTTPS, membros da comunidade podem fornecer orientações mediante solicitação, compartilhando insights e sugestões com base em suas experiências.
+
+#### **P: Eu atualizei/reiniciei/instalei algum novo software e agora o Open WebUI não está mais funcionando!**
+
+**R:** Se seu Open WebUI não estiver iniciando após uma atualização ou instalação de novo software, provavelmente está relacionado a uma abordagem de instalação direta, especialmente se você não usou um ambiente virtual para suas dependências de backend. Instalações diretas podem ser sensíveis a mudanças no ambiente do sistema, como atualizações ou novas instalações que alterem dependências existentes. Para evitar conflitos e garantir estabilidade, recomendamos usar um ambiente virtual para gerenciar as dependências do `requirements.txt` de seu backend. Isso isola suas dependências do Open WebUI de outros pacotes do sistema, minimizando o risco de tais problemas.
+
+#### **P: Eu atualizei/reiniciei e agora meu login não está mais funcionando, tive que criar uma nova conta e todas as minhas conversas desapareceram.**
+
+**A:** Esse problema geralmente ocorre quando um contêiner Docker é criado sem montar um volume para `/app/backend/data` ou se o volume designado do Open WebUI (geralmente chamado de `open-webui` em nossos exemplos) foi excluído acidentalmente. Os volumes do Docker são cruciais para manter seus dados durante os ciclos de vida do contêiner. Se você se deparar com a necessidade de criar uma nova conta após uma reinicialização, é provável que tenha iniciado um novo contêiner sem anexar o volume existente onde seus dados estão. Certifique-se de que seu comando Docker run inclua uma montagem de volume apontando para o local correto dos dados para evitar perda de dados.
+
+#### **Q: Tentei fazer login e não consegui, criei uma nova conta e agora estou sendo informado que minha conta precisa ser ativada por um administrador.**
+
+**A:** Essa situação ocorre quando você esquece a senha da conta de administrador inicial criada durante a primeira configuração. A primeira conta é automaticamente designada como conta de administrador. Criar uma nova conta sem acesso à conta de administrador resultará na necessidade de ativação pelo administrador. Evitar a perda das credenciais da conta de administrador inicial é crucial para um acesso e gerenciamento contínuos do Open WebUI. Consulte o guia [Redefinindo a Senha de Administrador](troubleshooting/password-reset) para saber como recuperar a conta de administrador.
+
+#### **Q: Por que o Open WebUI não consegue iniciar devido a um erro SSL?**
+
+**A:** O erro SSL que você encontra ao iniciar o Open WebUI provavelmente ocorre devido à ausência de certificados SSL ou configuração incorreta de [huggingface.co](https://huggingface.co/). Para resolver este problema, você pode configurar um espelho para HuggingFace, como [hf-mirror.com](https://hf-mirror.com/), e especificá-lo como o endpoint ao iniciar o contêiner Docker. Use o parâmetro `-e HF_ENDPOINT=https://hf-mirror.com/` para definir o endereço do espelho HuggingFace no comando Docker run. Por exemplo, você pode modificar o comando Docker run da seguinte forma:
+
+```bash
+docker run -d -p 3000:8080 -e HF_ENDPOINT=https://hf-mirror.com/ --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+#### **Q: O RAG com Open WebUI está muito ruim ou não está funcionando. Por quê?**
+
+**A:** Se você estiver usando **Ollama**, esteja ciente de que o Ollama configura o comprimento do contexto em **2048 tokens por padrão**. Isso significa que nenhum dos dados recuperados pode ser usado porque não se encaixa na janela de contexto disponível.
+
+Para melhorar o desempenho da **Geração Incrementada pela Recuperação (RAG)** com o Open WebUI, você deve **aumentar o comprimento do contexto** para um valor muito maior (**8192+ tokens**) para garantir que os documentos recuperados possam contribuir efetivamente para as respostas do modelo.
+
+Para fazer isso, configure os **parâmetros do modelo Ollama** para permitir uma janela de contexto maior. Você pode verificar e modificar essa configuração diretamente no seu chat ou na página de edição do modelo para melhorar significativamente a experiência do RAG.
+
+#### **Q: O MCP (Protocolo de Contexto de Modelo) é suportado no Open WebUI?**
+**A:** [Sim, o Open WebUI suporta oficialmente servidores de ferramentas MCP—mas exclusivamente por meio de um **proxy compatível com OpenAPI**](/openapi-servers/mcp) ([openapi-servers](https://github.com/open-webui/openapi-servers)) para compatibilidade, segurança e manutenção ideais.
+
+Para conectar MCP (e outros protocolos de backend), fornecemos uma implementação de proxy criada para esse propósito disponível em: 👉 [https://github.com/open-webui/mcpo](https://github.com/open-webui/mcpo)
+
+Essa escolha de design é motivada por vários princípios fundamentais:
+
+- 📘 Padrão em Primeiro Lugar: OpenAPI é o padrão de fato para definições de serviços RESTful e interoperabilidade de serviços orientados por contrato. Ao alinhar integrações através do OpenAPI, possibilitamos comportamentos reproduzíveis e orientados por esquema em upgrades e implantações.
+- 🔒 Isolamento do Modelo de Segurança: Integrar MCP por meio de um proxy nos permite sandboxar e isolar o comportamento do protocolo de backend, reduzindo a superfície de ataque e permitindo auditoria, autenticação e observabilidade no nível de limite.
+- ⚙️ Abstração de Protocolos: Suportar backends heterogêneos (por exemplo, MCP) por meio de um esquema OpenAPI unificado permite que o Open WebUI permaneça independente do backend enquanto mantém comportamento previsível em tempo de execução.
+- ⛓️ Topologia de Implantação Desacoplada: A arquitetura baseada em proxy permite que servidores de ferramentas (como MCP) evoluam independentemente da apresentação do frontend, facilitando ambientes de produção altamente modulares ou cargas de trabalho distribuídas.
+
+Resumindo: MCP é suportado — desde que o servidor de ferramentas MCP esteja frente a um proxy compatível com OpenAPI. Essa decisão arquitetônica é deliberada e garante que o Open WebUI permaneça escalável, seguro e sustentável.
+
+#### **Precisa de mais assistência?**
+
+Se você tiver mais dúvidas ou preocupações, entre em contato com nossa [página de Issues no GitHub](https://github.com/open-webui/open-webui/issues) ou nosso [canal no Discord](https://discord.gg/5rJgQTnV4s) para obter mais ajuda e informações.

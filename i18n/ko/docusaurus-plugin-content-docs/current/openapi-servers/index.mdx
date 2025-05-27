@@ -1,0 +1,48 @@
+---
+sidebar_position: 900
+title: "🔨 OpenAPI Tool Servers"
+---
+
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+<TopBanners />
+
+# 🌟 OpenAPI Tool Servers
+
+이 리포지토리는 개발자가 외부 도구 및 데이터 소스를 LLM 에이전트와 워크플로우에 통합할 수 있도록 참조용 OpenAPI Tool Server 구현을 제공합니다. 최대 사용 편의성과 학습 곡선 최소화를 목표로 설계된 이 구현은 널리 채택되고 검증된 [OpenAPI 사양](https://www.openapis.org/)을 표준 프로토콜로 사용합니다.
+
+OpenAPI를 활용함으로써 고유하거나 익숙하지 않은 통신 프로토콜의 필요성을 제거하고, 신뢰를 바탕으로 서버를 빠르게 구축하거나 통합할 수 있습니다. 이는 맞춤형 인터페이스를 파악하는 데 소요되는 시간을 줄이고 AI 애플리케이션을 강화하는 강력한 도구를 구축하는 데 더 많은 시간을 투자할 수 있도록 합니다.
+
+## ☝️ OpenAPI의 장점
+
+- **확립된 표준**: OpenAPI는 수천 개의 도구, 회사 및 커뮤니티의 지원을 받는 널리 사용되고 검증된 API 표준입니다.
+
+- **재발명 필요 없음**: 추가 문서나 고유 사양으로 인한 혼란이 없습니다. 이미 REST API를 생성하거나 OpenAPI를 사용 중인 경우 별도의 설정이 필요하지 않습니다.
+
+- **쉬운 통합 및 호스팅**: 공급업체 종속성이나 복잡한 구성 없이 외부 또는 로컬에 도구 서버를 배포할 수 있습니다.
+
+- **강력한 보안 초점**: HTTP/REST API를 중심으로 구축된 OpenAPI는 HTTPS 및 검증된 인증 표준(OAuth, JWT, API 키 등)을 포함한 널리 사용되고 안전한 통신 방법을 기본적으로 지원합니다.
+
+- **미래지향적이고 안정적임**: 성숙도가 낮거나 실험적인 프로토콜과 달리, OpenAPI는 신뢰성, 안정성 및 장기적인 커뮤니티 지원을 약속합니다.
+
+## 🚀 빠른 시작
+
+`servers/` 디렉토리에서 제공되는 참조 FastAPI 기반 구현으로 빠르게 시작하세요. (이 예제를 필요에 따라 선호하는 스택으로 변경할 수 있습니다. 예: 사용 [FastAPI](https://fastapi.tiangolo.com/), [FastOpenAPI](https://github.com/mr-fatalyst/fastopenapi) 또는 기타 OpenAPI 호환 라이브러리):
+
+```bash
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+
+# 예: 특정 서버 filesystem의 종속성 설치
+cd servers/filesystem
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --reload
+```
+
+이제 OpenAPI 호환 클라이언트나 AI 에이전트를 로컬 또는 공개적으로 배포된 URL에 간단히 연결하기만 하면 됩니다. 구성 문제나 복잡한 전송은 필요 없습니다.
+
+## 🌱 Open WebUI 커뮤니티
+
+- 일반 토론, 기술 교류 및 공지 사항은 [커뮤니티 토론](https://github.com/open-webui/openapi-servers/discussions) 페이지를 방문하세요.
+- 아이디어나 피드백이 있나요? 문제를 열어주세요!

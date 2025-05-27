@@ -1,0 +1,158 @@
+---
+sidebar_position: 2
+title: "⏱️ Schnellstart"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import { TopBanners } from "@site/src/components/TopBanners";
+
+import DockerCompose from "./tab-docker/DockerCompose.md";
+import Podman from "./tab-docker/Podman.md";
+import ManualDocker from "./tab-docker/ManualDocker.md";
+import DockerSwarm from "./tab-docker/DockerSwarm.md";
+import DockerUpdating from "./tab-docker/DockerUpdating.md";
+import Helm from "./tab-kubernetes/Helm.md";
+import Kustomize from "./tab-kubernetes/Kustomize.md";
+import Venv from "./tab-python/Venv.md";
+import Uv from "./tab-python/Uv.md";
+import Conda from "./tab-python/Conda.md";
+import PythonUpdating from "./tab-python/PythonUpdating.md";
+
+<TopBanners />
+
+:::info **Wichtige Hinweise zu Benutzerrollen und Privatsphäre:**
+
+- **Admin-Erstellung:** Das erste Konto, das in Open WebUI erstellt wird, erhält **Administratorrechte** und somit Kontrolle über Benutzerverwaltung und Systemeinstellungen.
+- **Benutzerregistrierungen:** Nachfolgende Anmeldungen starten mit dem Status **Ausstehend** und benötigen die Genehmigung des Administrators für den Zugriff.
+- **Privatsphäre und Datensicherheit:** **Alle Ihre Daten**, einschließlich Anmeldedaten, werden **lokal auf Ihrem Gerät gespeichert**. Open WebUI gewährleistet **strenge Vertraulichkeit** und **keine externen Anforderungen** für verbesserte Privatsphäre und Sicherheit.
+  - **Alle Modelle sind standardmäßig privat.** Modelle müssen explizit über Gruppen freigegeben oder öffentlich gemacht werden. Wenn ein Modell einer Gruppe zugewiesen wird, können es nur Mitglieder dieser Gruppe sehen. Wenn ein Modell öffentlich gemacht wird, können alle Benutzer innerhalb der Instanz es sehen.
+
+:::
+
+Wählen Sie unten Ihre bevorzugte Installationsmethode aus:
+
+- **Docker:** **Offiziell unterstützt und empfohlen für die meisten Benutzer**
+- **Python:** Geeignet für ressourcenschwache Umgebungen oder Benutzer, die eine manuelle Einrichtung bevorzugen
+- **Kubernetes:** Ideal für unternehmensweite Bereitstellungen, die Skalierung und Orchestrierung erfordern
+
+
+<Tabs>
+  <TabItem value="docker" label="Docker">
+    <Tabs>
+      <TabItem value="docker" label="Docker">
+        <div className="mt-5">
+          <ManualDocker />
+          <DockerUpdating />
+        </div>
+      </TabItem>
+
+      <TabItem value="compose" label="Docker Compose">
+        <div className="mt-5">
+          <DockerCompose />
+        </div>
+      </TabItem>
+
+      <TabItem value="podman" label="Podman">
+        <div className="mt-5">
+          <Podman />
+        </div>
+      </TabItem>
+
+      <TabItem value="swarm" label="Docker Swarm">
+        <div className="mt-5">
+          <DockerSwarm />
+        </div>
+      </TabItem>
+    </Tabs>
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+    <Tabs>
+      <TabItem value="uv" label="uv">
+        <div className="mt-5">
+          <Uv />
+        </div>
+        <PythonUpdating />
+      </TabItem>
+
+
+      <TabItem value="conda" label="Conda">
+        <div className="mt-5">
+          <Conda />
+        </div>
+        <PythonUpdating />
+      </TabItem>
+
+      <TabItem value="venv" label="Venv">
+        <div className="mt-5">
+          <Venv />
+        </div>
+        <PythonUpdating />
+
+      </TabItem>
+
+
+      <TabItem value="development" label="Entwicklung">
+        <div className="mt-5">
+          <h3>Entwicklungssetup</h3>
+          <p>
+            Für Entwickler, die beitragen möchten, lesen Sie den Entwicklungsleitfaden in <a href="/getting-started/advanced-topics">Erweiterte Themen</a>.
+          </p>
+        </div>
+      </TabItem>
+
+
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="kubernetes" label="Kubernetes">
+    <Tabs>
+      <TabItem value="helm" label="Helm">
+        <Helm />
+      </TabItem>
+
+      <TabItem value="kustomize" label="Kustomize">
+        <Kustomize />
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+
+  <TabItem value="third-party" label="Drittanbieter">
+    <Tabs>
+      <TabItem value="pinokio-computer" label="Pinokio.computer">
+        ### Pinokio.computer Installation
+
+        Für die Installation über Pinokio.computer besuchen Sie bitte deren Website:
+
+        [https://pinokio.computer/](https://pinokio.computer/)
+
+        Die Unterstützung für diese Installationsmethode erfolgt über deren Website.
+      </TabItem>
+    </Tabs>
+
+    ### Zusätzliche Drittanbieter-Integrationen
+
+    *(Fügen Sie Informationen zu Drittanbieter-Integrationen hinzu, sobald diese verfügbar sind.)*
+  </TabItem>
+</Tabs>
+
+## Nächste Schritte
+
+Nach der Installation besuchen Sie:
+
+- [http://localhost:3000](http://localhost:3000), um auf Open WebUI zuzugreifen.
+- oder [http://localhost:8080/](http://localhost:8080/), wenn Sie eine Python-Bereitstellung verwenden.
+
+Sie können jetzt Open WebUI verwenden!
+
+## Verwendung von Open WebUI mit Ollama
+Wenn Sie Open WebUI mit Ollama verwenden, lesen Sie unbedingt unseren [Ollama-Startleitfaden](/getting-started/quick-start/starting-with-ollama), um zu erfahren, wie Sie Ihre Ollama-Instanzen mit Open WebUI verwalten.
+
+## Treten Sie der Community bei
+
+Brauchen Sie Hilfe? Haben Sie Fragen? Treten Sie unserer Community bei:
+
+- [Open WebUI Discord](https://discord.gg/5rJgQTnV4s)
+- [GitHub Issues](https://github.com/open-webui/open-webui/issues)

@@ -1,0 +1,181 @@
+---
+sidebar_position: 1
+title: "🔗 Integração do Open WebUI"
+---
+
+## Visão Geral
+
+O Open WebUI v0.6+ suporta integração perfeita com ferramentas externas através dos servidores OpenAPI — o que significa que você pode facilmente ampliar seus fluxos de trabalho LLM usando servidores de ferramentas personalizados ou baseados na comunidade 🧰.
+
+Neste guia, você aprenderá como iniciar um servidor de ferramentas compatível com OpenAPI e conectá-lo ao Open WebUI através da interface de usuário intuitiva. Vamos começar! 🚀
+
+---
+
+## Passo 1: Inicie um Servidor de Ferramentas OpenAPI
+
+Para começar, você precisará iniciar um dos servidores de ferramentas de referência disponíveis no repositório openapi-servers. Para testes rápidos, usaremos o servidor de ferramenta de tempo como exemplo.
+
+🛠️ Exemplo: Iniciando o servidor `time` localmente
+
+```bash
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+
+# Navegue até o servidor de tempo
+cd servers/time
+
+# Instale as dependências necessárias
+pip install -r requirements.txt
+
+# Inicie o servidor
+uvicorn main:app --host 0.0.0.0 --reload
+```
+
+Uma vez em execução, isso hospedará um servidor OpenAPI local em http://localhost:8000, que você poderá direcionar para o Open WebUI.
+
+![Time Server](/images/openapi-servers/open-webui/time-server.png)
+
+---
+
+## Passo 2: Conecte o Servidor de Ferramentas no Open WebUI
+
+Em seguida, conecte seu servidor de ferramentas em execução ao Open WebUI:
+
+1. Abra o Open WebUI no seu navegador.
+2. Abra ⚙️ **Configurações**.
+3. Clique em ➕ **Ferramentas** para adicionar um novo servidor de ferramentas.
+4. Insira a URL onde seu servidor OpenAPI está funcionando (por exemplo, http://localhost:8000).
+5. Clique em "Salvar".
+
+![Settings Page](/images/openapi-servers/open-webui/settings.png)
+
+### 🧑‍💻 Servidores de Ferramentas do Usuário vs. 🛠️ Servidores de Ferramentas Globais
+
+Há duas maneiras de registrar servidores de ferramentas no Open WebUI:
+
+#### 1. Servidores de Ferramentas do Usuário (adicionados através das Configurações padrão)
+
+- Acessíveis somente ao usuário que registrou o servidor de ferramentas.
+- A conexão é feita diretamente do navegador (lado do cliente) pelo usuário.
+- Perfeito para fluxos de trabalho pessoais ou ao testar ferramentas personalizadas/locais.
+
+#### 2. Servidores de Ferramentas Globais (adicionados através das Configurações Admin)
+
+Admins podem gerenciar servidores de ferramentas compartilhados disponíveis para todos ou usuários específicos em toda a implantação:
+
+- Vá para 🛠️ **Configurações Admin > Ferramentas**.
+- Adicione a URL do servidor de ferramentas como faria nas configurações do usuário.
+- Essas ferramentas são tratadas de forma semelhante às ferramentas integradas do Open WebUI.
+
+### 👉 Opcional: Usando um Arquivo de Configuração com mcpo
+
+Se você estiver executando várias ferramentas através do mcpo usando um arquivo de configuração, observe:
+
+🧩 Cada ferramenta é montada sob seu próprio caminho único!
+
+Por exemplo, se você estiver usando as ferramentas de memória e tempo ao mesmo tempo através do mcpo, elas estarão disponíveis em uma rota distinta:
+
+- http://localhost:8000/time
+- http://localhost:8000/memory
+
+Isso significa:
+
+- Ao conectar uma ferramenta no Open WebUI, você deve inserir a rota completa para essa ferramenta específica — NÃO insira apenas a URL raiz (http://localhost:8000).
+- Adicione cada ferramenta individualmente nas Configurações do Open WebUI usando suas respectivas URLs de subcaminho.
+
+![MCPO Config Tools Setting](/images/openapi-servers/open-webui/mcpo-config-tools.png)
+
+✅ Correto:
+
+http://localhost:8000/time  
+http://localhost:8000/memory
+
+🚫 Não válido:
+
+http://localhost:8000
+
+Isso garante que o Open WebUI reconheça e se comunique corretamente com cada servidor de ferramentas.
+
+---
+
+## Passo 3: Confirme que Seu Servidor de Ferramentas Está Conectado ✅
+
+Uma vez que seu servidor de ferramentas esteja conectado com sucesso, o Open WebUI exibirá um indicador de servidor de ferramentas 👇 diretamente na área de entrada de mensagens:
+
+📍 Agora você verá este ícone abaixo da caixa de entrada:
+
+![Tool Server Indicator](/images/openapi-servers/open-webui/message-input.png)
+
+Ao clicar neste ícone, será aberta uma janela onde você pode:
+
+- Visualizar informações do servidor de ferramentas conectado
+- Ver quais ferramentas estão disponíveis e de qual servidor elas são fornecidas
+- Depurar ou desconectar qualquer ferramenta, se necessário
+
+🔍 Aqui está como o modal de informações das ferramentas se parece:
+
+![Tool Info Modal Expanded](/images/openapi-servers/open-webui/info-modal.png)
+
+### 🛠️ Servidores de Ferramentas Globais Parecem Diferentes — E Estão Ocultos por Padrão!
+
+Se você conectou um Servidor de Ferramentas Global (ou seja, configurado por administrador), ele não aparecerá automaticamente na área de entrada como os servidores de ferramentas do usuário.
+
+Em vez disso:
+
+- Ferramentas globais estão ocultas por padrão e devem ser explicitamente ativadas por cada usuário.
+- Para habilitá-las, você precisará clicar no botão ➕ na área de entrada de mensagens (canto inferior esquerdo da caixa de bate-papo) e ativar manualmente as ferramentas globais específicas que deseja usar.
+
+Aqui está como isso se parece:
+
+![Global Tool Server Message Input](/images/openapi-servers/open-webui/global-message-input.png)
+
+⚠️ Notas Importantes sobre Servidores de Ferramentas Globais:
+
+- Eles não aparecerão no popup de indicador de ferramentas até serem ativados pelo menu ➕.
+- Cada ferramenta global deve ser ativada individualmente para se tornar ativa no seu bate-papo atual.
+- Uma vez ativadas, funcionam da mesma forma que ferramentas de usuário.
+- Admins podem controlar o acesso às ferramentas globais através de permissões baseadas em funções.
+
+Isso é ideal para configurações de equipe ou ambientes compartilhados, onde ferramentas comumente usadas (como busca de documentos, memória ou pesquisa na web) devem estar acessíveis centralmente por vários usuários.
+
+---
+
+## (Opcional) Etapa 4: Usar Chamada de Função "Nativa" (Estilo ReACT) 🧠
+
+:::info
+Para que isso funcione de forma eficaz, **seu modelo selecionado deve oferecer suporte à chamada de função nativa**. Alguns modelos locais afirmam oferecer suporte, mas frequentemente produzem resultados ruins. Recomendamos fortemente usar o GPT-4o ou outro modelo da OpenAI que oferece suporte nativo à chamada de função para a melhor experiência.
+:::
+
+Quer habilitar chamadas de função nativa estilo ReACT (Raciocínio + Ação) diretamente em suas conversas? Você pode alternar o Open WebUI para usar a chamada de função nativa.
+
+✳️ Como habilitar a chamada de função nativa:
+
+1. Abra a janela de chat.
+2. Vá para ⚙️ **Controles de Chat > Parâmetros Avançados**.
+3. Altere o parâmetro **Chamada de Função** de `Padrão` para `Nativo`.
+
+![Chamada de Ferramenta Nativa](/images/openapi-servers/open-webui/native.png)
+
+---
+
+## Precisa de Mais Ferramentas? Explore e Expanda! 🧱
+
+O repositório openapi-servers inclui uma variedade de servidores de referência úteis:
+
+- 📂 Acesso ao sistema de arquivos
+- 🧠 Memória & gráficos de conhecimento
+- 🗃️ Navegação em repositórios Git
+- 🌎 Pesquisa na web (em andamento)
+- 🛢️ Consulta a bancos de dados (em andamento)
+
+Você pode executar qualquer um desses da mesma maneira e conectá-los ao Open WebUI repetindo as etapas acima.
+
+---
+
+## Solução de Problemas & Dicas 🧩
+
+- ❌ Não está conectando? Certifique-se de que a URL está correta e acessível pelo navegador usado para executar o Open WebUI.
+- 🔒 Se você estiver usando servidores remotos, verifique firewalls e configurações de HTTPS!
+- 📝 Para fazer com que os servidores persistam, considere implantá-los no Docker ou com serviços do sistema.
+
+Precisa de ajuda? Visite a 👉 [página de Discussões](https://github.com/open-webui/openapi-servers/discussions) ou [abra uma issue](https://github.com/open-webui/openapi-servers/issues).

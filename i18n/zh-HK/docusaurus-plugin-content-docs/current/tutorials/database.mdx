@@ -1,0 +1,88 @@
+---
+sidebar_position: 310 
+title: "📦 匯出和匯入資料庫"
+---
+
+
+如果您需要將 **Open WebUI** 資料（例如：聊天記錄、配置等）從一個伺服器遷移到另一個伺服器，或者備份以供日後使用，您可以匯出和匯入資料庫。本指南假設您使用的是內部的 SQLite 資料庫（非 PostgreSQL）來執行 Open WebUI。
+
+請按照以下步驟匯出和匯入包含資料庫的 `webui.db` 檔案。
+
+---
+
+### 匯出資料庫
+
+要從當前的 Open WebUI 實例中匯出資料庫：
+
+1. **使用 `docker cp` 複製資料庫檔案**：  
+   `webui.db` 檔案位於容器內的目錄 `/app/backend/data` 中。執行以下命令將其複製到您的本地機器：  
+   ```bash
+   docker cp open-webui:/app/backend/data/webui.db ./webui.db
+   ```
+
+2. **將匯出的檔案傳輸到新伺服器**：  
+   您可以使用 **FileZilla** 或其他任意檔案傳輸工具，將 `webui.db` 檔案移動到新伺服器。
+
+   :::info
+   FileZilla 因其操作簡單，適合用來將檔案傳輸到新伺服器。
+   :::
+
+---
+
+### 匯入資料庫
+
+在將 `webui.db` 檔案移動到新伺服器後，按以下步驟執行：
+
+1. **在新伺服器上安裝並執行 Open WebUI**：  
+   使用 Docker 容器設置並執行 Open WebUI。遵循 [🚀 入門指南](/getting-started) 中的指導來安裝並啟動 Open WebUI 容器。在執行之前，停止容器以進行匯入步驟。
+   ```bash
+   docker stop open-webui
+   ```
+
+2. **使用 `docker cp` 將資料庫檔案複製到容器中**：  
+   假設匯出的 `webui.db` 檔案位於您當前的工作目錄中，將其複製到容器中：
+   ```bash
+   docker cp ./webui.db open-webui:/app/backend/data/webui.db
+   ```
+
+3. **啟動 Open WebUI 容器**：  
+   再次啟動容器以使用已匯入的資料庫。
+   ```bash
+   docker start open-webui
+   ```
+
+   新伺服器現在應該正在運行帶有您匯入資料庫的 Open WebUI。
+
+---
+
+### 注意事項
+
+- 此匯出/匯入過程 **僅適用於您使用內部的 SQLite 資料庫（`webui.db`）** 的情況。
+- 如果您使用的是外部 PostgreSQL 資料庫，此方法不適用，因為該資料庫是由容器外部管理的。對於 PostgreSQL，您需要遵循專門的工具和程序來備份和還原您的資料庫。
+
+---
+
+### 它為什麼重要
+
+這種方法特別有用於以下情況：
+
+- 將您的 Open WebUI 資料遷移到新伺服器或機器。
+- 在更新或修改之前備份您的資料。
+- 在多個伺服器上以相同設置測試 Open WebUI。
+
+```bash
+# 匯出和匯入的快速命令摘要
+# 匯出：
+docker cp open-webui:/app/backend/data/webui.db ./webui.db
+
+# 在新伺服器上停止容器：
+docker stop open-webui
+
+# 匯入：
+docker cp ./webui.db open-webui:/app/backend/data/webui.db
+
+# 啟動容器：
+docker start open-webui
+```
+
+通過這些步驟，您可以輕鬆管理 Open WebUI 的遷移或備份過程。請記住確認您使用的資料庫格式以確保相容性。

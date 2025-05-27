@@ -1,0 +1,252 @@
+---
+sidebar_position: 4
+title: "🚚 工具与功能迁移：0.4 到 0.5"
+---
+
+# 🚚 迁移指南：从 Open WebUI 0.4 到 0.5
+
+欢迎来到 Open WebUI 0.5 的迁移指南！无论您是正在处理现有项目还是构建新项目，本指南将引导您了解从 **版本 0.4 到 0.5** 的关键更改，并提供一个易于遵循的功能升级路线图。希望这个过渡过程尽可能顺利！😊
+
+---
+
+## 🧐 发生了哪些更改以及为什么？
+
+在 Open WebUI 0.5 中，我们对架构进行了全面改进，使项目变得更加 **简单、统一且可扩展**。概览如下：
+
+- **旧架构：** 🎯 之前，Open WebUI 基于 **子应用架构**，每个应用（例如 `ollama`，`openai`）都是一个独立的 FastAPI 应用。这导致了碎片化和管理复杂性增加。
+- **新架构：** 🚀 在 0.5 版本中，我们已转变为 **单一 FastAPI 应用**，配备多个 **路由器**。这带来了更好的组织性、集中化流程和减少的冗余。
+
+### 关键更改：
+以下是更改概览：
+1. **应用已迁移到路由器。**
+   - 之前：`open_webui.apps`
+   - 现在：`open_webui.routers`
+
+2. **主应用结构简化。**
+   - 旧的 `open_webui.apps.webui` 已转变为 `open_webui.main`，成为项目的核心入口点。
+
+3. **统一的 API 端点**
+   - Open WebUI 0.5 引入了一个 **统一函数** `chat_completion`，位于 `open_webui.main`，用来替代先前模型（如 `ollama` 和 `openai`）的独立函数。这为 API 使用提供了一个一致且简化的体验。然而，**这些独立函数的直接继承者** 是 `open_webui.utils.chat` 中的 `generate_chat_completion`。如果您希望进行轻量的 POST 请求，而无需处理额外的解析（如文件、工具或杂项），这个实用函数可能是您的理想选择。
+
+#### 示例：
+```python
+# 带解析的完整 API 流程（新函数）：
+from open_webui.main import chat_completion
+
+# 轻量级直接 POST 请求（直接继承者）：
+from open_webui.utils.chat import generate_chat_completion
+```
+
+选择最适合您的使用场景的方法！
+
+4. **更新的函数签名。**
+   - 函数签名现在遵循新的格式，要求提供 `request` 对象。
+   - `request` 对象可以通过在函数签名中使用 `__request__` 参数来获取。以下是一个示例：
+
+```python
+class Pipe:
+    def __init__(self):
+        pass
+
+    async def pipe(
+        self,
+        body: dict,
+        __user__: dict,
+        __request__: Request, # 新参数
+    ) -> str:
+        # 在这里编写您的函数
+```
+
+📌 **我们为何进行这些更改？**
+- 简化代码库，使扩展和维护更容易。
+- 为开发者提供更统一的 API 使用体验。
+- 通过合并冗余元素提升性能。
+
+---
+
+## ✅ 分步迁移指南
+
+按照本指南轻松更新您的项目。
+
+---
+
+### 🔄 1. 从 `apps` 转换为 `routers` 
+
+所有应用已被重命名并重新定位到 `open_webui.routers` 下。这会影响代码库中的导入路径。
+
+快速更改导入路径：
+
+| **旧路径**                      | **新路径**                      |
+|-----------------------------------|-----------------------------------|
+| `open_webui.apps.ollama`          | `open_webui.routers.ollama`       |
+| `open_webui.apps.openai`          | `open_webui.routers.openai`       |
+| `open_webui.apps.audio`           | `open_webui.routers.audio`        |
+| `open_webui.apps.retrieval`       | `open_webui.routers.retrieval`    |
+| `open_webui.apps.webui`           | `open_webui.main`                 |
+
+
+### 📜 重要示例
+
+为了更清楚地说明主应用（`webui`）的特殊情况，这里有个简单的经验法则：
+
+- **曾位于 `webui`？** 现在在项目的根目录或 `open_webui.main` 中。
+- 示例：
+    - **之前 (0.4)：**
+      ```python
+      from open_webui.apps.webui.models import SomeModel
+      ```
+    - **之后 (0.5)：**
+      ```python
+      from open_webui.models import SomeModel
+      ```
+
+总体而言，**只需将 `open_webui.apps` 替换为 `open_webui.routers`，但 `webui` 除外，它现在是 `open_webui.main`！**
+
+
+---
+
+### 👩‍💻 2. 更新导入语句
+
+以下是代码中更新后的样子：
+
+#### 之前：
+```python
+from open_webui.apps.ollama import main as ollama
+from open_webui.apps.openai import main as openai
+```
+
+#### 之后：
+```python
+# 单独的路由器导入
+from open_webui.routers.ollama import generate_chat_completion
+from open_webui.routers.openai import generate_chat_completion
+
+# 或使用统一的端点
+from open_webui.main import chat_completion
+```
+
+**💡 小提示：** 优先使用统一端点 (`chat_completion`)，以获得更简单的开发和未来兼容性。
+
+### 📝 **附加说明: 在 `main.chat_completion` 和 `utils.chat.generate_chat_completion` 之间的选择**
+
+根据您的使用场景，您可以选择以下选项：
+
+1. **`open_webui.main.chat_completion`:**
+    - 模拟向 `/api/chat/completions` 发送 POST 请求。
+    - 处理文件、工具和其他杂项任务。
+    - 适合希望自动处理完整 API 流程的场景。
+
+2. **`open_webui.utils.chat.generate_chat_completion`:**
+    - 直接发送 POST 请求，而无需处理额外的解析或任务。
+    - 这是 Open WebUI 0.4 中旧函数 `main.generate_chat_completions`、`ollama.generate_chat_completion` 和 `openai.generate_chat_completion` 的**直接继承者**。
+    - 适合简化和更轻量化的场景。
+
+#### 示例：
+```python
+# 对于带有解析的完整 API 流程使用：
+from open_webui.main import chat_completion
+
+# 对于精简版的直接 POST 请求使用：
+from open_webui.utils.chat import generate_chat_completion
+```
+
+---
+
+### 📋 3. 适应更新后的方法签名
+
+我们已经更新了**函数签名**以更好地适应新架构。如果您正在寻找直接替代方案，可以从 `open_webui.utils.chat` 中的轻量化工具函数 `generate_chat_completion` 开始。对于完整的 API 流程使用新的统一函数 `open_webui.main.chat_completion`。
+
+#### 函数签名的变化：
+
+| **旧**                                 | **直接继承者（新）**                   | **统一选项（新）**                     |
+|-----------------------------------------|-----------------------------------------|-----------------------------------------|
+| `openai.generate_chat_completion(form_data: dict, user: UserModel)` | `generate_chat_completion(request: Request, form_data: dict, user: UserModel)` | `chat_completion(request: Request, form_data: dict, user: UserModel)` |
+
+- **直接继承者 (`generate_chat_completion`)**: 一个轻量化的、1:1 替代以前的 `ollama`/`openai` 方法的函数。
+- **统一选项 (`chat_completion`)**: 用于处理包括文件解析和附加功能在内的完整 API 流程。
+
+#### 示例：
+
+如果您使用 `chat_completion`，以下是您的函数现在应如何编写：
+
+### 🛠️ 如何重构您的自定义函数
+让我们将示例函数改写为匹配新的结构：
+
+#### 之前 (0.4)：
+```python
+from pydantic import BaseModel
+from open_webui.apps.ollama import generate_chat_completion
+
+class User(BaseModel):
+    id: str
+    email: str
+    name: str
+    role: str
+
+class Pipe:
+    def __init__(self):
+        pass
+
+    async def pipe(self, body: dict, __user__: dict) -> str:
+        # 调用 OpenAI 接口
+        user = User(**__user__)
+        body["model"] = "llama3.2:latest"
+        return await ollama.generate_chat_completion(body, user)
+```
+
+#### 之后 (0.5)：
+```python
+from pydantic import BaseModel
+from fastapi import Request
+
+from open_webui.utils.chat import generate_chat_completion
+
+
+class User(BaseModel):
+    id: str
+    email: str
+    name: str
+    role: str
+
+
+class Pipe:
+    def __init__(self):
+        pass
+
+    async def pipe(
+        self,
+        body: dict,
+        __user__: dict,
+        __request__: Request,
+    ) -> str:
+        # 使用带有更新签名的统一端点
+        user = User(**__user__)
+        body["model"] = "llama3.2:latest"
+        return await generate_chat_completion(__request__, body, user)
+```
+
+### 重要提示：
+- 在新函数签名中，您必须传递一个 `Request` 对象（`__request__`）。
+- 其他可选参数（如 `__user__` 和 `__event_emitter__`）确保更复杂的用例有更高的灵活性。
+
+---
+
+### 🌟 4. 简而言之的关键概念回顾
+
+以下是快速记忆指南：
+- **Apps 改为 Routers:** 将所有 `open_webui.apps` 的引用更新为 `open_webui.routers`。
+- **统一端点:** 如果涉及 `ollama` 和 `openai`，可以使用 `open_webui.main.chat_completion` 提高简洁性。
+- **调整函数签名:** 请确保您的函数传递了必要的 `request` 对象。
+
+---
+
+## 🎉 太棒了！您已经准备好了！
+
+就是这样！您已成功从 **Open WebUI 0.4 迁移到 0.5**。通过重构您的导入、使用统一端点以及更新函数签名，您将完全能够利用 0.5 版本中的最新功能和改进。
+
+---
+
+💬 **有问题或反馈？**
+如果您遇到任何问题或有建议，请随时在 [GitHub 问题区](https://github.com/open-webui/open-webui) 提交或在社区论坛中讨论！
+
+祝编码愉快！✨

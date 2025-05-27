@@ -1,0 +1,181 @@
+---
+sidebar_position: 1
+title: "🔗 打开 WebUI 集成"
+---
+
+## 概述
+
+Open WebUI v0.6+ 支持通过 OpenAPI 服务器与外部工具无缝集成——这意味着您可以轻松使用自定义或社区支持的工具服务器来扩展您的 LLM 工作流程 🧰。
+
+在本指南中，您将学习如何启动支持 OpenAPI 的工具服务器，并通过直观的用户界面将其连接到 Open WebUI。让我们开始吧！🚀
+
+---
+
+## 第一步：启动一个 OpenAPI 工具服务器
+
+首先，您需要启动 openapi-servers 仓库中提供的参考工具服务器之一。为了快速测试，我们将以 time 工具服务器为例。
+
+🛠️ 示例：本地启动 `time` 服务器
+
+```bash
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+
+# 进入 time 服务器目录
+cd servers/time
+
+# 安装所需的依赖项
+pip install -r requirements.txt
+
+# 启动服务器
+uvicorn main:app --host 0.0.0.0 --reload
+```
+
+启动后，这将在 http://localhost:8000 上托管一个本地 OpenAPI 服务器，您可以将 Open WebUI 指向它。
+
+![Time Server](/images/openapi-servers/open-webui/time-server.png)
+
+---
+
+## 第二步：在 Open WebUI 中连接工具服务器
+
+接下来，将您运行的工具服务器连接到 Open WebUI：
+
+1. 在浏览器中打开 Open WebUI。
+2. 打开 ⚙️ **设置**。
+3. 点击 ➕ **工具** 以添加新的工具服务器。
+4. 输入您的 OpenAPI 工具服务器正在运行的 URL（例如 `http://localhost:8000`）。
+5. 点击 "保存"。
+
+![Settings Page](/images/openapi-servers/open-webui/settings.png)
+
+### 🧑‍💻 用户工具服务器 vs. 🛠️ 全局工具服务器
+
+在 Open WebUI 中注册工具服务器有两种方式：
+
+#### 1. 用户工具服务器（通过常规设置添加）
+
+- 仅对注册该工具服务器的用户可用。
+- 连接由用户直接通过浏览器（客户端）建立。
+- 非常适合个人工作流程或测试自定义/本地工具。
+
+#### 2. 全局工具服务器（通过管理员设置添加）
+
+管理员可以管理跨整个部署对所有或选定用户可用的共享工具服务器：
+
+- 转到 🛠️ **管理员设置 > 工具**。
+- 像在用户设置中一样添加工具服务器 URL。
+- 这些工具类似于 Open WebUI 的内置工具。
+
+### 👉 可选：使用 mcpo 的配置文件
+
+如果您通过 mcpo 使用配置文件运行多个工具，请注意：
+
+🧩 每个工具都挂载在其自己的唯一路径下！
+
+比如，如果您同时使用 memory 和 time 工具通过 mcpo，它们将分别在不同的路径下可用：
+
+- http://localhost:8000/time
+- http://localhost:8000/memory
+
+这意味着：
+
+- 在 Open WebUI 中连接工具时，您必须输入指向特定工具的完整路径——不要仅输入根 URL（`http://localhost:8000`）。
+- 使用各自的子路径 URL 在 Open WebUI 设置中分别添加每个工具。
+
+![MCPO Config Tools Setting](/images/openapi-servers/open-webui/mcpo-config-tools.png)
+
+✅ 正确：
+
+http://localhost:8000/time  
+http://localhost:8000/memory
+
+🚫 无效：
+
+http://localhost:8000
+
+这可确保 Open WebUI 正确识别和与工具服务器通信。
+
+---
+
+## 第三步：确认您的工具服务器已连接 ✅
+
+工具服务器成功连接后，Open WebUI 会在消息输入区直接显示一个 👇 工具服务器指示器：
+
+📍 您会在输入框下方看到这个图标：
+
+![Tool Server Indicator](/images/openapi-servers/open-webui/message-input.png)
+
+点击此图标会打开一个弹窗，您可以：
+
+- 查看已连接的工具服务器信息
+- 查看哪些工具可用以及由哪个服务器提供
+- 如果需要，可以调试或断开任何工具
+
+🔍 以下是工具信息弹窗的样式：
+
+![Tool Info Modal Expanded](/images/openapi-servers/open-webui/info-modal.png)
+
+### 🛠️ 全局工具服务器展示方式不同——默认隐藏！
+
+如果您已连接一个全局工具服务器（即管理员配置的工具服务器），它不会像用户工具服务器那样自动出现在输入区。
+
+相反：
+
+- 全局工具默认为隐藏状态，需按用户显式启用。
+- 要启用它们，您需要点击消息输入区左下角的 ➕ 按钮，并手动切换要使用的特定全局工具。
+
+以下是相关操作展示：
+
+![Global Tool Server Message Input](/images/openapi-servers/open-webui/global-message-input.png)
+
+⚠️ 全局工具服务器的重要说明：
+
+- 在从 ➕ 菜单启用之前，它们不会显示在工具指示器弹窗中。
+- 每个全局工具必须单独切换启用，才能在当前聊天中激活。
+- 一旦启用，它们的功能与用户工具相同。
+- 管理员可以通过基于角色的权限控制对全局工具的访问。
+
+这非常适合团队设置或共享环境，其中常用工具（例如文档搜索、内存或网页查询）应该由多个用户集中访问。
+
+---
+
+## （可选）第4步：使用“原生”函数调用（ReACT风格）工具 🧠
+
+:::info
+为了有效使用此功能，**您选择的模型必须支持原生工具调用**。一些本地模型声称支持，但结果往往不理想。我们强烈建议使用支持原生函数调用的GPT-4o或其他OpenAI模型以获得最佳体验。
+:::
+
+是否想在对话中直接启用ReACT风格（推理 + 操作）的原生函数调用？您可以将Open WebUI切换为使用原生函数调用。
+
+✳️ 启用原生函数调用的方法:
+
+1. 打开聊天窗口。
+2. 转到 ⚙️ **聊天控制 > 高级参数**。
+3. 将**函数调用**参数从`默认`更改为`原生`。
+
+![原生工具调用](/images/openapi-servers/open-webui/native.png)
+
+---
+
+## 需要更多工具？探索与扩展！ 🧱
+
+openapi-servers仓库包含各种有用的参考服务器:
+
+- 📂 文件系统访问
+- 🧠 内存与知识图谱
+- 🗃️ Git仓库浏览
+- 🌎 网页搜索（开发中）
+- 🛢️ 数据库查询（开发中）
+
+您可以以相同的方式运行其中任何一个，并通过重复上述步骤将它们连接到Open WebUI。
+
+---
+
+## 故障排除与提示 🧩
+
+- ❌ 未连接？确保URL正确并能从运行Open WebUI的浏览器访问。
+- 🔒 如果您使用远程服务器，请检查防火墙和HTTPS配置！
+- 📝 为使服务器持久运行，考虑使用Docker或系统服务进行部署。
+
+需要帮助？访问👉 [讨论页面](https://github.com/open-webui/openapi-servers/discussions)或[提交问题](https://github.com/open-webui/openapi-servers/issues)。

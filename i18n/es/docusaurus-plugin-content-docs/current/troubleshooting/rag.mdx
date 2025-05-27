@@ -1,0 +1,121 @@
+---
+sidebar_position: 3
+title: "🧠 Resolviendo Problemas en RAG (Generación Aumentada por Recuperación)"
+---
+
+La Generación Aumentada por Recuperación (RAG) habilita a los modelos de lenguaje a razonar sobre contenido externo—documentos, bases de conocimiento y más—mediante la recuperación de información relevante y su incorporación en el modelo. Pero cuando las cosas no funcionan como se espera (por ejemplo, el modelo "alucina" o no capta información relevante), a menudo no es culpa del modelo—es un problema de contexto.
+
+¡Analicemos las causas comunes y sus soluciones para que puedas potenciar la precisión de tu RAG! 🚀
+
+## Problemas Comunes en RAG y Cómo Solucionarlos 🛠️
+
+### 1. El Modelo "No Puede Ver" Tu Contenido 👁️❌
+
+Este es el problema más común—y suele ser causado por problemas durante el proceso de ingestión de contenido. El modelo no alucina porque esté equivocado, alucina porque nunca se le proporcionó el contenido correcto.
+
+✅ Solución: Revisa tus configuraciones de extracción de contenido
+
+- Navega a: **Configuración de Administración > Documentos**.
+- Asegúrate de usar un motor robusto de extracción de contenido como:
+  - Apache Tika
+  - Docling
+  - Extractores personalizados (dependiendo de tus tipos de documentos)
+
+📌 Consejo: Prueba subir un documento y previsualiza el contenido extraído. Si está vacío o faltan secciones clave, necesitas ajustar tus configuraciones de extractor o usar un motor diferente.
+
+---
+
+### 2. Solo Se Usa una Pequeña Parte del Documento 📄➡️✂️
+
+Open WebUI está diseñado para trabajar con modelos que tienen ventanas de contexto limitadas por defecto. Por ejemplo, muchos modelos locales (como los modelos por defecto de Ollama) están limitados a 2048 tokens. Debido a esto, Open WebUI reduce agresivamente el contenido recuperado para que quepa dentro del espacio disponible asumido.
+
+✅ Soluciones:
+
+- Ve a **Configuración de Administración > Documentos**
+- Haz lo siguiente:
+  - 💡 Habilita “Ignorar Embedding y Recuperación” — Esto envía el contenido completo directamente sin aplicar filtros estrictos de recuperación.
+  - 🔍 Activa el “Modo de Contexto Completo” — Esto inyecta contenido más extenso en el prompt del modelo.
+
+📌 Advertencia: Ten en cuenta los límites de contexto—si tu modelo no puede manejar más tokens, el contenido aún se recortará.
+
+---
+
+### 3. El Límite de Tokens es Muy Corto ⏳
+
+Incluso si la recuperación funciona, tu modelo podría no procesar todo el contenido que recibe—porque simplemente no puede.
+
+Por defecto, muchos modelos (especialmente los LLM alojados en Ollama) están limitados a una ventana de contexto de 2048 tokens. Esto significa que solo una fracción de tus datos recuperados será realmente utilizada.
+
+✅ Soluciones:
+
+- 🛠️ Extiende la longitud de contexto del modelo:
+  - Navega al **Editor de Modelo o Controles de Chat**
+  - Modifica la longitud de contexto (por ejemplo, aumenta a 8192+ tokens si es compatible)
+
+ℹ️ Nota: El límite por defecto de 2048 tokens es una gran limitación. Para mejores resultados en RAG, recomendamos usar modelos que soporten contextos más largos.
+
+✅ Alternativa: Usa un LLM externo con mayor capacidad de contexto
+
+- Prueba GPT-4, GPT-4o, Claude 3, Gemini 1.5 o Mixtral con un contexto de 8k+
+- Compara el rendimiento con Ollama—¡nota la diferencia de precisión cuando se puede inyectar más contenido!
+
+📌 Consejo: Usa modelos externos para un mejor rendimiento en producción de RAG.
+
+---
+
+### 4. El Modelo de Embedding es de Baja Calidad o No Coincide 📉🧠
+
+Embeddings de mala calidad = recuperación deficiente. Si la representación vectorial de tu contenido es mala, el recuperador no obtendrá el contenido correcto—sin importar cuán potente sea tu LLM.
+
+✅ Solución:
+
+- Cambia a un modelo de embedding de alta calidad (por ejemplo, all-MiniLM-L6-v2, Instructor X o OpenAI embeddings)
+- Ve a: **Configuración de Administración > Documentos**
+- Después de cambiar el modelo, asegúrate de:
+  - ⏳ Reindexar todos los documentos existentes para que los nuevos embeddings se efectúen.
+
+📌 Recuerda: La calidad de los embeddings afecta directamente el contenido que se recupera.
+
+---
+
+### 5. ❌ 400: NoneType object has no attribute encode
+
+Este error indica un modelo de embedding mal configurado o inexistente. Cuando Open WebUI intenta crear embeddings pero no tiene un modelo válido cargado, no puede procesar el texto—y el resultado es este error críptico.
+
+💥 Causa:
+- Tu modelo de embedding no está configurado correctamente.
+- Puede que no haya descargado completamente.
+- O si estás usando un modelo externo de embedding, puede que no sea accesible.
+
+✅ Solución:
+
+- Ve a: **Configuración de Administración > Documentos > Modelo de Embedding**
+- Guarda de nuevo el modelo de embedding—even si ya está seleccionado. Esto fuerza una nueva comprobación/descarga.
+- Si estás usando una herramienta de embedding remota/externa, asegúrate de que esté funcionando y sea accesible para Open WebUI.
+
+📌 Consejo: Después de corregir la configuración, prueba re-embebiendo un documento y verifica que no aparezca ningún error en los registros.
+
+---
+
+## 🧪 Consejo Profesional: Prueba con GPT-4o o GPT-4
+
+Si no estás seguro de si el problema es con la recuperación, los límites de tokens o el embedding—intenta usar GPT-4o temporalmente (por ejemplo, vía la API de OpenAI). Si los resultados se vuelven repentinamente más precisos, es una señal fuerte de que el límite de contexto de tu modelo local (2048 por defecto en Ollama) es el cuello de botella.
+
+- GPT-4o maneja entradas más grandes (¡128k tokens!)
+- Proporciona un excelente punto de referencia para evaluar la confiabilidad de RAG de tu sistema
+
+---
+
+## Lista de Verificación Resumida ✅
+
+| Problema | Solución |
+|--------|----------|
+| 🤔 El modelo no puede “ver” el contenido | Verifica la configuración del extractor de documentos |
+| 🧹 Solo se utiliza parte del contenido | Habilita el Modo de Contexto Completo o evita el Embedding |
+| ⏱ Limitado por el límite de 2048 tokens | Aumenta la longitud de contexto del modelo o utiliza un LLM de gran contexto |
+| 📉 Recuperación inexacta | Cambia a un mejor modelo de embedding, luego reindexa |
+| ¿Todavía confundido? | Prueba con GPT-4o y compara resultados |
+
+---
+
+Optimizando estas áreas—extracción, embedding, recuperación y contexto del modelo—puedes mejorar dramáticamente la precisión con la que tu LLM trabaja con tus documentos. No dejes que una ventana de 2048 tokens o una canalización débil de recuperación limite el poder de tu IA 🎯.

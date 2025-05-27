@@ -1,0 +1,121 @@
+---
+sidebar_position: 3
+title: "🧠 Fehlerbehebung bei RAG (Retrieval-Augmented Generation)"
+---
+
+Retrieval-Augmented Generation (RAG) ermöglicht es Sprachmodellen, über externe Inhalte – Dokumente, Wissensdatenbanken und mehr – nachzudenken, indem relevante Informationen abgerufen und in das Modell eingespeist werden. Wenn jedoch Dinge nicht wie erwartet funktionieren (z.B. das Modell "halluziniert" oder übersieht relevante Informationen), liegt es oft nicht am Modell selbst – es ist ein Problem mit dem Kontext.
+
+Lassen Sie uns die häufigsten Ursachen und Lösungen aufschlüsseln, damit Sie die Genauigkeit von RAG maximieren können! 🚀
+
+## Häufige Probleme mit RAG und deren Behebung 🛠️
+
+### 1. Das Modell "sieht" Ihre Inhalte nicht 👁️❌
+
+Dies ist das häufigste Problem – und es wird typischerweise durch Fehler im Prozess der Inhaltsaufnahme verursacht. Das Modell halluziniert nicht, weil es falsch liegt, sondern weil es von Anfang an nicht mit den richtigen Inhalten versorgt wurde.
+
+✅ Lösung: Überprüfen Sie Ihre Einstellungen zur Inhaltsauslesung
+
+- Navigieren Sie zu: **Admin-Einstellungen > Dokumente**.
+- Stellen Sie sicher, dass Sie eine leistungsstarke Inhaltsauslese-Engine verwenden, wie z.B.:
+  - Apache Tika
+  - Docling
+  - Eigene Extraktoren (je nach Dokumenttyp)
+
+📌 Tipp: Laden Sie ein Dokument hoch und sehen Sie sich die extrahierten Inhalte an. Wenn diese leer sind oder wichtige Abschnitte fehlen, müssen Sie Ihre Extraktions-Einstellungen anpassen oder eine andere Engine verwenden.
+
+---
+
+### 2. Nur ein kleiner Teil des Dokuments wird verwendet 📄➡️✂️
+
+Open WebUI ist für Modelle ausgelegt, die standardmäßig begrenzte Kontextfenster haben. Zum Beispiel sind viele lokale Modelle (z.B. die Standardmodelle von Ollama) auf 2048 Tokens beschränkt. Daher kürzt Open WebUI abgerufene Inhalte aggressiv, um in den verfügbaren Platz zu passen.
+
+✅ Lösungen:
+
+- Gehen Sie zu **Admin-Einstellungen > Dokumente**
+- Wählen Sie eine der folgenden Optionen:
+  - 💡 Aktivieren Sie „Embedding und Abruf umgehen“ – Dies sendet den gesamten Inhalt direkt, ohne strenge Abruf-Filter anzuwenden.
+  - 🔍 Schalten Sie „Vollkontextmodus“ ein – Dies fügt umfassendere Inhalte in die Modelleingabe ein.
+
+📌 Warnung: Beachten Sie die Kontextgrenzen – wenn Ihr Modell keine größere Token-Anzahl verarbeiten kann, wird es dennoch abgeschnitten.
+
+---
+
+### 3. Die Token-Grenze ist zu kurz ⏳
+
+Selbst wenn der Abruf funktioniert, kann es sein, dass Ihr Modell nicht den gesamten Inhalt verarbeitet, den es erhält – einfach, weil es dazu nicht in der Lage ist.
+
+Standardmäßig sind viele Modelle (insbesondere die von Ollama gehosteten LLMs) auf ein Kontextfenster von 2048 Tokens beschränkt. Das bedeutet, dass nur ein Bruchteil der abgerufenen Daten tatsächlich genutzt wird.
+
+✅ Lösungen:
+
+- 🛠️ Verlängern Sie die Kontextlänge des Modells:
+  - Navigieren Sie zum **Modelleditor oder Chat-Kontrollen**
+  - Ändern Sie die Kontextlänge (z.B. erhöhen Sie sie auf 8192+ Tokens, falls unterstützt)
+
+ℹ️ Hinweis: Die Standardgrenze von 2048 Tokens ist eine große Einschränkung. Für bessere RAG-Ergebnisse empfehlen wir die Verwendung von Modellen, die längere Kontexte unterstützen.
+
+✅ Alternative: Verwenden Sie ein externes LLM mit größerer Kontextkapazität
+
+- Versuchen Sie GPT-4, GPT-4o, Claude 3, Gemini 1.5 oder Mixtral mit 8k+ Kontext
+- Vergleichen Sie die Leistung mit Ollama – achten Sie auf die Genauigkeitsunterschiede, wenn mehr Inhalte eingefügt werden können!
+
+📌 Tipp: Verwenden Sie externe Modelle für bessere RAG-Leistung in Produktionsumgebungen.
+
+---
+
+### 4. Das Embedding-Modell ist von niedriger Qualität oder nicht passend 📉🧠
+
+Schlechte Embeddings = schlechter Abruf. Wenn die Vektorrepräsentation Ihrer Inhalte schlecht ist, wird der Abrufmotor nicht die richtigen Inhalte ziehen – egal wie leistungsstark Ihr LLM ist.
+
+✅ Lösung:
+
+- Wechseln Sie zu einem hochwertigen Embedding-Modell (z.B. all-MiniLM-L6-v2, Instructor X oder OpenAI-Embeddings)
+- Gehen Sie zu: **Admin-Einstellungen > Dokumente**
+- Stellen Sie nach dem Ändern des Modells sicher, dass Sie:
+  - ⏳ Alle vorhandenen Dokumente neu indexieren, damit die neuen Embeddings wirksam werden.
+
+📌 Denken Sie daran: Die Qualität der Embeddings beeinflusst direkt, welche Inhalte abgerufen werden.
+
+---
+
+### 5. ❌ 400: NoneType-Objekt hat kein Attribut encode
+
+Dieser Fehler zeigt an, dass das Embedding-Modell falsch konfiguriert oder nicht vorhanden ist. Wenn Open WebUI versucht, Embeddings zu erstellen, aber kein gültiges Modell geladen ist, kann der Text nicht verarbeitet werden – und das Ergebnis ist dieser kryptische Fehler.
+
+💥 Ursache:
+- Ihr Embedding-Modell ist nicht korrekt eingerichtet.
+- Es wurde möglicherweise nicht vollständig heruntergeladen.
+- Oder wenn Sie ein externes Embedding-Modell verwenden, ist es möglicherweise nicht zugänglich.
+
+✅ Lösung:
+
+- Gehen Sie zu: **Admin-Einstellungen > Dokumente > Embedding-Modell**
+- Speichern Sie das Embedding-Modell erneut – auch wenn es bereits ausgewählt ist. Dadurch wird ein erneuter Download/Überprüfung erzwungen.
+- Wenn Sie ein entferntes/externes Embedding-Tool verwenden, stellen Sie sicher, dass es läuft und von Open WebUI zugänglich ist.
+
+📌 Tipp: Nach der Korrektur der Konfiguration versuchen Sie, ein Dokument erneut zu embeddieren und überprüfen, ob im Protokoll keine Fehler angezeigt werden.
+
+---
+
+## 🧪 Pro Tipp: Testen Sie mit GPT-4o oder GPT-4
+
+Wenn Sie sich nicht sicher sind, ob das Problem beim Abruf, bei den Token-Grenzen oder bei den Embeddings liegt, versuchen Sie, vorübergehend GPT-4o zu verwenden (z.B. über die OpenAI-API). Wenn die Ergebnisse plötzlich genauer werden, ist dies ein starkes Indiz dafür, dass die Kontextgrenze Ihres lokalen Modells (2048 standardmäßig bei Ollama) das Bottleneck ist.
+
+- GPT-4o verarbeitet größere Eingaben (128k Tokens!)
+- Bietet eine großartige Benchmark zur Bewertung der Zuverlässigkeit Ihres Systems bei RAG
+
+---
+
+## Zusammenfassende Checkliste ✅
+
+| Problem | Lösung |
+|--------|------|
+| 🤔 Modell kann den Inhalt nicht "sehen" | Überprüfen Sie die Einstellungen des Dokumentenextraktors |
+| 🧹 Nur ein Teil des Inhalts wird verwendet | Aktivieren Sie den Vollkontextmodus oder umgehen Sie das Embedding |
+| ⏱ Begrenzung durch 2048-Token-Grenze | Erhöhen Sie die Kontextlänge des Modells oder nutzen Sie ein großes Kontext-LLM |
+| 📉 Ungenaue Abrufung | Wechseln Sie zu einem besseren Embedding-Modell und indizieren Sie neu |
+| Immer noch verwirrt? | Testen Sie mit GPT-4o und vergleichen Sie die Ausgaben |
+
+---
+
+Durch die Optimierung dieser Bereiche—Extraktion, Embedding, Abruf und Modellkontext—können Sie die Genauigkeit Ihres LLM im Umgang mit Dokumenten erheblich verbessern. Lassen Sie nicht ein 2048-Token-Fenster oder eine schwache Abrufpipeline die Leistung Ihrer KI einschränken 🎯.

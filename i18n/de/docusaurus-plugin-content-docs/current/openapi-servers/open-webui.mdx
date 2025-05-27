@@ -1,0 +1,181 @@
+---
+sidebar_position: 1
+title: "🔗 Integration des Open WebUI"
+---
+
+## Überblick
+
+Open WebUI v0.6+ unterstützt nahtlose Integration mit externen Tools über OpenAPI-Server — das bedeutet, dass Sie Ihre LLM-Workflows einfach mit benutzerdefinierten oder gemeinschaftsbasierten Tool-Servern erweitern können 🧰.
+
+In diesem Leitfaden erfahren Sie, wie Sie einen OpenAPI-kompatiblen Tool-Server starten und ihn über die intuitive Benutzeroberfläche mit Open WebUI verbinden können. Lassen Sie uns beginnen! 🚀
+
+---
+
+## Schritt 1: Starten Sie einen OpenAPI-Tool-Server
+
+Zu Beginn müssen Sie einen der Referenz-Tool-Server aus dem openapi-servers-Repo starten. Für einen schnellen Test verwenden wir den Time-Tool-Server als Beispiel.
+
+🛠️ Beispiel: Starten des `time`-Servers lokal
+
+```bash
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+
+# Wechseln Sie zu dem Time-Server
+cd servers/time
+
+# Installieren Sie die erforderlichen Abhängigkeiten
+pip install -r requirements.txt
+
+# Starten Sie den Server
+uvicorn main:app --host 0.0.0.0 --reload
+```
+
+Nach dem Start hostet der Server einen lokalen OpenAPI-Server unter http://localhost:8000, den Sie auf Open WebUI verweisen können.
+
+![Time Server](/images/openapi-servers/open-webui/time-server.png)
+
+---
+
+## Schritt 2: Verbinden Sie den Tool-Server in Open WebUI
+
+Als Nächstes verbinden Sie Ihren laufenden Tool-Server mit Open WebUI:
+
+1. Öffnen Sie Open WebUI in Ihrem Browser.
+2. Öffnen Sie ⚙️ **Einstellungen**.
+3. Klicken Sie auf ➕ **Tools**, um einen neuen Tool-Server hinzuzufügen.
+4. Geben Sie die URL ein, unter der Ihr OpenAPI-Tool-Server läuft (z. B. http://localhost:8000).
+5. Klicken Sie auf "Speichern".
+
+![Einstellungsseite](/images/openapi-servers/open-webui/settings.png)
+
+### 🧑‍💻 Benutzerdefinierte Tool-Server vs. 🛠️ Globale Tool-Server
+
+Es gibt zwei Möglichkeiten, Tool-Server in Open WebUI zu registrieren:
+
+#### 1. Benutzerdefinierte Tool-Server (hinzugefügt über reguläre Einstellungen)
+
+- Nur für den Benutzer zugänglich, der den Tool-Server registriert hat.
+- Die Verbindung wird direkt vom Browser (clientseitig) durch den Benutzer hergestellt.
+- Ideal für persönliche Workflows oder beim Testen von benutzerdefinierten/lokalen Tools.
+
+#### 2. Globale Tool-Server (hinzugefügt über Admin-Einstellungen)
+
+Admins können gemeinsam genutzte Tool-Server verwalten, die allen oder ausgewählten Benutzern innerhalb der gesamten Installation zur Verfügung stehen:
+
+- Gehen Sie zu 🛠️ **Admin-Einstellungen > Tools**.
+- Fügen Sie die Tool-Server-URL genauso hinzu, wie Sie es in den Benutzereinstellungen tun würden.
+- Diese Tools werden ähnlich wie die integrierten Tools von Open WebUI behandelt.
+
+### 👉 Optional: Verwenden einer Konfigurationsdatei mit mcpo
+
+Wenn Sie mehrere Tools mit mcpo über eine Konfigurationsdatei betreiben, beachten Sie Folgendes:
+
+🧩 Jedes Tool wird unter seinem eigenen einzigartigen Pfad eingebunden!
+
+Wenn Sie beispielsweise gleichzeitig Memory- und Time-Tools über mcpo verwenden, stehen sie jeweils unter einer eindeutigen Route zur Verfügung:
+
+- http://localhost:8000/time
+- http://localhost:8000/memory
+
+Das bedeutet:
+
+- Beim Verbinden eines Tools in Open WebUI müssen Sie die vollständige Route zu diesem spezifischen Tool eingeben — geben Sie NICHT nur die Root-URL ein (http://localhost:8000).
+- Fügen Sie jedes Tool einzeln zu den Open-WebUI-Einstellungen hinzu, indem Sie ihre jeweiligen Subpath-URLs verwenden.
+
+![MCPO-Konfiguration Tools-Einstellung](/images/openapi-servers/open-webui/mcpo-config-tools.png)
+
+✅ Gut:
+
+http://localhost:8000/time  
+http://localhost:8000/memory
+
+🚫 Nicht gültig:
+
+http://localhost:8000
+
+Dies stellt sicher, dass Open WebUI jeden Tool-Server korrekt erkennt und mit ihm kommuniziert.
+
+---
+
+## Schritt 3: Bestätigen Sie, dass Ihr Tool-Server verbunden ist ✅
+
+Sobald Ihr Tool-Server erfolgreich verbunden ist, zeigt Open WebUI einen 👇 Tool-Server-Indikator direkt im Nachrichteneingabebereich an:
+
+📍 Dieses Symbol sehen Sie jetzt unter dem Eingabefeld:
+
+![Tool-Server-Indikator](/images/openapi-servers/open-webui/message-input.png)
+
+Durch Klicken auf dieses Symbol wird ein Popup geöffnet, in dem Sie:
+
+- Mit Informationen zum verbundenen Tool-Server anzeigen
+- Sehen, welche Tools verfügbar sind und von welchem Server sie bereitgestellt werden
+- Tools debuggen oder bei Bedarf trennen können
+
+🔍 So sieht das Tool-Informationsmodal aus:
+
+![Tool-Info-Modal erweitert](/images/openapi-servers/open-webui/info-modal.png)
+
+### 🛠️ Globale Tool-Server sehen anders aus – und sind standardmäßig ausgeblendet!
+
+Wenn Sie einen globalen Tool-Server verbunden haben (d. h. einen, der von Admins konfiguriert wurde), wird dieser nicht automatisch wie benutzerdefinierte Tool-Server im Eingabebereich angezeigt.
+
+Stattdessen:
+
+- Globale Tools sind standardmäßig ausgeblendet und müssen pro Benutzer explizit aktiviert werden.
+- Um sie zu aktivieren, müssen Sie auf die ➕ Schaltfläche im Nachrichteneingabebereich (unten links im Chatfeld) klicken und die spezifischen globalen Tools, die Sie verwenden möchten, manuell einschalten.
+
+So sieht das aus:
+
+![Globaler Tool-Server Nachrichteneingabe](/images/openapi-servers/open-webui/global-message-input.png)
+
+⚠️ Wichtige Hinweise zu Globalen Tool-Servern:
+
+- Sie werden erst im Tool-Indikator-Popup angezeigt, wenn sie aus dem ➕ Menü aktiviert wurden.
+- Jedes globale Tool muss einzeln eingeschaltet werden, um innerhalb Ihres aktuellen Chats aktiv zu sein.
+- Sobald sie eingeschaltet sind, funktionieren sie genauso wie Benutzer-Tools.
+- Admins können den Zugriff auf globale Tools über rollenbasierte Berechtigungen steuern.
+
+Dies ist ideal für Team-Setups oder gemeinsame Umgebungen, in denen häufig verwendete Tools (z. B. Dokumentensuche, Speicher oder Websuche) zentral von mehreren Benutzern zugänglich sein sollten.
+
+---
+
+## (Optional) Schritt 4: Verwenden "Native" Funktionsaufrufe (ReACT-Stil) Werkzeugnutzung 🧠
+
+:::info
+Damit dies effektiv funktioniert, **muss Ihr ausgewähltes Modell native Toolaufrufe unterstützen**. Einige lokale Modelle behaupten, Support zu bieten, liefern jedoch oft schlechte Ergebnisse. Wir empfehlen dringend die Verwendung von GPT-4o oder eines anderen OpenAI-Modells, das native Funktionaufrufe unterstützt, für die beste Erfahrung.
+:::
+
+Möchten Sie ReACT-Stil (Reasoning + Acting) native Funktionsaufrufe direkt innerhalb Ihrer Gespräche aktivieren? Sie können Open WebUI so einrichten, dass native Funktionsaufrufe verwendet werden.
+
+✳️ So aktivieren Sie native Funktionsaufrufe:
+
+1. Öffnen Sie das Chat-Fenster.
+2. Gehen Sie zu ⚙️ **Chat-Steuerung > Erweiterte Parameter**.
+3. Ändern Sie den **Funktionaufruf**-Parameter von `Default` zu `Native`.
+
+![Native Tool Call](/images/openapi-servers/open-webui/native.png)
+
+---
+
+## Benötigen Sie weitere Werkzeuge? Erkunden & Erweitern! 🧱
+
+Das openapi-servers Repo enthält eine Vielzahl nützlicher Referenzserver:
+
+- 📂 Zugriff auf Dateisystem
+- 🧠 Speicher- & Wissensgraphen
+- 🗃️ Git-Repository-Browsen
+- 🌎 Websuche (WIP)
+- 🛢️ Datenbankabfragen (WIP)
+
+Sie können jeden dieser Server auf die gleiche Weise ausführen und mit Open WebUI verbinden, indem Sie die oben genannten Schritte wiederholen.
+
+---
+
+## Fehlerbehebung & Tipps 🧩
+
+- ❌ Keine Verbindung? Stellen Sie sicher, dass die URL korrekt und von dem Browser aus erreichbar ist, der Open WebUI ausführt.
+- 🔒 Wenn Sie Remote-Server verwenden, überprüfen Sie Firewalls und HTTPS-Konfigurationen!
+- 📝 Um Server dauerhaft zu machen, sollten Sie deren Bereitstellung in Docker oder mit Systemdiensten in Betracht ziehen.
+
+Brauchen Sie Hilfe? Besuchen Sie 👉 die [Diskussionsseite](https://github.com/open-webui/openapi-servers/discussions) oder [öffnen Sie ein Issue](https://github.com/open-webui/openapi-servers/issues).

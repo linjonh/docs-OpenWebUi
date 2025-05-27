@@ -1,0 +1,163 @@
+---
+sidebar_position: 3
+title: "🕸️ Diagramas de Rede"
+---
+
+Aqui, fornecemos diagramas claros e estruturados para ajudá-lo a entender como diversos componentes da rede interagem em diferentes configurações. Esta documentação foi criada para usuários de macOS/Windows e Linux. Cada cenário é ilustrado usando diagramas Mermaid para mostrar como as interações são configuradas dependendo das diferentes configurações de sistema e estratégias de implantação.
+
+## Opções de Configuração no Mac OS/Windows 🖥️
+
+### Ollama no Host, Open WebUI no Container
+
+Neste cenário, `Ollama` é executado diretamente na máquina host, enquanto `Open WebUI` opera dentro de um container Docker.
+
+```mermaid
+C4Context
+Boundary(b0, "Máquina Host - Mac OS/Windows") {
+   Person(user, "Usuário")
+   Boundary(b1, "VM Linux do Docker Desktop") {
+      Component(openwebui, "Open WebUI", "Escutando na porta 8080")
+   }
+   Component(ollama, "Ollama", "Escutando na porta 11434")
+}
+Rel(openwebui, ollama, "Faz chamadas de API via proxy Docker", "http://host.docker.internal:11434")
+Rel(user, openwebui, "Faz solicitações via porta exposta -p 3000:8080", "http://localhost:3000")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+### Ollama e Open WebUI em Pilha Compose
+
+Ambos `Ollama` e `Open WebUI` são configurados dentro da mesma pilha Docker Compose, simplificando as comunicações de rede.
+
+```mermaid
+C4Context
+Boundary(b0, "Máquina Host - Mac OS/Windows") {
+   Person(user, "Usuário")
+   Boundary(b1, "VM Linux do Docker Desktop") {
+      Boundary(b2, "Pilha Compose") {
+         Component(openwebui, "Open WebUI", "Escutando na porta 8080")
+         Component(ollama, "Ollama", "Escutando na porta 11434")
+      }
+   }
+}
+Rel(openwebui, ollama, "Faz chamadas de API via rede entre containers", "http://ollama:11434")
+Rel(user, openwebui, "Faz solicitações via porta exposta -p 3000:8080", "http://localhost:3000")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+### Ollama e Open WebUI, Redes Separadas
+
+Aqui, `Ollama` e `Open WebUI` são implantados em redes Docker separadas, potencialmente levando a problemas de conectividade.
+
+```mermaid
+C4Context
+Boundary(b0, "Máquina Host - Mac OS/Windows") {
+   Person(user, "Usuário")
+   Boundary(b1, "VM Linux do Docker Desktop") {
+      Boundary(b2, "Rede A") {
+         Component(openwebui, "Open WebUI", "Escutando na porta 8080")
+      }
+      Boundary(b3, "Rede B") {
+         Component(ollama, "Ollama", "Escutando na porta 11434")
+      }
+   }
+}
+Rel(openwebui, ollama, "Não é possível conectar")
+Rel(user, openwebui, "Faz solicitações via porta exposta -p 3000:8080", "http://localhost:3000")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+### Open WebUI na Rede do Host
+
+Nesta configuração, `Open WebUI` utiliza a rede do host, o que impacta sua capacidade de conectar em determinados ambientes.
+
+```mermaid
+C4Context
+Boundary(b0, "Máquina Host - Mac OS/Windows") {
+   Person(user, "Usuário")
+   Boundary(b1, "VM Linux do Docker Desktop") {
+      Component(openwebui, "Open WebUI", "Escutando na porta 8080")
+   }
+}
+Rel(user, openwebui, "Não é possível conectar, a rede do host é a rede da VM")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+
+## Opções de Configuração no Linux 🐧
+
+### Ollama no Host, Open WebUI no Container (Linux)
+
+Este diagrama é específico para a plataforma Linux, com `Ollama` executando no host e `Open WebUI` implantado dentro de um container Docker.
+
+```mermaid
+C4Context
+Boundary(b0, "Máquina Host - Linux") {
+   Person(user, "Usuário")
+   Boundary(b1, "Rede de Containers") {
+      Component(openwebui, "Open WebUI", "Escutando na porta 8080")
+   }
+   Component(ollama, "Ollama", "Escutando na porta 11434")
+}
+Rel(openwebui, ollama, "Faz chamadas de API via proxy Docker", "http://host.docker.internal:11434")
+Rel(user, openwebui, "Faz solicitações via porta exposta -p 3000:8080", "http://localhost:3000")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+### Ollama e Open WebUI em Pilha Compose (Linux)
+
+Uma configuração onde `Ollama` e `Open WebUI` residem na mesma pilha Docker Compose, permitindo uma rede simplificada no Linux.
+
+```mermaid
+C4Context
+Boundary(b0, "Máquina Host - Linux") {
+   Person(user, "Usuário")
+   Boundary(b1, "Rede de Containers") {
+      Boundary(b2, "Pilha Compose") {
+         Component(openwebui, "Open WebUI", "Escutando na porta 8080")
+         Component(ollama, "Ollama", "Escutando na porta 11434")
+      }
+   }
+}
+Rel(openwebui, ollama, "Faz chamadas de API via rede entre containers", "http://ollama:11434")
+Rel(user, openwebui, "Faz solicitações via porta exposta -p 3000:8080", "http://localhost:3000")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+### Ollama e Open WebUI, Redes Separadas (Linux)
+
+Um cenário no qual `Ollama` e `Open WebUI` estão em redes Docker diferentes em um ambiente Linux, o que pode dificultar a conectividade.
+
+```mermaid
+C4Context
+Boundary(b0, "Máquina Hospedeira - Linux") {
+   Person(user, "Usuário")
+   Boundary(b2, "Rede de Contêiner A") {
+      Component(openwebui, "Open WebUI", "Escutando na porta 8080")
+   }
+   Boundary(b3, "Rede de Contêiner B") {
+      Component(ollama, "Ollama", "Escutando na porta 11434")
+   }
+}
+Rel(openwebui, ollama, "Incapaz de conectar")
+Rel(user, openwebui, "Faz solicitações através da porta exposta -p 3000:8080", "http://localhost:3000")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+### Open WebUI na Rede Host, Ollama no Host (Linux)
+
+Uma configuração ideal onde tanto o `Open WebUI` quanto o `Ollama` utilizam a rede do host, facilitando uma interação perfeita em sistemas Linux.
+
+```mermaid
+C4Context
+Boundary(b0, "Máquina Hospedeira - Linux") {
+   Person(user, "Usuário")
+   Component(openwebui, "Open WebUI", "Escutando na porta 8080")
+   Component(ollama, "Ollama", "Escutando na porta 11434")
+}
+Rel(openwebui, ollama, "Faz chamadas de API via localhost", "http://localhost:11434")
+Rel(user, openwebui, "Faz solicitações através da porta de escuta", "http://localhost:8080")
+UpdateRelStyle(user, openwebui, $offsetX="-100", $offsetY="-50")
+```
+
+Cada configuração aborda diferentes estratégias de implantação e configurações de rede para ajudá-lo a escolher a melhor opção para suas necessidades.

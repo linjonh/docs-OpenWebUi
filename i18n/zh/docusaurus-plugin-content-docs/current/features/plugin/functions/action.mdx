@@ -1,0 +1,51 @@
+---
+sidebar_position: 3
+title: "🎬 动作功能"
+---
+
+动作功能允许您为消息工具栏编写自定义按钮，以供最终用户交互。
+这个功能使消息更加互动，用户可以在执行任务之前授予权限，生成结构化数据的可视化，
+下载聊天的音频片段，以及许多其他用例。
+
+可以在[社区部分](https://openwebui.com/f/hub/custom_action/)找到动作代码的脚手架。
+
+下面的视频展示了一个图形可视化动作的示例。
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/graph-viz-action.gif" alt="图形可视化动作" />
+  </a>
+</p>
+
+
+### 动作
+动作用于在消息用户界面中创建按钮（位于单个聊天消息正下方的小按钮）。
+
+动作有一个主要组件，称为动作功能。此组件接收一个对象，该对象定义动作的类型以及正在处理的数据。
+
+<details>
+<summary>示例</summary>
+
+```python
+async def action(
+        self,
+        body: dict,
+        __user__=None,
+        __event_emitter__=None,
+        __event_call__=None,
+    ) -> Optional[dict]:
+        print(f"行动: {__name__}")
+
+        response = await __event_call__(
+            {
+                "type": "input",
+                "data": {
+                    "title": "写一条消息",
+                    "message": "在此处写一条要附加的消息",
+                    "placeholder": "输入您的消息",
+                },
+            }
+        )
+        print(response)
+```
+</details>

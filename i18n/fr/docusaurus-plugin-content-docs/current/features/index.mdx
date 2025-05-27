@@ -1,0 +1,447 @@
+---
+sidebar_position: 400
+title: "⭐ Fonctionnalités"
+---
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+<TopBanners />
+
+## Fonctionnalités clés d'Open WebUI ⭐
+
+- 🚀 **Configuration simplifiée** : Installez facilement avec Docker, Kubernetes, Podman, Helm Charts (`kubectl`, `kustomize`, `podman` ou `helm`) pour une expérience sans tracas avec support à la fois pour l'image `:ollama` avec Ollama intégré et `:cuda` avec support CUDA.
+
+- 🛠️ **Configuration initiale guidée** : Complétez le processus de configuration de manière claire, y compris une indication explicite pour créer un compte administrateur lors de la première mise en place.
+
+- 🤝 **Intégration de l'API OpenAI** : Intégrez facilement des APIs compatibles OpenAI pour des conversations polyvalentes avec les modèles Ollama. L'URL de l'API OpenAI peut être personnalisée pour intégrer Open WebUI de manière transparente avec diverses applications tierces.
+
+- 🛡️ **Permissions granulaires et groupes d'utilisateurs** : En permettant aux administrateurs de créer des rôles utilisateur, des groupes et des permissions détaillés pour l'espace de travail, nous assurons un environnement sécurisé pour tous. Cette granularité améliore non seulement la sécurité, mais permet aussi des expériences utilisateurs personnalisées, favorisant un sentiment d'appartenance et de responsabilité parmi les utilisateurs.
+
+- 📱 **Design adaptatif** : Profitez d'une expérience fluide sur PC de bureau, ordinateurs portables et appareils mobiles.
+
+- 📱 **Application Web Progressive pour mobile** : Profitez d'une application Web progressive native sur votre appareil mobile avec un accès hors ligne sur `localhost` ou un domaine personnel, et une interface utilisateur fluide. Pour que notre PWA soit installable sur votre appareil, elle doit être diffusée dans un contexte sécurisé, généralement via HTTPS.
+
+  :::info
+
+  - Pour configurer une PWA, vous aurez besoin de connaissances sur des technologies comme Linux, Docker et des proxys inversés tels que `Nginx`, `Caddy` ou `Traefik`. Utiliser ces outils peut simplifier le processus de création et de déploiement d'une PWA adaptée à vos besoins. Bien qu'il n'existe pas d'option "installation en un clic" disponible, et que votre option pour déployer en toute sécurité votre instance Open WebUI sur HTTPS nécessite une expertise utilisateur, ces ressources peuvent faciliter la création et le déploiement d'une PWA sur mesure.
+
+  :::
+
+- ✒️🔢 **Support complet de Markdown et LaTeX** : Enrichissez votre expérience LLM avec des capacités complètes de Markdown, LaTeX et de texte enrichi pour des interactions améliorées.
+
+- 🧩 **Créateur de Modèles** : Créez facilement des modèles personnalisés à partir des modèles Ollama de base directement depuis Open WebUI. Créez et ajoutez des personnages et agents personnalisés, personnalisez les éléments des modèles et importez des modèles sans effort via l'intégration de la [Communauté Open WebUI](https://openwebui.com/).
+
+- 📚 **Intégration locale et distante de RAG** : Plongez dans l'avenir des interactions de chat et explorez vos documents avec notre technologie de pointe de Génération Augmentée par les Recherches (RAG) dans vos conversations. Les documents peuvent être chargés dans l'onglet `Documents` de l'Espace de travail, après quoi ils peuvent être accessibles en utilisant le dièse [`#`] avant une requête, ou en commençant l'invite avec le dièse [`#`], suivi d'une URL pour l'intégration de contenu web.
+
+- 📄 **Extraction de documents** : Extrayez du texte et des données à partir de divers formats de documents, y compris des PDF, des documents Word, des feuilles de calcul Excel, des présentations PowerPoint, et plus encore. Nos capacités avancées de traitement des documents permettent une intégration fluide à votre base de connaissances, permettant une récupération et une génération précises d'informations à partir de documents complexes tout en en préservant la structure et le format.
+
+- 🔍 **Recherche Web pour RAG** : Effectuez des recherches web en utilisant une sélection de différents fournisseurs de recherche et injectez les résultats directement dans votre expérience locale de Génération Augmentée par les Recherches (RAG).
+
+- 🌐 **Capacités de navigation Web** : Intégrez des sites Web de manière transparente dans votre expérience de chat en utilisant la commande `#` suivie d'une URL. Cette fonctionnalité permet l'incorporation de contenu web directement dans vos conversations, enrichissant ainsi vos interactions.
+
+- 🎨 **Intégration de la génération d'images** : Intégrez facilement des capacités de génération d'images pour enrichir votre expérience de chat avec un contenu visuel dynamique.
+
+- ⚙️ **Utilisation simultanée de modèles** : Interagissez facilement avec plusieurs modèles simultanément, exploitant leurs forces uniques pour des réponses optimales. Exploitez un ensemble diversifié de modalités de modèles en parallèle pour améliorer votre expérience.
+
+- 🔐 **Contrôle d'accès basé sur les rôles (RBAC)** : Assurez un accès sécurisé avec des permissions restreintes. Seules les personnes autorisées peuvent accéder à votre Ollama, tandis que les droits de création et d'extraction de modèles sont exclusivement réservés aux administrateurs.
+
+- 🌐🌍 **Support multilingue** : Découvrez Open WebUI dans votre langue préférée grâce à notre support d'internationalisation (`i18n`). Nous vous invitons à nous rejoindre pour élargir nos langues prises en charge ! Nous recherchons activement des contributeurs !
+
+- 🌟 **Mises à jour continues** : Nous nous engageons à améliorer Open WebUI avec des mises à jour régulières, des corrections et de nouvelles fonctionnalités.
+
+## Et bien d'autres fonctionnalités remarquables, notamment... ⚡️
+
+---
+
+### 🔧 Support des pipelines
+
+- 🔧 **Cadre de pipelines** : Intégrez et personnalisez sans effort votre expérience Open WebUI grâce à notre cadre modulaire de plugins pour une personnalisation et une fonctionnalité améliorées (https://github.com/open-webui/pipelines). Notre cadre permet l'ajout facile de logique personnalisée et l'intégration de bibliothèques Python, allant des agents d'IA aux API de domotique.
+
+- 📥 **Télécharger un pipeline** : Les pipelines peuvent être téléchargés directement depuis le menu `Panneau d'administration` > `Paramètres` > `Pipelines`, simplifiant ainsi le processus de gestion des pipelines.
+
+#### Les possibilités offertes par notre cadre de pipelines sont sans limites et pratiquement infinies. Commencez par quelques pipelines pré-construits pour vous lancer !
+
+- 🔗 **Appels de fonctions** : Intégrez [les appels de fonctions](https://github.com/open-webui/pipelines/blob/main/examples/filters/function_calling_filter_pipeline.py) sans effort via les pipelines pour enrichir vos interactions avec les modèles de langage avec des capacités avancées d'appel de fonctions.
+
+- 📚 **RAG personnalisé** : Intégrez un [pipeline de Récupération Augmentée de Génération (RAG)](https://github.com/open-webui/pipelines/tree/main/examples/pipelines/rag) personnalisé pour optimiser vos interactions avec les modèles de langage avec une logique RAG personnalisée.
+
+- 📊 **Suivi des messages avec Langfuse** : Surveillez et analysez les interactions de messages dans les statistiques d'utilisation en temps réel grâce au pipeline [Langfuse](https://github.com/open-webui/pipelines/blob/main/examples/filters/langfuse_filter_pipeline.py).
+
+- ⚖️ **Limitation du débit utilisateur** : Gérez efficacement l'utilisation de l'API en contrôlant le flux des requêtes envoyées aux modèles de langage afin de prévenir le dépassement des taux limites grâce au pipeline [Rate Limit](https://github.com/open-webui/pipelines/blob/main/examples/filters/rate_limit_filter_pipeline.py).
+
+- 🌍 **Traduction en temps réel avec LibreTranslate** : Intégrez des traductions en temps réel à vos interactions avec les modèles de langage en utilisant le pipeline [LibreTranslate](https://github.com/open-webui/pipelines/blob/main/examples/filters/libretranslate_filter_pipeline.py), permettant une communication interlinguale.
+  - Veuillez noter que ce pipeline nécessite une configuration supplémentaire avec LibreTranslate dans un conteneur Docker pour fonctionner.
+
+- 🛡️ **Filtrage des messages toxiques** : Notre pipeline [Detoxify](https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py) filtre automatiquement les messages toxiques pour maintenir un environnement de discussion propre et sûr.
+
+- 🔒 **LLM-Guard** : Assurez des interactions sécurisées avec les modèles de langage grâce au pipeline [LLM-Guard](https://github.com/open-webui/pipelines/blob/main/examples/filters/llmguard_prompt_injection_filter_pipeline.py), doté d’un scanner d’injection de prompt qui détecte et atténue les manipulations d’entrées malicieuses ciblant les modèles de grand langage. Cela protège vos modèles de fuite de données et ajoute une couche de résistance contre les attaques d'injection de prompt.
+
+- 🕒 **Limites des tours de conversation** : Améliorez la gestion des interactions en définissant des limites sur le nombre de tours de conversation avec le pipeline [Limite de tours de conversation](https://github.com/open-webui/pipelines/blob/main/examples/filters/conversation_turn_limit_filter.py).
+
+- 📈 **Statistiques de génération OpenAI** : Notre pipeline [OpenAI](https://github.com/open-webui/pipelines/blob/main/examples/pipelines/providers/openai_manifold_pipeline.py) fournit des statistiques détaillées de génération pour les modèles OpenAI.
+
+- **🚀 Support multi-modèles** : Notre intégration fluide avec divers modèles d'IA de [différents fournisseurs](https://github.com/open-webui/pipelines/tree/main/examples/pipelines/providers) élargit vos possibilités avec un large éventail de modèles de langue à sélectionner et avec lesquels interagir.
+
+#### En plus des fonctionnalités étendues et des options de personnalisation, nous offrons également [une bibliothèque d'exemples de pipelines prêts à l'emploi](https://github.com/open-webui/pipelines/tree/main/examples) ainsi qu'un [pipeline de base exemple pratique](https://github.com/open-webui/pipelines/blob/main/examples/scaffolds/example_pipeline_scaffold.py) pour vous aider à démarrer. Ces ressources simplifieront votre processus de développement et vous permettront de créer rapidement des interactions puissantes avec les modèles de langage en utilisant les pipelines et Python. Bon codage ! 💡
+
+---
+
+### 🖥️ Expérience utilisateur
+
+- 🖥️ **Interface intuitive** : L'interface de chat a été conçue en pensant à l'utilisateur, s'inspirant de l'interface utilisateur de ChatGPT.
+
+- ⚡ **Réactivité rapide** : Profitez d'une performance fiable, rapide et réactive.
+
+- 🎨 **Écran de démarrage** : Un simple écran de chargement pour une expérience utilisateur plus fluide.
+
+- 🌐 **Interface personnalisée** : Choisissez entre une page d'accueil de recherche fraîchement conçue et l'interface classique de chat depuis Paramètres > Interface, permettant une expérience sur mesure.
+
+- 📦 **Méthode d'installation via Pip** : Open WebUI peut être installé en utilisant la commande `pip install open-webui`, ce qui simplifie le processus et le rend plus accessible pour les nouveaux utilisateurs. Pour plus d'informations, veuillez visiter : https://pypi.org/project/open-webui/.
+
+- 🌈 **Personnalisation des thèmes** : Personnalisez votre expérience avec Open WebUI grâce à une gamme d'options, incluant des thèmes solides mais élégants, des images d'arrière-plan de chat personnalisables, et trois options de mode : mode Clair, Sombre ou OLED Sombre - ou laissez *Her* choisir pour vous ! ;)
+
+- 🖼️ **Prise en charge des arrière-plans personnalisés** : Définissez un arrière-plan personnalisé depuis Paramètres > Interface pour personnaliser votre expérience.
+
+- 📝 **Bannières enrichies avec Markdown** : Créez des annonces visuellement engageantes avec la prise en charge du Markdown dans les bannières, permettant un contenu plus riche et dynamique.
+
+- 💻 **Mise en évidence syntaxique du code** : Notre fonctionnalité de mise en évidence syntaxique améliore la lisibilité du code, offrant une vue claire et concise de votre code.
+
+- 🗨️ **Rendu Markdown dans les messages utilisateur** : Les messages utilisateur sont désormais rendus en Markdown, améliorant la lisibilité et l'interaction.
+
+- 🎨 **Options de saisie de texte flexibles** : Passez entre une saisie de texte enrichi et une zone de texte classique pour le chat, selon vos préférences, en choisissant entre un formatage avancé et une saisie de texte plus simple.
+
+- 👆 **Partage de code sans effort** : Simplifiez le processus de partage et de collaboration grâce à des options pratiques pour copier du code, incluant un bouton de copie flottant dans les blocs de code et une fonctionnalité de clic pour copier depuis les spans de code, économisant du temps et réduisant la frustration.
+
+- 🎨 **Objets interactifs** : Affichez du contenu web et des SVG directement dans l'interface, permettant des itérations rapides et des modifications en direct pour une créativité et une productivité accrues.
+
+- 🖊️ **Édition de code en direct** : Les blocs de code superchargés permettent l'édition en direct directement dans la réponse du LLM, avec des rechargements en direct pris en charge par les objets interactifs, simplifiant le codage et les tests.
+
+- 🔍 **Interaction améliorée avec les SVG** : Les capacités de zoom et de panoramique pour les images SVG, y compris les diagrammes Mermaid, permettent une exploration et une compréhension plus approfondies des concepts complexes.
+
+- 🔍 **Actions rapides de sélection de texte** : Des boutons flottants apparaissent lorsque du texte est sélectionné dans les réponses du LLM, offrant des interactions approfondies telles que "Poser une question" ou "Expliquer", et améliorent l'expérience utilisateur.
+
+- ↕️ **Support de chat bidirectionnel** : Vous pouvez facilement basculer entre les directions de chat de gauche à droite et de droite à gauche pour s'adapter aux préférences linguistiques variées.
+
+- 📱 **Accessibilité mobile** : La barre latérale peut être ouverte et fermée sur les appareils mobiles avec un simple geste de balayage.
+
+- 🤳 **Retour haptique sur les appareils compatibles** : Les appareils Android prennent en charge le retour haptique pour une expérience tactile immersive lors de certaines interactions.
+
+- 🔍 **Recherche dans les paramètres utilisateur** : Recherchez rapidement des champs dans les paramètres, améliorant la facilité d'utilisation et la navigation.
+
+- 📜 **Documentation Swagger hors ligne** : Accédez à une documentation API Swagger adaptée aux développeurs hors ligne, garantissant une accessibilité complète où que vous soyez.
+
+- 💾 **Optimisations de performance** : Le chargement paresseux des grandes dépendances minimise l'utilisation initiale de la mémoire, augmentant la performance et réduisant les temps de chargement.
+
+- 🚀 **Configuration persistante et évolutive** : Les configurations Open WebUI sont stockées dans une base de données (webui.db), permettant un équilibrage de charge transparent, des configurations en haute disponibilité et des paramètres persistants à travers plusieurs instances, facilitant l'accès et la réutilisation de vos configurations.
+
+- 🔄 **Importation/Exportation portable** : Importez et exportez aisément les configurations Open WebUI, simplifiant le processus de réplication des paramètres sur plusieurs systèmes.
+
+- ❓ **Accès rapide à la documentation & aux raccourcis** : Le bouton point d'interrogation situé en bas à droite de l'écran principal de l'interface utilisateur (disponible sur les écrans plus grands comme les PC de bureau et les ordinateurs portables) offre aux utilisateurs un accès facile à la page de documentation Open WebUI et aux raccourcis clavier disponibles.
+
+- 📜 **Journal des modifications & vérification des mises à jour** : Les utilisateurs peuvent accéder à un journal complet des modifications et vérifier les mises à jour dans le menu `Paramètres` > `À propos` > `Voir les nouveautés`, qui fournit un aperçu rapide des dernières fonctionnalités, améliorations et correctifs, ainsi que la possibilité de vérifier les mises à jour.
+
+---
+
+### 💬 Conversations
+
+- 💬 **Chat véritablement asynchrone** : Profitez du multitâche ininterrompu avec la prise en charge du chat véritablement asynchrone, vous permettant de créer des chats, de naviguer ailleurs et de revenir à tout moment avec des réponses prêtes.
+
+- 🔔 **Notifications de fin de chat** : Restez informé avec des notifications instantanées dans l'interface utilisateur lorsqu'un chat se termine dans un onglet non actif, vous assurant de ne jamais manquer une réponse terminée.
+
+- 🌐 **Intégration via webhook de notification** : Recevez des notifications à temps pour des chats de longue durée ou des besoins d'intégration externe avec des webhooks configurables, même lorsque votre onglet est fermé.
+
+- 📚 **Canaux (Bêta)** : Explorez la collaboration en temps réel entre utilisateurs et IA avec des salons de chat de style Discord/Slack, construisez des bots pour les canaux, et débloquez la communication asynchrone pour des flux de travail multi-agents proactifs.
+
+- 🖊️ **Indicateurs de saisie dans les canaux** : Améliorez la collaboration avec des indicateurs de saisie en temps réel dans les canaux, gardant tout le monde engagé et informé.
+
+- 👤 **Indicateurs de Statut Utilisateur** : Affichez rapidement le statut d'un utilisateur en cliquant sur son image de profil dans les canaux, offrant une meilleure coordination et des aperçus de disponibilité.
+
+- 💬 **Commandes de Chat** : Ajustez facilement les paramètres pour chaque session de chat, offrant un contrôle plus précis de vos interactions.
+
+- 💖 **Gestion des Réponses Préférées** : Marquez et organisez facilement vos réponses préférées directement depuis l'aperçu du chat, facilitant ainsi leur récupération et l'accès.
+
+- 📌 **Chats Épinglés** : Support des chats épinglés, permettant de garder des conversations importantes facilement accessibles.
+
+- 🔍 **Support d'Intégration RAG** : Modifiez le modèle d'encodage (embedding) pour la génération augmentée par récupération (RAG) directement dans le menu `Panneau Admin` > `Paramètres` > `Documents`, améliorant le traitement des documents. Cette fonctionnalité prend en charge les modèles Ollama et OpenAI.
+
+- 📜 **Citations dans la Fonctionnalité RAG** : La génération augmentée par récupération (RAG) permet aux utilisateurs de suivre facilement le contexte des documents fournis aux modèles LLM grâce à des citations ajoutées en points de référence.
+
+- 🌟 **Pipeline RAG Amélioré** : Une sous-fonction hybrid recherchable configurable pour notre fonctionnalité RAG, améliorant la fonctionnalité via `BM25`, avec re-classement alimenté par `CrossEncoder`, et des seuils de pertinence configurables.
+
+- 📹 **Pipeline YouTube RAG** : Le pipeline dédié à la génération augmentée par récupération (RAG) pour résumer les vidéos YouTube via des URL vidéo permet une interaction fluide avec les transcriptions vidéo directement.
+
+- 📁 **Récupération Complète de Documents** : Passez entre une récupération complète de documents et des extraits traditionnels, permettant des tâches approfondies comme le résumé et prenant en charge des capacités documentaires renforcées.
+
+- 🌟 **Pertinence de Citation RAG** : Évaluez facilement la précision des citations avec l'ajout de pourcentages de pertinence dans les résultats RAG.
+
+- 🗂️ **RAG Avancé** : Améliorez la précision de RAG grâce à un pré-traitement intelligent de l'historique des chats pour déterminer les meilleures requêtes avant récupération.
+
+- 📚 **Citations Inline pour RAG** : Profitez de citations inline intégrées pour les réponses de Génération Augmentée par Récupération (RAG), améliorant la traçabilité et offrant une clarté des sources pour les fichiers nouvellement téléchargés.
+
+- 📁 **Gestion des Textes Longs** : Convertissez optionnellement les textes longs collés en un fichier téléchargeable à utiliser directement avec RAG, tout en conservant une interface de chat plus propre.
+
+- 🔄 **Support Multi-Modal** : Interagissez sans effort avec des modèles prenant en charge des interactions multimodales, y compris des images (`par ex., LLaVA`).
+
+- 🤖 **Support de Multiples Modèles** : Changez rapidement entre différents modèles pour des interactions diversifiées dans les chats.
+
+- 🔀 **Fusionner les Réponses dans des Chats Multi-Modèles** : Améliorez le dialogue en fusionnant les réponses de plusieurs modèles en une seule réponse cohérente.
+
+- ✅ **Instances Multiples du Même Modèle dans les Chats** : Amélioration des chats multi-modèles pour permettre l'ajout de plusieurs instances du même modèle.
+
+- 💬 **Fonctionnalité de Chat Temporaire** : Introduction d'une fonctionnalité de chat temporaire, remplaçant l'ancien paramètre d'historique de chat pour améliorer la flexibilité des interactions utilisateur.
+
+- 🖋️ **Édition des Messages Utilisateur** : Amélioration de la fonctionnalité d'édition de chat utilisateur pour permettre l'enregistrement des modifications sans les envoyer.
+
+- 💬 **Édition Efficace des Conversations** : Créez rapidement et intuitivement de nouvelles paires de messages à l'aide du raccourci Cmd/Ctrl+Shift+Enter, simplifiant les tests de longueur de conversation.
+
+- 🖼️ **Compression d'Images côté Client** : Économisez de la bande passante et améliorez les performances avec la compression d'images côté client, vous permettant de compresser les images avant le téléchargement depuis Paramètres > Interface.
+
+- 👥 **Intégration Modèle @** : En passant sans effort à n'importe quel modèle local ou externe accessible pendant les conversations, les utilisateurs peuvent exploiter l'intelligence collective de plusieurs modèles en un seul chat. Cela peut être fait en utilisant la commande `@` pour spécifier le modèle par nom au sein d'un chat.
+
+- 🏷️ **Étiquetage des Conversations** : Catégorisez et localisez sans effort les chats étiquetés pour une référence rapide et une collecte de données améliorée grâce à notre système de requête efficace `tag:`, vous permettant de gérer, rechercher et organiser vos conversations sans encombrer l'interface.
+
+- 🧠 **Auto-Étiquetage** : Les conversations peuvent être automatiquement étiquetées pour une organisation améliorée, reflétant l'efficacité des titres générés automatiquement.
+
+- 👶 **Clonage de Chat** : Clonez facilement et enregistrez une capture d'écran de n'importe quel chat pour référence future ou continuation. Cette fonctionnalité facilite la reprise là où vous vous êtes arrêté ou le partage de votre session avec d'autres. Pour créer une copie de votre chat, cliquez simplement sur le bouton `Cloner` dans les options déroulantes du chat. Pouvez-vous suivre vos clones ?
+
+- ⭐ **Visualisation des Flux de Conversation** : Diagramme de messages interactifs pour une meilleure visualisation des flux de conversation, améliorant la compréhension et la navigation des discussions complexes.
+
+- 📁 **Dossiers de Chats** : Organisez vos chats dans des dossiers, glissez-déposez-les pour une gestion facile, et exportez-les sans effort pour les partager ou les analyser.
+
+- 📤 **Importation Facile de Chats** : Importez des chats dans votre espace de travail en glissant-déposant simplement des fichiers d'exportation de chat (JSON) dans la barre latérale.
+
+- 📜 **Prise en charge des préréglages de messages** : Accédez instantanément à des messages préréglés personnalisés grâce à la commande `/` dans le champ de saisie de chat. Chargez facilement des amorces de conversation prédéfinies et accélérerez vos interactions. Importez des messages facilement via l'intégration avec [Open WebUI Community](https://openwebui.com/) ou créez les vôtres !
+
+- 📅 **Prise en charge des variables de messages** : Les variables de messages, telles que `{{CLIPBOARD}}`, `{{CURRENT_DATE}}`, `{{CURRENT_DATETIME}}`, `{{CURRENT_TIME}}`, `{{CURRENT_TIMEZONE}}`, `{{CURRENT_WEEKDAY}}`, `{{USER_NAME}}`, `{{USER_LANGUAGE}}`, et `{{USER_LOCATION}}`, peuvent être utilisées dans le message système ou en utilisant une commande slash pour sélectionner directement un message dans un chat.
+  - Veuillez noter que la variable de message `{{USER_LOCATION}}` nécessite une connexion sécurisée en HTTPS. Pour utiliser cette variable particulière, veuillez vous assurer que `{{USER_LOCATION}}` est activée dans le menu `Paramètres` > `Interface`.
+  - Veuillez noter que les variables de message `{{CLIPBOARD}}` nécessitent un accès au presse-papiers de votre appareil.
+
+- 🧠 **Fonction de mémoire** : Ajoutez manuellement des informations que vous souhaitez que vos LLM mémorisent via le menu `Paramètres` > `Personnalisation` > `Mémoire`. Les mémoires peuvent être ajoutées, modifiées et supprimées.
+
+---
+
+### 💻 Gestion des modèles
+
+
+- 🛠️ **Constructeur de modèles** : Tous les modèles peuvent être créés et modifiés avec un mode constructeur persistant sur la page d'édition des modèles.
+
+- 📚 **Prise en charge des connaissances pour les modèles** : La possibilité d'attacher des outils, fonctions, et collections de connaissances directement aux modèles depuis la page d'édition d'un modèle, permettant d'enrichir les informations disponibles pour chaque modèle.
+
+- 🗂️ **Préréglages de modèles** : Créez et gérez des préréglages de modèles pour l'API Ollama et OpenAI.
+
+- 🏷️ **Étiquetage des modèles** : L'espace de travail des modèles permet aux utilisateurs d'organiser leurs modèles en utilisant des étiquettes.
+
+- 📋 **Ordre déroulant du sélecteur de modèles** : Les modèles peuvent être facilement organisés en les glissant-déposant dans les positions souhaitées au sein de l'espace de travail des modèles, ce qui reflétera ensuite les modifications dans le menu déroulant des modèles.
+
+- 🔍 **Sélecteur déroulant des modèles** : Trouvez et sélectionnez facilement vos modèles avec une recherche approximative et des informations détaillées sur les modèles grâce aux étiquettes et descriptions des modèles.
+
+- ⌨️ **Sélection des modèles avec les flèches** : Utilisez les touches fléchées pour une sélection plus rapide des modèles, améliorant l'accessibilité.
+
+- 🔧 **Actions rapides dans l'espace de travail des modèles** : Actions rapides améliorées avec la touche Maj pour masquer/afficher et supprimer des modèles dans l'espace de travail des modèles.
+
+- 😄 **Utilisation transparente des modèles** : Restez informé de l'état du système lors des requêtes avec des modèles augmentés par la connaissance, grâce à des affichages visibles de l'état.
+
+- ⚙️ **Contrôle précis avec paramètres avancés** : Obtenez un niveau de contrôle plus approfondi en ajustant des paramètres de modèle tels que `seed`, `temperature`, `frequency penalty`, `context length`, `seed`, et plus.
+
+- 🔄 **Intégration transparente** : Copiez n'importe quelle commande CLI `ollama run {model:tag}` directement depuis la page d'un modèle sur [Ollama library](https://ollama.com/library/) et collez-la dans le menu déroulant des modèles pour sélectionner et récupérer facilement des modèles.
+
+- 🗂️ **Créer un fichier modèle Ollama** : Pour créer un fichier modèle pour Ollama, accédez au menu `Panneau d'administration` > `Paramètres` > `Modèles` > `Créer un modèle`.
+
+- ⬆️ **Création de modèle fichier GGUF** : Créez facilement des modèles Ollama en téléchargeant directement des fichiers GGUF depuis Open WebUI à partir du menu `Paramètres administratifs` > `Paramètres` > `Modèles` > `Expérimental`. Le processus a été simplifié avec l'option de télécharger depuis votre machine ou de télécharger des fichiers GGUF depuis Hugging Face.
+
+- ⚙️ **Réglage du modèle par défaut** : La préférence de modèle par défaut pour les nouveaux chats peut être définie dans le menu `Paramètres` > `Interface` sur les appareils mobiles, ou être plus facilement définie dans un nouveau chat sous le menu déroulant du sélecteur de modèle sur les PC de bureau et ordinateurs portables.
+
+- 💡 **Perspectives des réponses LLM** : Les détails de chaque réponse générée peuvent être visualisés, y compris les analyses API externes du modèle et des informations complètes sur les modèles locaux.
+
+- 🕒 **Détails des modèles d'un coup d'œil** : Visualisez les détails critiques des modèles, y compris le hash du modèle et le dernier horodatage de modification, directement dans l'espace de travail des modèles pour un suivi et une gestion améliorés.
+
+- 📥🗑️ **Télécharger/Supprimer les modèles** : Les modèles peuvent être téléchargés ou supprimés directement depuis Open WebUI avec facilité.
+
+- 🔄 **Mettre à jour tous les modèles Ollama** : Un bouton pratique permet aux utilisateurs de mettre à jour tous leurs modèles installés localement en une seule opération, simplifiant la gestion des modèles.
+
+- 🍻 **Intégration de carte de personnage TavernAI** : Vivez une narration visuelle améliorée avec l'intégration de carte de personnage TavernAI dans notre constructeur de modèles. Les utilisateurs peuvent intégrer sans problème des PNG de cartes de personnage TavernAI directement dans leurs fichiers modèles, créant une expérience utilisateur plus immersive et engageante.
+
+- 🎲 **Espace de jeu des modèles (Beta)** : Essayez les modèles avec l'espace de jeu des modèles (`beta`), qui permet aux utilisateurs de tester et explorer les capacités et les paramètres des modèles avec facilité dans un environnement sandbox avant leur déploiement dans un environnement de discussion en direct.
+
+---
+
+### 👥 Collaboration
+
+- 🗨️ **Partage local de chat** : Générer et partager des liens de chat entre utilisateurs de manière efficace et fluide, ce qui améliore la collaboration et la communication.
+
+- 👍👎 **Annotation RLHF** : Améliorez l'impact de vos messages en les notant avec un pouce levé ou un pouce baissé et fournissez une évaluation de la réponse sur une échelle de 1 à 10, suivie de la possibilité de fournir un retour écrit, facilitant la création de ensembles de données pour l'apprentissage par renforcement basé sur les retours humains (`RLHF`). Utilisez vos messages pour entraîner ou affiner les modèles, tout en assurant la confidentialité des données enregistrées localement.
+
+- 🔧 **Exportation complète des retours** : Exportez les données historiques des retours en JSON pour une intégration fluide avec le traitement RLHF et une analyse approfondie, fournissant des informations précieuses pour l'amélioration.
+
+- 🤝 **Partage communautaire** : Partagez vos sessions de chat avec la [Communauté Open WebUI](https://openwebui.com/) en cliquant sur le bouton `Partager à la Communauté Open WebUI`. Cette fonctionnalité vous permet d'interagir avec d'autres utilisateurs et de collaborer sur la plateforme.
+  - Pour utiliser cette fonctionnalité, veuillez vous connecter à votre compte Communauté Open WebUI. Partager vos conversations favorise une communauté dynamique, encourage le partage de connaissances et facilite la résolution collective de problèmes. Veuillez noter que le partage communautaire des sessions de chat est une fonctionnalité facultative. Seuls les administrateurs peuvent activer ou désactiver cette fonctionnalité dans le menu `Paramètres Admin` > `Paramètres` > `Général`.
+
+- 🏆 **Classement communautaire** : Rivalisez et suivez votre performance en temps réel avec notre système de classement, qui utilise le système de notation ELO et permet le partage facultatif de l'historique des retours.
+
+- ⚔️ **Arène d'évaluation des modèles** : Réalisez des tests à l'aveugle A/B des modèles directement depuis les paramètres administrateurs pour une véritable comparaison côte à côte, facilitant la recherche du meilleur modèle pour vos besoins.
+
+- 🎯 **Classements basés sur des sujets** : Découvrez des classements plus précis avec notre système expérimental de reclassement basé sur des sujets, qui ajuste les positions du classement en fonction de la similitude des étiquettes dans les retours.
+
+- 📂 **Espace de travail unifié et collaboratif** : Accédez à tous vos fichiers de modèles, invites, documents, outils et fonctions en un endroit pratique, tout en permettant à plusieurs utilisateurs de collaborer et contribuer aux modèles, connaissances, invites ou outils, simplifiant votre flux de travail et améliorant le travail d'équipe.
+
+---
+
+### 📚 Historique & Archivage
+
+- 📜 **Historique de chat** : Accédez et gérez facilement l'historique de vos conversations via la barre latérale de navigation de chat. Désactivez l'historique des chats dans le menu `Paramètres` > `Chats` pour empêcher la création d'un historique pour de nouvelles interactions.
+
+- 🔄 **Accès à l'historique de régénération** : Revivez facilement et explorez tout l'historique de régénération des réponses du modèle LLM.
+
+- 📬 **Archiver les chats** : Stockez facilement les conversations terminées avec les modèles pour une référence ou interaction future, en maintenant une interface de chat propre et bien rangée.
+
+- 🗃️ **Archiver tous les chats** : Cette fonctionnalité vous permet d'archiver rapidement toutes vos conversations en une seule fois.
+
+- 📦 **Exportez tous les chats archivés en JSON** : Cette fonctionnalité permet aux utilisateurs d'exporter facilement tous leurs chats archivés dans un fichier JSON unique, pouvant être utilisé pour une sauvegarde ou un transfert.
+
+- 📄 **Téléchargez les chats en JSON/PDF/TXT** : Téléchargez facilement vos chats individuellement dans le format de votre choix `.json`, `.pdf` ou `.txt`.
+
+- 📤📥 **Importer/Exporter l'historique des chats** : Déplacez sans effort vos données de chat à l'intérieur et à l'extérieur de la plateforme via les options `Importer des chats` et `Exporter des chats`.
+
+- 🗑️ **Supprimer tous les chats** : Cette option vous permet de supprimer définitivement tous vos chats, assurant un nouveau départ.
+
+---
+
+### 🎙️ Audio, Voix, & Accessibilité
+
+- 🗣️ **Support de l'entrée vocale** : Interagissez avec votre modèle via des interactions vocales ; profitez de la commodité de parler directement à votre modèle. De plus, explorez l'option d'envoi automatique de l'entrée vocale après 3 secondes de silence pour une expérience simplifiée.
+  - L'accès au microphone nécessite une configuration manuelle d'une connexion sécurisée via HTTPS pour fonctionner, ou [l'autorisation manuelle de votre URL à vos propres risques](https://docs.openwebui.com/troubleshooting/microphone-error).
+
+- 😊 **Appel Emoji** : Activez cette fonction à partir du menu `Paramètres` > `Interface`, permettant aux modèles LLM d'exprimer des émotions à l'aide d'emojis pendant les appels vocaux pour une interaction plus dynamique.
+  - L'accès au microphone nécessite une connexion sécurisée via HTTPS pour que cette fonction fonctionne.
+
+- 🎙️ **Fonction d'appel vocal mains libres** : Initiez des appels vocaux sans avoir besoin d'utiliser vos mains, rendant les interactions plus fluides.
+  - L'accès au microphone est requis avec une connexion sécurisée via HTTPS pour que cette fonction fonctionne.
+
+- 📹 **Fonction d'appel vidéo** : Activez les appels vidéo avec des modèles vision de support comme LlaVA et GPT-4o, ajoutant une dimension visuelle à vos communications.
+  - L'accès à la caméra et au microphone est requis avec une connexion sécurisée via HTTPS pour que cette fonction fonctionne.
+
+- 👆 **Appuyez pour interrompre** : Arrêtez la parole de l'IA pendant les conversations vocales avec une simple pression sur les appareils mobiles, assurant un contrôle fluide de l'interaction.
+
+- 🎙️ **Interruption vocale** : Arrêtez la parole de l'IA pendant les conversations vocales avec votre voix sur les appareils mobiles, assurant un contrôle fluide de l'interaction.
+
+- 🔊 **Point de terminaison personnalisable pour la synthèse vocale** : Personnalisez votre expérience de synthèse vocale avec des points de terminaison compatibles avec OpenAI pour lire à haute voix les réponses du modèle LLM.
+
+- 🔗 **Accès au mode d'appel direct** : Activez le mode d'appel directement depuis une URL, offrant un raccourci pratique pour les utilisateurs d'appareils mobiles.
+
+- ✨ **Synthèse vocale personnalisable** : Contrôlez comment le contenu des messages est segmenté pour les demandes de génération de synthèse vocale (TTS), offrant ainsi des options de sortie vocale flexibles.
+
+- 🔊 **Intégration des services Azure Speech** : Prend en charge les services Azure Speech pour la synthèse vocale (TTS), offrant aux utilisateurs un éventail plus large d'options de synthèse vocale.
+
+- 🎚️ **Lecture audio personnalisable** : Permet aux utilisateurs d'ajuster la vitesse de lecture audio selon leurs préférences dans les paramètres du mode Appel, améliorant ainsi l'accessibilité et la convivialité.
+
+- 🎵 **Large compatibilité audio** : Profitez de la prise en charge d'un large éventail de transcriptions de formats de fichiers audio avec RAG, y compris audio/x-m4a, élargissant la compatibilité avec le contenu audio au sein de la plateforme.
+
+- 🔊 **Compression audio** : Une compression audio expérimentale permet de contourner la limite de 25 Mo pour le traitement de la conversion vocale en texte d’OpenAI, élargissant les possibilités d'interactions basées sur l’audio.
+
+- 🗣️ **Synthèse vocale SpeechT5 expérimentale** : Profitez d'un support local SpeechT5 pour des capacités améliorées de synthèse vocale.
+
+---
+
+### 🐍 Exécution de code
+
+- 🚀 **Cadre de plugin polyvalent, indépendant de l'interface utilisateur, compatible avec OpenAI** : Intégrez et personnalisez sans effort [Open WebUI Pipelines](https://github.com/open-webui/pipelines) pour un traitement de données et un entraînement de modèles efficaces, garantissant une flexibilité et une évolutivité optimales.
+
+- 🛠️ **Appel de fonction Python natif** : Accédez à la puissance de Python directement dans Open WebUI grâce à l'appel de fonctions natif. Intégrez facilement du code personnalisé pour créer des fonctionnalités uniques telles que des pipelines RAG personnalisés, des outils de recherche Web et même des actions de type agent via un éditeur de code intégré pour développer et intégrer des fonctions dans l'espace de travail `Outils` et `Fonctions`.
+
+- 🐍 **Exécution de code Python** : Exécutez du code Python localement dans le navigateur via Pyodide avec une gamme de bibliothèques prises en charge.
+
+- 🌊 **Rendu Mermaid** : Créez des diagrammes et des organigrammes visuellement attrayants directement dans Open WebUI avec l'[outil de diagrammes et graphiques Mermaid](https://mermaid.js.org/intro/) prenant en charge le rendu en syntaxe Mermaid.
+
+- 🔗 **Prise en charge des Iframes** : Permet le rendu en HTML directement dans votre interface de chat à l'aide de fonctions et d'outils.
+
+---
+
+### 🔒 Intégration et sécurité
+
+- ✨ **Support de plusieurs API compatibles OpenAI** : Intégrez et personnalisez sans effort diverses API compatibles OpenAI, améliorant la polyvalence de vos interactions de chat.
+
+- 🔑 **Gestion simplifiée des clés API** : Générez et gérez facilement des clés secrètes pour utiliser Open WebUI avec les bibliothèques OpenAI, simplifiant l'intégration et le développement.
+
+- 🌐 **Prise en charge des proxys HTTP/S** : Configurez facilement les paramètres réseau en utilisant la variable d'environnement `http_proxy` ou `https_proxy`. Ces variables, si définies, doivent contenir les URL des proxys HTTP et HTTPS respectivement.
+
+- 🌐🔗 **Connectivité avec un serveur Ollama externe** : Connectez-vous sans effort à un serveur Ollama externe hébergé à une autre adresse en configurant la variable d'environnement.
+
+- 🛢️ **Intégration flexible des bases de données** : Connectez sans effort des bases de données personnalisées, y compris SQLite, Postgres, et plusieurs bases de données vectorielles comme Milvus, en utilisant des variables d'environnement pour une gestion flexible et évolutive des données.
+
+- 🌐🗣️ **Prise en charge externe de la conversion vocale en texte** : L'ajout de services de conversion vocale en texte (`STT`) externes offre une flexibilité accrue, permettant aux utilisateurs de choisir leur fournisseur préféré pour une interaction fluide.
+
+- 🌐 **Prise en charge de ChromaDB distant** : Étendez les capacités de votre base de données en vous connectant à des serveurs ChromaDB distants.
+
+- 🔀 **Équilibrage de charge entre plusieurs instances Ollama** : Distribuez facilement les demandes de chat entre plusieurs instances Ollama pour des performances et une fiabilité améliorées.
+
+- 🚀 **Équilibrage de charge avancé et fiabilité** : Utilisez des capacités d'équilibrage de charge améliorées, des instances sans état avec prise en charge complète de Redis, et une reconnexion automatique aux websockets pour promouvoir des performances, une fiabilité, et une évolutivité optimales dans WebUI, garantissant des interactions fluides et ininterrompues sur plusieurs instances.
+
+- ☁️ **Prise en charge expérimentale de S3** : Activez des instances WebUI sans état utilisant S3 pour améliorer l'évolutivité et équilibrer les charges de travail importantes.
+
+- 🛠️ **Gestion OAuth pour les groupes d'utilisateurs** : Renforcez le contrôle et l'évolutivité dans les environnements collaboratifs grâce à une gestion au niveau des groupes via l'intégration OAuth.
+
+---
+
+### 👑 Administration
+
+- 👑 **Attribution d'un super administrateur** : Attribue automatiquement le premier inscrit comme super administrateur avec un rôle inaltérable qui ne peut pas être modifié par quiconque, même pas par d'autres administrateurs.
+
+- 🛡️ **Autorisations utilisateur granulaires** : Limitez les actions et l'accès des utilisateurs avec des autorisations basées sur les rôles personnalisables, garantissant que seules les personnes autorisées peuvent effectuer des tâches spécifiques.
+
+- 👥 **Gestion multi-utilisateurs** : Le panneau d'administration intuitif avec pagination vous permet de gérer plusieurs utilisateurs sans effort, simplifiant l'administration des utilisateurs et la gestion du cycle de vie des utilisateurs.
+
+- 🔧 **Panneau d'administration** : Le système de gestion des utilisateurs est conçu pour rationaliser l'intégration et la gestion des utilisateurs, offrant la possibilité d'ajouter des utilisateurs directement ou en masse via l'importation CSV.
+
+- 👥 **Indicateur d'utilisateurs actifs** : Surveillez le nombre d'utilisateurs actifs et les modèles qu'ils utilisent pour aider à évaluer les performances pouvant être affectées en raison d'un nombre élevé d'utilisateurs.
+
+- 🔒 **Rôle par défaut lors de l'inscription** : Spécifiez le rôle par défaut pour les nouvelles inscriptions (`en attente`, `utilisateur` ou `administrateur`), offrant une flexibilité dans la gestion des permissions et niveaux d'accès des nouveaux utilisateurs.
+
+- 🔒 **Empêcher les nouvelles inscriptions** : Activez l'option pour désactiver les nouvelles inscriptions d'utilisateurs, limitant ainsi l'accès à la plate-forme et maintenant un nombre fixe d'utilisateurs.
+
+- 🔒 **Empêcher la suppression des chats** : Permettez aux administrateurs de basculer un paramètre empêchant tous les utilisateurs de supprimer leurs messages de chat, garantissant que tous les messages de chat soient conservés à des fins d'audit ou de conformité.
+
+- 🔗 **Intégration Webhook** : Abonnez-vous aux événements d'inscription de nouveaux utilisateurs via webhook (compatible avec `Discord`, `Google Chat`, `Slack` et `Microsoft Teams`), offrant des notifications en temps réel et des capacités d'automatisation.
+
+- 📣 **Bannières de notification configurables** : Les administrateurs peuvent créer des bannières personnalisées avec persistance dans config.json, comprenant des options pour le contenu, la couleur de fond (`info`, `avertissement`, `erreur` ou `succès`), et la possibilité de les fermer. Les bannières sont accessibles uniquement aux utilisateurs connectés, garantissant la confidentialité des informations sensibles.
+
+- 🛡️ **Liste blanche des modèles** : Renforcez la sécurité et le contrôle d'accès en permettant aux administrateurs d'autoriser uniquement certains modèles pour les utilisateurs ayant le rôle de `utilisateur`, garantissant que seuls les modèles autorisés soient accessibles.
+
+- 🔑 **Contrôle administratif du partage communautaire** : Les administrateurs peuvent activer ou désactiver le partage communautaire pour tous les utilisateurs via un bouton dans le menu `Panneau Admin` > `Paramètres`. Cette option permet aux administrateurs de gérer l'accessibilité et la confidentialité, assurant un environnement sécurisé. Les administrateurs ont la possibilité d'activer ou de désactiver le bouton `Partager sur la communauté` pour tous les utilisateurs, ce qui leur permet de contrôler l'engagement et la collaboration communautaire.
+
+- 📧 **Authentification par email de confiance** : Authentifiez-vous éventuellement en utilisant un en-tête d'e-mail de confiance, ajoutant une couche supplémentaire de sécurité et d'authentification pour protéger votre instance Open WebUI.
+
+- 🔒 **Support du proxy inverse pour le backend** : Renforcez la sécurité en établissant une communication directe entre le backend d'Open WebUI et Ollama. Cette fonctionnalité clé élimine la nécessité d'exposer Ollama sur le réseau local (LAN). Les requêtes effectuées à la route `/ollama/api` depuis Open WebUI sont redirigées vers Ollama via le backend, améliorant la sécurité globale du système et offrant une couche de protection supplémentaire.
+
+- 🔒 **Authentification** : Veuillez noter qu'Open WebUI ne supporte pas nativement les schémas d'authentification fédérés comme SSO, OAuth, SAML ou OIDC. Cependant, il peut être configuré pour déléguer l'authentification à un proxy inverse authentifiant, réalisant ainsi une expérience de Single Sign-On (`SSO`). Cette configuration permet de centraliser la gestion et l'authentification des utilisateurs, améliorant la sécurité et la commodité des utilisateurs. En intégrant Open WebUI à un proxy inverse authentifiant, vous pouvez tirer parti des systèmes d'authentification existants et simplifier l'accès des utilisateurs à Open WebUI. Pour plus d'informations sur la configuration de cette fonctionnalité, veuillez consulter le [Support de l'authentification fédérée](https://docs.openwebui.com/features/sso).
+
+- 🔓 **Authentification facultative** : Profitez de la flexibilité de désactiver l'authentification en réglant `WEBUI_AUTH` sur `False`. C'est une solution idéale pour les nouvelles installations sans utilisateurs existants ou peut être utilisée à des fins de démonstration.
+
+- 🚫 **Sécurité avancée de l'API** : Bloquez les utilisateurs de l'API en fonction de filtres de modèle personnalisés, renforçant la sécurité et le contrôle de l'accès à l'API.
+
+- ❗ **Mises à jour administratives** : Assurez-vous que les administrateurs soient informés avec des notifications de mise à jour immédiates lors de leur connexion, les tenant au courant des derniers changements et états du système.
+
+- 👥 **Gestion des groupes d'utilisateurs** : Créez et gérez des groupes d'utilisateurs pour une organisation et un contrôle simplifiés.
+
+- 🔐 **Contrôle d'accès basé sur les groupes** : Configurez un accès granulaire aux modèles, connaissances, incitations et outils en fonction des groupes d'utilisateurs, permettant des environnements plus contrôlés et sécurisés.
+
+- 🛠️ **Permissions granulaires des utilisateurs** : Gérez facilement les permissions de l'espace de travail, y compris les uploads, suppressions, modifications et chats temporaires, ainsi que la création de modèles, connaissances, incitations et outils.
+
+- 🔑 **Authentification LDAP** : Améliorez la sécurité et l'évolutivité avec le support LDAP pour la gestion des utilisateurs.
+
+- 🌐 **Connexions OpenAI personnalisables** : Profitez d'un fonctionnement fluide avec des configurations OpenAI personnalisées, y compris le support des identifiants de préfixe et des identifiants de modèles explicites pour les APIs.
+
+- 🔐 **Gestion des clés API Ollama** : Gérez les informations d'identification d'Ollama, y compris le support des identifiants de préfixe, pour un fonctionnement sécurisé et efficace.
+
+- 🔄 **Gestion des connexions** : Activez ou désactivez facilement des connexions OpenAI et Ollama individuelles selon les besoins.
+
+- 🎨 **Espace de travail de modèle intuitif** : Gérez les modèles entre utilisateurs et groupes avec une interface repensée et conviviale.
+
+- 🔑 **Authentification par clé API** : Renforcez la sécurité en activant ou désactivant facilement l'authentification par clé API.
+
+- 🔄 **Réinitialisation uniforme des modèles** : Réinitialisez et supprimez tous les modèles des paramètres administratifs avec une option en un clic.
+
+- 🔓 **Contrôle d'accès flexible aux modèles** : Contournez facilement les contrôles d'accès aux modèles pour les rôles utilisateurs lorsqu'ils ne sont pas requis, en utilisant la variable d'environnement BYPASS_MODEL_ACCESS_CONTROL, simplifiant les flux de travail dans des environnements de confiance.
+
+- 🔒 **Restrictions configurables d'authentification par clé API** : Configurez de manière flexible les restrictions sur les points de terminaison pour l'authentification par clé API, désormais désactivées par défaut pour une configuration plus fluide dans des environnements de confiance.
+
+---

@@ -1,0 +1,50 @@
+---
+sidebar_position: 3
+title: "🎬 アクション機能"
+---
+
+アクション機能を使用すると、エンドユーザーが操作できるようにメッセージツールバーにカスタムボタンを追加できます。
+この機能により、タスクが実行される前に許可を与える、構造化データの可視化を生成する、チャット音声のスニペットをダウンロードするなど、よりインタラクティブなメッセージングが可能になります。
+
+アクションコードのスキャフォールドは[コミュニティセクション](https://openwebui.com/f/hub/custom_action/)にあります。
+
+グラフ可視化アクションの例は以下のビデオで確認できます。
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/graph-viz-action.gif" alt="グラフ可視化アクション" />
+  </a>
+</p>
+
+
+### アクション
+アクションはメッセージUI（個別のチャットメッセージの直下に表示される小さなボタン）にボタンを作成するために使用されます。
+
+アクションには、アクション関数と呼ばれる単一の主要コンポーネントがあります。このコンポーネントは、アクションの種類と処理するデータを定義するオブジェクトを受け取ります。
+
+<details>
+<summary>例</summary>
+
+```python
+async def action(
+        self,
+        body: dict,
+        __user__=None,
+        __event_emitter__=None,
+        __event_call__=None,
+    ) -> Optional[dict]:
+        print(f"action:{__name__}")
+
+        response = await __event_call__(
+            {
+                "type": "input",
+                "data": {
+                    "title": "メッセージを書く",
+                    "message": "ここに追加するメッセージを書いてください",
+                    "placeholder": "メッセージを入力してください",
+                },
+            }
+        )
+        print(response)
+```
+</details>

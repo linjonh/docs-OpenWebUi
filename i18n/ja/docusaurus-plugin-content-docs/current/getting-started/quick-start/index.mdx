@@ -1,0 +1,158 @@
+---
+sidebar_position: 2
+title: "⏱️ クイックスタート"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import { TopBanners } from "@site/src/components/TopBanners";
+
+import DockerCompose from "./tab-docker/DockerCompose.md";
+import Podman from "./tab-docker/Podman.md";
+import ManualDocker from "./tab-docker/ManualDocker.md";
+import DockerSwarm from "./tab-docker/DockerSwarm.md";
+import DockerUpdating from "./tab-docker/DockerUpdating.md";
+import Helm from "./tab-kubernetes/Helm.md";
+import Kustomize from "./tab-kubernetes/Kustomize.md";
+import Venv from "./tab-python/Venv.md";
+import Uv from "./tab-python/Uv.md";
+import Conda from "./tab-python/Conda.md";
+import PythonUpdating from "./tab-python/PythonUpdating.md";
+
+<TopBanners />
+
+:::info **ユーザー権限とプライバシーについての重要な注意事項:**
+
+- **管理者作成:** Open WebUIで最初に作成されたアカウントには**管理者権限**が付与され、ユーザー管理やシステム設定をコントロールします。
+- **ユーザー登録:** その後の登録は**保留**状態で始まり、アクセスには管理者の承認が必要です。
+- **プライバシーとデータセキュリティ:** **すべてのデータ**（ログイン情報を含む）は**ローカルデバイスにのみ保存**されます。Open WebUIは**厳密な機密性**を保証し、**外部リクエストは一切実行されない**ため、プライバシーとセキュリティが強化されます。
+  - **すべてのモデルはデフォルトで非公開です。** モデルはグループを介して、または公開されることでのみ共有されます。グループに割り当てられたモデルは、そのグループのメンバーのみが表示できます。モデルが公開されると、そのインスタンス内の誰もがそれを見ることができます。
+
+:::
+
+以下から好みのインストール方法を選択してください:
+
+- **Docker:** **公式にサポートされ、ほとんどのユーザーに推奨されます**
+- **Python:** リソースが少ない環境や手動セットアップを希望する方に適しています
+- **Kubernetes:** スケーリングとオーケストレーションを必要とする企業向けの展開に最適
+
+
+<Tabs>
+  <TabItem value="docker" label="Docker">
+    <Tabs>
+      <TabItem value="docker" label="Docker">
+        <div className="mt-5">
+          <ManualDocker />
+          <DockerUpdating />
+        </div>
+      </TabItem>
+
+      <TabItem value="compose" label="Docker Compose">
+        <div className="mt-5">
+          <DockerCompose />
+        </div>
+      </TabItem>
+
+      <TabItem value="podman" label="Podman">
+        <div className="mt-5">
+          <Podman />
+        </div>
+      </TabItem>
+
+      <TabItem value="swarm" label="Docker Swarm">
+        <div className="mt-5">
+          <DockerSwarm />
+        </div>
+      </TabItem>
+    </Tabs>
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+    <Tabs>
+      <TabItem value="uv" label="uv">
+        <div className="mt-5">
+          <Uv />
+        </div>
+        <PythonUpdating />
+      </TabItem>
+
+
+      <TabItem value="conda" label="Conda">
+        <div className="mt-5">
+          <Conda />
+        </div>
+        <PythonUpdating />
+      </TabItem>
+
+      <TabItem value="venv" label="Venv">
+        <div className="mt-5">
+          <Venv />
+        </div>
+        <PythonUpdating />
+
+      </TabItem>
+
+
+      <TabItem value="development" label="開発">
+        <div className="mt-5">
+          <h3>開発セットアップ</h3>
+          <p>
+            貢献を希望する開発者は、<a href="/getting-started/advanced-topics">高度なトピック</a>の開発ガイドをチェックしてください。
+          </p>
+        </div>
+      </TabItem>
+
+
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="kubernetes" label="Kubernetes">
+    <Tabs>
+      <TabItem value="helm" label="Helm">
+        <Helm />
+      </TabItem>
+
+      <TabItem value="kustomize" label="Kustomize">
+        <Kustomize />
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+
+  <TabItem value="third-party" label="サードパーティ">
+    <Tabs>
+      <TabItem value="pinokio-computer" label="Pinokio.computer">
+        ### Pinokio.computer インストール
+
+        Pinokio.computer経由でのインストールについては、次のウェブサイトをご覧ください:
+
+        [https://pinokio.computer/](https://pinokio.computer/)
+
+        このインストール方法に関するサポートは、ウェブサイトを通じて提供されます。
+      </TabItem>
+    </Tabs>
+
+    ### その他のサードパーティ統合
+
+    *(サードパーティの統合についての情報は、利用可能になるたびに追加します。)*
+  </TabItem>
+</Tabs>
+
+## 次のステップ
+
+インストール後、以下にアクセスしてください:
+
+- [http://localhost:3000](http://localhost:3000) でOpen WebUIにアクセス。
+- またはPython展開を使用している場合は [http://localhost:8080/](http://localhost:8080/)。
+
+これでOpen WebUIの使用を開始できます！
+
+## Ollamaを使ったOpen WebUIの使用
+Open WebUIをOllamaと併用する場合は、[Ollamaガイドを使う方法](/getting-started/quick-start/starting-with-ollama)をご覧ください。Ollamaインスタンスの管理方法を学べます。
+
+## コミュニティに参加する
+
+サポートが必要ですか？ 質問がありますか？ コミュニティに参加してください:
+
+- [Open WebUI Discord](https://discord.gg/5rJgQTnV4s)
+- [GitHub Issues](https://github.com/open-webui/open-webui/issues)

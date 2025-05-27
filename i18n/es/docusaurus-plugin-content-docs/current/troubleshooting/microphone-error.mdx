@@ -1,0 +1,38 @@
+---
+sidebar_position: 2
+title: "🎙️ Resolviendo Problemas de Acceso al Micrófono"
+---
+
+Asegurar que tu aplicación tenga el acceso adecuado al micrófono es crucial para funcionalidades que dependen de la entrada de audio. Esta guía cubre cómo gestionar y resolver problemas de permisos del micrófono, particularmente en contextos seguros.
+
+## Entendiendo los Contextos Seguros 🔒
+
+Por razones de seguridad, el acceso al micrófono está restringido a páginas servidas a través de HTTPS o localmente desde `localhost`. Este requisito busca proteger tus datos asegurando que se transmitan a través de canales seguros.
+
+## Problemas Comunes de Permisos 🚫
+
+Navegadores como Chrome, Brave, Microsoft Edge, Opera y Vivaldi, así como Firefox, restringen el acceso al micrófono en URLs que no sean HTTPS. Esto se convierte típicamente en un problema al acceder a un sitio desde otro dispositivo dentro de la misma red (por ejemplo, usando un teléfono móvil para acceder a un servidor de escritorio). Aquí te explicamos cómo gestionar estos problemas:
+
+### Soluciones para Conexiones que No Son HTTPS
+
+1. **Configura HTTPS:**
+   - Se recomienda encarecidamente configurar tu servidor para soportar HTTPS. Esto no solo resuelve problemas de permisos, sino que también mejora la seguridad de la transmisión de tus datos.
+
+2. **Flags Temporales del Navegador (Usar con precaución):**
+   - Estos ajustes fuerzan a tu navegador a tratar ciertas URLs inseguras como seguras. Esto es útil para propósitos de desarrollo pero implica riesgos significativos de seguridad. Así es cómo puedes ajustar estas configuraciones en los principales navegadores:
+
+   #### Navegadores basados en Chromium (por ejemplo, Chrome, Brave)
+   - Abre `chrome://flags/#unsafely-treat-insecure-origin-as-secure`.
+   - Ingresa tu dirección no-HTTPS (por ejemplo, `http://192.168.1.35:3000`).
+   - Reinicia el navegador para aplicar los cambios.
+
+   #### Navegadores basados en Firefox
+   - Abre `about:config`.
+   - Busca y modifica (o crea) el valor de tipo string `dom.securecontext.allowlist`.
+   - Agrega tus direcciones IP separadas por comas (por ejemplo, `http://127.0.0.1:8080`).
+
+### Consideraciones y Riesgos 🚨
+
+Aunque las flags del navegador ofrecen una solución rápida, eluden chequeos de seguridad importantes que pueden exponer tu dispositivo y datos a vulnerabilidades. Siempre prioriza medidas de seguridad adecuadas, especialmente al planificar para un entorno de producción.
+
+Siguiendo estas mejores prácticas, puedes asegurarte de que tu aplicación acceda adecuadamente al micrófono mientras mantienes la seguridad e integridad de tus datos.

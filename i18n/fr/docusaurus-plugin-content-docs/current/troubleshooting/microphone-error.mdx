@@ -1,0 +1,38 @@
+---
+sidebar_position: 2
+title: "🎙️ Résolution des problèmes d'accès au microphone"
+---
+
+S'assurer que votre application dispose d'un accès adéquat au microphone est crucial pour les fonctionnalités dépendantes de l'entrée audio. Ce guide couvre la gestion et la résolution des permissions d'accès au microphone, particulièrement dans des contextes sécurisés.
+
+## Comprendre les contextes sécurisés 🔒
+
+Pour des raisons de sécurité, l'accès au microphone est restreint aux pages servies via HTTPS ou localement depuis `localhost`. Cette exigence vise à protéger vos données en garantissant qu'elles sont transmises via des canaux sécurisés.
+
+## Problèmes courants de permissions 🚫
+
+Les navigateurs comme Chrome, Brave, Microsoft Edge, Opera et Vivaldi, ainsi que Firefox, restreignent l'accès au microphone sur les URL non-HTTPS. Cela pose généralement problème lorsque vous accédez à un site depuis un autre appareil au sein du même réseau (par exemple, utiliser un téléphone mobile pour accéder à un serveur de bureau). Voici comment gérer ces problèmes :
+
+### Solutions pour les connexions non-HTTPS
+
+1. **Configurer HTTPS :**
+   - Il est fortement recommandé de configurer votre serveur pour qu'il soit compatible avec HTTPS. Cela résout non seulement les problèmes de permissions, mais améliore également la sécurité de vos transmissions de données.
+
+2. **Options temporaires du navigateur (à utiliser avec précaution) :**
+   - Ces paramètres forcent votre navigateur à traiter certaines URL non sécurisées comme sûres. Cela est utile à des fins de développement mais présente des risques importants pour la sécurité. Voici comment ajuster ces paramètres pour les principaux navigateurs :
+
+   #### Navigateurs basés sur Chromium (ex. : Chrome, Brave)
+   - Ouvrez `chrome://flags/#unsafely-treat-insecure-origin-as-secure`.
+   - Entrez votre adresse non-HTTPS (ex. : `http://192.168.1.35:3000`).
+   - Redémarrez le navigateur pour appliquer les modifications.
+
+   #### Navigateurs basés sur Firefox
+   - Ouvrez `about:config`.
+   - Recherchez et modifiez (ou créez) la valeur de chaîne `dom.securecontext.allowlist`.
+   - Ajoutez vos adresses IP séparées par des virgules (ex. : `http://127.0.0.1:8080`).
+
+### Considérations et risques 🚨
+
+Bien que les options du navigateur offrent une solution rapide, elles contournent des vérifications de sécurité importantes, ce qui peut exposer votre appareil et vos données à des vulnérabilités. Priorisez toujours les mesures de sécurité adéquates, notamment lorsque vous préparez un environnement de production.
+
+En suivant ces meilleures pratiques, vous pouvez garantir que votre application accède correctement au microphone tout en maintenant la sécurité et l'intégrité de vos données.

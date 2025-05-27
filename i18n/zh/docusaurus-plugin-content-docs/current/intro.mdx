@@ -1,0 +1,213 @@
+---
+sidebar_position: 0
+slug: /
+title: 🏡 首页
+hide_title: true
+---
+
+import { TopBanners } from "@site/src/components/TopBanners";
+import { SponsorList } from "@site/src/components/SponsorList";
+
+# Open WebUI
+
+
+**Open WebUI 是一个 [可扩展](https://docs.openwebui.com/features/plugin/)、功能丰富且用户友好的自托管 AI 平台，设计完全离线运行。** 它支持多种 LLM 运行器，如 **Ollama** 和 **与 OpenAI 兼容的 API**，并内置推理引擎支持 RAG，使其成为一个 **强大的 AI 部署解决方案**。
+
+![GitHub stars](https://img.shields.io/github/stars/open-webui/open-webui?style=social)
+![GitHub forks](https://img.shields.io/github/forks/open-webui/open-webui?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/open-webui/open-webui?style=social)
+![GitHub repo size](https://img.shields.io/github/repo-size/open-webui/open-webui)
+![GitHub language count](https://img.shields.io/github/languages/count/open-webui/open-webui)
+![GitHub top language](https://img.shields.io/github/languages/top/open-webui/open-webui)
+![GitHub last commit](https://img.shields.io/github/last-commit/open-webui/open-webui?color=red)
+![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Follama-webui%2Follama-wbui&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)
+[![Discord](https://img.shields.io/badge/Discord-Open_WebUI-blue?logo=discord&logoColor=white)](https://discord.gg/5rJgQTnV4s)
+[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/tjbck)
+
+![Open WebUI 示例](/images/demo.gif)
+
+:::提示
+**正在寻找 [企业计划](https://docs.openwebui.com/enterprise)？** – **[立即与我们的销售团队联系！](mailto:sales@openwebui.com)**
+
+获得 **增强功能**，包括 **自定义主题和品牌**、**服务级别协议 (SLA) 支持**、**长期支持 (LTS) 版本**和 **更多内容！**
+:::
+
+<TopBanners />
+
+## 使用 Docker 快速开始 🐳
+
+:::信息
+
+**WebSocket** 支持是 Open WebUI 正常运行的前提。请确保您的网络配置允许 WebSocket 连接。
+
+:::
+
+**如果 Ollama 在您的计算机上**，使用以下命令：
+
+```bash
+docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+
+**要运行支持 Nvidia GPU 的 Open WebUI**，使用以下命令：
+
+```bash
+docker run -d -p 3000:8080 --gpus all --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:cuda
+```
+
+### 与 Ollama 捆绑的 Open WebUI
+
+这种安装方法使用一个单一容器镜像，将 Open WebUI 与 Ollama 捆绑在一起，通过一个命令简化设置。根据您的硬件设置选择合适的命令：
+
+- **支持 GPU**：
+  使用以下命令利用 GPU 资源：
+
+  ```bash
+  docker run -d -p 3000:8080 --gpus=all -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
+  ```
+
+- **仅适用 CPU**：
+  如果您未使用 GPU，请使用以下命令：
+
+  ```bash
+  docker run -d -p 3000:8080 -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
+  ```
+
+这两个命令方便地内置了 Open WebUI 和 Ollama 的安装，确保您可以快速启动并运行。
+
+安装完成后，您可以通过 [http://localhost:3000](http://localhost:3000) 访问 Open WebUI。祝您使用愉快！ 😄
+
+### 使用开发分支 🌙
+
+:::警告
+`:dev` 分支包含最新的不稳定功能和更改。请自担风险使用，可能存在漏洞或未完成的功能。
+:::
+
+如果您希望尝试最新的尖端功能，并能接受偶尔的不稳定，可以使用 `:dev` 标签如下：
+
+```bash
+docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:dev
+```
+
+### 更新 Open WebUI
+
+要轻松更新 Open WebUI 容器，请按照以下步骤：
+
+#### 手动更新
+使用 [Watchtower](https://containrrr.dev/watchtower) 手动更新您的 Docker 容器：
+```bash
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once open-webui
+```
+
+#### 自动更新
+每 5 分钟自动更新您的容器：
+```bash
+docker run -d --name watchtower --restart unless-stopped -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --interval 300 open-webui
+```
+
+🔧 **注意**：如果容器名称不同，请将 `open-webui` 替换为您的容器名称。
+
+## 手动安装
+
+安装和运行 Open WebUI 有两种主要方式：使用 `uv` 运行时管理器或 Python 的 `pip`。虽然两种方法都有效，但**我们强烈推荐使用 `uv`**，因为它简化了环境管理并最大程度减少了潜在冲突。
+
+### 使用 `uv` 安装（推荐）
+
+`uv` 运行时管理器能够无缝管理像 Open WebUI 这样的应用程序的 Python 环境。按照以下步骤开始使用：
+
+#### 1. 安装 `uv`
+
+根据您的操作系统选择适当的安装命令：
+
+- **macOS/Linux**:  
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+
+- **Windows**:  
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+
+#### 2. 运行 Open WebUI
+
+安装 `uv` 后，运行 Open WebUI 非常简单。使用以下命令，同时确保设置 `DATA_DIR` 环境变量以避免数据丢失。以下为每个平台的示例路径：
+
+- **macOS/Linux**:  
+  ```bash
+  DATA_DIR=~/.open-webui uvx --python 3.11 open-webui@latest serve
+  ```
+
+- **Windows**:  
+  ```powershell
+  $env:DATA_DIR="C:\open-webui\data"; uvx --python 3.11 open-webui@latest serve
+  ```
+
+
+
+### 使用 `pip` 安装
+
+对于使用 Python 包管理器 `pip` 安装 Open WebUI 的用户，**强烈推荐使用 Python 运行时管理器如 `uv` 或 `conda`**。这些工具能够有效地管理 Python 环境并避免冲突。
+
+开发环境是基于 Python 3.11 的。Python 3.12 看起来可以运行，但尚未彻底测试。Python 3.13 完全未测试——**风险自负**。
+
+1. **安装 Open WebUI**:  
+
+   打开终端并运行以下命令：  
+   ```bash
+   pip install open-webui
+   ```
+
+2. **启动 Open WebUI**:  
+
+   安装完成后，使用以下命令启动服务器：  
+   ```bash
+   open-webui serve
+   ```
+
+### 更新 Open WebUI
+
+要更新到最新版本，只需运行：  
+
+```bash
+pip install --upgrade open-webui
+```
+
+此方法会安装所有必要的依赖项并启动 Open WebUI，确保简单、高效的设置。安装后，您可以通过 [http://localhost:8080](http://localhost:8080) 访问 Open WebUI。尽情享受吧！😄
+
+## 其他安装方式
+
+我们提供各种安装替代方案，包括非 Docker 原生安装方式、Docker Compose、Kustomize 和 Helm。请访问我们的 [Open WebUI 文档](https://docs.openwebui.com/getting-started/) 或加入我们的 [Discord 社区](https://discord.gg/5rJgQTnV4s) 获取全面的指导。
+
+继续完整的[入门指南](/getting-started)。
+
+## 赞助商 🙌
+
+
+<SponsorList />
+
+
+我们非常感谢赞助商的慷慨支持。他们的贡献帮助我们维护和改进项目，确保我们能够继续为社区提供高质量的工作。谢谢！
+
+
+## 致谢 🙏
+
+我们深切感谢以下机构提供的慷慨资助：
+
+<p>
+
+
+  <a href="https://builders.mozilla.org/" title="Mozilla Builders 2024" target="_blank" rel="noopener">
+    <img src="/images/grants/mozilla.png" alt="Mozilla" width={"300px"} style={{verticalAlign:'middle',marginRight:'12px'}} />
+    <span style={{verticalAlign:'middle', fontWeight:600, fontSize:'1.05em'}}>Mozilla Builders 2024</span>
+  </a>
+
+  <br/>
+  <br/>
+
+  <a href="https://github.com/accelerator" title="GitHub Accelerator 2024" target="_blank" rel="noopener">
+    <img src="/images/grants/github.png" alt="GitHub" width={"300px"} style={{verticalAlign:'middle',marginRight:'16px'}} />
+    <span style={{verticalAlign:'middle', fontWeight:600, fontSize:'1.05em'}}>GitHub Accelerator 2024</span>
+  </a>
+
+  
+</p>

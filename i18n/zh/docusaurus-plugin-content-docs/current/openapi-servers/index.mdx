@@ -1,0 +1,48 @@
+---
+sidebar_position: 900
+title: "🔨 OpenAPI 工具服务器"
+---
+
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+<TopBanners />
+
+# 🌟 OpenAPI 工具服务器
+
+此仓库提供了参考实现的 OpenAPI 工具服务器，开发者可以轻松且安全地将外部工具和数据源集成到 LLM 代理和工作流程中。为最大限度简化使用和降低学习门槛，这些实现使用了被广泛采用且经过实践检验的 [OpenAPI 规范](https://www.openapis.org/) 作为标准协议。
+
+通过利用 OpenAPI，我们消除了对专有或不熟悉的通信协议的需求，确保您能快速而自信地构建或集成服务器。这意味着您可以花更少的时间研究自定义接口，将更多的时间用于构建增强 AI 应用程序的强大工具。
+
+## ☝️ 为什么选择 OpenAPI？
+
+- **成熟的标准**：OpenAPI 是一种广泛使用并经生产环境验证的 API 标准，由数千种工具、公司和社区支持。
+
+- **无需重新发明轮子**：无需额外的文档或专有规范的困惑。如果您现在构建 REST API 或使用 OpenAPI，那么您已准备就绪。
+
+- **轻松集成与部署**：可在外部或本地部署您的工具服务器，无需供应商绑定或复杂的配置。
+
+- **强大的安全性**：基于 HTTP/REST API，OpenAPI 天生支持包括 HTTPS 和被广泛验证的认证标准（OAuth、JWT、API 密钥）在内的安全通信方法。
+
+- **面向未来且稳定**：与一些不够成熟或实验性的协议不同，OpenAPI 提供可靠性、稳定性和长期的社区支持。
+
+## 🚀 快速开始
+
+使用 `servers/` 目录中提供的基于 FastAPI 的参考实现快速启动。（您可以根据需要将这些示例改编为您偏好的技术栈，例如使用 [FastAPI](https://fastapi.tiangolo.com/)、[FastOpenAPI](https://github.com/mr-fatalyst/fastopenapi) 或任何其他与 OpenAPI 兼容的库）：
+
+```bash
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+
+# 示例：为特定服务器 filesystem 安装依赖项
+cd servers/filesystem
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --reload
+```
+
+现在，只需将您的 OpenAPI 兼容客户端或 AI 代理指向您的本地或公开部署的 URL——无需配置烦恼，无需复杂的传输。
+
+## 🌱 Open WebUI 社区
+
+- 如需进行一般讨论、技术交流和公告，请访问我们的 [社区讨论](https://github.com/open-webui/openapi-servers/discussions) 页面。
+- 有想法或反馈？请提交一个 Issue！

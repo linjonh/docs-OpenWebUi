@@ -1,0 +1,142 @@
+---
+sidebar_position: 1000
+title: "⚡ 파이프라인"
+---
+
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+
+<TopBanners />
+
+
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/header.png" alt="파이프라인 로고" />
+  </a>
+</p>
+
+# 파이프라인: UI에 구애받지 않는 OpenAI API 플러그인 프레임워크
+
+:::warning
+**이럴 경우 파이프라인을 사용하지 마세요!**
+
+만약 단순히 Anthropic과 같은 추가 제공자를 추가하거나 기본 필터를 추가하고 싶다면, 파이프라인이 필요하지 않을 가능성이 높습니다. 그런 경우에는 Open WebUI Functions가 내장되어 있고, 훨씬 더 편리하고, 설정이 쉽습니다. 그러나 파이프라인은 대규모 모델 실행이나 복잡한 로직과 같은 계산이 많은 작업을 처리하면서 Open WebUI 주 인스턴스의 성능과 확장성을 더욱 높이고자 할 때 필요합니다.
+:::
+
+**파이프라인**에 오신 것을 환영합니다. 이는 [Open WebUI](https://github.com/open-webui) 프로젝트의 일환입니다. 파이프라인은 OpenAI API 스펙을 지원하는 모든 UI 클라이언트에 모듈화되고 커스터마이즈 가능한 워크플로를 제공합니다. 간단한 코드 몇 줄만으로 기능을 간단히 확장하고, 독특한 로직을 통합하며 다이내믹한 워크플로를 생성할 수 있습니다.
+
+## 🚀 파이프라인을 선택해야 하는 이유?
+
+- **무한한 가능성:** AI 에이전트부터 홈 자동화 API까지, Python 라이브러리를 손쉽게 추가하고 커스텀 로직을 통합합니다.
+- **매끄러운 통합:** OpenAI API 스펙을 지원하는 모든 UI/클라이언트와 호환됩니다. (파이프 유형의 파이프라인만 지원되며, 필터 유형은 파이프라인 지원이 필요한 클라이언트가 필요합니다.)
+- **커스텀 훅:** 커스텀 파이프라인을 구축하고 통합합니다.
+
+### 가능한 성과 예시:
+
+- [**함수 호출 파이프라인**](https://github.com/open-webui/pipelines/blob/main/examples/filters/function_calling_filter_pipeline.py): 함수 호출을 간단히 처리하고 커스텀 로직으로 애플리케이션을 향상시킵니다.
+- [**커스텀 RAG 파이프라인**](https://github.com/open-webui/pipelines/blob/main/examples/pipelines/rag/llamaindex_pipeline.py): 검색 강화 생성 파이프라인을 요구사항에 맞게 구현합니다.
+- [**Langfuse를 사용한 메시지 모니터링**](https://github.com/open-webui/pipelines/blob/main/examples/filters/langfuse_filter_pipeline.py): 실시간으로 메시지 상호작용을 모니터링하고 분석합니다.
+- [**속도 제한 필터**](https://github.com/open-webui/pipelines/blob/main/examples/filters/rate_limit_filter_pipeline.py): 속도 제한을 초과하지 않도록 요청 흐름을 제어합니다.
+- [**LibreTranslate를 활용한 실시간 번역 필터**](https://github.com/open-webui/pipelines/blob/main/examples/filters/libretranslate_filter_pipeline.py): LLM 상호작용에 실시간 번역을 원활히 통합합니다.
+- [**유해 메시지 필터**](https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py): 유해 메시지를 효과적으로 감지하고 처리하는 필터를 구현합니다.
+- **그리고 더 많은 가능성!:** 파이프라인과 Python으로 무엇을 할 수 있을지 무한합니다. [초기 템플릿](https://github.com/open-webui/pipelines/blob/main/examples/scaffolds)을 확인하여 프로젝트를 신속히 시작하고 개발 프로세스를 간단히 할 방법을 찾아보세요!
+
+## 🔧 작동 방식
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/workflow.png" alt="파이프라인 워크플로" />
+  </a>
+</p>
+
+OpenAI API 호환 UI 클라이언트와 파이프라인을 통합하는 것은 간단합니다. 파이프라인 인스턴스를 실행하고 클라이언트의 OpenAI URL을 파이프라인 URL로 설정하기만 하면 됩니다. 이제 필요에 따라 Python 라이브러리를 활용할 준비가 완료되었습니다.
+
+## ⚡ Docker로 빠르게 시작하기
+
+:::warning
+파이프라인은 임의 코드 실행을 지원하는 플러그인 시스템입니다 — **신뢰할 수 없는 출처에서 파이프라인을 가져오지 마세요**.
+:::
+
+Docker를 이용한 간편한 설정:
+
+1. **파이프라인 컨테이너 실행:**
+
+   ```sh
+   docker run -d -p 9099:9099 --add-host=host.docker.internal:host-gateway -v pipelines:/app/pipelines --name pipelines --restart always ghcr.io/open-webui/pipelines:main
+   ```
+
+2. **Open WebUI에 연결:**
+
+   - Open WebUI의 **관리 패널 > 설정 > 연결** 섹션으로 이동합니다.
+   - 이 페이지에서 `+` 버튼을 눌러 네트워크 연결을 추가할 수 있습니다.
+   - API URL을 `http://localhost:9099`로 설정하고 API 키를 `0p3n-w3bu!`로 설정합니다.
+   - 파이프라인 연결을 추가하고 인증한 후에는, 추가된 연결의 API Base URL 필드에 아이콘이 나타날 것입니다. 아이콘 위로 마우스를 올리면 `파이프라인`이라는 레이블이 나타납니다. 이제 파이프라인이 활성화되었습니다.
+
+:::info
+만약 Open WebUI가 Docker 컨테이너에서 실행 중이라면 API URL에서 `localhost`를 `host.docker.internal`로 변경하세요.
+:::
+
+3. **구성 관리:**
+
+   - 관리 패널로 이동하여 **관리 패널 > 설정 > 파이프라인** 탭을 확인합니다.
+   - 원하는 파이프라인을 선택하고 WebUI에서 밸브 값을 직접 수정할 수 있습니다.
+
+:::tip
+연결할 수 없는 경우, 이는 대부분 Docker 네트워킹 문제일 가능성이 높습니다. 문제를 스스로 해결하고, 방법과 해결책을 토론 포럼에 공유해 주시기 바랍니다.
+:::
+
+추가 종속성을 가진 사용자 지정 파이프라인을 설치해야 하는 경우:
+
+- **다음 명령을 실행하십시오:**
+
+  ```sh
+  docker run -d -p 9099:9099 --add-host=host.docker.internal:host-gateway -e PIPELINES_URLS="https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py" -v pipelines:/app/pipelines --name pipelines --restart always ghcr.io/open-webui/pipelines:main
+  ```
+
+또는 추가 종속성이 없는 경우 관리자 설정에서 파이프라인 URL을 복사/붙여넣기 하여 파이프라인을 직접 설치할 수 있습니다.
+
+이제 완료되었습니다! Pipelines를 사용하여 맞춤형 AI 통합을 손쉽게 구축할 준비가 되셨습니다. 즐기세요!
+
+## 📦 설치 및 설정
+
+Pipelines를 몇 가지 간단한 단계로 시작하세요:
+
+1. **Python 3.11이 설치되어 있는지 확인하십시오.** 이 버전은 공식적으로 지원되는 유일한 버전입니다.
+2. **Pipelines 리포지토리를 클론하십시오:**
+
+   ```sh
+   git clone https://github.com/open-webui/pipelines.git
+   cd pipelines
+   ```
+
+3. **필요한 종속성을 설치하십시오:**
+
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+4. **Pipelines 서버를 시작하십시오:**
+
+   ```sh
+   sh ./start.sh
+   ```
+
+서버가 실행 중인 경우 클라이언트에서 OpenAI URL을 Pipelines URL로 설정하십시오. 이렇게 하면 모든 Python 라이브러리를 통합하고 필요에 맞게 사용자 지정 워크플로를 생성할 수 있는 Pipelines의 모든 기능이 잠금 해제됩니다.
+
+## 📂 디렉터리 구조 및 예제
+
+`/pipelines` 디렉터리는 초기 설정의 핵심입니다. 새로운 모듈을 추가하고 기존 모듈을 사용자 지정하며 워크플로를 이곳에서 관리하세요. `/pipelines` 디렉터리의 모든 파이프라인은 서버가 시작될 때 **자동으로 로드**됩니다.
+
+`PIPELINES_DIR` 환경변수를 사용하여 `/pipelines` 디렉터리를 다른 위치로 변경할 수 있습니다.
+
+### 통합 예제
+
+`https://github.com/open-webui/pipelines/blob/main/examples` 디렉터리에서 다양한 통합 예제를 찾을 수 있습니다. 이러한 예제는 다양한 기능을 통합하는 방법을 보여주며, 고유한 맞춤 파이프라인을 구축하기 위한 기반을 제공합니다.
+
+## 🎉 진행 중인 작업
+
+우리는 끊임없이 진화하고 있습니다! 귀하의 피드백을 듣고 귀하의 사용 사례에 가장 적합한 훅과 기능이 무엇인지 이해하고 싶습니다. 언제든지 연락 주시고 Open WebUI 커뮤니티의 일원이 되어주세요!
+
+우리의 비전은 **Pipelines**를 **Open WebUI**라는 AI 인터페이스의 궁극적인 플러그인 프레임워크로 발전시키는 것입니다. **Open WebUI**를 AI 인터페이스의 워드프레스라고 상상해보세요. 그리고 **Pipelines**는 그 다양한 플러그인이 됩니다. 이 흥미로운 여정에 동참하세요! 🌍

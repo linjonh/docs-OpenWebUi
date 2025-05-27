@@ -1,0 +1,252 @@
+---
+sidebar_position: 4
+title: "🚚 ツールと機能の移行：0.4から0.5へ"
+---
+
+# 🚚 移行ガイド: Open WebUI 0.4から0.5へ
+
+Open WebUI 0.5への移行ガイドへようこそ！既存のプロジェクトで作業している場合でも、新しいプロジェクトを構築している場合でも、このガイドでは**バージョン0.4から0.5**への主要な変更点をご案内し、関数をアップグレードするための簡単に従えるロードマップを提供します。この移行を可能な限りスムーズに進めましょう！ 😊
+
+---
+
+## 🧐 何が変わったのか、その理由は？
+
+Open WebUI 0.5では、プロジェクトを**シンプルで、統一された、拡張可能な**ものにするためにアーキテクチャを大幅に見直しました。以下が概要です：
+
+- **旧アーキテクチャ:** 🎯 以前は、Open WebUIは**サブアプリケーションアーキテクチャ**に基づいて構築されており、各アプリ（例: `ollama`, `openai`）が独立したFastAPIアプリケーションでした。これにより、アプリの管理において断片化や追加の複雑さが発生していました。
+- **新アーキテクチャ:** 🚀 バージョン0.5では、**単一のFastAPIアプリケーション**に移行し、複数の**ルーター**を備えています。この新アプローチにより、より良い整理、集中化されたフロー、冗長性の削減が実現します。
+
+### 主要な変更点:
+変更点の概要は以下の通りです：
+1. **アプリがルーターに移行されました。**
+   - 以前: `open_webui.apps`
+   - 現在: `open_webui.routers`
+
+2. **メインアプリの構造が簡略化されました。**
+   - 旧: `open_webui.apps.webui`は`open_webui.main`に変換され、プロジェクトの中央エントリーポイントとなりました。
+
+3. **統一されたAPIエンドポイント**
+   - Open WebUI 0.5では、`open_webui.main`内にある**統一された関数**`chat_completion`が導入され、`ollama`や`openai`などのモデルに対応する個別の関数に代わりました。これにより、APIエクスペリエンスが一貫して簡略化されます。ただし、これら個別関数の**直接の後継**は、`open_webui.utils.chat`内の`generate_chat_completion`です。追加の解析（例: ファイル、ツール、その他）が不要な軽量なPOSTリクエストを好む場合、このユーティリティ関数が最適でしょう。
+
+#### 例:
+```python
+# 新しい関数による完全なAPIフローと解析:
+from open_webui.main import chat_completion
+
+# 軽量かつ直接的なPOSTリクエスト（直接の後継）:
+from open_webui.utils.chat import generate_chat_completion
+```
+
+あなたの使用ケースに最適なアプローチを選びましょう！
+
+4. **関数のシグネチャが更新されました。**
+   - 関数シグネチャは新しい形式に準拠し、`request`オブジェクトが必要です。
+   - `request`オブジェクトは、関数のシグネチャで`__request__`パラメータを使用して取得できます。以下は例です：
+
+```python
+class Pipe:
+    def __init__(self):
+        pass
+
+    async def pipe(
+        self,
+        body: dict,
+        __user__: dict,
+        __request__: Request, # 新しいパラメータ
+    ) -> str:
+        # 関数をここに記述
+```
+
+📌 **なぜこれらの変更を行ったのか？**
+- コードベースを簡素化し、拡張性と保守性を向上させるため。
+- APIを統一し、開発者体験を簡略化するため。
+- 冗長な要素を統合し、パフォーマンスを向上させるため。
+
+---
+
+## ✅ ステップバイステップ移行ガイド
+
+このガイドを参考にしてプロジェクトをスムーズに更新しましょう。
+
+---
+
+### 🔄 1. `apps`から`routers`への移行 
+
+すべてのアプリがリネームされ、`open_webui.routers`に移動されました。これによりコードベースのインポートが影響を受けます。
+
+インポートパスを迅速に変更するための例：
+
+| **旧パス**                       | **新パス**                       |
+|-----------------------------------|-----------------------------------|
+| `open_webui.apps.ollama`          | `open_webui.routers.ollama`       |
+| `open_webui.apps.openai`          | `open_webui.routers.openai`       |
+| `open_webui.apps.audio`           | `open_webui.routers.audio`        |
+| `open_webui.apps.retrieval`       | `open_webui.routers.retrieval`    |
+| `open_webui.apps.webui`           | `open_webui.main`                 |
+
+
+### 📜 注目すべき例  
+
+メインアプリ(`webui`)の特殊なケースを明確にするために、基本ルールを以下に示します：  
+
+- **以前は`webui`にあったもの？** 現在はプロジェクトのルートや`open_webui.main`にあります。  
+- 例：  
+    - **以前（0.4）：**  
+      ```python  
+      from open_webui.apps.webui.models import SomeModel  
+      ```  
+    - **現在（0.5）：**  
+      ```python  
+      from open_webui.models import SomeModel  
+      ```  
+
+一般的なルールとして、**`open_webui.apps`を`open_webui.routers`に置き換えるだけ—ただし`webui`は`open_webui.main`に移動します！**
+
+
+---
+
+### 👩‍💻 2. インポートステートメントの更新
+
+この更新がコードでどのように見えるかを見てみましょう：
+
+#### 以前:
+```python
+from open_webui.apps.ollama import main as ollama
+from open_webui.apps.openai import main as openai
+```
+
+#### 現在:
+```python
+# 個別のルーターインポート
+from open_webui.routers.ollama import generate_chat_completion
+from open_webui.routers.openai import generate_chat_completion
+
+# または統一エンドポイントを使用
+from open_webui.main import chat_completion
+```
+
+**💡 アドバイス:** 簡素化と将来の互換性のために、統一エンドポイント（`chat_completion`）を優先してください。
+
+### 📝 **追加メモ: `main.chat_completion` と `utils.chat.generate_chat_completion` の選択**
+
+利用ケースに応じて、以下から選択してください:
+
+1. **`open_webui.main.chat_completion`:**
+    - `/api/chat/completions` へのPOSTリクエストをシミュレートします。
+    - ファイル、ツール、その他の雑多なタスクを処理します。
+    - APIフローを完全に自動で処理したいときに最適です。
+
+2. **`open_webui.utils.chat.generate_chat_completion`:**
+    - 追加の解析やタスク処理をせず、直接POSTリクエストを行います。
+    - これは以前の`main.generate_chat_completions`、`ollama.generate_chat_completion`、`openai.generate_chat_completion` 関数に代わる**直接の後継機能**です。
+    - シンプルで軽量なシナリオに最適です。
+
+#### 例:
+```python
+# 解析を含む完全なAPIフローにはこちらを使用:
+from open_webui.main import chat_completion
+
+# 軽量で直接的なPOSTリクエストにはこちらを使用:
+from open_webui.utils.chat import generate_chat_completion
+```
+
+---
+
+### 📋 3. 更新された関数シグネチャへの適応
+
+より新しいアーキテクチャに合わせて、**関数シグネチャ**を更新しました。直接の置き換えを探している場合は、軽量なユーティリティ関数`open_webui.utils.chat`の`generate_chat_completion`から始めてください。完全なAPIフローが必要な場合は、新しい統合された`open_webui.main`の`chat_completion`関数を使用してください。
+
+#### 関数シグネチャの変更:
+
+| **旧式**                                 | **直接の後継（新）**                    | **統合オプション（新）**               |
+|-----------------------------------------|-----------------------------------------|-----------------------------------------|
+| `openai.generate_chat_completion(form_data: dict, user: UserModel)` | `generate_chat_completion(request: Request, form_data: dict, user: UserModel)` | `chat_completion(request: Request, form_data: dict, user: UserModel)` |
+
+- **直接の後継（`generate_chat_completion`）**: 以前の`ollama`/`openai`メソッドに1:1で置き換え可能な軽量なオプション。
+- **統合オプション（`chat_completion`）**: ファイル解析や追加機能を含む、完全なAPIフローが必要な場合に使用。
+
+#### 例:
+
+`chat_completion`を使用する場合、関数は次のように記述する必要があります:
+
+### 🛠️ カスタム関数をリファクタリングする方法
+次のサンプル関数を新しい構造に合わせて書き直しましょう:
+
+#### 以前 (0.4):
+```python
+from pydantic import BaseModel
+from open_webui.apps.ollama import generate_chat_completion
+
+class User(BaseModel):
+    id: str
+    email: str
+    name: str
+    role: str
+
+class Pipe:
+    def __init__(self):
+        pass
+
+    async def pipe(self, body: dict, __user__: dict) -> str:
+        # OpenAIエンドポイントを呼び出します
+        user = User(**__user__)
+        body["model"] = "llama3.2:latest"
+        return await ollama.generate_chat_completion(body, user)
+```
+
+#### 以降 (0.5):
+```python
+from pydantic import BaseModel
+from fastapi import Request
+
+from open_webui.utils.chat import generate_chat_completion
+
+
+class User(BaseModel):
+    id: str
+    email: str
+    name: str
+    role: str
+
+
+class Pipe:
+    def __init__(self):
+        pass
+
+    async def pipe(
+        self,
+        body: dict,
+        __user__: dict,
+        __request__: Request,
+    ) -> str:
+        # 更新されたシグネチャを使用した統合エンドポイントを使用
+        user = User(**__user__)
+        body["model"] = "llama3.2:latest"
+        return await generate_chat_completion(__request__, body, user)
+```
+
+### 重要な注意事項:
+- 新しい関数シグネチャでは、`Request`オブジェクト（`__request__`）を渡す必要があります。
+- 他のオプションのパラメータ（例: `__user__`や`__event_emitter__`）は、より複雑な使用例に対する柔軟性を確保します。
+
+---
+
+### 🌟 4. 簡単な言葉で覚えておくべき重要な概念
+
+以下のチートシートで覚えましょう:
+- **AppsからRoutersへ:** `open_webui.apps` を ➡️ `open_webui.routers`にインポートを更新。
+- **統合エンドポイント:** `ollama`と`openai`の両方が関与する場合、`open_webui.main.chat_completion`を使用して簡潔に。
+- **関数シグネチャの適応:** 必要な`request`オブジェクトを関数に渡してください。
+
+---
+
+## 🎉 完了です！
+
+**Open WebUI 0.4から0.5に移行**が完了しました！インポートのリファクタリング、統合エンドポイントの使用、新しい関数シグネチャの更新により、バージョン0.5の新機能と改善を活用する準備が整いました。
+
+---
+
+💬 **質問やフィードバックはありますか？**
+問題が発生した場合や提案があれば、お気軽に[GitHubのissueを作成](https://github.com/open-webui/open-webui)するか、コミュニティフォーラムでお尋ねください！
+
+Happy coding! ✨

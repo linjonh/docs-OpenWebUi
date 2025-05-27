@@ -1,0 +1,48 @@
+---
+sidebar_position: 900
+title: "🔨 Serveurs d'outils OpenAPI"
+---
+
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+<TopBanners />
+
+# 🌟 Serveurs d'outils OpenAPI
+
+Ce dépôt fournit des implémentations de référence de serveurs d'outils OpenAPI, facilitant et sécurisant l'intégration des outils externes et des sources de données dans les agents LLM et les flux de travail des développeurs. Conçues pour une utilisation maximale et une courbe d'apprentissage minimale, ces implémentations utilisent la spécification [OpenAPI](https://www.openapis.org/) largement adoptée et éprouvée en production comme protocole standard.
+
+En utilisant OpenAPI, nous éliminons le besoin de protocoles de communication propriétaires ou peu familiers, garantissant que vous pouvez créer ou intégrer des serveurs rapidement et en toute confiance. Cela signifie moins de temps passé à comprendre des interfaces personnalisées et plus de temps à développer des outils puissants qui améliorent vos applications d'IA.
+
+## ☝️ Pourquoi OpenAPI ?
+
+- **Standard établi** : OpenAPI est un standard API largement utilisé et éprouvé en production, soutenu par des milliers d'outils, d'entreprises et de communautés.
+
+- **Pas de réinvention de la roue** : Pas de confusion avec une documentation supplémentaire ou des spécifications propriétaires. Si vous créez des API REST ou utilisez OpenAPI aujourd'hui, vous êtes déjà prêt.
+
+- **Intégration et hébergement faciles** : Déployez vos serveurs d'outils en externe ou localement sans dépendance à un fournisseur ni configurations complexes.
+
+- **Accent fort sur la sécurité** : Construit autour des API HTTP/REST, OpenAPI prend en charge intrinsèquement des méthodes de communication sécurisées largement utilisées, notamment HTTPS et les standards d'authentification éprouvés (OAuth, JWT, clés API).
+
+- **Stable et orienté vers le futur** : Contrairement aux protocoles moins matures ou expérimentaux, OpenAPI promet fiabilité, stabilité et support communautaire à long terme.
+
+## 🚀 Démarrage rapide
+
+Commencez rapidement avec nos implémentations de référence basées sur FastAPI fournies dans le répertoire `servers/`. (Vous pouvez adapter ces exemples à votre pile préférée selon vos besoins, comme utiliser [FastAPI](https://fastapi.tiangolo.com/), [FastOpenAPI](https://github.com/mr-fatalyst/fastopenapi) ou toute autre bibliothèque compatible OpenAPI) :
+
+```bash
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+
+# Exemple : Installation des dépendances pour un serveur spécifique 'filesystem'
+cd servers/filesystem
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --reload
+```
+
+Maintenant, pointez simplement vos clients compatibles OpenAPI ou vos agents d'IA vers votre URL locale ou déployée publiquement—sans problèmes de configuration, sans transports compliqués.
+
+## 🌱 Communauté Open WebUI
+
+- Pour les discussions générales, les échanges techniques et les annonces, visitez notre page [Discussions communautaires](https://github.com/open-webui/openapi-servers/discussions).
+- Vous avez des idées ou des retours ? Veuillez ouvrir une issue !

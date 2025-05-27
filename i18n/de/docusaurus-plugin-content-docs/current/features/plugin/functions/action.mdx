@@ -1,0 +1,52 @@
+---
+sidebar_position: 3
+title: "🎬 Aktionsfunktion"
+---
+
+Aktionsfunktionen ermöglichen es Ihnen, benutzerdefinierte Schaltflächen in der Nachrichten-Symbolleiste für Endbenutzer zu schreiben, mit denen diese interagieren können.
+Diese Funktion ermöglicht eine interaktivere Nachrichtenübermittlung, bei der Benutzer die Berechtigung erteilen können, bevor eine
+Aufgabe ausgeführt wird, Visualisierungen strukturierter Daten erstellen, einen Audioausschnitt von Chats herunterladen
+und viele andere Anwendungsfälle.
+
+Ein Gerüst für Aktionscode finden Sie [im Community-Bereich](https://openwebui.com/f/hub/custom_action/).
+
+Ein Beispiel für eine Aktionsvisualisierung eines Graphen sehen Sie im unten stehenden Video.
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/graph-viz-action.gif" alt="Graph Visualisierungsaktion" />
+  </a>
+</p>
+
+
+### Aktion
+Aktionen werden verwendet, um eine Schaltfläche in der Nachrichten-Benutzeroberfläche zu erstellen (die kleinen Schaltflächen direkt unter einzelnen Chat-Nachrichten).
+
+Aktionen haben eine einzelne Hauptkomponente, die als Aktionsfunktion bezeichnet wird. Diese Komponente nimmt ein Objekt entgegen, das den Typ der Aktion und die zu verarbeitenden Daten definiert.
+
+<details>
+<summary>Beispiel</summary>
+
+```python
+async def action(
+        self,
+        body: dict,
+        __user__=None,
+        __event_emitter__=None,
+        __event_call__=None,
+    ) -> Optional[dict]:
+        print(f"action:{__name__}")
+
+        response = await __event_call__(
+            {
+                "type": "input",
+                "data": {
+                    "title": "eine Nachricht schreiben",
+                    "message": "hier eine Nachricht eingeben, die angefügt werden soll",
+                    "placeholder": "Geben Sie Ihre Nachricht ein",
+                },
+            }
+        )
+        print(response)
+```
+</details>

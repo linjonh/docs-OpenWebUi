@@ -1,0 +1,340 @@
+---
+sidebar_position: 2
+title: "🪄 篩選功能"
+---
+
+# 🪄 篩選功能：修改輸入與輸出
+
+歡迎來到 Open WebUI 關於篩選功能的詳盡指南！篩選器是一種靈活且功能強大的**插件系統**，可用於在數據*發送到大型語言模型 (LLM) 前*（輸入）或從LLM返回後（輸出）進行修改。無論是調整輸入以獲得更好的上下文，還是清理輸出以提高清晰度，**篩選功能**都能滿足您的需求。
+
+本指南將詳細介紹**篩選器的定義**、運作方式、結構，以及您需要了解的一切以打造強大且易於使用的篩選器。我們現在就開始吧，別擔心——我會使用比喻、範例和提示來讓一切一目了然！🌟
+
+---
+
+## 🌊 在 Open WebUI 中，什麼是篩選器？
+
+想像一下 Open WebUI 是一條通過管道流動的**水流**：
+
+- **用戶輸入**和**LLM輸出**是流水。
+- **篩選器**是**水處理階段**，它在水到達最終目的地之前進行清理、修改和調整。
+
+篩選器位於數據流的中間——就像檢查站——您可以在這裡決定需要調整什麼。
+
+以下是篩選器的作用簡要概述：
+
+1. **修改用戶輸入（入口函數）**：在數據到達AI模型之前，調整輸入數據。在這裡，您可以提高清晰度、增加上下文、淨化文本或重新格式化消息以符合特定要求。
+2. **攔截模型輸出（流函數）**：在模型**生成過程中**捕獲並調整AI的響應。這對於實時修改非常有用，比如過濾敏感信息或格式化輸出以提高可讀性。
+3. **修改模型輸出（出口函數）**：在AI的響應**處理完成後**，展示給用戶之前進行調整。這有助於改進、記錄或調整數據，以提高用戶體驗。
+
+> **關鍵概念：**篩選器不是獨立的模型，而是改進或轉換在模型之間傳遞的數據的工具。
+
+篩選器就像AI工作流程中的**翻譯或編輯器**：您可以攔截並更改對話內容，而不會中斷流程。
+
+---
+
+## 🗺️ 篩選功能的結構：骨架
+
+讓我們從篩選功能的最簡單表示開始。即使某些部分初看上去感覺很技術化，也別擔心——我們將逐步分解！
+
+### 🦴 篩選器的基本骨架
+
+```python
+from pydantic import BaseModel
+from typing import Optional
+
+class Filter:
+    # 閥門：篩選器的配置選項
+    class Valves(BaseModel):  
+        pass
+
+    def __init__(self):
+        # 初始化閥門（篩選器的可選配置）
+        self.valves = self.Valves()
+
+    def inlet(self, body: dict) -> dict:
+        # 這裡是您操作用戶輸入的地方。
+        print(f"inlet called: {body}")
+        return body  
+
+    def stream(self, event: dict) -> dict:
+        # 這裡是您修改模型輸出數據流的部分。
+        print(f"stream event: {event}")
+        return event
+
+    def outlet(self, body: dict) -> None:
+        # 這裡是您操作模型輸出的地方。
+        print(f"outlet called: {body}")
+```
+
+---
+
+### 🆕 🧲 開關篩選器範例：增加互動性和圖示（Open WebUI 0.6.10 的新功能）
+
+篩選器可以做的不僅僅是修改文本——它們還可以在用戶界面中顯示切換選項及自定義圖示。例如，您可能想創建一個可以通過用戶界面按鈕開啟/關閉的篩選器，並在 Open WebUI 的訊息輸入界面中顯示特殊的圖示。
+
+以下是如何創建此類開關篩選器：
+
+```python
+from pydantic import BaseModel, Field
+from typing import Optional
+
+class Filter:
+    class Valves(BaseModel):
+        pass
+
+    def __init__(self):
+        self.valves = self.Valves()
+        self.toggle = True # 重要：這會在 Open WebUI 創建一個切換UI界面
+        # 提示：使用 SVG Data URI！
+        self.icon = """data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNCAyNCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBjbGFzcz0ic2l6ZS02Ij4KICA8cGF0aCBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGQ9Ik0xMiAxOHYtNS4yNW0wIDBhNi4wMSA2LjAxIDAgMCAwIDEuNS0uMTg5bS0xLjUuMTg5YTYuMDEgNi4wMSAwIDAgMS0xLjUtLjE4OW0zLjc1IDcuNDc4YTEyLjA2IDEyLjA2IDAgMCAxLTQuNSAwbTMuNzUgMi4zODNhMTQuNDA2IDE0LjQwNiAwIDAgMS0zIDBNMTQuMjUgMTh2LS4xOTJjMC0uOTgzLjY1OC0xLjgyMyAxLjUwOC0yLjMxNmE3LjUgNy41IDAgMSAwLTcuNTE3IDBjLjg1LjQ5MyAxLjUwOSAxLjMzMyAxLjUwOSAyLjMxNlYxOCIgLz4KPC9zdmc+Cg=="""
+        pass
+
+    async def inlet(
+        self, body: dict, __event_emitter__, __user__: Optional[dict] = None
+    ) -> dict:
+        await __event_emitter__(
+            {
+                "type": "status",
+                "data": {
+                    "description": "已切換！",
+                    "done": True
+                    "hidden": False,
+                },
+            }
+        )
+        return body
+```
+
+#### 🖼️ 發生了什麼事？
+- **toggle = True** 會在 Open WebUI 中建立一個開關式的使用者界面——使用者可以即時手動開啟或關閉這個過濾器。
+- **icon**（使用資料 URI 格式）會顯示為過濾器名稱旁邊的一個小圖示。只要是 Data URI 編碼的 SVG 都可以使用！
+- **`inlet` 函數** 使用特別的 `__event_emitter__` 參數將反饋/狀態廣播到界面，例如一個小的通知告知 "已切換！"
+
+![切換過濾器](/images/features/plugin/functions/toggle-filter.png)
+
+你可以用這些機制讓你的過濾器在 Open WebUI 的插件生態系統中變得更具動態性、互動性以及視覺獨特性。
+
+---
+
+### 🎯 核心元件解析
+
+#### 1️⃣ **`Valves` 類別（可選設定）**
+
+將 **Valves** 想像成你的過濾器的旋鈕和滑塊。如果你希望使用者能設置以調整過濾器的行為，可以在這裡定義這些選項。
+
+```python
+class Valves(BaseModel):
+    OPTION_NAME: str = "預設值"
+```
+
+例如： 
+如果你設計了能將回應轉換為大寫的過濾器，你可以允許使用者通過 `TRANSFORM_UPPERCASE: bool = True/False` 這樣的選項來配置是否將輸出完全轉換為大寫。
+
+---
+
+#### 2️⃣ **`inlet` 函數（輸入預處理）**
+
+
+`inlet` 函數就像是 **在烹煮食物前的準備工作**。想像你是位廚師：在材料進入食譜（在這裡是 LLM）之前，你可能會洗菜、切洋蔥、或者調味。不經過這個步驟，你的成品可能會缺乏風味、有髒的食材、或者不夠一致。
+
+在 Open WebUI 的世界中，`inlet` 函數會在 **使用者輸入** 傳送到模型前完成重要的準備工作，確保輸入被清理、具備上下文並對 AI 更友好。
+
+📥 **輸入**： 
+- **`body`**：來自 Open WebUI 遞交到模型的原始輸入，一般是一個聊天完成請求（通常是一個字典，包含會話消息、模型設定以及其他元數據）。這些就是你的食譜材料。
+
+🚀 **你的任務**： 
+修改並返回 `body`。被修改後的 `body` 就是 LLM 處理的對象，因此你可以利用這個機會增加明確性、結構性和上下文。
+
+
+##### 🍳 為什麼使用 `inlet`？
+1. **新增上下文**：自動為使用者輸入附加重要的信息，尤其是當文字模糊或不完整時。例如，你可以加上 "你是一個友好的助手" 或 "幫助這位使用者排查一個軟體錯誤。"
+   
+2. **格式化數據**：如果輸入需要特定格式，例如 JSON 或 Markdown，你可以在發送到模型之前轉換它。
+
+3. **輸入清理**：移除不需要的字符，刪除可能有害或混淆的符號（如多餘的空白或表情符號），或者替代敏感信息。
+
+4. **精簡使用者輸入**：如果模型的輸出能在額外指導下改善，可以使用 `inlet` 自動添加清晰的指示！
+
+
+##### 💡 使用範例：基於食物準備的案例
+###### 🥗 範例 1：添加系統上下文
+假設 LLM 是一位廚師負責準備義大利美食，但使用者並未提到 "這是為了義大利烹飪"。你可以確保信息的清晰性，在傳送數據到模型前添加這個上下文。
+
+```python
+def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+    # 添加系統消息為會話設置義大利上下文
+    context_message = {
+        "role": "system",
+        "content": "你正幫助使用者準備義大利美食。"
+    }
+    # 將上下文插入到聊天記錄的開頭
+    body.setdefault("messages", []).insert(0, context_message)
+    return body
+```
+
+📖 **會發生什麼？**
+- 任何使用者輸入如 "有哪些好的晚餐建議？" 現在都將帶有義大利風格主題，因為我們設置了系統上下文！麵條可能會出現作為答案，但芝士蛋糕就不太可能。
+
+
+###### 🔪 範例 2：清理輸入（移除奇怪字符）
+假設使用者的輸入看起來很雜亂或者包含不必要的符號如 `!!!`，這讓會話效率降低或者使模型解析更困難。在保留核心內容的同時，你可以清理這些信息。
+
+```python
+def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+    # 清理最後一個使用者輸入（來自 `messages` 列表末尾）
+    last_message = body["messages"][-1]["content"]
+    body["messages"][-1]["content"] = last_message.replace("!!!", "").strip()
+    return body
+```
+
+📖 **會發生什麼？**
+- 之前: `"如何排查這個問題!!!"` ➡️ 傳送到模型為 `"如何排查這個問題"`
+
+注意：使用者的感受保持不變，但模型處理的查詢更乾淨且易於理解。
+
+
+##### 📊 `inlet` 如何協助最佳化 LLM 的輸入：
+- 通過釐清模糊查詢來提升**準確性**。
+- 通過移除不必要的雜訊（如表情符號、HTML標籤或額外標點符號）使 AI 更**高效**。
+- 通過格式化使用者輸入以符合模型預期的模式或架構（例如針對特定使用案例的 JSON）來確保**一致性**。
+
+
+💭 **可以把 `inlet` 想像成你廚房裡的助手**—確保進入模型的材料（你的 AI「食譜」）已被完美地準備、清理和調味。輸入越好，輸出效果越佳！
+
+---
+
+#### 🆕 3️⃣ **`stream` Hook（Open WebUI 0.5.17 新增功能）**
+
+##### 🔄 什麼是 `stream` Hook？
+**`stream` 函數** 是 Open WebUI **0.5.17** 引入的一項新功能，允許你**攔截並即時修改模型響應流**。
+
+與處理完整響應的 `outlet` 不同，`stream` 作用於模型逐步生成的**每一個片段**。
+
+##### 🛠️ 什麼時候使用 Stream Hook？
+- 在顯示給使用者之前修改**響應流**。
+- 實現**即時審查或清理**。
+- **監控流數據**以進行日誌記錄或調試。
+
+##### 📜 範例：記錄響應流片段
+
+以下是如何檢視並修改 LLM 響應流的範例：
+```python
+def stream(self, event: dict) -> dict:
+    print(event)  # 打印每個接收到的片段以供檢查
+    return event
+```
+
+> **範例流事件：**
+```jsonl
+{"id": "chatcmpl-B4l99MMaP3QLGU5uV7BaBM0eDS0jb","choices": [{"delta": {"content": "Hi"}}]}
+{"id": "chatcmpl-B4l99MMaP3QLGU5uV7BaBM0eDS0jb","choices": [{"delta": {"content": "!"}}]}
+{"id": "chatcmpl-B4l99MMaP3QLGU5uV7BaBM0eDS0jb","choices": [{"delta": {"content": " 😊"}}]}
+```
+📖 **會發生什麼？**
+- 每一行都代表模型響應流中的一個**小片段**。
+- **`delta.content` 字段**包含逐步生成的文本。
+
+##### 🔄 範例：從流數據中過濾掉表情符號
+```python
+def stream(self, event: dict) -> dict:
+    for choice in event.get("choices", []):
+        delta = choice.get("delta", {})
+        if "content" in delta:
+            delta["content"] = delta["content"].replace("😊", "")  # 移除表情符號
+    return event
+```
+📖 **之前：** `"Hi 😊"`  
+📖 **之後：** `"Hi"`
+
+---
+
+#### 4️⃣ **`outlet` 函數（輸出後處理）**
+
+`outlet` 函數就像一個**校訂員**：在 LLM 處理完後進行最終的整理或修改。
+
+📤 **輸入：**
+- **`body`**：此字段包含聊天中的**所有當前消息**（使用者歷史記錄 + LLM 回覆）。
+
+🚀 **你的任務：** 修改此 `body`。你可以清理、添加或記錄變更，但請注意每次調整對使用者體驗的影響。
+
+💡 **最佳實踐：**
+- 優先選擇記錄，而非直接編輯 `outlet`（例如，用於調試或分析）。
+- 如果需要大量修改（如格式化輸出），可考慮使用 **pipe 函數**。
+
+💡 **範例用例：** 移除不希望用戶看到的敏感 API 响應：
+```python
+def outlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+    for message in body["messages"]:
+        message["content"] = message["content"].replace("<API_KEY>", "[REDACTED]")
+    return body 
+```
+
+---
+
+## 🌟 過濾器應用：構建實際範例
+
+讓我們通過一些實際範例來看看如何使用過濾器！
+
+### 📚 範例 #1：為每個使用者輸入添加上下文
+
+希望 LLM 總是知道它正在協助使用者排除軟體錯誤？你可以為每個使用者查詢添加指令，如 **「你是一個軟體故障排除助手」**。
+
+```python
+class Filter:
+    def inlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+        context_message = {
+            "role": "system", 
+            "content": "你是一個軟體故障排除助手。"
+        }
+        body.setdefault("messages", []).insert(0, context_message)
+        return body
+```
+
+---
+
+### 📚 範例 #2：高亮顯示輸出方便閱讀
+
+以 Markdown 或其他格式化樣式返回輸出？使用 `outlet` 函數！
+
+```python
+class Filter:
+    def outlet(self, body: dict, __user__: Optional[dict] = None) -> dict:
+        # 為每個回應添加「高亮」Markdown
+        for message in body["messages"]:
+            if message["role"] == "assistant":  # 目標模型響應
+                message["content"] = f"**{message[content]}**"  # 使用 Markdown 高亮
+        return body
+```
+
+---
+
+## 🚧 潛在混淆：清晰 FAQ 🛑  
+
+### **Q: 過濾器與 Pipe 函數有何不同？**
+
+過濾器修改**進入模型**和**從模型輸出**的數據，但不會顯著干涉這些階段外的邏輯。而 Pipe 則：
+- 可以整合**外部 API**或顯著改變後端如何處理操作。
+- 將自定義邏輯暴露為全新的「模型」。
+
+### **Q: 我可以在 `outlet` 中進行重度後處理嗎？**
+
+你可以，但**這不是最佳實踐。**：
+- **過濾器**是用來執行輕量級的更改或應用日誌記錄。
+- 如果需要進行重大修改，請考慮使用 **管道函數 (Pipe Function)**。
+
+---
+
+## 🎉 回顧：為什麼要建立過濾器函數？
+
+到目前為止，你已經學到了：
+1. **入口 (Inlet)** 可以操作 **用戶輸入**（預處理）。
+2. **流 (Stream)** 攔截並修改 **流式模型輸出**（即時）。
+3. **出口 (Outlet)** 調整 **AI 輸出**（後處理）。
+4. 過濾器最適合對數據流進行輕量級的即時更改。
+5. 有了 **閥門 (Valves)**，你可以為用戶提供動態配置過濾器的能力，以實現定制行為。
+
+---
+
+🚀 **輪到你了**：開始實驗吧！有什麼小的調整或背景補充能夠提升你的 Open WebUI 體驗？過濾器的構建既有趣又靈活，可讓你的模型更上一層樓！
+
+祝你編程愉快！✨

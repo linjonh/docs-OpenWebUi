@@ -1,0 +1,139 @@
+---
+sidebar_position: 2  
+title: "⚙️ Outils"  
+---
+
+# ⚙️ Que sont les outils ?
+
+Les outils sont de petits scripts Python qui ajoutent des super-pouvoirs à votre LLM. Une fois activés, ils permettent à votre chatbot de réaliser des choses incroyables — comme rechercher sur le web, extraire des données, générer des images, utiliser des voix IA pour répondre, et bien plus encore.
+
+Considérez les outils comme des plugins utiles que votre IA peut utiliser lors de vos échanges.
+
+---
+
+## 🚀 Que peuvent faire les outils pour moi ?
+
+Voici quelques exemples de ce que les outils permettent à votre assistant IA de faire :
+
+- 🌍 Recherche Web : Obtenez des réponses en temps réel en recherchant sur Internet.
+- 🖼️ Génération d'images : Créez des images à partir de vos prompts.
+- 🔊 Sortie vocale : Générez des voix IA grâce à ElevenLabs.
+
+Explorez des outils prêts à l'emploi ici :  
+🧰 [Vitrine des outils](https://openwebui.com/tools)
+
+---
+
+
+## 📦 Comment installer des outils
+
+Il existe deux façons simples d'installer des outils dans Open WebUI :
+
+1. Rendez-vous sur la [bibliothèque communautaire d’outils](https://openwebui.com/tools)
+2. Choisissez un outil, puis cliquez sur le bouton Obtenir.
+3. Saisissez l'adresse IP ou l'URL de votre instance Open WebUI.
+4. Cliquez sur « Importer dans WebUI » — et voilà !
+
+🛑 Conseil de sécurité : Ne jamais importer un outil que vous ne connaissez pas ou en qui vous n’avez pas confiance. Ce sont des scripts Python qui pourraient exécuter du code non sécurisé.
+
+---
+
+
+## 🔧 Comment utiliser les outils dans Open WebUI
+
+Une fois que vous avez installé des outils (nous vous montrons comment ci-dessous), voici comment les activer et les utiliser :
+
+Vous avez deux façons d’activer un outil pour votre modèle :
+
+### ➕ Option 1 : Activation depuis la fenêtre de discussion
+
+Pendant vos discussions, cliquez sur l'icône ➕ dans la zone de saisie. Vous verrez une liste d'outils disponibles — vous pouvez en activer un ou plusieurs au cours de la session.
+
+💡 Conseil : Activer un outil donne au modèle l’autorisation de l’utiliser — mais il ne l’utilisera que si cela est pertinent pour la tâche.
+
+### ✏️ Option 2 : Activation par défaut (recommandé pour une utilisation fréquente)
+1. Allez dans : Espace de travail ➡️ Modèles
+2. Choisissez le modèle que vous utilisez (comme GPT-4 ou LLaMa2) et cliquez sur l'icône ✏️ pour modifier.
+3. Faites défiler jusqu’à la section « Outils ».
+4. ✅ Cochez les outils auxquels vous voulez que votre modèle ait accès par défaut.
+5. Cliquez sur Enregistrer.
+
+Cela garantit que le modèle dispose toujours de ces outils prêts à être utilisés lors de vos discussions.
+
+Vous pouvez également laisser votre LLM sélectionner automatiquement les outils appropriés en utilisant le filtre AutoTool :
+
+🔗 [Filtre AutoTool](https://openwebui.com/f/hub/autotool_filter/)
+
+🎯 Remarque : Même en utilisant AutoTool, vous devez toujours activer vos outils via l'option 2.
+
+✅ Et c’est tout — votre LLM est maintenant optimisé avec des outils ! Vous êtes prêt à améliorer vos discussions avec des recherches web, la génération d’images, la sortie vocale et bien plus encore.
+
+---
+
+## 🧠 Choisir comment les outils sont utilisés : Par défaut vs Natif
+
+Une fois les outils activés pour votre modèle, Open WebUI vous propose deux façons différentes pour que votre LLM les utilise lors des conversations.
+
+Vous pouvez décider comment le modèle doit appeler les outils en choisissant entre :
+
+- 🟡 Mode Par défaut (basé sur les prompts)
+- 🟢 Mode Natif (appel de fonctions intégré)
+
+Décomposons cela :
+
+### 🟡 Mode Par défaut (Déclenchement d’outils basé sur les prompts)
+
+C’est la configuration par défaut dans Open WebUI.
+
+Ici, votre LLM n’a pas besoin de prendre en charge nativement l’appel de fonctions. Nous guidons le modèle en utilisant des templates intelligents de sélection d’outils pour choisir et utiliser un outil.
+
+✅ Fonctionne avec presque tous les modèles  
+✅ Excellent moyen de débloquer des outils avec des modèles de base ou locaux  
+❗ Pas aussi fiable ou flexible que le Mode Natif pour enchaîner des outils
+
+### 🟢 Mode Natif (Appel de fonctions intégré)
+
+Si votre modèle prend en charge « l’appel de fonctions natif » (comme GPT-4o ou GPT-3.5-turbo-1106), vous pouvez utiliser ce mode puissant pour laisser le LLM décider — en temps réel — quand et comment appeler plusieurs outils lors d’un seul message de chat.
+
+✅ Rapide, précis, et peut enchaîner plusieurs outils dans une seule réponse  
+✅ L’expérience la plus naturelle et avancée  
+❗ Nécessite un modèle supportant réellement l’appel de fonctions natif
+
+### ✳️ Comment passer d’un mode à l’autre
+
+Vous souhaitez activer l’appel de fonctions natif dans vos discussions ? Voici comment faire :
+
+![Contrôles de discussion](/images/features/plugin/tools/chat-controls.png)
+
+1. Ouvrez la fenêtre de discussion avec votre modèle.
+2. Cliquez sur ⚙️ Contrôles de discussion > Paramètres avancés.
+3. Recherchez le paramètre d’appel de fonctions et basculez-le de Par défaut → Natif
+
+Et voilà ! Votre discussion utilise maintenant un support natif des outils (tant que le modèle le prend en charge).
+
+➡️ Nous recommandons d’utiliser GPT-4o ou un autre modèle d’OpenAI pour la meilleure expérience d’appel de fonctions natif.  
+🔎 Certains modèles locaux peuvent prétendre prendre en charge cette fonctionnalité, mais rencontrent souvent des difficultés avec l’utilisation précise ou complexe des outils.
+
+💡 Résumé :
+
+| Mode     | Pour qui c'est fait               | Avantages                                | Inconvénients                         |
+|----------|----------------------------------|-----------------------------------------|--------------------------------------|
+| Par défaut  | Tout modèle                      | Large compatibilité, plus sûr, flexible  | Peut être moins précis ou plus lent   |
+| Natif       | GPT-4o, etc.                    | Rapide, intelligent, excellent enchaînement d’outils | Nécessite un support d’appel de fonction adapté |
+
+Choisissez celui qui convient le mieux à votre configuration — et rappelez-vous, vous pouvez toujours basculer à la volée via les Contrôles de discussion.
+
+👏 Et voilà — votre LLM sait maintenant comment et quand utiliser des Outils, intelligemment.
+
+---
+
+## 🧠 Résumé
+
+Les Outils sont des extensions qui permettent à votre modèle d'IA de faire bien plus que simplement discuter. Que ce soit pour répondre à des questions en temps réel, générer des images ou parler à voix haute — les Outils donnent vie à votre IA.
+
+- Visitez : [https://openwebui.com/tools](https://openwebui.com/tools) pour découvrir de nouveaux Outils.
+- Installez-les manuellement ou en un clic.
+- Activez-les par modèle depuis Espace de travail ➡️ Modèles.
+- Utilisez-les dans le chat en cliquant sur ➕
+
+Maintenant, rendez votre IA beaucoup plus intelligente 🤖✨

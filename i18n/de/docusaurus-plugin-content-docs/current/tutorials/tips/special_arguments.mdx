@@ -1,0 +1,342 @@
+---
+sidebar_position: 20
+title: "💡 Spezielle Argumente"
+---
+
+:::warning
+Dieses Tutorial ist ein Beitrag der Community und wird nicht vom Open-WebUI-Team unterstützt. Es dient nur als Demonstration dafür, wie Sie Open WebUI für Ihren spezifischen Anwendungsfall anpassen können. Möchten Sie beitragen? Schauen Sie sich das Beitragstutorial an.
+:::
+
+# 💡 Spezielle Argumente
+
+Bei der Entwicklung eigener `Tools`, `Funktionen` (`Filter`, `Pipes` oder `Actions`), `Pipelines` usw. können Sie spezielle Argumente verwenden, um das gesamte Spektrum dessen zu erkunden, was Open-WebUI zu bieten hat.
+
+Diese Seite zielt darauf ab, den Typ und die Struktur jedes speziellen Arguments im Detail zu beschreiben und ein Beispiel zur Verfügung zu stellen.
+
+### `body`
+
+Ein `dict`, das normalerweise fast direkt an das Modell weitergeleitet wird. Obwohl es nicht streng genommen ein spezielles Argument ist, wird es hier zur leichteren Bezugnahme aufgenommen, da es selbst einige spezielle Argumente enthält.
+
+<details>
+<summary>Beispiel</summary>
+
+```json
+
+{
+  "stream": true,
+  "model": "mein-cooles-modell",
+  # Kleinbuchstaben-String mit - getrennten Wörtern: Dies ist die ID des Modells
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Was ist auf diesem Bild zu sehen?"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdYAAAGcCAYAAABk2YF[REDACTED]"
+            # Bilder werden als base64-codierte Daten übergeben
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": "Das Bild scheint [REDACTED] zu sein"
+    },
+  ],
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "stream_options": {
+    "include_usage": true
+  },
+  "metadata": "[Exakt derselbe dict wie __metadata__]",
+  "files": "[Exakt dieselbe Liste wie __files__]"
+}
+
+
+```
+
+</details>
+
+### `__user__`
+
+Ein `dict` mit Benutzerinformationen.
+
+Beachten Sie, dass, wenn die Klasse `UserValves` definiert ist, ihre Instanz über `__user__["valves"]` aufgerufen werden muss. Andernfalls fehlt der `valves` Schlüsselwert vollständig in `__user__`.
+
+<details>
+<summary>Beispiel</summary>
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "email": "cheesy_dude@openwebui.com",
+  "name": "Patrick",
+  "role": "user",
+  # Rolle kann entweder `user` oder `admin` sein
+  "valves": "[die UserValve-Instanz]"
+}
+```
+
+</details>
+
+### `__metadata__`
+
+Ein `dict` mit umfangreichen Informationen über den Chat, das Modell, Dateien usw.
+
+<details>
+<summary>Beispiel</summary>
+
+```json
+{
+  "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "chat_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "message_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "session_id": "xxxxxxxxxxxxxxxxxxxx",
+  "tool_ids": null,
+  # tool_ids ist eine Liste von Strings.
+  "tool_servers": [],
+  "files": "[Gleich wie in body[files]]",
+  # Wenn keine Dateien angegeben sind, existiert der files-Schlüssel in __metadata__ und sein Wert ist []
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "variables": {
+    "{{USER_NAME}}": "cheesy_username",
+    "{{USER_LOCATION}}": "Unbekannt",
+    "{{CURRENT_DATETIME}}": "2025-02-02 XX:XX:XX",
+    "{{CURRENT_DATE}}": "2025-02-02",
+    "{{CURRENT_TIME}}": "XX:XX:XX",
+    "{{CURRENT_WEEKDAY}}": "Montag",
+    "{{CURRENT_TIMEZONE}}": "Europa/Berlin",
+    "{{USER_LANGUAGE}}": "en-US"
+  },
+  "model": "[Das exakt gleiche dict wie __model__]",
+  "direct": false,
+  "function_calling": "native",
+  "type": "user_response",
+  "interface": "open-webui"
+}
+
+```
+
+</details>
+
+### `__model__`
+
+Ein `dict` mit Informationen über das Modell.
+
+<details>
+<summary>Beispiel</summary>
+
+```json
+{
+  "id": "mein-cooles-modell",
+  "name": "Mein cooles Modell",
+  "object": "model",
+  "created": 1746000000,
+  "owned_by": "openai",
+  # entweder openai oder ollama
+  "info": {
+      "id": "mein-cooles-modell",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "base_model_id": "gpt-4o",
+      # dies ist der Name des Modells, das der Modell-Endpunkt bedient
+      "name": "Mein cooles Modell",
+      "params": {
+      "system": "Du bist mein bester Assistent. Du antwortest [REDACTED]",
+      "function_calling": "native"
+      # benutzerdefinierte Optionen erscheinen hier, zum Beispiel "Top K"
+      },
+      "meta": {
+      "profile_image_url": "/static/favicon.png",
+      "description": "Beschreibung von mein-cooles-modell",
+      "capabilities": {
+          "vision": true,
+          "usage": true,
+          "citations": true
+      },
+      "position": 17,
+      "tags": [
+          {
+          "name": "für_freunde"
+          },
+          {
+          "name": "vision_aktiviert"
+          }
+      ],
+      "suggestion_prompts": null
+      },
+      "access_control": {
+      "read": {
+          "group_ids": [],
+          "user_ids": []
+      },
+      "write": {
+          "group_ids": [],
+          "user_ids": []
+      }
+      },
+      "is_active": true,
+      "updated_at": 1740000000,
+      "created_at": 1740000000
+  },
+  "preset": true,
+  "actions": [],
+  "tags": [
+      {
+          "name": "für_freunde"
+      },
+{
+          "name": "vision_enabled"
+      }
+  ]
+}
+
+```
+
+</details>
+
+### `__messages__`
+
+Eine `Liste` der vorherigen Nachrichten.
+
+Siehe den `body["messages"]` Wert oben.
+
+
+### `__chat_id__`
+
+Die `str` der `chat_id`.
+
+Siehe den `__metadata__["chat_id"]` Wert oben.
+
+### `__session_id__`
+
+Die `str` der `session_id`.
+
+Siehe den `__metadata__["session_id"]` Wert oben.
+
+### `__message_id__`
+
+Die `str` der `message_id`.
+
+Siehe den `__metadata__["message_id"]` Wert oben.
+
+### `__event_emitter__`
+
+Eine `Callable`, die verwendet wird, um Ereignisinformationen dem Benutzer anzuzeigen.
+
+### `__event_call__`
+
+Eine `Callable`, die für `Actions` verwendet wird.
+
+### `__files__`
+
+Eine `Liste` der via Chat gesendeten Dateien. Beachten Sie, dass Bilder nicht als Dateien betrachtet werden und direkt als Teil der `body["messages"]` Liste dem Modell gesendet werden.
+
+Der eigentliche Binärinhalt der Datei ist aus Leistungsgründen nicht Teil der Argumente, bleibt jedoch über seinen Pfad zugänglich, falls erforderlich. Zum Beispiel könnte unter Verwendung von `docker` die Python-Syntax für den Pfad wie folgt aussehen:
+
+```python
+from pathlib import Path
+
+die_datei = Path(f"/app/backend/data/uploads/{__files__[0]["files"]["id"]}_{__files__[0]["files"]["filename"]}")
+assert die_datei.exists()
+```
+
+Beachten Sie, dass dieselbe Datei-Dikt auch über `__metadata__["files"]` (dessen Wert `[]` ist, wenn keine Dateien gesendet werden) oder über `body["files"]` (aber der `files` Schlüssel fehlt vollständig in `body`, wenn keine Dateien gesendet werden) zugänglich ist.
+
+<details>
+<summary>Beispiel</summary>
+
+```json
+
+[
+  {
+    "type": "file",
+    "file": {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "filename": "Napoleon - Wikipedia.pdf",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "data": {
+        "content": "Napoleon - Wikipedia\n\n\nNapoleon I\n\nDer Kaiser Napoleon in seinem Arbeitszimmer in den\nTuilerien, 1812\n\nKaiser der Franzosen\n\n1. Regierungszeit 18. Mai 1804 – 6. April 1814\n\nNachfolger Louis XVIII[a]\n\n2. Regierungszeit 20. März 1815 – 22. Juni 1815\n\nNachfolger Louis XVIII[a]\n\nErster Konsul der Französischen Republik\n\nIm Amt\n13. Dezember 1799 – 18. Mai 1804\n\nGeboren Napoleone Buonaparte\n15. August 1769\nAjaccio, Korsika, Königreich von\nFrankreich\n\nGestorben 5. Mai 1821 (im Alter von 51 Jahren)\nLongwood, St. Helena\n\nBegraben 15. Dezember 1840\nLes Invalides, Paris\n\nNapoleon\nNapoleon Bonaparte[b] (geboren Napoleone\nBuonaparte;[1][c] 15. August 1769 – 5. Mai 1821), später\nbekannt [REDACTED]",
+        # Der Inhalt ist die Ausgabe des Dokumentenparsers, das obige Beispiel ist mit Tika als Dokumentenparser
+      },
+      "meta": {
+        "name": "Napoleon - Wikipedia.pdf",
+        "content_type": "application/pdf",
+        "size": 10486578,
+        # in Bytes, hier etwa 10Mb
+        "data": {},
+        "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        # beginnt immer mit file
+      },
+      "created_at": 1740000000,
+      "updated_at": 1740000000
+    },
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "url": "/api/v1/files/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "name": "Napoleon - Wikipedia.pdf",
+    "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    "status": "hochgeladen",
+    "size": 10486578,
+    "error": "",
+    "itemId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    # itemId ist nicht dasselbe wie file["id"]
+  }
+]
+
+
+```
+
+</details>
+
+### `__request__`
+
+Eine Instanz von `fastapi.Request`. Weitere Informationen finden Sie auf der [Migrationsseite](../../features/plugin/migration/index.mdx) oder in der [FastAPI-Dokumentation](https://fastapi.tiangolo.com/reference/request/).
+
+### `__task__`
+
+Ein `str` für die Art der Aufgabe. Sein Wert ist nur eine Kurzform für `__metadata__["task"]`, falls vorhanden, ansonsten `None`.
+
+<details>
+<summary>Mögliche Werte</summary>
+
+```json
+
+[
+    "title_generation",
+    "tags_generation",
+    "emoji_generation",
+    "query_generation",
+    "image_prompt_generation",
+    "autocomplete_generation",
+    "function_calling",
+    "moa_response_generation"
+]
+```
+
+</details>
+
+### `__task_body__`
+
+Ein `dict`, das den `body` enthält, der für die Erfüllung einer gegebenen `__task__` benötigt wird. Sein Wert ist nur eine Kurzform für `__metadata__["task_body"]`, falls vorhanden, ansonsten `None`.
+
+Seine Struktur entspricht der von `body` oben, mit Änderungen wie der Verwendung des entsprechenden Modells und Systemnachrichten usw.
+
+
+### `__tools__`
+
+Eine `Liste` von `ToolUserModel`-Instanzen.
+
+Details zu den Attributen von `ToolUserModel`-Instanzen finden Sie im Code unter [tools.py](https://github.com/open-webui/open-webui/blob/main/backend/open_webui/models/tools.py).
+

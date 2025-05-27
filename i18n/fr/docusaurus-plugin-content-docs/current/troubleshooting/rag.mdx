@@ -1,0 +1,121 @@
+---
+sidebar_position: 3
+title: "🧠 Résolution des problèmes RAG (Récupération-Augmentée Génération)"
+---
+
+La Récupération-Augmentée Génération (RAG) permet aux modèles de langage de raisonner sur du contenu externe—documents, bases de connaissances, et plus encore—en récupérant les informations pertinentes et en les intégrant dans le modèle. Mais lorsque les choses ne fonctionnent pas comme prévu (par exemple, le modèle "hallucine" ou manque des informations pertinentes), ce nest souvent pas la faute du modèle—cest une problématique de contexte.
+
+Décomposons les causes courantes et les solutions afin daméliorer la précision de votre RAG ! 🚀
+
+## Problèmes courants avec RAG et comment les résoudre 🛠️
+
+### 1. Le modèle "ne peut pas voir" votre contenu 👁️❌
+
+Cest le problème le plus fréquent—et il est généralement causé par des problèmes lors du processus dingestion de votre contenu. Le modèle ne hallucine pas parce quil est erroné, il hallucine parce quil na jamais reçu le contenu correct au départ.
+
+✅ Solution : Vérifiez vos paramètres dextraction de contenu
+
+- Naviguez vers : **Paramètres dadministration > Documents**.
+- Assurez-vous dutiliser un moteur dextraction de contenu robuste tel que :
+  - Apache Tika
+  - Docling
+  - Extracteurs personnalisés (selon vos types de documents)
+
+📌 Astuce : Essayez de télécharger un document et prévisualisez le contenu extrait. Sil est vide ou que des sections clés manquent, vous devez ajuster vos paramètres dextracteur ou utiliser un moteur différent.
+
+---
+
+### 2. Seulement une petite partie du document est utilisée 📄➡️✂️
+
+Open WebUI est conçu pour fonctionner avec des modèles qui ont des fenêtres de contexte limitées par défaut. Par exemple, de nombreux modèles locaux (comme les modèles par défaut dOllama) sont limités à 2048 tokens. Pour cette raison, Open WebUI réduit agressivement le contenu récupéré pour quil tienne dans lespace disponible présumé.
+
+✅ Solutions :
+
+- Allez sur **Paramètres dadministration > Documents**
+- Soit :
+  - 💡 Activez “Contourner lintégration et la récupération” — Cela envoie le contenu complet directement sans appliquer de filtres stricts de récupération.
+  - 🔍 Activez le mode “Contexte complet” — Cela injecte un contenu plus complet dans linvite du modèle.
+
+📌 Attention : Soyez conscient des limites de contexte—si votre modèle ne peut pas gérer plus de tokens, il sera quand même coupé.
+
+---
+
+### 3. La limite de tokens est trop courte ⏳
+
+Même si la récupération fonctionne, votre modèle pourrait ne pas traiter tout le contenu quil reçoit—parce quil ne le peut tout simplement pas.
+
+Par défaut, de nombreux modèles (en particulier les LLM hébergés par Ollama) sont limités à une fenêtre de contexte de 2048 tokens. Cela signifie quune fraction seulement des données récupérées sera effectivement utilisée.
+
+✅ Solutions :
+
+- 🛠️ Augmentez la longueur du contexte du modèle :
+  - Accédez à l**Éditeur de modèle ou aux contrôles de chat**
+  - Modifiez la longueur du contexte (p. ex., augmentez à 8192+ tokens si pris en charge)
+
+ℹ️ Remarque : La limite par défaut de 2048 tokens est un frein important. Pour de meilleurs résultats RAG, nous recommandons dutiliser des modèles qui prennent en charge des contextes plus longs.
+
+✅ Alternative : Utilisez un LLM externe avec une capacité de contexte plus grande
+
+- Essayez GPT-4, GPT-4o, Claude 3, Gemini 1.5, ou Mixtral avec un contexte de 8k+
+- Comparez les performances à Ollama—notez la différence de précision quand plus de contenu peut être injecté !
+
+📌 Astuce : Préférez les modèles externes pour de meilleures performances RAG dans les cas dutilisation en production.
+
+---
+
+### 4. Le modèle dintégration est de mauvaise qualité ou inadapté 📉🧠
+
+De mauvaises intégrations = une mauvaise récupération. Si la représentation vectorielle de votre contenu est médiocre, le récupérateur ne tirera pas le bon contenu—peu importe la puissance de votre LLM.
+
+✅ Solution :
+
+- Passez à un modèle dintégration de haute qualité (par ex., all-MiniLM-L6-v2, Instructor X, ou les intégrations OpenAI)
+- Allez sur : **Paramètres dadministration > Documents**
+- Après avoir changé le modèle, assurez-vous de :
+  - ⏳ Réindexer tous les documents existants pour que les nouvelles intégrations prennent effet.
+
+📌 Souvenez-vous : La qualité des intégrations influence directement le contenu récupéré.
+
+---
+
+### 5. ❌ Erreur 400 : NoneType object has no attribute encode
+
+Cette erreur indique un modèle dintégration mal configuré ou manquant. Lorsque Open WebUI tente de créer des intégrations mais quil na pas de modèle valide chargé, il ne peut pas traiter le texte—et le résultat est cette erreur cryptique.
+
+💥 Cause :
+- Votre modèle dintégration nest pas correctement configuré.
+- Il na peut-être pas été complètement téléchargé.
+- Ou si vous utilisez un modèle dintégration externe, il peut ne pas être accessible.
+
+✅ Solution :
+
+- Allez sur : **Paramètres dadministration > Documents > Modèle dintégration**
+- Enregistrez à nouveau le modèle dintégration—même sil est déjà sélectionné. Cela force une vérification/téléchargement.
+- Si vous utilisez un outil dintégration distant/externe, assurez-vous quil fonctionne et soit accessible à Open WebUI.
+
+📌 Astuce : Après avoir corrigé la configuration, essayez de réintégrer un document et vérifiez quaucune erreur napparaît dans les journaux.
+
+---
+
+## 🧪 Conseil pro : Testez avec GPT-4o ou GPT-4
+
+Si vous nêtes pas sûr que le problème vienne de la récupération, des limites de tokens ou de lintégration—essayez dutiliser temporairement GPT-4o (par exemple via lAPI OpenAI). Si les résultats deviennent soudainement plus précis, cest un fort indicateur que la limite de contexte de votre modèle local (2048 par défaut dans Ollama) est le goulet détranglement.
+
+- GPT-4o traite des entrées plus grandes (128k tokens !)
+- Fournit un excellent point de comparaison pour évaluer la fiabilité RAG de votre système
+
+---
+
+## Liste de vérification récapitulative ✅
+
+| Problème | Solution |
+|--------|---------|
+| 🤔 Le modèle ne "lit" pas le contenu | Vérifiez les paramètres de l'extracteur de documents |
+| 🧹 Seulement une partie du contenu utilisée | Activez le mode Contexte Complet ou contournez l'intégration |
+| ⏱ Limité par un plafond de 2048 tokens | Augmentez la longueur du contexte du modèle ou utilisez un LLM avec un grand contexte |
+| 📉 Récupération inexacte | Passez à un modèle d'intégration plus performant, puis réindexez |
+| Toujours confus ? | Testez avec GPT-4o et comparez les résultats |
+
+---
+
+En optimisant ces domaines—extraction, intégration, récupération et contexte du modèle—vous pouvez améliorer considérablement la précision de votre LLM dans le traitement de vos documents. Ne laissez pas une fenêtre de 2048 tokens ou une chaîne de récupération faible limiter la puissance de votre IA 🎯.

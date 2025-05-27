@@ -1,0 +1,146 @@
+---
+sidebar_position: 300 
+title: "🔄 Open WebUIの更新"
+---
+
+
+
+## なぜ私のOpen WebUIが更新されないのか？
+
+Open WebUIのローカルDockerインストールを最新バージョンに更新するには、**Watchtower**を使用するか、コンテナを手動で更新する方法があります。以下の手順に従って、既存のOpen WebUIイメージを更新する方法をご覧ください。
+
+### 手動更新
+
+1. **現在のコンテナを停止して削除する**:
+
+   実行中のコンテナを停止して削除しますが、Dockerボリュームに保存されているデータは削除されません。（更新プロセス中にコンテナの名前が異なる場合は、`open-webui`を置き換えてください）
+
+```bash
+docker rm -f open-webui
+```
+
+2. **最新のDockerイメージをプルする**:
+
+   これによりDockerイメージが更新されますが、実行中のコンテナやそのデータは更新されません。
+
+```bash
+docker pull ghcr.io/open-webui/open-webui:main
+```
+
+
+:::info
+**Dockerボリューム内の既存データを削除する（絶対必要でない限り推奨しません！）**。必要でない場合はこのステップを完全にスキップして最後のステップに進んでください。
+
+   新しい状態で始めたい場合は、Dockerボリューム内の既存データを削除できます。ただし、これを行うとすべてのチャット履歴やその他のデータが削除されるため注意が必要です。
+
+   データは`open-webui`という名前のDockerボリュームに保存されています。以下のコマンドで削除できます:
+
+```bash
+docker volume rm open-webui
+```
+:::
+
+3. **更新されたイメージと既存のボリュームをアタッチしてコンテナを再起動する**:
+
+   既存データを削除しなかった場合、更新されたイメージと既存データを使用してコンテナを再起動します。既存データを削除した場合は、更新されたイメージと新しい空のボリュームを使用してコンテナを再起動します。**Nvidia GPUサポートの場合は、`--gpus all`をdocker runコマンドに追加してください**
+
+```bash
+docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:main
+```
+
+## 更新後に毎回ログアウトされる？
+毎回更新後にログアウトされる場合は、環境変数に`WEBUI_SECRET_KEY`が設定されているか確認してください。このキーが一貫して定義されていないと、更新後に認証セッションが無効化される可能性があります。
+
+`WEBUI_SECRET_KEY`を永続的に設定するには、Dockerコンテナを実行する際に含めてください:
+
+```bash
+docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui -e WEBUI_SECRET_KEY=your_secret_key ghcr.io/open-webui/open-webui:main
+```
+
+または、**docker-compose**を使用している場合は、`environment`セクションに追加します:
+
+```yml
+version: '3'
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3000:8080"
+    volumes:
+      - open-webui:/app/backend/data
+    environment:
+      - WEBUI_SECRET_KEY=your_secret_key
+```
+
+環境変数設定に関する詳細は、[セキュリティ変数に関するOpen WebUIドキュメント](https://docs.openwebui.com/getting-started/env-configuration#security-variables)をご覧ください。
+
+## Watchtowerを使用したOpen WebUIの自動更新
+
+[Watchtower](https://containrrr.dev/watchtower/)を使用してOpen WebUIの更新プロセスを自動化できます。以下の3つのオプションがあります:
+
+### オプション1: 一度だけ更新
+
+Watchtowerを一度だけ実行して現在のコンテナを停止し、最新のイメージをプルして更新されたイメージと既存のボリュームをアタッチして新しいコンテナを開始します（**Nvidia GPUサポートの場合は、`--gpus all`をdocker runコマンドに追加してください**）:
+
+```bash
+docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once open-webui
+```
+
+### オプション2: Watchtowerを別のコンテナとして実行
+
+Watchtowerを別のコンテナとして実行し、Open WebUIコンテナを監視して更新します:
+
+```bash
+docker run -d --name watchtower \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
+  containrrr/watchtower -i 300 open-webui
+```
+
+これにより、Watchtowerがデタッチモードで起動し、Open WebUIコンテナを5分ごとに更新するか監視します。
+
+### オプション3: Watchtowerを`docker-compose.yml`ファイルと統合
+
+`docker-compose.yml`ファイルを使用してOpen WebUIの更新を自動化するためにWatchtowerを統合することも可能です（**Nvidia GPUサポートの場合は、`--gpus all`をdocker runコマンドに追加してください**）:
+
+```yml
+version: '3'
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3000:8080"
+    volumes:
+      - open-webui:/app/backend/data
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 300 open-webui
+    depends_on:
+      - open-webui
+
+volumes:
+  open-webui:
+```
+
+この例では、Watchtowerが`docker-compose.yml`ファイルに統合され、Open WebUIコンテナを5分ごとに更新するか監視します。
+
+## Dockerボリューム内の永続的データ
+
+データは`open-webui`という名前のDockerボリュームに保存されています。このボリュームへの直接のパスはアクセスできませんが、以下のコマンドでボリュームを確認できます:
+
+```bash
+docker volume inspect open-webui
+```
+
+これにより、ボリュームの詳細が表示され、マウントポイントが確認できます。通常 `/var/lib/docker/volumes/open-webui/_data` にあります。
+
+Windows 10 + WSL 2では、Dockerボリュームは以下の場所にあります（Windowsファイルエクスプローラーで入力してください）：
+- \\\wsl$\docker-desktop\mnt\docker-desktop-disk\data\docker\volumes
+
+古いバージョンのDocker（Docker v26.1.4以前）の場合：
+- \\\wsl$\docker-desktop-data\data\docker\volumes
+- \\\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
+
+_（Windowsの回答はStackOverflowユーザーsarye-haddadiにクレジット; [元のSO投稿へのリンク](https://stackoverflow.com/questions/43181654/locating-data-volumes-in-docker-desktop-windows)）_

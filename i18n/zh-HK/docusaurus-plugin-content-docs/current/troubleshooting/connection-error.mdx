@@ -1,0 +1,72 @@
+---
+sidebar_position: 0
+title: "🚧 伺服器連接問題"
+---
+
+我們在這裡幫助您順利地完成設置和運行。在下面，您會找到適用於不同情況的逐步說明，以解決與 Ollama 和像 Hugging Face 這樣的外部伺服器的常見連接問題。
+
+## 🌟 與 Ollama 伺服器的連接
+
+### 🚀 從 Open WebUI 訪問 Ollama
+
+難以從 Open WebUI 連接到 Ollama？這可能是因為 Ollama 沒有監聽允許外部連接的網路介面。讓我們解決這個問題：
+
+1. **配置 Ollama 廣泛監聽** 🎧:
+   將 `OLLAMA_HOST` 設置為 `0.0.0.0`，使 Ollama 監聽所有網路介面。
+
+2. **更新環境變數**:
+   確保在您的部署環境中正確設置了 `OLLAMA_HOST`。
+
+3. **重新啟動 Ollama**🔄:
+   需要重新啟動以使更改生效。
+
+💡 設置完成後，通過訪問 WebUI 介面驗證 Ollama 是否可用。
+
+如需有關配置 Ollama 的更詳細說明，請參閱 [Ollama 的官方文檔](https://github.com/ollama/ollama/blob/main/docs/faq.md#setting-environment-variables-on-linux)。
+
+### 🐳 Docker 連接錯誤
+
+嘗試訪問 Ollama 時出現連接錯誤？可能是因為 WebUI 的 docker 容器無法與運行在主機上的 Ollama 伺服器通信。讓我們來解決這個問題：
+
+1. **調整網路設置** 🛠️:
+   在 Docker 命令中使用 `--network=host` 標誌。這將容器直接鏈接到您的主機網路。
+
+2. **更改端口**:
+   請注意內部端口從 3000 更改為 8080。
+
+**Docker 命令示例**:
+```bash
+docker run -d --network=host -v open-webui:/app/backend/data -e OLLAMA_BASE_URL=http://127.0.0.1:11434 --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+🔗 運行上述命令後，您的 WebUI 應可通過 `http://localhost:8080` 訪問。
+
+## 🔒 與 Hugging Face 的 SSL 連接問題
+
+遇到 SSL 錯誤？這可能是 Hugging Face 伺服器的問題。請按以下步驟操作：
+
+1. **檢查 Hugging Face 伺服器狀態**:
+   驗證他們是否存在已知停機或問題。
+
+2. **更換終端點**:
+   如果 Hugging Face 無法使用，在您的 Docker 命令中切換終端點。
+
+**解決連接問題的 Docker 命令示例**:
+```bash
+docker run -d -p 3000:8080 -e HF_ENDPOINT=https://hf-mirror.com/ --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+
+## 🍏 在 MacOS 上使用 Podman
+
+在 MacOS 上運行 Podman？以下是確保連接性的方式：
+
+1. **啟用主機回環**:
+   在命令中使用 `--network slirp4netns:allow_host_loopback=true`。
+
+2. **設置 OLLAMA_BASE_URL**:
+   確保它指向 `http://host.containers.internal:11434`。
+
+**Podman 命令示例**:
+```bash
+podman run -d --network slirp4netns:allow_host_loopback=true -p 3000:8080 -e OLLAMA_BASE_URL=http://host.containers.internal:11434 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+

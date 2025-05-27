@@ -1,0 +1,48 @@
+---
+sidebar_position: 900
+title: "🔨 OpenAPI Tool Servers"
+---
+
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+<TopBanners />
+
+# 🌟 OpenAPI 工具服務器
+
+此儲存庫提供參考的 OpenAPI 工具服務器實現，使開發者能夠以簡單且安全的方式將外部工具和數據源整合到 LLM 代理和工作流程中。這些實現旨在最大程度地降低使用難度和學習曲線，並以廣泛採用且經過實踐檢驗的 [OpenAPI 規範](https://www.openapis.org/) 作為標準協議。
+
+通過利用 OpenAPI，我們消除了對專有或不熟悉的通訊協議的需求，確保您能快速且自信地構建或整合服務器。這意味著您可以花更少的時間搞清楚自定義的介面，而將更多時間用於構建增強 AI 應用的強大工具。
+
+## ☝️ 為什麼選擇 OpenAPI？
+
+- **成熟的標準**：OpenAPI 是一種廣泛使用的、經過生產驗證的 API 標準，受到數千種工具、公司和社區的支持。
+
+- **避免重複造輪子**：不需要額外的文檔或專有規範的困惑。如果您今天構建 REST API 或使用 OpenAPI，您已經準備就緒。
+
+- **簡單的整合與託管**：無需供應商鎖定或複雜配置，您可以輕鬆地在外部或本地部署工具服務器。
+
+- **強大的安全重點**：基於 HTTP/REST API 的 OpenAPI 本質上支持廣泛使用的安全通信方法，包括 HTTPS 和經過驗證的身份驗證標準（OAuth、JWT、API Keys）。
+
+- **未來友好且穩定**：與不成熟或實驗性的協議不同，OpenAPI 保證了可靠性、穩定性和長期社區支持。
+
+## 🚀 快速開始
+
+快速開始使用我們提供的基於 FastAPI 的參考實現，這些實現在 `servers/` 目錄中。（您可以根據需要將這些示例適配到您偏好的技術棧，例如使用 [FastAPI](https://fastapi.tiangolo.com/)、[FastOpenAPI](https://github.com/mr-fatalyst/fastopenapi) 或任何其他兼容 OpenAPI 的庫）：
+
+```bash
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+
+# 示例：為特定服務器 filesystem 安裝依賴
+cd servers/filesystem
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --reload
+```
+
+現在，只需將您的 OpenAPI 兼容客戶端或 AI 代理指向您的本地或公開部署的 URL—無需配置麻煩，無需複雜的運輸方式。
+
+## 🌱 Open WebUI 社區
+
+- 如需參與一般討論、技術交流和公告，請訪問我們的 [社區討論](https://github.com/open-webui/openapi-servers/discussions) 頁面。
+- 有想法或反饋？請提交一個 Issue！

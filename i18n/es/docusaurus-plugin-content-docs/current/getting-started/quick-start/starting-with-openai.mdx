@@ -1,0 +1,76 @@
+---
+
+sidebar_position: 2  
+title: "🤖 Comenzando con OpenAI"
+
+---
+
+## Resumen
+
+Open WebUI facilita la conexión y el uso de OpenAI y otras API compatibles con OpenAI. Esta guía te llevará a través de agregar tu clave de API, configurar el endpoint correcto y seleccionar modelos, para que puedas comenzar a chatear de inmediato.
+
+---
+
+## Paso 1: Obtén tu clave de API de OpenAI
+
+Para usar modelos de OpenAI (como GPT-4 u o3-mini), necesitas una clave de API de un proveedor compatible.
+
+Puedes usar:
+
+- OpenAI directamente (https://platform.openai.com/account/api-keys)
+- Azure OpenAI
+- Cualquier servicio compatible con OpenAI (por ejemplo, LocalAI, FastChat, Helicone, LiteLLM, OpenRouter, etc.)
+
+👉 Una vez que tengas la clave, cópiala y tenla a mano.
+
+Para la mayoría de usos de OpenAI, la URL base de API predeterminada es:  
+https://api.openai.com/v1
+
+Otros proveedores usan diferentes URLs — revisa la documentación de tu proveedor.
+
+---
+
+## Paso 2: Agregar la conexión de API en Open WebUI
+
+Una vez que Open WebUI esté funcionando:
+
+1. Ve a ⚙️ **Configuración de Administración**.
+2. Navega a **Conexiones > OpenAI > Gestionar** (busca el ícono de la llave inglesa).
+3. Haz clic en ➕ **Agregar nueva conexión**.
+4. Completa lo siguiente:
+   - URL de API: https://api.openai.com/v1 (o la URL de tu proveedor específico)
+   - Clave de API: Copia tu clave aquí
+
+5. Haz clic en Guardar ✅.
+
+Esto almacena de manera segura tus credenciales y configura la conexión.
+
+Así es como se ve:
+
+![Pantalla de conexión OpenAI](/images/getting-started/quick-start/manage-openai.png)
+
+---
+
+## Paso 3: Comienza a usar modelos
+
+Una vez que tu conexión esté guardada, puedes comenzar a usar modelos directamente dentro de Open WebUI.
+
+🧠 No necesitas descargar ningún modelo: simplemente selecciona uno en el Selector de Modelos y comienza a chatear. Si un modelo es compatible con tu proveedor, podrás usarlo instantáneamente a través de su API.
+
+Así es como se ve la selección de modelos:
+
+![Selector de Modelo OpenAI](/images/getting-started/quick-start/selector-openai.png)
+
+Simplemente elige GPT-4, o3-mini o cualquier modelo compatible que ofrezca tu proveedor.
+
+---
+
+## ¡Todo listo!
+
+¡Eso es todo! Tu conexión de API compatible con OpenAI está lista para usar.
+
+Con Open WebUI y OpenAI, obtienes modelos de lenguaje potentes, una interfaz intuitiva y acceso instantáneo a capacidades de chat sin dolores de configuración.
+
+Si tienes problemas o necesitas soporte adicional, visita nuestra [sección de ayuda](/troubleshooting).
+
+¡Feliz escritura de prompts! 🎉

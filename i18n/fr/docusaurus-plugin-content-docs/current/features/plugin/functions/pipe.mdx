@@ -1,0 +1,401 @@
+---
+sidebar_position: 1
+title: "🚰 Fonction Pipe"
+---
+
+# 🚰 Fonction Pipe : Créer des "Agents/Modèles" Personnalisés 
+Bienvenue dans ce guide sur la création de **Pipes** dans Open WebUI ! Pensez aux Pipes comme un moyen d'**ajouter** un nouveau modèle à Open WebUI. Dans ce document, nous expliquerons ce qu'est un Pipe, comment il fonctionne, et comment vous pouvez créer le vôtre pour ajouter une logique et un traitement personnalisés à vos modèles Open WebUI. Nous utiliserons des métaphores claires et passerons en revue chaque détail pour garantir une compréhension complète.
+
+
+## Introduction aux Pipes
+
+Imaginez Open WebUI comme un **système de plomberie** où les données circulent à travers des tuyaux et des vannes. Dans cette analogie :
+
+- Les **Pipes** sont comme des **plugins** qui permettent d'introduire de nouveaux chemins pour le flux de données, vous permettant d'injecter une logique et un traitement personnalisés.
+- Les **Vannes** sont les **parties configurables** de votre pipe qui contrôlent comment les données circulent à travers celui-ci.
+
+En créant un Pipe, vous concevez essentiellement un modèle personnalisé avec le comportement spécifique que vous souhaitez, tout cela dans le cadre d'Open WebUI.
+
+---
+
+## Comprendre la Structure d'un Pipe
+
+Commençons par une version de base, simplifiée, d'un Pipe pour en comprendre la structure :
+
+```python
+from pydantic import BaseModel, Field
+
+class Pipe:
+    class Valves(BaseModel):
+        MODEL_ID: str = Field(default="")
+
+    def __init__(self):
+        self.valves = self.Valves()
+
+    def pipe(self, body: dict):
+        # La logique va ici
+        print(self.valves, body)  # Cela imprimera les options de configuration et le contenu d'entrée
+        return "Hello, World!"
+```
+
+### La Classe Pipe
+
+- **Définition** : La classe `Pipe` est où vous définissez votre logique personnalisée.
+- **Objectif** : Sert de modèle pour votre plugin, déterminant son comportement dans Open WebUI.
+
+### Valves : Configurer Votre Pipe
+
+- **Définition** : `Valves` est une classe imbriquée dans `Pipe`, héritant de `BaseModel`.
+- **Objectif** : Contient les options de configuration (paramètres) qui sont conservées tout au long de l'utilisation de votre Pipe.
+- **Exemple** : Dans le code ci-dessus, `MODEL_ID` est une option de configuration avec une chaîne vide par défaut.
+
+**Métaphore** : Pensez aux Valves comme aux boutons d'un système de conduite réel qui contrôlent le débit d'eau. Dans votre Pipe, les Valves permettent aux utilisateurs de ajuster les paramètres qui influencent comment les données circulent et sont traitées.
+
+### La Méthode `__init__`
+
+- **Définition** : La méthode constructeur pour la classe `Pipe`.
+- **Objectif** : Initialise l'état du Pipe et prépare les composants nécessaires.
+- **Bonne Pratique** : Gardez-la simple ; initiez principalement `self.valves` ici.
+
+```python
+def __init__(self):
+    self.valves = self.Valves()
+```
+
+### La Fonction `pipe`
+
+- **Définition** : La fonction principale où réside votre logique personnalisée.
+- **Paramètres** :
+  - `body` : Un dictionnaire contenant les données d'entrée.
+- **Objectif** : Traite les données d'entrée avec votre logique personnalisée et renvoie le résultat.
+
+```python
+def pipe(self, body: dict):
+    # La logique va ici
+    print(self.valves, body)  # Cela imprimera les options de configuration et le contenu d'entrée
+    return "Hello, World!"
+```
+
+**Remarque** : Placez toujours `Valves` en haut de votre classe `Pipe`, suivi de `__init__`, puis de la fonction `pipe`. Cette structure garantit clarté et cohérence.
+
+---
+
+## Créer Plusieurs Modèles avec les Pipes
+
+Que faire si vous voulez que votre Pipe crée **plusieurs modèles** dans Open WebUI ? Vous pouvez y parvenir en définissant une fonction ou une variable `pipes` à l'intérieur de votre classe `Pipe`. Ce concept, informellement appelé un **collecteur**, permet à votre Pipe de représenter plusieurs modèles.
+
+Voici comment le faire :
+
+```python
+from pydantic import BaseModel, Field
+
+class Pipe:
+    class Valves(BaseModel):
+        MODEL_ID: str = Field(default="")
+
+    def __init__(self):
+        self.valves = self.Valves()
+
+    def pipes(self):
+        return [
+            {"id": "model_id_1", "name": "model_1"},
+            {"id": "model_id_2", "name": "model_2"},
+            {"id": "model_id_3", "name": "model_3"},
+        ]
+
+    def pipe(self, body: dict):
+        # La logique va ici
+        print(self.valves, body)  # Imprime les options de configuration et le contenu d'entrée
+        model = body.get("model", "")
+        return f"{model}: Hello, World!"
+```
+
+### Explications
+
+- **Fonction `pipes`** :
+  - Renvoie une liste de dictionnaires.
+  - Chaque dictionnaire représente un modèle avec des clés uniques `id` et `name`.
+  - Ces modèles apparaîtront individuellement dans le sélecteur de modèle d'Open WebUI.
+
+- **Fonction `pipe` Mise à Jour** :
+  - Traite les données d'entrée en fonction du modèle sélectionné.
+  - Dans cet exemple, inclut le nom du modèle dans la chaîne retournée.
+
+---
+
+## Exemple : Pipe Proxy pour OpenAI
+
+Passons à un exemple pratique où nous allons créer un Pipe qui transmet les requêtes à l'API OpenAI. Ce Pipe récupérera les modèles disponibles d'OpenAI et permettra aux utilisateurs d'interagir avec eux via Open WebUI.
+
+```python
+from pydantic import BaseModel, Field
+import requests
+
+class Pipe:
+    class Valves(BaseModel):
+        NAME_PREFIX: str = Field(
+            default="OPENAI",
+            description="Préfixe à ajouter avant les noms des modèles.",
+        )
+        OPENAI_API_BASE_URL: str = Field(
+            default="https://api.openai.com/v1",
+            description="URL de base pour accéder aux points de terminaison de l'API OpenAI.",
+        )
+        OPENAI_API_KEY: str = Field(
+            default="",
+            description="Clé API pour authentifier les requêtes vers l'API OpenAI.",
+        )
+
+    def __init__(self):
+        self.valves = self.Valves()
+
+    def pipes(self):
+        if self.valves.OPENAI_API_KEY:
+            try:
+                headers = {
+                    "Authorization": f"Bearer {self.valves.OPENAI_API_KEY}",
+                    "Content-Type": "application/json",
+                }
+
+                r = requests.get(
+                    f"{self.valves.OPENAI_API_BASE_URL}/models", headers=headers
+                )
+                models = r.json()
+                return [
+                    {
+                        "id": model["id"],
+                        "name": f{self.valves.NAME_PREFIX}{model.get("name", model["id"])},
+                    }
+                    for model in models["data"]
+                    if "gpt" in model["id"]
+                ]
+
+            except Exception as e:
+                return [
+                    {
+                        "id": "error",
+                        "name": "Erreur lors de la récupération des modèles. Veuillez vérifier votre clé API.",
+                    },
+                ]
+        else:
+            return [
+                {
+                    "id": "error",
+                    "name": "Clé API non fournie.",
+                },
+            ]
+
+    def pipe(self, body: dict, __user__: dict):
+        print(f"pipe:{__name__}")
+        headers = {
+            "Authorization": f"Bearer {self.valves.OPENAI_API_KEY}",
+            "Content-Type": "application/json",
+        }
+
+        # Extraire l'identifiant du modèle à partir du nom du modèle
+        model_id = body["model"][body["model"].find(".") + 1 :]
+
+        # Mettre à jour l'identifiant du modèle dans le corps de la requête
+        payload = {**body, "model": model_id}
+        try:
+            r = requests.post(
+                url=f"{self.valves.OPENAI_API_BASE_URL}/chat/completions",
+                json=payload,
+                headers=headers,
+                stream=True,
+            )
+
+            r.raise_for_status()
+
+            if body.get("stream", False):
+                return r.iter_lines()
+            else:
+                return r.json()
+        except Exception as e:
+            return f"Erreur : {e}"
+```
+
+### Décomposition détaillée
+
+#### Configuration des Valves
+
+- **`NAME_PREFIX`**:
+  - Ajoute un préfixe aux noms des modèles affichés dans Open WebUI.
+  - Par défaut : `"OPENAI/"`.
+- **`OPENAI_API_BASE_URL`**:
+  - Spécifie l'URL de base pour l'API OpenAI.
+  - Par défaut : `"https://api.openai.com/v1"`.
+- **`OPENAI_API_KEY`**:
+  - Votre clé API OpenAI pour l'authentification.
+  - Par défaut : `""` (chaine vide ; doit être fournie).
+
+#### La fonction `pipes`
+
+- **But** : Récupère les modèles disponibles de l'API OpenAI et les rend accessibles dans Open WebUI.
+
+- **Processus** :
+  1. **Vérifier la clé API** : S'assure qu'une clé API est fournie.
+  2. **Récupérer les modèles** : Effectue une requête GET vers l'API OpenAI pour récupérer les modèles disponibles.
+  3. **Filtrer les modèles** : Renvoie les modèles qui contiennent `"gpt"` dans leur `id`.
+  4. **Gestion des erreurs** : En cas de problème, renvoie un message d'erreur.
+
+- **Format de retour** : Une liste de dictionnaires avec `id` et `name` pour chaque modèle.
+
+#### La fonction `pipe`
+
+- **But** : Gère la requête vers le modèle OpenAI sélectionné et renvoie la réponse.
+
+- **Paramètres** :
+  - `body` : Contient les données de la requête.
+  - `__user__` : Contient les informations sur l'utilisateur (non utilisé dans cet exemple mais peut être utile pour l'authentification ou la journalisation).
+
+- **Processus** :
+  1. **Préparer les en-têtes** : Configure les en-têtes avec la clé API et le type de contenu.
+  2. **Extraire l'identifiant du modèle** : Extrait l'identifiant réel du modèle à partir du nom sélectionné.
+  3. **Préparer les données** : Met à jour le corps de la requête avec l'identifiant correct du modèle.
+  4. **Effectuer la requête API** : Envoie une requête POST au point de terminaison des complétions de chat de l'API OpenAI.
+  5. **Gérer le flux** : Si `stream` est `True`, renvoie un itérable de lignes.
+  6. **Gestion des erreurs** : Intercepte les exceptions et renvoie un message d'erreur.
+
+### Extension du Pipe proxy
+
+Vous pouvez modifier ce Pipe proxy pour prendre en charge d'autres fournisseurs de services comme Anthropic, Perplexity, et plus encore en ajustant les points de terminaison API, les en-têtes et la logique dans les fonctions `pipes` et `pipe`.
+
+---
+
+## Utilisation des fonctions internes de Open WebUI
+
+Parfois, vous voudrez peut-être utiliser les fonctions internes de Open WebUI dans votre Pipe. Vous pouvez importer directement ces fonctions depuis le package `open_webui`. Gardez à l'esprit que, bien que peu probable, les fonctions internes peuvent changer à des fins d'optimisation. Consultez toujours la documentation la plus récente.
+
+Voici comment utiliser les fonctions internes de Open WebUI :
+
+```python
+from pydantic import BaseModel, Field
+from fastapi import Request
+
+from open_webui.models.users import Users
+depuis open_webui.utils.chat import generate_chat_completion
+
+class Pipe:
+    def __init__(self):
+        pass
+
+    async def pipe(
+        self,
+        body: dict,
+        __user__: dict,
+        __request__: Request,
+    ) -> str:
+        # Utilisez le point de terminaison unifié avec la signature mise à jour
+        user = Users.get_user_by_id(__user__["id"])
+        body["model"] = "llama3.2:latest"
+        return await generate_chat_completion(__request__, body, user)
+```
+
+### Explication
+
+- **Importations**:
+  - `Users` depuis `open_webui.models.users`: Pour récupérer les informations sur l'utilisateur.
+  - `generate_chat_completion` depuis `open_webui.utils.chat`: Pour générer des complétions de chat en utilisant la logique interne.
+
+- **Fonction asynchrone `pipe`**:
+  - **Paramètres**:
+    - `body`: Données d'entrée pour le modèle.
+    - `__user__`: Dictionnaire contenant les informations sur l'utilisateur.
+    - `__request__`: L'objet de la requête depuis FastAPI (nécessaire pour `generate_chat_completion`).
+  - **Processus**:
+    1. **Récupérer l'objet utilisateur**: Récupère l'objet utilisateur en utilisant son ID.
+    2. **Définir le modèle**: Spécifie le modèle à utiliser.
+    3. **Générer la complétion**: Appelle `generate_chat_completion` pour traiter les données d'entrée et produire un résultat.
+
+### Remarques importantes
+
+- **Signatures des fonctions**: Consultez la base de code ou la documentation la plus récente d'Open WebUI pour les signatures et paramètres de fonctions les plus précis.
+- **Bonnes pratiques**: Gérez toujours les exceptions et les erreurs de manière gracieuse pour garantir une expérience utilisateur fluide.
+
+---
+
+## Questions Fréquemment Posées
+
+### Q1 : Pourquoi devrais-je utiliser des Pipes dans Open WebUI ?
+
+**R** : Les Pipes vous permettent d'ajouter de nouveaux "modèles" avec une logique et un traitement personnalisés à Open WebUI. C'est un système de plugin flexible qui vous permet d'intégrer des APIs externes, de personnaliser les comportements des modèles, et de créer des fonctionnalités innovantes sans modifier la base de code principale.
+
+---
+
+### Q2 : Que sont les Valves, et pourquoi sont-elles importantes ?
+
+**R** : Les Valves sont les paramètres configurables de votre Pipe. Elles fonctionnent comme des réglages ou des contrôles qui déterminent comment votre Pipe fonctionne. En ajustant les Valves, vous pouvez changer le comportement de votre Pipe sans modifier le code sous-jacent.
+
+---
+
+### Q3 : Puis-je créer un Pipe sans Valves ?
+
+**R** : Oui, vous pouvez créer un Pipe simple sans définir une classe de Valves si votre Pipe ne nécessite aucune option de configuration persistante. Cependant, inclure des Valves est une bonne pratique pour plus de flexibilité et d'évolutivité.
+
+---
+
+### Q4 : Comment puis-je m'assurer que mon Pipe est sécurisé lors de l'utilisation de clés API ?
+
+**R** : Ne jamais coder en dur des informations sensibles comme les clés API dans votre Pipe. Utilisez plutôt les Valves pour saisir et stocker les clés API de manière sécurisée. Assurez-vous que votre code gère ces clés de manière appropriée et évite de les enregistrer ou de les exposer.
+
+---
+
+### Q5 : Quelle est la différence entre les fonctions `pipe` et `pipes` ?
+
+**R** :
+
+- **Fonction `pipe`**: La fonction principale où vous traitez les données d'entrée et générez une sortie. Elle gère la logique pour un seul modèle.
+
+- **Fonction `pipes`**: Permet à votre Pipe de représenter plusieurs modèles en renvoyant une liste de définitions de modèles. Chaque modèle apparaîtra individuellement dans Open WebUI.
+
+---
+
+### Q6 : Comment puis-je gérer les erreurs dans mon Pipe ?
+
+**R** : Utilisez des blocs try-except dans vos fonctions `pipe` et `pipes` pour capturer les exceptions. Renvoyez des messages d'erreur significatifs ou gérez les erreurs de manière gracieuse pour informer l'utilisateur de ce qui s'est mal passé.
+
+---
+
+### Q7 : Puis-je utiliser des bibliothèques externes dans mon Pipe ?
+
+**R** : Oui, vous pouvez importer et utiliser des bibliothèques externes selon vos besoins. Assurez-vous que toutes les dépendances sont correctement installées et gérées dans votre environnement.
+
+---
+
+### Q8 : Comment puis-je tester mon Pipe ?
+
+**R** : Testez votre Pipe en exécutant Open WebUI dans un environnement de développement et en sélectionnant votre modèle personnalisé depuis l'interface. Validez que votre Pipe comporte comme prévu avec diverses entrées et configurations.
+
+---
+
+### Q9 : Existe-t-il des meilleures pratiques pour organiser le code de mon Pipe ?
+
+**R** : Oui, suivez ces lignes directrices :
+
+- Placez `Valves` en haut de votre classe `Pipe`.
+- Initialisez les variables dans la méthode `__init__`, principalement `self.valves`.
+- Positionnez la fonction `pipe` après la méthode `__init__`.
+- Utilisez des noms de variables clairs et descriptifs.
+- Commentez votre code pour plus de clarté.
+
+---
+
+### Q10 : Où puis-je trouver la documentation récente d'Open WebUI ?
+
+**R** : Visitez le repository officiel d'Open WebUI ou le site de documentation pour obtenir les informations les plus à jour, y compris les signatures de fonctions, des exemples, et des guides de migration si des changements ont lieu.
+
+---
+
+## Conclusion
+
+Vous devriez à présent avoir une compréhension approfondie de la façon de créer et d'utiliser des Pipes dans Open WebUI. Les Pipes offrent un moyen puissant d'étendre et de personnaliser les capacités d'Open WebUI pour répondre à vos besoins spécifiques. Que vous intégriez des APIs externes, ajoutiez de nouveaux modèles ou injectiez une logique complexe, les Pipes fournissent la flexibilité nécessaire pour y parvenir.
+
+N'oubliez pas :
+
+- **Utilisez une structure claire et cohérente** dans vos classes Pipe.
+- **Exploitez les Valves** pour des options configurables.
+- **Gérez les erreurs de manière gracieuse** pour améliorer l'expérience utilisateur.
+- **Consultez la documentation la plus récente** pour toute mise à jour ou modification.
+
+Bon codage, et amusez-vous à étendre votre Open WebUI avec des Pipes !

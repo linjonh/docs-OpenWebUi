@@ -1,0 +1,73 @@
+---
+sidebar_position: 3
+title: "🔄 バルブ"
+---
+
+## バルブ
+
+バルブとユーザーバルブは、ユーザーがAPIキーや設定オプションなどの動的な詳細を提供できるようにするために使用されます。これらは、指定された機能のGUIメニューに入力可能なフィールドまたはブールスイッチを作成します。これらの利用は常に任意ですが、強く推奨されます。
+
+したがって、バルブとユーザーバルブのクラスは、`Pipe`、`Pipeline`、`Filter`、または`Tools`クラス内で定義できます。
+
+バルブは、管理者のみがToolsまたはFunctionsメニューを通じて構成できます。一方、ユーザーバルブは、チャットセッションから直接任意のユーザーが構成できます。
+
+<details>
+<summary>コメントが記載された例</summary>
+
+```python
+
+from pydantic import BaseModel, Field
+from typing import Literal
+
+# Define and Valves
+class Filter:
+   # 現在のインデントに注意してください: バルブとユーザーバルブは
+   # Tools、FilterまたはPipeクラスの属性として宣言する必要があります。
+   # ここではFilterの例を示します。
+    class Valves(BaseModel):
+       # バルブとユーザーバルブはPydanticのBaseModelを継承します。
+       # これにより、モデルバリデーターなどの複雑なユースケースが可能になります。
+       test_valve: int = Field(  # 型ヒントに注意: ユーザーに示す
+           # UI要素（ボタン、テキストなど）の種類を選択するために使用されます。
+           default=4,
+           description="数値を制御するバルブ"
+           # required=False,  # フィールドを強制するにはTrueを使用できます
+       )
+       # 複数の文字列からユーザーに選択させるには、typingのLiteralを使用できます:
+       choice_option: Literal["choiceA", "choiceB"] = Field(
+           default="choiceA",
+           description="複数選択式バルブの例",
+       )
+       priority: int = Field(
+           default=0,
+           description="フィルター操作の優先度レベル。値が低いものが先に通過します"
+       )
+       # priorityフィールドは任意ですが、存在する場合はフィルターを順序付けるために使用されます。
+       pass
+       # 注意: この 'pass' は解析に役立つため推奨されます。
+
+   # ユーザーバルブは同じ方法で定義されます。
+    class UserValves(BaseModel):
+        test_user_valve: bool = Field(
+            default=False, description="ユーザーが操作するオン/オフスイッチ"
+       )
+       pass
+
+   def __init__(self):
+       self.valves = self.Valves()
+       # 管理者によって設定されるため、コード実行時に直接アクセス可能です。
+       pass
+
+   # inletメソッドはFilterにだけ使用されますが、__user__の処理は同じです。
+   def inlet(self, body: dict, __user__: dict):
+       # ユーザーバルブはユーザーごとに定義されているため、使用時のみ利用可能です。
+       # __user__はdictですが、__user__["valves"]はUserValvesオブジェクトです。
+       # したがって、次のように値にアクセスできます:
+       test_user_valve = __user__["valves"].test_user_valve
+       # または:
+       test_user_valve = dict(__user__["valves"])["test_user_valve"]
+       # ただし、これは実際の値ではなくデフォルト値を返します:
+       # test_user_valve = __user__["valves"]["test_user_valve"]  # これをやらないでください！
+```
+
+</details>

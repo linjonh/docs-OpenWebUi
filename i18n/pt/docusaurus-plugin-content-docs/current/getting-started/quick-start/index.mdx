@@ -1,0 +1,158 @@
+---
+sidebar_position: 2
+title: "⏱️ Início Rápido"
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import { TopBanners } from "@site/src/components/TopBanners";
+
+import DockerCompose from "./tab-docker/DockerCompose.md";
+import Podman from "./tab-docker/Podman.md";
+import ManualDocker from "./tab-docker/ManualDocker.md";
+import DockerSwarm from "./tab-docker/DockerSwarm.md";
+import DockerUpdating from "./tab-docker/DockerUpdating.md";
+import Helm from "./tab-kubernetes/Helm.md";
+import Kustomize from "./tab-kubernetes/Kustomize.md";
+import Venv from "./tab-python/Venv.md";
+import Uv from "./tab-python/Uv.md";
+import Conda from "./tab-python/Conda.md";
+import PythonUpdating from "./tab-python/PythonUpdating.md";
+
+<TopBanners />
+
+:::info **Nota Importante sobre Funções de Usuário e Privacidade:**
+
+- **Criação de Admin:** A primeira conta criada no Open WebUI obtém **privilegios de Administrador**, controlando gerenciamento de usuários e configurações do sistema.
+- **Cadastros de Usuários:** Inscrições subsequentes começam com status **Pendente**, exigindo aprovação do Administrador para acesso.
+- **Privacidade e Segurança de Dados:** **Todos os seus dados**, incluindo detalhes de login, são **armazenados localmente** em seu dispositivo. O Open WebUI garante **confidencialidade estrita** e **nenhuma solicitação externa** para maior privacidade e segurança.
+  - **Todos os modelos são privados por padrão.** Modelos devem ser compartilhados explicitamente através de grupos ou tornados públicos. Se um modelo for atribuído a um grupo, apenas os membros do grupo poderão vê-lo. Se um modelo for tornado público, qualquer pessoa na instância poderá visualizá-lo.
+
+:::
+
+Escolha abaixo seu método de instalação preferido:
+
+- **Docker:** **Oficialmente suportado e recomendado para a maioria dos usuários**
+- **Python:** Adequado para ambientes com poucos recursos ou para quem deseja uma configuração manual
+- **Kubernetes:** Ideal para implementações empresariais que requerem escalabilidade e orquestração
+
+
+<Tabs>
+  <TabItem value="docker" label="Docker">
+    <Tabs>
+      <TabItem value="docker" label="Docker">
+        <div className="mt-5">
+          <ManualDocker />
+          <DockerUpdating />
+        </div>
+      </TabItem>
+
+      <TabItem value="compose" label="Docker Compose">
+        <div className="mt-5">
+          <DockerCompose />
+        </div>
+      </TabItem>
+
+      <TabItem value="podman" label="Podman">
+        <div className="mt-5">
+          <Podman />
+        </div>
+      </TabItem>
+
+      <TabItem value="swarm" label="Docker Swarm">
+        <div className="mt-5">
+          <DockerSwarm />
+        </div>
+      </TabItem>
+    </Tabs>
+
+  </TabItem>
+  <TabItem value="python" label="Python">
+    <Tabs>
+      <TabItem value="uv" label="uv">
+        <div className="mt-5">
+          <Uv />
+        </div>
+        <PythonUpdating />
+      </TabItem>
+
+
+      <TabItem value="conda" label="Conda">
+        <div className="mt-5">
+          <Conda />
+        </div>
+        <PythonUpdating />
+      </TabItem>
+
+      <TabItem value="venv" label="Venv">
+        <div className="mt-5">
+          <Venv />
+        </div>
+        <PythonUpdating />
+
+      </TabItem>
+
+
+      <TabItem value="development" label="Desenvolvimento">
+        <div className="mt-5">
+          <h3>Configuração de Desenvolvimento</h3>
+          <p>
+            Para desenvolvedores que desejam contribuir, confira o Guia de Desenvolvimento em <a href="/getting-started/advanced-topics">Tópicos Avançados</a>.
+          </p>
+        </div>
+      </TabItem>
+
+
+    </Tabs>
+  </TabItem>
+
+  <TabItem value="kubernetes" label="Kubernetes">
+    <Tabs>
+      <TabItem value="helm" label="Helm">
+        <Helm />
+      </TabItem>
+
+      <TabItem value="kustomize" label="Kustomize">
+        <Kustomize />
+      </TabItem>
+    </Tabs>
+  </TabItem>
+
+
+  <TabItem value="third-party" label="Terceiros">
+    <Tabs>
+      <TabItem value="pinokio-computer" label="Pinokio.computer">
+        ### Instalação Pinokio.computer
+
+        Para instalação via Pinokio.computer, visite o site deles:
+
+        [https://pinokio.computer/](https://pinokio.computer/)
+
+        Suporte para este método de instalação é fornecido através do site deles.
+      </TabItem>
+    </Tabs>
+
+    ### Integrações adicionais de terceiros
+
+    *(Adicione informações sobre integrações de terceiros conforme estiverem disponíveis.)*
+  </TabItem>
+</Tabs>
+
+## Próximos Passos
+
+Após a instalação, visite:
+
+- [http://localhost:3000](http://localhost:3000) para acessar o Open WebUI.
+- ou [http://localhost:8080/](http://localhost:8080/) ao usar uma implantação Python.
+
+Agora você está pronto para começar a usar o Open WebUI!
+
+## Usando Open WebUI com Ollama
+Se estiver utilizando o Open WebUI com Ollama, certifique-se de verificar o nosso [Guia de Início com Ollama](/getting-started/quick-start/starting-with-ollama) para aprender a gerenciar suas instâncias Ollama com Open WebUI.
+
+## Junte-se à Comunidade
+
+Precisa de ajuda? Tem dúvidas? Junte-se à nossa comunidade:
+
+- [Open WebUI Discord](https://discord.gg/5rJgQTnV4s)
+- [GitHub Issues](https://github.com/open-webui/open-webui/issues)

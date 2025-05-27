@@ -1,0 +1,123 @@
+---
+sidebar_position: 6
+title: "📝 Bewertung"
+---
+
+
+## Warum sollte ich Modelle bewerten?
+
+Lernen Sie **Alex** kennen, einen Machine-Learning-Ingenieur in einem mittelständischen Unternehmen. Alex weiß, dass es zahlreiche KI-Modelle gibt – GPTs, LLaMA und viele mehr –, aber welches funktioniert am besten für die anstehende Aufgabe? Auf dem Papier klingen sie alle beeindruckend, aber Alex kann sich nicht einfach auf öffentliche Bestenlisten verlassen. Diese Modelle liefern je nach Kontext unterschiedliche Ergebnisse, und einige Modelle wurden möglicherweise mit dem Bewertungsdatensatz trainiert (hinterhältig!). Außerdem wirkt die Ausdrucksweise dieser Modelle manchmal ... merkwürdig.
+
+Hier kommt Open WebUI ins Spiel. Es bietet Alex und seinem Team eine einfache Möglichkeit, Modelle basierend auf ihren tatsächlichen Bedürfnissen zu bewerten. Keine komplexe Mathematik. Keine schwere Arbeit. Einfach Daumen hoch oder Daumen runter während der Interaktion mit den Modellen.
+
+### TL;DR
+
+- **Warum Bewertungen wichtig sind**: Zu viele Modelle, aber nicht alle passen zu Ihren spezifischen Anforderungen. Öffentliche Bestenlisten sind nicht immer vertrauenswürdig.
+- **Wie man das Problem löst**: Open WebUI bietet ein integriertes Bewertungssystem. Nutzen Sie Daumen hoch/runter, um Modellantworten zu bewerten.
+- **Was hinter den Kulissen passiert**: Bewertungen passen Ihre personalisierte Bestenliste an, und Schnappschüsse bewerteter Chats werden für zukünftige Modell-Finetunings verwendet!
+- **Bewertungsoptionen**: 
+  - **Arena-Modell**: Wählt zufällig Modelle für Sie aus, die Sie vergleichen können.
+  - **Normale Interaktion**: Einfach wie gewohnt chatten und die Antworten bewerten.
+
+---
+
+### Warum reicht eine öffentliche Bewertung nicht aus?
+
+- Öffentliche Bestenlisten sind nicht auf Ihre spezifischen Anwendungsfälle zugeschnitten.
+- Manche Modelle wurden mit Bewertungsdatensätzen trainiert, was die Fairness der Ergebnisse beeinflusst.
+- Ein Modell kann insgesamt gut abschneiden, aber der Kommunikationsstil oder die Antworten passen einfach nicht zu der „Atmosphäre“, die Sie wünschen.
+
+### Die Lösung: Personalisierte Bewertung mit Open WebUI
+
+Open WebUI verfügt über eine integrierte Bewertungsfunktion, die es Ihnen und Ihrem Team ermöglicht, das am besten geeignete Modell für Ihre spezifischen Anforderungen zu finden – und zwar während der Interaktion mit den Modellen.
+
+Wie funktioniert das? Ganz einfach!
+
+- **Während der Chats**: Geben Sie einen Daumen hoch, wenn Ihnen eine Antwort gefällt, oder einen Daumen runter, wenn nicht. Wenn die Nachricht eine **verwandte Nachricht** hat (wie eine regenerierte Antwort oder Teil eines Side-by-Side-Modellvergleichs), tragen Sie zur **persönlichen Bestenliste** bei.
+- **Bestenlisten** sind im Admin-Bereich leicht zugänglich und helfen Ihnen, nachzuvollziehen, welche Modelle sich in Ihrem Team am besten bewähren.
+
+Eine coole Funktion? **Wann immer Sie eine Antwort bewerten**, erfasst das System einen **Schnappschuss dieser Unterhaltung**, der später zur Verfeinerung von Modellen oder sogar zur Unterstützung zukünftiger Modelltrainings verwendet wird. (Bitte beachten Sie, dass dies noch in Entwicklung ist!)
+
+---
+
+### Zwei Möglichkeiten, ein KI-Modell zu bewerten
+
+Open WebUI bietet zwei einfache Ansätze zur Bewertung von KI-Modellen.
+
+### **1. Arena-Modell**
+
+Das **Arena-Modell** wählt zufällig Modelle aus einem Pool verfügbarer Modelle aus und sorgt dafür, dass die Bewertung fair und objektiv ist. Dies hilft, einen möglichen Nachteil bei manuellen Vergleichen zu vermeiden: **ökologische Validität** – sicherstellen, dass Sie ein Modell nicht wissentlich oder unwissentlich bevorzugen.
+
+So verwenden Sie es:
+- Wählen Sie ein Modell aus dem Arena-Modell-Selektor aus.
+- Nutzen Sie es wie gewohnt, aber jetzt befinden Sie sich im „Arena-Modus“.
+  
+Damit Ihr Feedback die Bestenliste beeinflusst, benötigen Sie eine **verwandte Nachricht**. Was ist eine verwandte Nachricht? Eine verwandte Nachricht ist einfach eine alternative Antwort, die durch die gleiche Abfrage generiert wurde (denken Sie an Nachrichtenregenerationen oder daran, dass mehrere Modelle nebeneinander Antworten generieren). So vergleichen Sie Antworten **direkt gegeneinander**.
+
+- **Bewertungstipps**: Wenn Sie eine Antwort mit Daumen hoch bewerten, erhält die andere automatisch einen Daumen runter. Seien Sie also achtsam und bewerten Sie nur die Nachricht, die Sie wirklich für die beste halten!
+- Sobald Sie die Antworten bewertet haben, können Sie die Bestenliste einsehen, um zu sehen, wie sich die Modelle schlagen.
+
+Hier ist ein kleiner Einblick, wie die Arena-Modell-Oberfläche funktioniert:
+
+![Arena-Modell-Beispiel](/images/evaluation/arena.png)
+
+Wünschen Sie mehr Tiefe? Sie können sogar eine [**Chatbot-Arena**](https://lmarena.ai/)-ähnliche Umgebung nachstellen!
+
+![Chatbot-Arena-Beispiel](/images/evaluation/arena-many.png)
+
+### **2. Normale Interaktion**
+
+Wenn Sie nicht in den „Arena-Modus“ wechseln möchten, können Sie Open WebUI ganz normal verwenden und die Antworten der KI-Modelle wie gewohnt bewerten. Geben Sie den Modellantworten einfach Daumen hoch/runter, wann immer Ihnen danach ist. **Wenn Sie möchten, dass Ihr Feedback für das Ranking in der Bestenliste genutzt wird**, müssen Sie jedoch **das Modell wechseln und mit einem anderen interagieren**. Dies stellt sicher, dass es eine **verwandte Antwort** gibt, mit der verglichen werden kann – nur Vergleiche zwischen zwei verschiedenen Modellen beeinflussen die Rankings.
+
+So können Sie beispielsweise während einer normalen Interaktion bewerten:
+
+![Normale Modellbewertungsoberfläche](/images/evaluation/normal.png)
+
+Und hier ist ein Beispiel für das Einrichten eines Multi-Modell-Vergleichs, ähnlich einer Arena:
+
+![Multi-Modell-Vergleich](/images/evaluation/normal-many.png)
+
+---
+
+## Bestenliste
+
+Nach der Bewertung sehen Sie sich die **Rangliste** im Admin-Panel an. Hier können Sie visuell sehen, wie die Modelle abschneiden, geordnet nach einem **Elo-Bewertungssystem** (denken Sie an Schach-Ranglisten!). Sie erhalten einen echten Einblick, welche Modelle sich während der Bewertungen wirklich hervorheben.
+
+Dies ist ein Beispiel für das Layout der Rangliste:
+
+![Leaderboard Example](/images/evaluation/leaderboard.png)
+
+### Themenbasierte Neuordnung
+
+Wenn Sie Chats bewerten, können Sie diese **nach Themen markieren**, um detailliertere Einblicke zu erhalten. Dies ist besonders nützlich, wenn Sie in verschiedenen Bereichen wie **Kundendienst, kreatives Schreiben, technischer Support** usw. arbeiten.
+
+#### Automatische Markierung
+Open WebUI versucht, **Chats basierend auf dem Gesprächsthema automatisch zu markieren**. Abhängig von dem verwendeten Modell kann die automatische Markierungsfunktion jedoch **manchmal scheitern** oder das Gespräch fehlinterpretieren. Wenn dies passiert, ist es am besten, **die Chats manuell zu markieren**, um sicherzustellen, dass das Feedback korrekt ist.
+
+- **So markieren Sie manuell**: Wenn Sie eine Antwort bewerten, haben Sie die Möglichkeit, eigene Tags basierend auf dem Kontext des Gesprächs hinzuzufügen.
+  
+Überspringen Sie dies nicht! Markierungen sind äußerst hilfreich, da sie es Ihnen ermöglichen, **Modelle basierend auf bestimmten Themen neu zu ordnen**. Beispielsweise können Sie sehen, welches Modell am besten für technische Supportfragen im Vergleich zu allgemeinen Kundenanfragen geeignet ist.
+
+Hier ist ein Beispiel, wie die Neuordnung aussieht:
+
+![Reranking Leaderboard by Topic](/images/evaluation/leaderboard-reranked.png)
+
+---
+
+### Nebenbemerkung: Chat-Snapshots zur Modell-Feinabstimmung
+
+Jedes Mal, wenn Sie die Antwort eines Modells bewerten, *nimmt Open WebUI einen Schnappschuss dieses Chats auf*. Diese Schnappschüsse können später verwendet werden, um **eigene Modelle feinabzustimmen** – so fließen Ihre Bewertungen in die kontinuierliche Verbesserung der KI ein.
+
+*(Bleiben Sie dran für weitere Updates zu dieser Funktion, sie wird aktiv entwickelt!)*
+
+---
+
+## Zusammenfassung
+
+**Kurz gesagt**, das Bewertungssystem von Open WebUI verfolgt zwei klare Ziele:
+1. Ihnen dabei helfen, **Modelle einfach zu vergleichen**.
+2. Schließlich das Modell zu finden, das am besten zu Ihren individuellen Bedürfnissen passt.
+
+Im Kern dreht sich das System darum, die Bewertung von KI-Modellen für jeden Benutzer **einfach, transparent und anpassbar** zu gestalten. Ob durch das Arena-Modell oder die normale Chat-Interaktion – **Sie haben die volle Kontrolle darüber, welches KI-Modell am besten für Ihren spezifischen Anwendungsfall geeignet ist**!
+
+**Wie immer** bleiben alle Ihre Daten sicher auf **Ihrer Instanz**, und nichts wird geteilt, es sei denn, Sie entscheiden sich bewusst **für das Teilen mit der Community**. Ihre Privatsphäre und Datenautonomie haben stets Priorität.

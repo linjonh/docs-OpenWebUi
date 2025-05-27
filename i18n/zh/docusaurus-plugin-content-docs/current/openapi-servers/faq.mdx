@@ -1,0 +1,178 @@
+---
+sidebar_position: 10
+title: "❓ 常见问题"
+---
+
+#### 🌐 问：为什么我的本地 OpenAPI 工具服务器无法从 WebUI 界面访问？
+
+**答：** 如果你的工具服务器是在本地运行的（例如 `http://localhost:8000`），基于浏览器的客户端可能会因为 CORS（跨域资源共享）策略被限制访问。
+
+请确保在你的 OpenAPI 服务器中显式启用了 CORS 头。例如，如果你使用的是 FastAPI，可以添加以下代码：
+
+```python
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 或者指定你的客户端来源
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
+
+另外，如果 Open WebUI 是通过 HTTPS 服务的（例如 `https://yourdomain.com`），你的本地服务器必须满足以下条件之一：
+
+- 通过相同域名使用 HTTPS 访问（例如 `http://localhost:8000`）。
+- 或者在 localhost（127.0.0.1）上运行，以允许浏览器放宽对本地开发的安全限制。
+- 否则，浏览器可能会因为混合内容规则而阻止来自 HTTPS 页面到 HTTP API 的不安全请求。
+
+要在生产中通过 HTTPS 安全工作，你的 OpenAPI 服务器也必须通过 HTTPS 提供服务。
+
+---
+
+#### 🚀 问：我的服务器实现需要使用 FastAPI 吗？
+
+**答：** 不需要！尽管我们的参考实现是使用 FastAPI 编写的，因为它清晰且易于使用，但你可以使用任何生成有效 OpenAPI（Swagger）规范的框架或语言。一些常见的选择包括：
+
+- FastAPI（Python）
+- Flask + Flask-RESTX（Python）
+- Express + Swagger UI（JavaScript/Node）
+- Spring Boot（Java）
+- 使用 Swag 或 Echo 的 Go
+
+关键是确保你的服务器暴露一个有效的 OpenAPI 架构，并通过 HTTP(S) 通信。
+为所有端点设置一个自定义的 operationId 是很重要的。
+
+---
+
+
+#### 🚀 问：为什么选择 OpenAPI 而不是 MCP？
+
+**答：** 在大多数实际场景中，OpenAPI 凭借其简洁性、工具生态系统、稳定性和开发者友好性胜过 MCP。原因如下：
+
+- ✅ **重用现有代码**：如果你之前已经构建了 REST API，基本上已经完成了——你无需重写逻辑。只需定义一个符合标准的 OpenAPI 规范，并将现有代码暴露为工具服务器。
+  
+  使用 MCP，你必须在自定义协议层内重新实现工具逻辑，增加了重复工作并扩大了需维护的范围。
+
+- 💼 **更少的维护与调试**：OpenAPI 自然融入现代开发工作流。你可以通过 Postman 测试端点，通过内置 API 检查日志，用成熟的生态工具轻松排除故障——通常无需完全修改核心应用。
+
+  MCP 引入了新的传输层、架构解析和运行时特性，而所有这些都需要手动调试。
+
+- 🌍 **基于行业标准**：OpenAPI 已被广泛应用于科技行业。其良好定义的结构意味着工具、代理和服务器可以立即互操作，无需特殊的桥接或翻译。
+
+- 🧰 **更好的工具支持**：整个 OpenAPI 支持生态十分丰富——包括自动生成客户端/服务器、文档、验证、模拟、测试，甚至安全审核工具。
+
+- 🔐 **一流的安全支持**：OpenAPI 原生支持诸如 OAuth2、JWT、API 密钥和 HTTPS 等内容——使构建安全端点变得更简单，并与常用库和标准兼容。
+
+- 🧠 **更多开发者已熟悉**：使用 OpenAPI 意味着你在使用后端团队、前端开发者、 DevOps 和产品工程师早已熟悉的语言。不需要学习曲线或昂贵的培训。
+
+- 🔄 **未来保证与可扩展性**：OpenAPI 随着 API 标准发展并保持前向兼容性。相反，MCP 是定制且实验性的——经常需要随着周围生态的改变而改变。
+
+🧵 结论：OpenAPI 让你用更少的努力、更少的代码重复和更少的意外完成更多事情。它是一个准备好投入生产、对开发者友好的路线，能支持 LLM 工具而无需完全重构。
+
+
+---
+
+#### 🔐 问：如何保护我的 OpenAPI 工具服务器？
+
+**答：** OpenAPI 支持行业标准的安全机制，例如：
+
+- OAuth 2.0
+- API Key 头
+- JWT（JSON Web Token）
+- Basic Auth
+
+在生产中使用 HTTPS 加密传输中的数据，并根据需要使用适当的认证/授权方法限制端点。你可以直接使用 securitySchemes 字段将这些机制纳入 OpenAPI 架构中。
+
+---
+
+#### ❓ 问：通过 OpenAPI 工具服务器能构建哪些类型的工具？
+
+**答：** 如果它可以通过 REST API 暴露，就可以构建它。常见的工具类型包括：
+
+- 文件系统操作（读取/写入文件，列出目录）
+- Git 和文档库访问
+- 数据库查询或架构探索
+- 网络爬虫或摘要工具
+- 外部 SaaS 集成（例如 Salesforce、Jira、Slack）
+- LLM 附加内存存储 / RAG 组件
+- 保护内部微服务，供您的代理访问
+
+---
+
+#### 🔌 问：我可以同时运行多个工具服务器吗？
+
+**答:** 当然可以。每个工具服务器独立运行，并公开自己的 OpenAPI 模式。您的代理配置可以指向多个工具服务器，可以根据需要混合使用。
+
+没有限制—只需确保每个服务器运行在自己的端口或地址上，并且代理主机可以访问它们。
+
+---
+
+#### 🧪 问：在将工具服务器链接到 LLM 代理之前，如何测试它？
+
+**答:** 您可以使用以下工具测试您的 OpenAPI 工具服务器：
+
+- Swagger UI 或 ReDoc（默认内置于 FastAPI 中）
+- Postman 或 Insomnia
+- 命令行中的 curl 或 httpie
+- Python 的 requests 模块
+- OpenAPI 验证器和模拟器
+
+验证后，您可以通过 LLM 代理或 Open WebUI 注册工具服务器。
+
+---
+
+#### 🛠️ 问：我可以扩展或定制参考服务器吗？
+
+**答:** 可以！servers/ 目录中的所有服务器都被构建为简单的模板。您可以分叉并修改它们以：
+
+- 添加新的端点和业务逻辑
+- 集成身份验证
+- 更改响应格式
+- 连接到新服务或内部 API
+- 通过 Docker、Kubernetes 或任何云主机部署
+
+---
+
+#### 🌍 问：我可以在 AWS 或 GCP 等云平台上运行 OpenAPI 工具服务器吗？
+
+**答:** 可以。这些服务器是普通的 HTTP 服务。您可以将它们部署为：
+
+- 使用 API Gateway 的 AWS Lambda（无服务器）
+- EC2 或 GCP Compute Engine 实例
+- GKE/EKS/AKS 中的 Kubernetes 服务
+- Cloud Run 或 App Engine
+- Render、Railway、Heroku 等
+
+只需确保它们已安全配置并且需要时可被代理或用户访问（或通过 VPN）。
+
+---
+
+#### 🧪 问：如果我已经有一个现有的 MCP 服务器怎么办？
+
+**答:** 好消息！您可以使用我们的 MCP 到 OpenAPI 桥：[mcpo](https://github.com/open-webui/mcpo)，现在可以更容易地将现有的基于 MCP 的工具公开为兼容 OpenAPI 的 API。无需重写，无需烦恼 — 只需连接并开始！🚀
+
+如果您已经使用 MCP 协议构建了工具，`mcpo` 可帮助您立即解锁与 Open WebUI 和任何基于 OpenAPI 的代理的兼容性 — 确保您的努力完全可访问并面向未来。
+
+[查看文档中的 MCP 桥接可选部分以获取设置说明。](https://github.com/open-webui/openapi-servers?tab=readme-ov-file#-bridge-to-mcp-optional)
+
+**快速开始：**
+```bash
+uvx mcpo --port 8000 -- uvx mcp-server-time --local-timezone=America/New_York
+```
+
+✨ 就这么简单 — 您的 MCP 服务器现在已准备好使用 OpenAPI！
+
+---
+
+#### 🗂️ 问：一个 OpenAPI 服务器可以实现多种工具吗？
+
+**答:** 可以。单个 OpenAPI 服务器可以根据不同的端点提供多个相关的能力。例如，一个文档服务器可以提供搜索、上传、OCR 和摘要功能——所有这些都在一个模式中提供。
+
+如果您更喜欢隔离和灵活性，也可以通过为每个工具创建一个 OpenAPI 服务器来完全模块化。
+
+---
+
+🙋 还有更多问题吗？请访问 GitHub 讨论以获得社区的帮助和反馈：
+👉 [社区讨论](https://github.com/open-webui/openapi-servers/discussions)

@@ -1,0 +1,51 @@
+---
+sidebar_position: 3
+title: "🎬 動作功能"
+---
+
+動作功能允許您為最終使用者在訊息工具列中撰寫自定義按鈕以進行互動。
+此功能啟用更多互動式訊息，讓使用者在執行任務之前授權、生成結構化數據的視覺化、下載聊天的音頻片段，
+以及許多其他使用案例。
+
+可在[社群區域](https://openwebui.com/f/hub/custom_action/)找到動作程式碼的範本。
+
+以下影片展示了一個圖形視覺化動作的範例。
+
+<p align="center">
+  <a href="#">
+    <img src="/images/pipelines/graph-viz-action.gif" alt="圖形視覺化動作" />
+  </a>
+</p>
+
+
+### 動作
+動作用於在訊息界面中創建按鈕（這些小按鈕直接位於個別聊天訊息下方）。
+
+動作有一個主要的組成部分，稱為動作函數。此組成部分接受一個物件，該物件定義動作的類型和正在處理的數據。
+
+<details>
+<summary>範例</summary>
+
+```python
+async def action(
+        self,
+        body: dict,
+        __user__=None,
+        __event_emitter__=None,
+        __event_call__=None,
+    ) -> Optional[dict]:
+        print(f"action:{__name__}")
+
+        response = await __event_call__(
+            {
+                "type": "input",
+                "data": {
+                    "title": "撰寫一則訊息",
+                    "message": "這裡撰寫要附加的訊息",
+                    "placeholder": "輸入您的訊息",
+                },
+            }
+        )
+        print(response)
+```
+</details>

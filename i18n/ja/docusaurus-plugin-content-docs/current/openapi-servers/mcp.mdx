@@ -1,0 +1,200 @@
+---
+sidebar_position: 3
+title: "🛰️ MCP サポート"
+---
+
+このドキュメントでは、Open WebUIが提供する[**MCP (Model Context Protocol)-to-OpenAPI プロキシサーバー** (mcpo)](https://github.com/open-webui/mcpo)を簡単にセットアップしてデプロイする方法を説明します。エンドユーザーや開発者に適した標準的で馴染みのあるOpenAPIエンドポイントを使用して、MCPベースのツールサーバーを簡単に公開する方法を学びましょう。
+
+### 📌 MCP プロキシサーバーとは？
+
+MCP-to-OpenAPI プロキシサーバーを使用すると、MCP (Model Context Protocol)を使用して実装されたツールサーバーを標準的なREST/OpenAPI APIを通じて直接利用できます。つまり、馴染みのないカスタムプロトコルを管理する必要はありません。エンドユーザーやアプリケーション開発者にとって、このツールを使用することで、強力なMCPベースのツールを直接、馴染み深いRESTライクなエンドポイントを通じて簡単に操作できます。
+
+### 💡 mcpoを使う理由
+
+MCPツールサーバーは非常に強力で柔軟ですが、通常は標準入力/出力 (stdio) を通じて通信します。このため、ローカルマシン上でファイルシステム、環境、その他のネイティブなシステム機能にアクセスしやすい状態で動作します。
+
+これは強みであると同時に制約でもあります。
+
+例えば、メインインターフェイス（Open WebUIなど）をクラウド上にデプロイしようとすると問題が発生します。クラウドインスタンスがローカルマシン上でstdio経由で動作するMCPサーバーと直接通信することができないのです。
+
+[ここで、mcpoが画期的な解決策を提供します。](https://github.com/open-webui/mcpo)
+
+通常、MCPサーバーは生のstdio通信に依存します。これには以下の問題があります：
+
+- 🔓 環境間で基本的に非安全
+- ❌ ほとんどの最新ツール、UI、プラットフォームと互換性なし
+- 🧩 認証、ドキュメント、エラーハンドリングといった重要な機能が欠如
+
+mcpoプロキシはこれらの問題を自動的に解決します：
+
+- ✅ 既存のOpenAPIツール、SDK、クライアントと即座に互換性を持たせる
+- 🛡 ツールを安全でスケーラブルな標準ベースのHTTPエンドポイントでラップする
+- 🧠 インタラクティブなOpenAPIドキュメントを完全自動で生成、設定不要
+- 🔌 プレーンHTTPを使用—ソケット設定、デーモン操作、プラットフォーム特有のコード不要
+
+つまり、最初はmcpoを追加することが「余計なレイヤー」と感じるかもしれませんが、実際には以下の点でプロセスを簡素化します：
+
+- より良い統合 ✅
+- より良いセキュリティ ✅
+- より良いスケーラビリティ ✅
+- 開発者やユーザーの満足度向上 ✅
+
+✨ mcpoを使用することで、ローカル限定のAIツールがクラウド対応、UIフレンドリー、即時に相互運用可能となり、ツールサーバーコードを1行も変更せずに利用できます。
+
+### ✅ クイックスタート：プロキシをローカルで実行する
+
+軽量で使いやすいツール**mcpo** ([GitHub リポジトリ](https://github.com/open-webui/mcpo)) を使用して、MCP-to-OpenAPI プロキシサーバーを起動する方法は簡単です：
+
+1. **必要条件**
+   - **Python 3.8+** (`pip`がインストールされていること)。
+   - MCP互換アプリケーション（例： `mcp-server-time`）
+   - （オプションだが推奨）高速起動とゼロ設定の利便性を実現する`uv`がインストールされていること。
+
+2. **mcpo インストール**
+
+**uv** を使用（推奨）:
+
+```bash
+uvx mcpo --port 8000 -- your_mcp_server_command
+```
+
+または `pip` を使用する方法:
+
+```bash
+pip install mcpo
+mcpo --port 8000 -- your_mcp_server_command
+```
+
+3. 🚀 **プロキシサーバーを実行**
+
+MCP-to-OpenAPIプロキシサーバーを開始するには、MCP互換のツールサーバーが必要です。まだ持っていない場合でも、MCPコミュニティでさまざまなMCPサーバー実装が提供されています。
+
+✨ **MCPサーバーはどこで見つかりますか？**
+
+公式にサポートされているMCPサーバーは以下のリポジトリ例で見つけることができます：
+
+- [modelcontextprotocol/servers on GitHub](https://github.com/modelcontextprotocol/servers)
+
+例えば、人気のある **Time MCP Server** は[こちら](https://github.com/modelcontextprotocol/servers/blob/main/src/time/README.md)でドキュメント化されています。通常、このサーバーの設定はREADME内で提供されているMCP構成内で明確に参照されています。具体的には以下のように記載があります：
+
+> Claude設定に追加：
+>
+> ```json
+> "mcpServers": {   
+>   "time": {     
+>     "command": "uvx",     
+>     "args": ["mcp-server-time", "--local-timezone=America/New_York"]   
+>   } 
+> }
+> ```
+
+🔑 **このMCPセットアップをローカルプロキシコマンドにすばやく翻訳する方法**:
+
+推奨されるMCPサーバー（`mcp-server-time`）を**MCP-to-OpenAPI プロキシ**（`mcpo`）経由で簡単に実行するには以下のようにします：
+
+```bash
+uvx mcpo --port 8000 -- uvx mcp-server-time --local-timezone=America/New_York
+```
+
+これで完了です！MCP-to-OpenAPI プロキシをローカルで実行し、強力な**MCP Time Server** を標準のOpenAPIエンドポイントを通じて公開できます:
+
+- 📖 **インタラクティブOpenAPIドキュメント:** [`http://localhost:8000/docs`](http://localhost:8000/docs)
+
+他のMCP実装から公式リポジトリにある好みのMCPサーバーコマンドを使用して、`uvx mcp-server-time --local-timezone=America/New_York` を自由に置き換えてください。
+
+🤝 **サーバー起動後にOpen WebUIと統合する方法については、[ドキュメント](https://docs.openwebui.com/openapi-servers/open-webui/)をご確認ください。**
+
+### 🚀 生成されたAPIにアクセスする
+
+開始するとすぐに、MCP Proxy (`mcpo`) は自動的に以下を実行します:
+
+- MCPツールを動的に検出し、RESTエンドポイントを生成します。
+- 対話的で読みやすいOpenAPIドキュメントを以下で利用可能にします:
+  - `http://localhost:8000/docs`
+
+自動生成されたAPIエンドポイントをHTTPクライアント、AIエージェント、またはお好みのOpenAPIツールで直接呼び出してください。
+
+### 📖 エンドユーザー向けの例としてのワークフロー
+
+上述のサーバーコマンド (`uvx mcp-server-time`) を開始したと仮定します:
+
+- ローカルAPIドキュメントを `http://localhost:8000/docs` で訪問してください。
+- 生成されたエンドポイント（例: `/get_current_time`）を選択し、提供された対話型フォームを使用してください。
+- 「**Execute**」をクリックして、すぐに応答を受け取ります。
+
+設定の複雑さなしですぐにREST APIを利用可能。
+
+
+## 🚀 本番環境でのデプロイ方法（例）
+
+mcpoを使ったMCP-to-OpenAPIプロキシをデプロイすることは簡単です。以下の手順でDocker化してクラウドやVPSにデプロイできます:
+
+### 🐳 mcpoを用いたプロキシサーバーのDocker化
+
+1. **Dockerfileの例**
+
+デプロイメントディレクトリ内に以下の `Dockerfile` を作成してください:
+
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+RUN pip install mcpo uv
+# MCPサーバーコマンドを置き換えてください；例: uvx mcp-server-time
+CMD ["uvx", "mcpo", "--host", "0.0.0.0", "--port", "8000", "--", "uvx", "mcp-server-time", "--local-timezone=America/New_York"]
+```
+
+2. **コンテナをローカルでビルド＆実行する**
+
+```bash
+docker build -t mcp-proxy-server .
+docker run -d -p 8000:8000 mcp-proxy-server
+```
+
+3. **コンテナのデプロイ**
+
+DockerHubまたは別のレジストリーにプッシュしてください:
+
+```bash
+docker tag mcp-proxy-server yourdockerusername/mcp-proxy-server:latest
+docker push yourdockerusername/mcp-proxy-server:latest
+```
+
+Docker Compose、Kubernetes YAMLマニフェスト、またはお気に入りのクラウドコンテナサービス（AWS ECS、Azure Container Instances、Render.com、またはHeroku）を使用してデプロイします。
+
+✔️ 本番環境でMCPサーバーがREST API経由で容易に利用可能になります！
+
+## 🧑‍💻 技術的な詳細と背景
+
+### 🍃 仕組み（技術概要）
+
+- **動的スキーマ検出とエンドポイント:** サーバー起動時にプロキシはMCPサーバーに接続し、利用可能なツールをクエリします。MCPツールスキーマに基づいてFastAPIエンドポイントを自動生成し、簡潔で明確なRESTエンドポイントを作成します。
+
+- **OpenAPI自動ドキュメント化:** 生成されたエンドポイントはFastAPIの組み込みSwagger UI (`/docs`) でシームレスにドキュメント化されます。追加のドキュメント作成は不要。
+
+- **非同期かつ高性能:** 強力な非同期ライブラリに基づいて構築されており、同時ユーザーでもスピードと信頼性を保証します。
+
+### 📚 内部構造:
+
+- FastAPI（自動ルーティング＆ドキュメント生成）
+- MCPクライアント（標準MCP統合とスキーマ検出）
+- 標準JSON over HTTP（簡単な統合）
+
+## ⚡️ MCP-to-OpenAPIプロキシが優れている理由
+
+MCPサーバーをプロキシ経由でOpenAPIに統合する方法が大幅に優れている理由は次のとおりです。Open WebUIもこれを熱烈に支持しています:
+
+- **ユーザーに優しく馴染み深いインターフェース**: カスタムクライアント不要；すでに知っているHTTP RESTエンドポイントを使用。
+- **即時統合**: 既存のREST/OpenAPIツール、SDK、サービスの何千ものものと即座に互換性あり。
+- **強力かつ自動的なドキュメント化**: 内蔵のSwagger UIドキュメントは自動生成され、常に正確かつメンテナンス済み。
+- **新しいプロトコルのオーバーヘッドなし**: MCP固有のプロトコルの複雑さやソケット通信問題に直接対応する必要を排除。
+- **耐久性があるセキュリティと安定性**: 定評のあるHTTPSトランスポート、標準的な認証方法（JWT、APIキー）、堅牢な非同期ライブラリ、FastAPIの信頼性を継承。
+- **将来性**: MCPプロキシは、既存の安定した標準REST/OpenAPIフォーマットを使用しており、長期的なコミュニティサポートと進化が保証されています。
+
+🌟 **要点:** MCP-to-OpenAPIは、強力なMCPベースのAIツールを直感的で信頼性が高く、スケーラブルなRESTエンドポイントを通じて広く利用できるようにします。Open WebUIはこの最善の方法を誇りを持って支持し、推奨します。
+
+
+## 📢 コミュニティ＆サポート
+
+- 質問、提案、機能リクエストについては、[GitHub Issueトラッカー](https://github.com/open-webui/openapi-servers/issues)をご利用いただくか、[コミュニティディスカッション](https://github.com/open-webui/openapi-servers/discussions)に参加してください。
+
+統合を楽しんでください！🌟🚀

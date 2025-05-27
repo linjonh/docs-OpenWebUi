@@ -40,14 +40,14 @@ docker run -p 9099:9099 --add-host=host.docker.internal:host-gateway -v pipeline
 
 In the _Admin Settings_, create and save a new connection of type OpenAI API with the following details:
 
-- **URL:** http://host.docker.internal:9099 (this is where the previously launched Docker container is running).
+- **URL:**`http://host.docker.internal:9099` (this is where the previously launched Docker container is running).
 - **Password:** 0p3n-w3bu! (standard password)
 
 ![Open WebUI Settings](https://langfuse.com/images/docs/openwebui-setup-settings.png)
 
 ### Step 4: Adding the Langfuse Filter Pipeline
 
-Next, navigate to _Admin Settings_ -> _Pipelines_ and add the Langfuse Filter Pipeline. Specify that Pipelines is listening on http://host.docker.internal:9099 (as configured earlier) and install the [Langfuse Filter Pipeline](https://github.com/open-webui/pipelines/blob/main/examples/filters/langfuse_filter_pipeline.py) by using the _Install from Github URL_ option with the following URL:
+Next, navigate to _Admin Settings_ -> _Pipelines_ and add the Langfuse Filter Pipeline. Specify that Pipelines is listening on`http://host.docker.internal:9099` (as configured earlier) and install the [Langfuse Filter Pipeline](https://github.com/open-webui/pipelines/blob/main/examples/filters/langfuse_filter_pipeline.py) by using the _Install from Github URL_ option with the following URL:
 
 ```
 https://github.com/open-webui/pipelines/blob/main/examples/filters/langfuse_filter_pipeline.py

@@ -1,0 +1,342 @@
+---
+sidebar_position: 20
+title: "💡 특수 인자"
+---
+
+:::warning
+이 튜토리얼은 커뮤니티 기여로 작성되었으며 Open WebUI 팀에 의해 지원되지 않습니다. 특정 사용 사례에 맞게 Open WebUI를 커스터마이즈하는 방법을 시연하는 목적을 갖습니다. 기여하고 싶다면 기여 튜토리얼을 확인하세요.
+:::
+
+# 💡 특수 인자
+
+자신만의 `Tools`, `Functions` (`Filters`, `Pipes` 또는 `Actions`), `Pipelines` 등을 개발할 때 Open-WebUI의 모든 가능성을 활용할 수 있는 특수 인자를 사용할 수 있습니다.
+
+이 페이지는 각 특수 인자의 유형과 구조를 자세히 설명하고 예제도 제공합니다.
+
+### `body`
+
+`dict` 형식으로 보통 모델에 거의 직접 전달되는 데이터입니다. 엄밀히 말해 특수 인자는 아니지만, 더 쉽게 참조하기 위해 여기에 포함되었으며 자체적으로 일부 특수 인자를 포함하고 있습니다.
+
+<details>
+<summary>예제</summary>
+
+```json
+
+{
+  "stream": true,
+  "model": "my-cool-model",
+  # 소문자 문자열, 하이픈으로 구분된 단어: 이것이 모델의 ID 입니다
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "이 사진에 무엇이 있나요?"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdYAAAGcCAYAAABk2YF[REDACTED]"
+            # 이미지는 base64로 인코딩된 데이터로 전달됩니다
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": "이미지는 [REDACTED]처럼 보입니다"
+    },
+  ],
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "stream_options": {
+    "include_usage": true
+  },
+  "metadata": "[__metadata__와 정확히 동일한 dict]",
+  "files": "[__files__와 정확히 동일한 목록]"
+}
+
+
+```
+
+</details>
+
+### `__user__`
+
+사용자 정보를 포함하는 `dict`입니다.
+
+`UserValves` 클래스가 정의된다면, 그 인스턴스는 `__user__["valves"]`를 통해 접근해야 합니다. 그렇지 않다면 `valves` 키값은 `__user__`에서 완전히 생략됩니다.
+
+<details>
+<summary>예제</summary>
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "email": "cheesy_dude@openwebui.com",
+  "name": "Patrick",
+  "role": "user",
+  # 역할은 `user` 또는 `admin`일 수 있습니다
+  "valves": "[UserValve 인스턴스]"
+}
+```
+
+</details>
+
+### `__metadata__`
+
+채팅, 모델, 파일 등에 대한 광범위한 정보를 포함하는 `dict`입니다.
+
+<details>
+<summary>예제</summary>
+
+```json
+{
+  "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "chat_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "message_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "session_id": "xxxxxxxxxxxxxxxxxxxx",
+  "tool_ids": null,
+  # tool_ids는 문자열의 목록입니다.
+  "tool_servers": [],
+  "files": "[body['files']와 동일]",
+  # 파일이 지정되지 않은 경우 __metadata__에 파일 키가 존재하며 값은 [] 입니다
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "variables": {
+    "{{USER_NAME}}": "cheesy_username",
+    "{{USER_LOCATION}}": "Unknown",
+    "{{CURRENT_DATETIME}}": "2025-02-02 XX:XX:XX",
+    "{{CURRENT_DATE}}": "2025-02-02",
+    "{{CURRENT_TIME}}": "XX:XX:XX",
+    "{{CURRENT_WEEKDAY}}": "Monday",
+    "{{CURRENT_TIMEZONE}}": "Europe/Berlin",
+    "{{USER_LANGUAGE}}": "en-US"
+  },
+  "model": "[__model__와 동일한 dict]",
+  "direct": false,
+  "function_calling": "native",
+  "type": "user_response",
+  "interface": "open-webui"
+}
+
+```
+
+</details>
+
+### `__model__`
+
+모델에 대한 정보를 포함하는 `dict`입니다.
+
+<details>
+<summary>예제</summary>
+
+```json
+{
+  "id": "my-cool-model",
+  "name": "My Cool Model",
+  "object": "model",
+  "created": 1746000000,
+  "owned_by": "openai",
+  # openai 또는 ollama 중 하나
+  "info": {
+      "id": "my-cool-model",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "base_model_id": "gpt-4o",
+      # 모델 엔드포인트가 제공하는 실제 모델 이름
+      "name": "My Cool Model",
+      "params": {
+      "system": "당신은 나의 최고의 비서입니다. 당신은 [REDACTED]라고 답변합니다",
+      "function_calling": "native"
+      # 사용자 정의 옵션은 여기 나타납니다, 예를 들어 "Top K"
+      },
+      "meta": {
+      "profile_image_url": "/static/favicon.png",
+      "description": "my-cool-model에 대한 설명",
+      "capabilities": {
+          "vision": true,
+          "usage": true,
+          "citations": true
+      },
+      "position": 17,
+      "tags": [
+          {
+          "name": "for_friends"
+          },
+          {
+          "name": "vision_enabled"
+          }
+      ],
+      "suggestion_prompts": null
+      },
+      "access_control": {
+      "read": {
+          "group_ids": [],
+          "user_ids": []
+      },
+      "write": {
+          "group_ids": [],
+          "user_ids": []
+      }
+      },
+      "is_active": true,
+      "updated_at": 1740000000,
+      "created_at": 1740000000
+  },
+  "preset": true,
+  "actions": [],
+  "tags": [
+      {
+          "name": "for_friends"
+      },
+      {
+          "name": "vision_enabled"
+      }
+  ]
+}
+
+```
+
+</details>
+
+### `__messages__`
+
+이전 메시지들의 `list`입니다.
+
+`body["messages"]` 값은 위를 참조하세요.
+
+
+### `__chat_id__`
+
+`chat_id`의 `str`입니다.
+
+`__metadata__["chat_id"]` 값은 위를 참조하세요.
+
+### `__session_id__`
+
+`session_id`의 `str`입니다.
+
+`__metadata__["session_id"]` 값은 위를 참조하세요.
+
+### `__message_id__`
+
+`message_id`의 `str`입니다.
+
+`__metadata__["message_id"]` 값은 위를 참조하세요.
+
+### `__event_emitter__`
+
+사용자에게 이벤트 정보를 표시하기 위해 사용되는 `Callable`입니다.
+
+### `__event_call__`
+
+`Actions`을 위해 사용되는 `Callable`입니다.
+
+### `__files__`
+
+채팅을 통해 전송된 파일들의 `list`입니다. 이미지는 파일로 간주되지 않으며 `body["messages"]` 리스트의 일부로 모델에 직접 전송됩니다.
+
+성능상의 이유로 파일의 실제 바이너리는 인수에 포함되지 않지만 필요할 경우 경로를 통해 여전히 접근 가능합니다. 예를 들어, `docker`를 사용하는 경우 파이썬 경로 구문은 다음과 같습니다:
+
+```python
+from pathlib import Path
+
+the_file = Path(f"/app/backend/data/uploads/{__files__[0]["files"]["id"]}_{__files__[0]["files"]["filename"]}")
+assert the_file.exists()
+```
+
+파일 dict는 `__metadata__["files"]`를 통해서도 접근 가능하며 (파일이 전송되지 않은 경우 값은 `[]`) `body["files"]`를 통해서도 접근 가능합니다 (`body`에 파일이 전송되지 않으면 `files` 키 자체가 존재하지 않음).
+
+<details>
+<summary>예제</summary>
+
+```json
+
+[
+  {
+    "type": "file",
+    "file": {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "filename": "Napoleon - Wikipedia.pdf",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "data": {
+        "content": "Napoleon - Wikipedia\n\n\nNapoleon I\n\nThe Emperor Napoleon in His Study at the\nTuileries, 1812\n\nEmperor of the French\n\n1st reign 18 May 1804 – 6 April 1814\n\nSuccessor Louis XVIII[a]\n\n2nd reign 20 March 1815 – 22 June 1815\n\nSuccessor Louis XVIII[a]\n\nFirst Consul of the French Republic\n\nIn office\n13 December 1799 – 18 May 1804\n\nBorn Napoleone Buonaparte\n15 August 1769\nAjaccio, Corsica, Kingdom of\nFrance\n\nDied 5 May 1821 (aged 51)\nLongwood, Saint Helena\n\nBurial 15 December 1840\nLes Invalides, Paris\n\nNapoleon\nNapoleon Bonaparte[b] (born Napoleone\nBuonaparte;[1][c] 15 August 1769 – 5 May 1821), later\nknown [REDACTED]",
+        # 콘텐츠 값은 문서 분석기의 출력물이며, 위 예시는 Tika를 문서 분석기로 사용한 경우입니다
+      },
+      "meta": {
+        "name": "Napoleon - Wikipedia.pdf",
+        "content_type": "application/pdf",
+        "size": 10486578,
+        # 바이트 단위, 여기서는 약 10Mb
+        "data": {},
+        "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        # 항상 'file'로 시작됨
+      },
+      "created_at": 1740000000,
+      "updated_at": 1740000000
+    },
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "url": "/api/v1/files/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "name": "Napoleon - Wikipedia.pdf",
+    "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    "status": "uploaded",
+    "size": 10486578,
+    "error": "",
+    "itemId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    # itemId는 file["id"]와 동일하지 않음
+  }
+]
+
+
+```
+
+</details>
+
+### `__request__`
+
+`fastapi.Request`의 인스턴스입니다. 더 자세한 내용은 [마이그레이션 페이지](../../features/plugin/migration/index.mdx) 또는 [fastapi의 문서](https://fastapi.tiangolo.com/reference/request/)를 참조하세요.
+
+### `__task__`
+
+작업 유형에 대한 `str`입니다. 값은 `__metadata__["task"]`가 있는 경우 해당 값을 간단히 나타내며, 그렇지 않은 경우 `None`입니다.
+
+<details>
+<summary>가능한 값</summary>
+
+```json
+
+[
+    "title_generation",
+    "tags_generation",
+    "emoji_generation",
+    "query_generation",
+    "image_prompt_generation",
+    "autocomplete_generation",
+    "function_calling",
+    "moa_response_generation"
+]
+```
+
+</details>
+
+### `__task_body__`
+
+주어진 `__task__`를 수행하기 위해 필요한 `body`를 포함하는 `dict`입니다. 값은 `__metadata__["task_body"]`가 있는 경우 해당 값을 간단히 나타내며, 그렇지 않은 경우 `None`입니다.
+
+구조는 위의 `body`와 동일하며 적절한 모델과 시스템 메시지 등을 사용하도록 수정됩니다.
+
+
+### `__tools__`
+
+`ToolUserModel` 인스턴스들의 `list`입니다.
+
+`ToolUserModel` 인스턴스의 속성에 대한 자세한 내용은 [tools.py](https://github.com/open-webui/open-webui/blob/main/backend/open_webui/models/tools.py)의 코드를 참조하세요.
+

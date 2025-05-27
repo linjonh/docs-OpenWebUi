@@ -1,0 +1,75 @@
+---
+
+sidebar_position: 4  
+title: "🌐 开始使用兼容 OpenAI 的服务器"
+
+---
+
+## 概述
+
+Open WebUI 不仅支持 OpenAI/Ollama/Llama.cpp——你还可以连接**任何实现了兼容 OpenAI API 的服务器**，不论是本地还是远程运行。如果你想运行不同的语言模型，或者已经有了喜欢的后端或生态系统，这是个完美的解决方案。本指南将教你如何：
+
+- 设置一个兼容 OpenAI 的服务器（包含一些常见选项）
+- 将其连接到 Open WebUI
+- 立即开始聊天
+
+## 第 1 步：选择一个兼容 OpenAI 的服务器
+
+有许多服务器和工具提供了兼容 OpenAI API 的功能。以下是一些最受欢迎的选项：
+
+- [Llama.cpp](https://github.com/ggml-org/llama.cpp)：极其高效，可运行在 CPU 和 GPU 上
+- [Ollama](https://ollama.com/)：非常易用且跨平台
+- [LM Studio](https://lmstudio.ai/)：适用于 Windows/Mac/Linux 的功能丰富的桌面应用
+- [Lemonade (ONNX TurnkeyML)](https://github.com/onnx/turnkeyml)：基于 ONNX 的快速后端，支持 NPU/iGPU 加速
+
+选择最适合你工作流程的选项！
+
+---
+
+#### 🍋 开始使用 Lemonade (ONNX TurnkeyML)
+
+Lemonade 是一个即插即用的基于 ONNX 的兼容 OpenAI 的服务器。以下是如何在 Windows 上尝试的方法：
+
+1. [下载最新的 `.exe`](https://github.com/onnx/turnkeyml/releases)
+2. 运行 `Lemonade_Server_Installer.exe`
+3. 使用 Lemonade 的安装程序安装并下载一个模型
+4. 当程序运行时，你的 API 端点将是：
+
+   ```
+   http://localhost:8000/api/v0
+   ```
+
+![Lemonade 服务器](/images/getting-started/lemonade-server.png)
+
+详见[官方文档](https://github.com/onnx/turnkeyml)。
+
+---
+
+## 第 2 步：将你的服务器连接到 Open WebUI
+
+1. 在浏览器中打开 Open WebUI。
+2. 前往 ⚙️ **管理设置** → **连接** → **OpenAI 连接**。
+3. 点击 ➕ **添加连接**。
+
+   - **URL**：使用你服务器的 API 端点（例如，Ollama 的 `http://localhost:11434/v1`，或者你自己的 Llama.cpp 服务器地址）。
+   - **API 密钥**：除非需要，否则保持为空。
+
+4. 点击保存。
+
+*提示：如果在 Docker 中运行 Open WebUI，而模型服务器在你的主机上运行，请使用 `http://host.docker.internal:<你的端口>/v1`。*
+
+##### **对于 Lemonade：** 添加 Lemonade 时，使用 `http://localhost:8000/api/v0` 作为 URL。
+
+![Lemonade 连接](/images/getting-started/lemonade-connection.png)
+
+---
+
+## 第 3 步：开始聊天！
+
+在聊天菜单中选择你已连接服务器的模型，开始体验吧！
+
+就是这么简单！无论你选择 Llama.cpp、Ollama、LM Studio 或 Lemonade，你都可以在 Open WebUI 中轻松探索并管理多个模型服务器。
+
+--- 
+
+🚀 享受打造完美本地 AI 设置的乐趣吧！

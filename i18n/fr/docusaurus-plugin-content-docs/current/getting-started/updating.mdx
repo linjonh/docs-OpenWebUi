@@ -1,0 +1,146 @@
+---
+sidebar_position: 300 
+title: "🔄 Mise à jour d'Open WebUI"
+---
+
+
+
+## Pourquoi mon Open WebUI ne se met-il pas à jour ?
+
+Pour mettre à jour votre installation locale de Docker Open WebUI vers la dernière version disponible, vous pouvez utiliser **Watchtower** ou mettre à jour manuellement le conteneur. Suivez l'une des étapes ci-dessous pour être guidé dans la mise à jour de votre image existante d'Open WebUI.
+
+### Mise à jour manuelle
+
+1. **Arrêtez et supprimez le conteneur actuel** :
+
+   Cela arrêtera le conteneur en cours d'exécution et le supprimera, mais cela ne supprimera pas les données stockées dans le volume Docker. (Remplacez `open-webui` par le nom de votre conteneur tout au long du processus de mise à jour si c'est différent.)
+
+```bash
+docker rm -f open-webui
+```
+
+2. **Récupérez la dernière image Docker** :
+
+   Cela mettra à jour l'image Docker, mais cela ne mettra pas à jour le conteneur en cours d'exécution ni ses données.
+
+```bash
+docker pull ghcr.io/open-webui/open-webui:main
+```
+
+
+:::info
+**Supprimez toutes les données existantes dans le volume Docker (NON RECOMMANDÉ SAUF EN CAS DE NÉCESSITÉ ABSOLUE !)**. Ignorez complètement cette étape si elle n'est pas nécessaire et passez à la dernière étape :
+
+   Si vous souhaitez repartir de zéro, vous pouvez supprimer les données existantes dans le volume Docker. Faites attention, car cela supprimera tous vos historiques de chat et autres données.
+
+   Les données sont stockées dans un volume Docker nommé `open-webui`. Vous pouvez le supprimer avec la commande suivante :
+
+```bash
+docker volume rm open-webui
+```
+:::
+
+3. **Redémarrez le conteneur avec l'image mise à jour et le volume existant connecté** :
+
+   Si vous n'avez pas supprimé les données existantes, cela démarrera le conteneur avec l'image mise à jour et les données existantes. Si vous avez supprimé les données existantes, cela démarrera le conteneur avec l'image mise à jour et un nouveau volume vide. **Pour le support GPU Nvidia, ajoutez `--gpus all` à la commande docker run**
+
+```bash
+docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui ghcr.io/open-webui/open-webui:main
+```
+
+## Êtes-vous déconnecté après chaque mise à jour ?
+Si vous êtes déconnecté après chaque mise à jour, assurez-vous que `WEBUI_SECRET_KEY` est défini dans vos variables d'environnement. Sans cette clé définie de manière cohérente, vos sessions d'authentification peuvent être invalidées après les mises à jour.
+
+Pour définir `WEBUI_SECRET_KEY` de manière persistante, incluez-la lors de l'exécution de votre conteneur Docker :
+
+```bash
+docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui -e WEBUI_SECRET_KEY=your_secret_key ghcr.io/open-webui/open-webui:main
+```
+
+Ou, si vous utilisez **docker-compose**, ajoutez-la sous la section `environment` :
+
+```yml
+version: '3'
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3000:8080"
+    volumes:
+      - open-webui:/app/backend/data
+    environment:
+      - WEBUI_SECRET_KEY=your_secret_key
+```
+
+Pour plus de détails sur les paramètres des variables d'environnement, consultez la [documentation Open WebUI sur les variables de sécurité](https://docs.openwebui.com/getting-started/env-configuration#security-variables).
+
+## Mise à jour automatique d'Open WebUI avec Watchtower
+
+Vous pouvez utiliser [Watchtower](https://containrrr.dev/watchtower/) pour automatiser le processus de mise à jour d'Open WebUI. Voici trois options :
+
+### Option 1 : Mise à jour unique
+
+Vous pouvez exécuter Watchtower comme mise à jour unique pour arrêter le conteneur actuel, récupérer la dernière image, et démarrer un nouveau conteneur avec l'image mise à jour et le volume existant connecté (**Pour le support GPU Nvidia, ajoutez `--gpus all` à la commande docker run**) :
+
+```bash
+docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once open-webui
+```
+
+### Option 2 : Exécution de Watchtower comme conteneur séparé
+
+Vous pouvez exécuter Watchtower comme un conteneur séparé qui surveille et met à jour votre conteneur Open WebUI :
+
+```bash
+docker run -d --name watchtower \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
+  containrrr/watchtower -i 300 open-webui
+```
+
+Cela démarrera Watchtower en mode détaché, surveillant votre conteneur Open WebUI pour les mises à jour toutes les 5 minutes.
+
+### Option 3 : Intégrer Watchtower avec un fichier `docker-compose.yml`
+
+Vous pouvez également intégrer Watchtower avec votre fichier `docker-compose.yml` pour automatiser les mises à jour d'Open WebUI (**Pour le support GPU Nvidia, ajoutez `--gpus all` à la commande docker run**) :
+
+```yml
+version: '3'
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3000:8080"
+    volumes:
+      - open-webui:/app/backend/data
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 300 open-webui
+    depends_on:
+      - open-webui
+
+volumes:
+  open-webui:
+```
+
+Dans cet exemple, Watchtower est intégré avec le fichier `docker-compose.yml` et surveille le conteneur Open WebUI pour les mises à jour toutes les 5 minutes.
+
+## Données persistantes dans les volumes Docker
+
+Les données sont stockées dans un volume Docker nommé `open-webui`. Le chemin vers le volume n'est pas directement accessible, mais vous pouvez inspecter le volume avec la commande suivante :
+
+```bash
+docker volume inspect open-webui
+```
+
+Cela affichera les détails du volume, y compris le point de montage, qui est généralement situé dans `/var/lib/docker/volumes/open-webui/_data`.  
+
+Sur Windows 10 + WSL 2, les volumes Docker sont situés ici (à saisir dans l'explorateur de fichiers Windows) :
+- \\\wsl$\docker-desktop\mnt\docker-desktop-disk\data\docker\volumes
+
+Pour les anciennes versions de Docker (avant Docker v26.1.4) :
+- \\\wsl$\docker-desktop-data\data\docker\volumes
+- \\\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
+
+_(Réponse Windows créditée à l'utilisateur StackOverflow sarye-haddadi ; [lien vers le post SO original](https://stackoverflow.com/questions/43181654/locating-data-volumes-in-docker-desktop-windows))_

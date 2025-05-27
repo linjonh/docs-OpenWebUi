@@ -1,0 +1,48 @@
+---
+sidebar_position: 900
+title: "🔨 OpenAPI Tool Server"
+---
+
+
+import { TopBanners } from "@site/src/components/TopBanners";
+
+<TopBanners />
+
+# 🌟 OpenAPI Tool Server
+
+Dieses Repository bietet Referenzimplementierungen von OpenAPI-Tool-Servern, die Entwicklern die einfache und sichere Integration externer Werkzeuge und Datenquellen in LLM-Agenten und Workflows ermöglichen. Die Implementierungen wurden so konzipiert, dass sie maximale Benutzerfreundlichkeit und eine minimalistische Lernkurve bieten, indem sie die weit verbreitete und erprobte [OpenAPI-Spezifikation](https://www.openapis.org/) als Standardprotokoll verwenden.
+
+Durch die Nutzung von OpenAPI vermeiden wir die Notwendigkeit eines proprietären oder unbekannten Kommunikationsprotokolls, sodass Sie schnell und zuverlässig Server erstellen oder integrieren können. Das bedeutet, dass Sie weniger Zeit mit der Entwicklung benutzerdefinierter Schnittstellen verbringen müssen und mehr Zeit darauf verwenden können, leistungsstarke Tools zu bauen, die Ihre KI-Anwendungen verbessern.
+
+## ☝️ Warum OpenAPI?
+
+- **Etablierter Standard**: OpenAPI ist ein weit verbreiteter, in der Produktion bewährter API-Standard, der von Tausenden von Tools, Unternehmen und Communities unterstützt wird.
+
+- **Kein Wiedererfinden des Rades**: Keine zusätzlichen Dokumentations- oder proprietären Spezifikationsverwirrungen. Wenn Sie heute REST-APIs erstellen oder OpenAPI nutzen, sind Sie bereits vorbereitet.
+
+- **Einfache Integration und Hosting**: Stellen Sie Ihre Tool-Server extern oder lokal bereit, ohne Anbieterbindung oder komplexe Konfigurationen.
+
+- **Starker Fokus auf Sicherheit**: Basierend auf HTTP/REST-APIs unterstützt OpenAPI von Natur aus weit verbreitete, sichere Kommunikationsmethoden wie HTTPS und bewährte Authentifizierungsstandards (OAuth, JWT, API-Schlüssel).
+
+- **Zukunftssicher und stabil**: Im Gegensatz zu weniger ausgereiften oder experimentellen Protokollen verspricht OpenAPI Zuverlässigkeit, Stabilität und langfristige Unterstützung der Community.
+
+## 🚀 Schnellstart
+
+Beginnen Sie schnell mit unseren auf FastAPI basierenden Referenzimplementierungen, die im `servers/`-Verzeichnis bereitgestellt werden. (Sie können diese Beispiele bei Bedarf an Ihren bevorzugten Stack anpassen, z. B. mit [FastAPI](https://fastapi.tiangolo.com/), [FastOpenAPI](https://github.com/mr-fatalyst/fastopenapi) oder einer anderen OpenAPI-kompatiblen Bibliothek):
+
+```bash
+git clone https://github.com/open-webui/openapi-servers
+cd openapi-servers
+
+# Beispiel: Abhängigkeiten für einen bestimmten Server `filesystem` installieren
+cd servers/filesystem
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --reload
+```
+
+Jetzt müssen Sie einfach Ihre OpenAPI-kompatiblen Clients oder KI-Agenten auf Ihre lokale oder öffentlich bereitgestellte URL hinweisen – keine Konfigurationsprobleme, keine komplizierten Übertragungen.
+
+## 🌱 Open WebUI Community
+
+- Für allgemeine Diskussionen, technischen Austausch und Ankündigungen besuchen Sie unsere [Community Discussions](https://github.com/open-webui/openapi-servers/discussions) Seite.
+- Haben Sie Ideen oder Feedback? Bitte eröffnen Sie ein Issue!

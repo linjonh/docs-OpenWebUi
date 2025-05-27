@@ -1,0 +1,139 @@
+---
+sidebar_position: 2  
+title: "⚙️ Ferramentas"  
+---
+
+# ⚙️ O que são Ferramentas?
+
+Ferramentas são pequenos scripts Python que adicionam superpoderes ao seu LLM. Quando ativadas, permitem que seu chatbot faça coisas incríveis — como buscar na web, extrair dados, gerar imagens, responder usando vozes de IA e muito mais.
+
+Pense nas Ferramentas como plugins úteis que sua IA pode usar ao conversar com você.
+
+---
+
+## 🚀 O que as Ferramentas podem me ajudar a fazer?
+
+Aqui estão apenas alguns exemplos do que as Ferramentas permitem que seu assistente de IA faça:
+
+- 🌍 Busca na Web: Obtenha respostas em tempo real pesquisando na internet.
+- 🖼️ Geração de Imagens: Crie imagens a partir de suas solicitações.
+- 🔊 Saída de Voz: Gere vozes de IA usando ElevenLabs.
+
+Explore ferramentas prontas para uso aqui:  
+🧰 [Exibição de Ferramentas](https://openwebui.com/tools)
+
+---
+
+
+## 📦 Como instalar Ferramentas
+
+Existem duas maneiras fáceis de instalar Ferramentas no Open WebUI:
+
+1. Acesse [Biblioteca de Ferramentas da Comunidade](https://openwebui.com/tools)
+2. Escolha uma ferramenta e clique no botão Obter.
+3. Insira o endereço IP ou URL da instância do Open WebUI que você usa.
+4. Clique em “Importar para WebUI” — pronto!
+
+🛑 Dica de segurança: Nunca importe uma Ferramenta que você não reconheça ou confie. São scripts Python e podem conter códigos inseguros.
+
+---
+
+
+## 🔧 Como usar Ferramentas no Open WebUI
+
+Assim que você instalar as Ferramentas (vamos ensinar abaixo), veja como ativá-las e usá-las:
+
+Existem duas maneiras de ativar uma Ferramenta para seu modelo:
+
+### ➕ Opção 1: Ativar na janela de chat
+
+Enquanto estiver conversando, clique no ícone ➕ na área de entrada. Você verá uma lista de Ferramentas disponíveis — pode ativar qualquer uma delas na hora para essa sessão.
+
+💡 Dica: Ativar uma Ferramenta dá ao modelo permissão para usá-la — mas ele pode não utilizá-la a menos que seja útil para a tarefa.
+
+### ✏️ Opção 2: Ativar por padrão (recomendado para uso frequente)
+1. Acesse: Workspace ➡️ Modelos
+2. Escolha o modelo que você está usando (como GPT-4 ou LLaMa2) e clique no ícone ✏️ de edição.
+3. Role até a seção “Ferramentas”.
+4. ✅ Marque as Ferramentas que você deseja que seu modelo tenha acesso padrão.
+5. Clique em Salvar.
+
+Isso garante que o modelo sempre tenha essas Ferramentas prontas para uso sempre que você conversar com ele.
+
+Você também pode deixar seu LLM selecionar automaticamente as Ferramentas certas usando o filtro AutoTool:
+
+🔗 [Filtro AutoTool](https://openwebui.com/f/hub/autotool_filter/)
+
+🎯 Nota: Mesmo ao usar AutoTool, ainda é necessário ativar suas Ferramentas usando a Opção 2.
+
+✅ E é isso — seu LLM agora tem poder de Ferramentas! Você está pronto para turbinar suas conversas com busca na web, geração de imagens, saída de voz e muito mais.
+
+---
+
+## 🧠 Escolhendo como as Ferramentas serão usadas: Padrão vs Nativo
+
+Uma vez que as Ferramentas sejam ativadas para seu modelo, o Open WebUI oferece duas maneiras diferentes de permitir que seu LLM as utilize em conversas.
+
+Você pode decidir como o modelo deve chamar as Ferramentas escolhendo entre:
+
+- 🟡 Modo Padrão (Baseado em Prompt)
+- 🟢 Modo Nativo (Chamadas de Função Integradas)
+
+Vamos explicar mais detalhadamente:
+
+### 🟡 Modo Padrão (Disparo de Ferramentas baseado em Prompt)
+
+Este é o modo padrão no Open WebUI.
+
+Aqui, seu LLM não precisa suportar chamadas de função nativamente. Em vez disso, orientamos o modelo usando um modelo inteligente de prompt para seleção de ferramentas que seleciona e utiliza uma Ferramenta.
+
+✅ Funciona com quase qualquer modelo  
+✅ Ótimo para desbloquear Ferramentas com modelos básicos ou locais  
+❗ Não tão confiável ou flexível quanto o Modo Nativo ao encadear ferramentas
+
+### 🟢 Modo Nativo (Chamadas de Função Integradas)
+
+Se seu modelo suporta chamadas de funções “nativas” (como GPT-4o ou GPT-3.5-turbo-1106), você pode usar este modo poderoso para permitir que o LLM decida — em tempo real — quando e como chamar várias Ferramentas durante uma única mensagem de chat.
+
+✅ Rápido, preciso e pode encadear várias Ferramentas numa única resposta  
+✅ A experiência mais natural e avançada  
+❗ Requer um modelo que realmente suporte chamadas de funções nativas
+
+### ✳️ Como alternar entre os modos
+
+Quer ativar chamadas de funções nativas em suas conversas? Veja como:
+
+![Controles de Chat](/images/features/plugin/tools/chat-controls.png)
+
+1. Abra a janela de chat com seu modelo.
+2. Clique em ⚙️ Controles de Chat > Parâmetros Avançados.
+3. Procure a configuração de Chamadas de Função e altere de Padrão → Nativo
+
+E pronto! Seu chat agora usa suporte verdadeiro a Ferramentas nativas (desde que o modelo ofereça suporte).
+
+➡️ Recomendamos usar GPT-4o ou outro modelo OpenAI para a melhor experiência de chamadas de funções nativas.  
+🔎 Alguns modelos locais podem afirmar suporte, mas frequentemente têm dificuldade com o uso preciso ou complexo de Ferramentas.
+
+💡 Resumo:
+
+| Modo     | Para quem é                     | Prós                                    | Contras                              |
+|----------|--------------------------------|-----------------------------------------|--------------------------------------|
+| Padrão   | Qualquer modelo                 | Ampla compatibilidade, mais seguro, flexível | Pode ser menos preciso ou mais lento |
+| Nativo   | GPT-4o, etc.                    | Rápido, inteligente, excelente encadeamento de ferramentas | Necessita suporte adequado a chamadas de funções |
+
+Escolha o que funciona melhor para sua configuração — e lembre-se, você pode sempre alternar pela interface de Chat Controls.
+
+👏 E é isso — seu LLM agora sabe como e quando usar Ferramentas, de forma inteligente.
+
+---
+
+## 🧠 Resumo
+
+Ferramentas são complementos que ajudam o modelo de IA a fazer muito mais do que apenas conversar. Desde responder perguntas em tempo real até gerar imagens ou falar em voz alta — as Ferramentas dão vida à sua IA.
+
+- Visite: [https://openwebui.com/tools](https://openwebui.com/tools) para descobrir novas Ferramentas.
+- Instale-as manualmente ou com um clique.
+- Ative-as por modelo em Espaço de Trabalho ➡️ Modelos.
+- Use-as no chat clicando em ➕
+
+Agora vá tornar sua IA muuuuito mais inteligente 🤖✨

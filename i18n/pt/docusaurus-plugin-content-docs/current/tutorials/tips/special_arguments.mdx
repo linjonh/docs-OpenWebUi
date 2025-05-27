@@ -1,0 +1,320 @@
+---
+sidebar_position: 20
+title: "💡 Argumentos Especiais"
+---
+
+:::warning
+Este tutorial é uma contribuição da comunidade e não é suportado pela equipe do Open WebUI. Ele serve apenas como uma demonstração de como personalizar o Open WebUI para seu caso de uso específico. Quer contribuir? Confira o tutorial de contribuição.
+:::
+
+# 💡 Argumentos Especiais
+
+Ao desenvolver seus próprios `Tools`, `Functions` (`Filters`, `Pipes` ou `Actions`), `Pipelines`, etc, você pode usar argumentos especiais para explorar o espectro completo do que o Open-WebUI tem a oferecer.
+
+Esta página pretende detalhar o tipo e a estrutura de cada argumento especial, bem como fornecer um exemplo.
+
+### `body`
+
+Um `dict` geralmente destinado a ir quase diretamente ao modelo. Embora não seja estritamente um argumento especial, está incluído aqui para referência mais fácil e porque ele mesmo contém alguns argumentos especiais.
+
+<details>
+<summary>Exemplo</summary>
+
+```json
+
+{
+  "stream": true,
+  "model": "meu-modelo-incrível",
+  # string em minúsculas com palavras separadas por hífen: este é o ID do modelo
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "O que há nesta imagem?"
+        },
+        {
+          "type": "image_url",
+          "image_url": {
+            "url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdYAAAGcCAYAAABk2YF[REDACTED]"
+            # Imagens são passadas como dados codificados em base64
+          }
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": "A imagem parece ser [REDACTED]"
+    },
+  ],
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "stream_options": {
+    "include_usage": true
+  },
+  "metadata": "[O mesmo dict de __metadata__]",
+  "files": "[A mesma lista que __files__]"
+}
+
+
+```
+
+</details>
+
+### `__user__`
+
+Um `dict` com informações do usuário.
+
+Observe que, se a classe `UserValves` estiver definida, sua instância deve ser acessada via `__user__["valves"]`. Caso contrário, o par chave-valor `valves` está ausente por completo de `__user__`.
+
+<details>
+<summary>Exemplo</summary>
+
+```json
+{
+  "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "email": "cheesy_dude@openwebui.com",
+  "name": "Patrick",
+  "role": "user",
+  # função pode ser `user` ou `admin`
+  "valves": "[a instância de UserValve]"
+}
+```
+
+</details>
+
+### `__metadata__`
+
+Um `dict` com informações abrangentes sobre o chat, modelo, arquivos, etc.
+
+<details>
+<summary>Exemplo</summary>
+
+```json
+{
+  "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "chat_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "message_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "session_id": "xxxxxxxxxxxxxxxxxxxx",
+  "tool_ids": null,
+  # tool_ids é uma lista de strings.
+  "tool_servers": [],
+  "files": "[Igual ao body[files]]",
+  # Se nenhum arquivo for fornecido, a chave de arquivos existe em __metadata__ e seu valor é []
+  "features": {
+    "image_generation": false,
+    "code_interpreter": false,
+    "web_search": false
+  },
+  "variables": {
+    "{{USER_NAME}}": "cheesy_username",
+    "{{USER_LOCATION}}": "Desconhecido",
+    "{{CURRENT_DATETIME}}": "2025-02-02 XX:XX:XX",
+    "{{CURRENT_DATE}}": "2025-02-02",
+    "{{CURRENT_TIME}}": "XX:XX:XX",
+    "{{CURRENT_WEEKDAY}}": "Segunda-feira",
+    "{{CURRENT_TIMEZONE}}": "Europa/Berlim",
+    "{{USER_LANGUAGE}}": "pt-BR"
+  },
+  "model": "[O mesmo dict de __model__]",
+  "direct": false,
+  "function_calling": "native",
+  "type": "resposta_do_usuario",
+  "interface": "open-webui"
+}
+
+```
+
+</details>
+
+### `__model__`
+
+Um `dict` com informações sobre o modelo.
+
+<details>
+<summary>Exemplo</summary>
+
+```json
+{
+  "id": "meu-modelo-incrível",
+  "name": "Meu Modelo Incrível",
+  "object": "model",
+  "created": 1746000000,
+  "owned_by": "openai",
+  # pode ser openai ou ollama
+  "info": {
+      "id": "meu-modelo-incrível",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "base_model_id": "gpt-4o",
+      # este é o nome do modelo que o endpoint do modelo fornece
+      "name": "Meu Modelo Incrível",
+      "params": {
+      "system": "Você é meu melhor assistente. Você responde [REDACTED]",
+      "function_calling": "native"
+      # opções personalizadas aparecem aqui, por exemplo "Top K"
+      },
+      "meta": {
+      "profile_image_url": "/static/favicon.png",
+      "description": "Descrição do meu-modelo-incrível",
+      "capabilities": {
+          "vision": true,
+          "usage": true,
+          "citations": true
+      },
+      "position": 17,
+      "tags": [
+          {
+          "name": "para_amigos"
+          },
+          {
+          "name": "visão_habilitada"
+          }
+      ],
+      "suggestion_prompts": null
+          "name": "vision_enabled"
+      }
+  ]
+}
+
+```
+
+</details>
+
+### `__mensagens__`
+
+Uma `lista` das mensagens anteriores.
+
+Veja o valor `body["messages"]` acima.
+
+
+### `__id_de_chat__`
+
+O `str` do `chat_id`.
+
+Veja o valor `__metadata__["chat_id"]` acima.
+
+### `__id_de_sessao__`
+
+O `str` do `session_id`.
+
+Veja o valor `__metadata__["session_id"]` acima.
+
+### `__id_de_mensagem__`
+
+O `str` do `message_id`.
+
+Veja o valor `__metadata__["message_id"]` acima.
+
+### `__emissor_de_evento__`
+
+Um `Callable` usado para exibir informações do evento ao usuário.
+
+### `__chamada_de_evento__`
+
+Um `Callable` usado para `Ações`.
+
+### `__arquivos__`
+
+Uma `lista` de arquivos enviados via chat. Observe que imagens não são consideradas arquivos e são enviadas diretamente ao modelo como parte da lista `body["messages"]`.
+
+O binário real do arquivo não faz parte dos argumentos por razões de desempenho, mas o arquivo permanece acessível por seu caminho, se necessário. Por exemplo, usando `docker`, a sintaxe Python para o caminho pode ser:
+
+```python
+from pathlib import Path
+
+o_arquivo = Path(f"/app/backend/data/uploads/{__files__[0]["files"]["id"]}_{__files__[0]["files"]["filename"]}")
+assert o_arquivo.exists()
+```
+
+Observe que o mesmo dicionário de arquivos também pode ser acessado via `__metadata__["files"]` (e seu valor é `[]` se nenhum arquivo for enviado) ou via `body["files"]` (mas a chave `files` está completamente ausente de `body` se nenhum arquivo for enviado).
+
+<details>
+<summary>Exemplo</summary>
+
+```json
+
+[
+  {
+    "type": "file",
+    "file": {
+      "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "filename": "Napoleão - Wikipedia.pdf",
+      "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "data": {
+        "content": "Napoleão - Wikipedia\n\n\nNapoleão I\n\nO Imperador Napoleão em Seu Estudo nos\nTuileries, 1812\n\nImperador dos Franceses\n\n1º reinado 18 de maio de 1804 – 6 de abril de 1814\n\nSucessor Luís XVIII[a]\n\n2º reinado 20 de março de 1815 - 22 de junho de 1815\n\nSucessor Luís XVIII[a]\n\nPrimeiro Cônsul da República Francesa\n\nNo cargo\n13 de dezembro de 1799 - 18 de maio de 1804\n\nNascido Napoleone Buonaparte\n15 de agosto de 1769\nAjaccio, Córsega, Reino da\nFrança\n\nFalecido 5 de maio de 1821 (idade 51)\nLongwood, Santa Helena\n\nEnterro 15 de dezembro de 1840\nLes Invalides, Paris\n\nNapoleão\nNapoleão Bonaparte[b] (nascido Napoleone\nBuonaparte;[1][c] 15 de agosto de 1769 - 5 de maio de 1821), mais tarde\nconhecido [REDACTED]",
+        # O valor do conteúdo é a saída do analisador de documentos, o exemplo acima é com Tika como analisador de documentos
+      },
+      "meta": {
+        "name": "Napoleão - Wikipedia.pdf",
+        "content_type": "application/pdf",
+        "size": 10486578,
+        # em bytes, aqui cerca de 10Mb
+        "data": {},
+        "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        # sempre começa com file
+      },
+      "created_at": 1740000000,
+      "updated_at": 1740000000
+    },
+    "id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "url": "/api/v1/files/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "name": "Napoleão - Wikipedia.pdf",
+    "collection_name": "file-96xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    "status": "uploaded",
+    "size": 10486578,
+    "error": "",
+    "itemId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    # itemId não é o mesmo que file["id"]
+  }
+]
+
+
+```
+
+</details>
+
+### `__requisicao__`
+
+Uma instância de `fastapi.Request`. Você pode ler mais na [página de migração](../../features/plugin/migration/index.mdx) ou na [documentação de fastapi](https://fastapi.tiangolo.com/reference/request/).
+
+### `__tarefa__`
+
+Um `str` para o tipo de tarefa. Seu valor é apenas uma abreviação de `__metadata__["task"]` se presente, caso contrário, `None`.
+
+<details>
+<summary>Valores possíveis</summary>
+
+```json
+
+[
+    "geracao_de_titulo",
+    "geracao_de_tags",
+    "geracao_de_emojis",
+    "geracao_de_consulta",
+    "geracao_de_prompt_de_imagem",
+    "geracao_de_autocomplete",
+    "chamada_de_funcao",
+    "geracao_de_resposta_moa"
+]
+```
+
+</details>
+
+### `__corpo_da_tarefa__`
+
+Um `dict` contendo o `body` necessário para realizar uma determinada `__tarefa__`. Seu valor é apenas uma abreviação de `__metadata__["task_body"]` se presente, caso contrário, `None`.
+
+Sua estrutura é a mesma de `body` acima, com modificações como o uso do modelo apropriado e mensagem do sistema, etc.
+
+
+### `__ferramentas__`
+
+Uma `lista` de instâncias de `ToolUserModel`.
+
+Para detalhes dos atributos das instâncias `ToolUserModel`, o código pode ser encontrado em [tools.py](https://github.com/open-webui/open-webui/blob/main/backend/open_webui/models/tools.py).
+

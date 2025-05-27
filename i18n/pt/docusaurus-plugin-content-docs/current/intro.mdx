@@ -1,0 +1,213 @@
+---
+sidebar_position: 0
+slug: /
+title: 🏡 Início
+hide_title: true
+---
+
+import { TopBanners } from "@site/src/components/TopBanners";
+import { SponsorList } from "@site/src/components/SponsorList";
+
+# Open WebUI
+
+
+**Open WebUI é uma plataforma de IA auto-hospedada [extensível](https://docs.openwebui.com/features/plugin/), rica em recursos e fácil de usar, projetada para operar completamente offline.** Ela suporta vários runners de LLM como **Ollama** e **APIs compatíveis com OpenAI**, com **motor de inferência integrado** para RAG, tornando-se uma **solução poderosa para implantação de IA**.
+
+![Estrelas no GitHub](https://img.shields.io/github/stars/open-webui/open-webui?style=social)
+![Forks no GitHub](https://img.shields.io/github/forks/open-webui/open-webui?style=social)
+![Observadores no GitHub](https://img.shields.io/github/watchers/open-webui/open-webui?style=social)
+![Tamanho do repositório no GitHub](https://img.shields.io/github/repo-size/open-webui/open-webui)
+![Contagem de linguagens no GitHub](https://img.shields.io/github/languages/count/open-webui/open-webui)
+![Linguagem principal no GitHub](https://img.shields.io/github/languages/top/open-webui/open-webui)
+![Último commit no GitHub](https://img.shields.io/github/last-commit/open-webui/open-webui?color=red)
+![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Follama-webui%2Follama-wbui&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)
+[![Discord](https://img.shields.io/badge/Discord-Open_WebUI-blue?logo=discord&logoColor=white)](https://discord.gg/5rJgQTnV4s)
+[![](https://img.shields.io/static/v1?label=Patrocinar&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/tjbck)
+
+![Demo do Open WebUI](/images/demo.gif)
+
+:::tip
+**Está procurando por um [Plano Empresarial](https://docs.openwebui.com/enterprise)?** – **[Fale com nosso time de vendas hoje!](mailto:sales@openwebui.com)**
+
+Obtenha **capacidades aprimoradas**, incluindo **temas e branding personalizados**, **suporte com Acordo de Nível de Serviço (SLA)**, **versões com Suporte de Longo Prazo (LTS)** e **mais!**
+:::
+
+<TopBanners />
+
+## Começo Rápido com Docker 🐳
+
+:::info
+
+**Suporte a WebSocket** é necessário para o funcionamento correto do Open WebUI. Certifique-se de que sua configuração de rede permite conexões WebSocket.
+
+:::
+
+**Se o Ollama está no seu computador**, use este comando:
+
+```bash
+docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+```
+
+**Para executar Open WebUI com suporte a GPU Nvidia**, use este comando:
+
+```bash
+docker run -d -p 3000:8080 --gpus all --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:cuda
+```
+
+### Open WebUI Integrado com Ollama
+
+Este método de instalação utiliza uma única imagem de container que integra Open WebUI com Ollama, permitindo uma configuração simplificada via um único comando. Escolha o comando apropriado com base na configuração de hardware:
+
+- **Com Suporte à GPU**:
+  Utilize recursos de GPU executando o comando a seguir:
+
+  ```bash
+  docker run -d -p 3000:8080 --gpus=all -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
+  ```
+
+- **Somente CPU**:
+  Caso não esteja usando uma GPU, utilize este comando:
+
+  ```bash
+  docker run -d -p 3000:8080 -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
+  ```
+
+Ambos os comandos facilitam uma instalação integrada e sem complicações do Open WebUI e Ollama, garantindo que você possa configurar tudo rapidamente.
+
+Após a instalação, você pode acessar o Open WebUI em [http://localhost:3000](http://localhost:3000). Aproveite! 😄
+
+### Usando a Branch de Desenvolvimento 🌙
+
+:::warning
+A branch `:dev` contém os recursos mais recentes e instáveis. Use-a por sua conta e risco, pois pode ocorrer bugs ou recursos incompletos.
+:::
+
+Se você deseja experimentar os recursos de ponta mais recentes e está bem com instabilidade ocasional, pode usar a tag `:dev` como esta:
+
+```bash
+docker run -d -p 3000:8080 -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:dev
+```
+
+### Atualizando Open WebUI
+
+Para atualizar facilmente o container do Open WebUI, siga estes passos:
+
+#### Atualização Manual
+Use [Watchtower](https://containrrr.dev/watchtower) para atualizar seu container Docker manualmente:
+```bash
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --run-once open-webui
+```
+
+#### Atualizações Automáticas
+Mantenha seu container atualizado automaticamente a cada 5 minutos:
+```bash
+docker run -d --name watchtower --restart unless-stopped -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower --interval 300 open-webui
+```
+
+🔧 **Nota**: Substitua `open-webui` pelo nome do seu container se for diferente.
+
+## Instalação Manual
+
+Existem duas maneiras principais de instalar e executar o Open WebUI: usando o gerenciador de runtime `uv` ou o `pip` do Python. Embora ambos os métodos sejam eficazes, **recomendamos fortemente o uso do `uv`**, pois ele simplifica o gerenciamento do ambiente e minimiza possíveis conflitos.
+
+### Instalação com `uv` (Recomendada)
+
+O gerenciador de runtime `uv` garante um gerenciamento contínuo do ambiente Python para aplicativos como o Open WebUI. Siga estes passos para começar:
+
+#### 1. Instale o `uv`
+
+Escolha o comando de instalação apropriado para seu sistema operacional:
+
+- **macOS/Linux**:  
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+
+- **Windows**:  
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+
+#### 2. Execute o Open WebUI
+
+Após instalar o `uv`, executar o Open WebUI é muito simples. Use o comando abaixo, garantindo que você configure a variável de ambiente `DATA_DIR` para evitar perda de dados. Caminhos de exemplo são fornecidos para cada plataforma:
+
+- **macOS/Linux**:  
+  ```bash
+  DATA_DIR=~/.open-webui uvx --python 3.11 open-webui@latest serve
+  ```
+
+- **Windows**:  
+  ```powershell
+  $env:DATA_DIR="C:\open-webui\data"; uvx --python 3.11 open-webui@latest serve
+  ```
+
+
+
+### Instalação com `pip`
+
+Para os usuários que instalam o Open WebUI com o gerenciador de pacotes do Python, o `pip`, **é fortemente recomendado usar gerenciadores de runtime do Python como `uv` ou `conda`**. Essas ferramentas ajudam a gerenciar ambientes Python de forma eficaz e a evitar conflitos.
+
+O Python 3.11 é o ambiente de desenvolvimento. O Python 3.12 parece funcionar, mas não foi testado profundamente. O Python 3.13 não foi testado—**use por sua conta e risco**.
+
+1. **Instale o Open WebUI**:  
+
+   Abra seu terminal e execute o seguinte comando:  
+   ```bash
+   pip install open-webui
+   ```
+
+2. **Inicie o Open WebUI**:  
+
+   Uma vez instalado, inicie o servidor usando:  
+   ```bash
+   open-webui serve
+   ```
+
+### Atualizando o Open WebUI
+
+Para atualizar para a versão mais recente, basta executar:  
+
+```bash
+pip install --upgrade open-webui
+```
+
+Este método instala todas as dependências necessárias e inicia o Open WebUI, permitindo uma configuração simples e eficiente. Após a instalação, você pode acessar o Open WebUI em [http://localhost:8080](http://localhost:8080). Aproveite! 😄
+
+## Outros Métodos de Instalação
+
+Oferecemos várias alternativas de instalação, incluindo métodos de instalação nativa sem Docker, Docker Compose, Kustomize e Helm. Visite nossa [Documentação do Open WebUI](https://docs.openwebui.com/getting-started/) ou junte-se à nossa [comunidade no Discord](https://discord.gg/5rJgQTnV4s) para orientações abrangentes.
+
+Continue com o guia completo [de introdução](/getting-started).
+
+## Patrocinadores 🙌
+
+
+<SponsorList />
+
+
+Somos extremamente gratos pelo apoio generoso de nossos patrocinadores. Suas contribuições nos ajudam a manter e melhorar nosso projeto, garantindo que possamos continuar a oferecer um trabalho de qualidade à nossa comunidade. Obrigado!
+
+
+## Agradecimentos 🙏
+
+Somos profundamente gratos pelo apoio generoso de bolsas fornecido por:
+
+<p>
+
+
+  <a href="https://builders.mozilla.org/" title="Mozilla Builders 2024" target="_blank" rel="noopener">
+    <img src="/images/grants/mozilla.png" alt="Mozilla" width={"300px"} style={{verticalAlign:'middle',marginRight:'12px'}} />
+    <span style={{verticalAlign:'middle', fontWeight:600, fontSize:'1.05em'}}>Construtores Mozilla 2024</span>
+  </a>
+
+  <br/>
+  <br/>
+
+  <a href="https://github.com/accelerator" title="GitHub Accelerator 2024" target="_blank" rel="noopener">
+    <img src="/images/grants/github.png" alt="GitHub" width={"300px"} style={{verticalAlign:'middle',marginRight:'16px'}} />
+    <span style={{verticalAlign:'middle', fontWeight:600, fontSize:'1.05em'}}>Acelerador do GitHub 2024</span>
+  </a>
+
+  
+</p>
