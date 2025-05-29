@@ -1927,7 +1927,7 @@ Lors de l'utilisation de `playwright`, vous avez deux options :
 - Description : Spécifie l'URI WebSocket d'une instance de navigateur Playwright distante. Lorsqu'il est défini, Open WebUI utilisera ce navigateur distant au lieu d'installer des dépendances de navigateur localement. Cela est particulièrement utile dans les environnements conteneurisés où vous souhaitez conserver le conteneur Open WebUI léger et séparer les aspects du navigateur. Exemple : `ws://playwright:3000`
 - Persistance : Cette variable d'environnement est une variable `PersistentConfig`.
 
-:::astuce
+:::tip
 
 Utiliser un navigateur Playwright distant via `PLAYWRIGHT_WS_URL` peut être bénéfique pour :
 

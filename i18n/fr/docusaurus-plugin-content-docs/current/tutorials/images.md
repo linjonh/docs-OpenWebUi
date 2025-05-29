@@ -3,7 +3,7 @@ sidebar_position: 6
 title: "🎨 Génération d'Images"
 ---
 
-:::avertissement
+:::warning
 Ce tutoriel est une contribution de la communauté et n'est pas pris en charge par l'équipe Open WebUI. Il sert uniquement de démonstration pour personnaliser Open WebUI selon votre cas d'utilisation spécifique. Vous souhaitez contribuer ? Consultez le tutoriel de contribution.
 :::
 

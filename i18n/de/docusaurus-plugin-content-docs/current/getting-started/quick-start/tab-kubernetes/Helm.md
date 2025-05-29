@@ -29,7 +29,7 @@ Helm hilft Ihnen bei der Verwaltung von Kubernetes-Anwendungen.
    kubectl get pods
    ```
 
-:::warnung
+:::warning
 
 Falls Sie beabsichtigen, Open WebUI mit mehreren Knoten/Pods/Workern in einer Cluster-Umgebung zu skalieren, müssen Sie eine NoSQL-Schlüssel-Wert-Datenbank einrichten.
 Es gibt einige [Umgebungsvariablen](https://docs.openwebui.com/getting-started/env-configuration/), die für alle Service-Instanzen auf denselben Wert gesetzt werden müssen, sonst treten Konsistenzprobleme, fehlerhafte Sitzungen und andere Probleme auf!

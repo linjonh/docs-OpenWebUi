@@ -824,7 +824,7 @@ Wenn aktiviert, werden die folgenden Header weitergeleitet:
 - Standard: `lax`
 - Beschreibung: Legt das `SameSite`-Attribut für Sitzungs-Cookies fest.
 
-:::warnung
+:::warning
 
 Wenn `ENABLE_OAUTH_SIGNUP` aktiviert ist, kann die Einstellung von `WEBUI_SESSION_COOKIE_SAME_SITE` auf `strict` zu Anmeldefehlern führen. Dies geschieht, weil Open WebUI ein Sitzungs-Cookie verwendet, um den Rückruf des OAuth-Anbieters zu validieren, was dazu beiträgt, CSRF-Angriffe zu verhindern.
 

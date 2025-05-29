@@ -3,7 +3,7 @@ sidebar_position: 31
 title: "🛌 Integrar con Amazon Bedrock"
 ---
 
-:::advertencia
+:::warning
 Este tutorial es una contribución de la comunidad y no cuenta con el soporte del equipo de Open WebUI. Solo sirve como una demostración de cómo personalizar Open WebUI para su caso de uso específico. ¿Quieres contribuir? Consulta el tutorial de contribución.
 :::
 

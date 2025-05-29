@@ -49,7 +49,7 @@ Supposons qu'un utilisateur souhaite définir son propre prompt système pour so
 
 <details>
 <summary>Exemple d'utilisation</summary>
-:::astuce **Par modèle** :
+:::tip **Par modèle** :
 Supposons qu'un administrateur souhaite définir une invite système par défaut pour un modèle spécifique. Il peut le faire en accédant à la section **Modèles** et en modifiant le champ **Invite Système** pour le modèle correspondant. Tous les instances de chat utilisant ce modèle utiliseront automatiquement l'invite système et les paramètres avancés du modèle.
 :::
 </details>
@@ -57,7 +57,7 @@ Supposons qu'un administrateur souhaite définir une invite système par défaut
 
 ## **Optimisez les paramètres d’invite système pour une flexibilité maximale**
 
-:::astuce **Conseils bonus**
+:::tip **Conseils bonus**
 **Ce conseil s'applique à la fois aux administrateurs et aux utilisateurs. Pour obtenir une flexibilité maximale avec vos invites système, nous recommandons de considérer la configuration suivante :**
 
 - Assignez votre invite système principale (**c'est-à-dire pour donner un caractère défini à un LLM**) que vous souhaitez utiliser dans le champ **Invite Système** des paramètres **Généraux**. Cela le configure au niveau du compte et permet de l'utiliser comme invite système pour tous vos LLM sans nécessiter d'ajustements dans un modèle à partir de la section **Espace de Travail**.

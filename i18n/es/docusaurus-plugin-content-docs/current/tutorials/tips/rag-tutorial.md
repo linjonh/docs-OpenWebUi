@@ -3,7 +3,7 @@ sidebar_position: 3
 title: "🔎 Tutorial de Open WebUI RAG"
 ---
 
-:::advertencia
+:::warning
 Este tutorial es una contribución de la comunidad y no cuenta con el soporte del equipo de Open WebUI. Sirve únicamente como una demostración de cómo personalizar Open WebUI para tu caso de uso específico. ¿Quieres contribuir? Consulta el tutorial de contribuciones.
 :::
 

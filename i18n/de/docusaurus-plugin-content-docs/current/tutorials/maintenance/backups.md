@@ -3,7 +3,7 @@ sidebar_position: 1000
 title: "💾 Sicherungen"
 ---
  
- :::warnung
+ :::warning
 Dieses Tutorial ist ein Beitrag der Community und wird nicht vom Open WebUI-Team unterstützt. Es dient nur als Demonstration, wie Open WebUI für Ihren spezifischen Anwendungsfall angepasst werden kann. Möchten Sie beitragen? Schauen Sie sich das Beitragstutorial an.
 :::
 

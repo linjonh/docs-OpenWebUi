@@ -3,7 +3,7 @@ sidebar_position: 1
 title: "Bing"
 ---
 
-:::advertencia
+:::warning
 Este tutorial es una contribución de la comunidad y no está respaldado por el equipo de Open WebUI. Solo sirve como una demostración de cómo personalizar Open WebUI para tu caso específico de uso. ¿Quieres contribuir? Revisa el tutorial de contribuciones.
 :::
 

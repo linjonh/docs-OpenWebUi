@@ -260,7 +260,7 @@ Open WebUI ofrece una multitud de beneficios, convirtiéndose en una herramienta
 
 ## Enlaces de documentación Swagger
 
-:::importante
+:::important
 Asegúrate de configurar la variable de entorno `ENV` en `dev` para acceder a la documentación Swagger de cualquiera de estos servicios. Sin esta configuración, la documentación no estará disponible.
 :::
 

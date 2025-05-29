@@ -3,7 +3,7 @@ sidebar_position: 17
 title: "Externo"
 ---
 
-:::advertencia
+:::warning
 Este tutorial es una contribución de la comunidad y no es compatible con el equipo de Open WebUI. Sirve solo como una demostración de cómo personalizar Open WebUI para su caso de uso específico. ¿Quieres contribuir? Consulta el tutorial de contribución.
 :::
 

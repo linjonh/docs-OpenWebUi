@@ -29,7 +29,7 @@ O Kustomize permite personalizar as configurações YAML do Kubernetes.
    kubectl get pods
    ```
 
-:::aviso
+:::warning
 
 Se você pretende escalar o Open WebUI usando múltiplos nós/pods/workers em um ambiente clusterizado, é necessário configurar um banco de dados NoSQL chave-valor.
 Existem algumas [variáveis de ambiente](https://docs.openwebui.com/getting-started/env-configuration/) que precisam ser definidas com os mesmos valores para todas as instâncias de serviço. Caso contrário, ocorrerão problemas de consistência, sessões com falhas e outros problemas!

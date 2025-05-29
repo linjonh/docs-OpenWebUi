@@ -3,7 +3,7 @@ sidebar_position: 1000
 title: "💾 Copias de Seguridad"
 ---
  
- :::advertencia
+ :::warning
 Este tutorial es una contribución de la comunidad y no está respaldado por el equipo de Open WebUI. Solo sirve como una demostración de cómo personalizar Open WebUI para tus casos de uso específicos. ¿Quieres contribuir? Consulta el tutorial de contribución.
 :::
 
